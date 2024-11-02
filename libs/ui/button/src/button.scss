@@ -1,0 +1,41 @@
+@use "./styles/mixins";
+@use "./styles/filled-button";
+@use "./styles/outlined-button";
+@use "./styles/raised-button";
+@use "./styles/text-button";
+
+.tas__button__base {
+    @apply font-sans  disabled:cursor-not-allowed;
+    outline: none;
+    font-size: var(--tas-btn-font-size);
+    border-radius: var(--tas-btn-border-radius);
+    padding: var(--tas-btn-padding-y) var(--tas-btn-padding-x);
+}
+
+// Icon and rounded button
+.tas__button__icon,
+.tas__button--rounded {
+    @apply rounded-full;
+}
+
+.tas__button__icon {
+    width: 5rem;
+    height: 5rem;
+}
+
+// Button sizing
+.tas__button__size--small {
+    @apply text-xs;
+}
+.tas__button__size--medium {
+    @apply text-sm;
+}
+.tas__button__size--large {
+    @apply text-xl;
+}
+
+.tas__filled__button__container,
+.tas__outlined__button__container,
+.tas__raised__button__container {
+    @apply hover:shadow-lg;
+}

@@ -1,0 +1,45 @@
+@use 'styles/outline-appearance';
+@use 'styles/fill-appearance';
+
+tas-form-field {
+  @apply w-auto relative mt-2;
+
+  .input__container {
+    @apply inline-flex items-center justify-center border px-1 py-1 m-0 border-gray-300 focus-within:border-primary focus-within:shadow  bg-white;
+    border-radius: var(--tas-field-border-radius) !important;
+
+    &:has([tasInput].ng-invalid) {
+      @apply border-functional-error;
+
+      [tasSuffix], [tasPrefix] {
+        @apply text-functional-error;
+      }
+    }
+
+    [tasSuffix], [tasPrefix] {
+      @apply text-gray-400;
+    }
+
+    [tasSuffix] {
+      @apply mr-2;
+    }
+
+    [tasPrefix] {
+      @apply ml-2;
+    }
+
+    &:focus-within {
+      [tasSuffix], [tasPrefix] {
+        @apply text-primary;
+      }
+    }
+  }
+
+  // Reset tailwind plugin form
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .form-multi-select {
+    @apply border-none focus:appearance-none outline-none appearance-none focus:ring-0 border-0 mb-0 bg-white;
+  }
+}

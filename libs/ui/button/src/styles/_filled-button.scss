@@ -1,0 +1,69 @@
+@mixin filledVariant($color) {
+    border-color: rgb($color) !important;
+    color: white;
+    background-color: rgb($color);
+}
+
+@mixin filledDisabled() {
+    @apply bg-gray-300;
+}
+
+// Filled button
+.tas__filled__button__container {
+
+    // Loading state
+    &.tas__button--loading {
+        .spinner {
+            @apply text-gray-200;
+        }
+    }
+
+    // Filled button primary
+    &.tas__button__variant--primary {
+        @include filledVariant(var(--tas-color-primary));
+
+        // Modifier
+        &:disabled {
+            @include filledDisabled;
+        }
+
+        &:hover {
+
+        }
+    }
+
+    // Filled button accent
+    &.tas__button__variant--accent {
+        @include filledVariant(var(--tas-color-accent));
+        // Modifier
+        &:disabled {
+            @include filledDisabled;
+        }
+
+        &:hover {}
+    }
+
+
+    // Filled button warn
+    &.tas__button__variant--warn {
+        @include filledVariant(var(--tas-color-warn));
+        // Modifier
+        &:disabled {
+            @include filledDisabled;
+        }
+
+        &:hover {}
+    }
+
+    // Filled button neutral
+    &.tas__button__variant--neutral {
+        @include filledVariant(var(--tas-color-neutral));
+        // Modifier
+        &:disabled {
+            @include filledDisabled;
+        }
+
+        &:hover {}
+    }
+}
+

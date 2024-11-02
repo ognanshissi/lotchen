@@ -20,6 +20,11 @@
           {
             "glob": "**/*",
             "input": "apps/Lotchen/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/@talisoft/ui/icon/assets",
+            "output": "assets"
           }
         ],
         "styles": ["apps/Lotchen/src/styles.scss"],
@@ -30,13 +35,13 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "5mb",
+              "maximumError": "10mb"
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
+              "maximumWarning": "2mb",
+              "maximumError": "4mb"
             }
           ],
           "outputHashing": "all"
@@ -59,7 +64,8 @@
           "buildTarget": "Lotchen:build:production"
         },
         "development": {
-          "buildTarget": "Lotchen:build:development"
+          "buildTarget": "Lotchen:build:development",
+          "port": 4223
         }
       },
       "defaultConfiguration": "development"
@@ -84,7 +90,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "Lotchen:build",
-        "port": 4200,
+        "port": 4201,
         "spa": true
       }
     },
@@ -106,7 +112,8 @@
           "optimization": false,
           "sourceMap": true,
           "extractLicenses": false,
-          "vendorChunk": true
+          "vendorChunk": true,
+          "port": 4223
         }
       },
       "defaultConfiguration": "production"
@@ -120,7 +127,8 @@
         },
         "production": {
           "browserTarget": "Lotchen:build:production",
-          "serverTarget": "Lotchen:server:production"
+          "serverTarget": "Lotchen:server:production",
+          "port": 4223
         }
       },
       "defaultConfiguration": "development"

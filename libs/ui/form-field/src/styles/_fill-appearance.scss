@@ -1,0 +1,12 @@
+.tas-form-field__appearance--fill {
+  .input__container {
+    @apply focus-within:ring-primary
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .form-multi-select {
+    border-radius: var(--tas-field-border-radius) !important;
+  }
+}
