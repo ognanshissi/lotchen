@@ -1,11 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TasTitle } from '@talisoft/ui/title';
-import { FormField, TasLabel } from '@talisoft/ui/form-field';
+import { FormField, TasLabel, TasPrefix } from '@talisoft/ui/form-field';
 import { TasInput } from '@talisoft/ui/input';
 import { TasIcon } from '@talisoft/ui/icon';
 import { ButtonModule } from '@talisoft/ui/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TasText } from '@talisoft/ui/text';
+import { TasInputEmail } from '@talisoft/ui/input-email';
 
 @Component({
   selector: 'auth-forgot-password',
@@ -13,22 +15,16 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
     <div class="flex flex-col space-y-4">
       <tas-title> Mot de passe oublié </tas-title>
 
-      <p class="text-gray-400">
+      <tas-text>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
         rerum sunt tempore tenetur.
-      </p>
+      </tas-text>
 
       <div class="flex flex-col space-y-8">
-        <tas-form-field>
-          <tas-label>Adresse électronique</tas-label>
-          <input
-            type="email"
-            tasInput
-            [formControl]="emailControl"
-            placeholder="Votre adresse electronique"
-          />
-          <tas-icon iconName="feather:email" />
-        </tas-form-field>
+        <tas-input-email
+          [formControl]="emailControl"
+          placeholder="Votre adresse electronique"
+        ></tas-input-email>
 
         <button
           tas-outlined-button
@@ -60,6 +56,9 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
     ButtonModule,
     RouterLink,
     ReactiveFormsModule,
+    TasPrefix,
+    TasText,
+    TasInputEmail,
   ],
 })
 export class ForgotPasswordComponent implements OnInit {

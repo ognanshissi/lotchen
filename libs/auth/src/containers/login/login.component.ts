@@ -16,6 +16,8 @@ import { TasContainer } from '@talisoft/ui/container';
 import { Router, RouterLink } from '@angular/router';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasAlert } from '@talisoft/ui/alert';
+import { TasText } from '@talisoft/ui/text';
+import { TasInputEmail } from '@talisoft/ui/input-email';
 
 @Component({
   selector: 'auth-login',
@@ -37,6 +39,8 @@ import { TasAlert } from '@talisoft/ui/alert';
     TasIcon,
     TasAlert,
     RouterLink,
+    TasText,
+    TasInputEmail,
   ],
 })
 export class LoginComponent implements OnInit {
@@ -45,7 +49,7 @@ export class LoginComponent implements OnInit {
 
   public ngOnInit(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      email: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [
         Validators.required,
         Validators.minLength(8),

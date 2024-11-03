@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, HostBinding, input, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  HostBinding,
+  input,
+  ViewEncapsulation,
+} from '@angular/core';
 import { TasIcon } from '@talisoft/ui/icon';
-import { branch } from '@angular-devkit/schematics/src/tree/static';
-
 
 export type AlertType = 'success' | 'error' | 'info';
 
