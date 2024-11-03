@@ -8,7 +8,6 @@ import {
   Validator,
   Validators
 } from '@angular/forms';
-import { TasSelect } from '@talisoft/ui/select';
 
 @Component({
   template: '',

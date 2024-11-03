@@ -10,6 +10,7 @@ import { TasCheckbox } from '@talisoft/ui/checkbox';
 import { TasContainer } from '@talisoft/ui/container';
 import { Router } from '@angular/router';
 import { TasIcon } from '@talisoft/ui/icon';
+import { TasAlert } from '@talisoft/ui/alert';
 
 @Component({
   selector: 'auth-login',
@@ -29,6 +30,7 @@ import { TasIcon } from '@talisoft/ui/icon';
     TasContainer,
     TasPrefix,
     TasIcon,
+    TasAlert,
   ],
 })
 export class LoginComponent implements OnInit {
@@ -38,7 +40,10 @@ export class LoginComponent implements OnInit {
   public ngOnInit(): void {
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+      password: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
       rememberMe: new FormControl(true),
     });
   }
@@ -49,7 +54,7 @@ export class LoginComponent implements OnInit {
 
     setTimeout(() => {
       this._router.navigate(['/dashboard']);
-    }, 2000)
+    }, 2000);
   }
 }
 
