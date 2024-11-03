@@ -1,6 +1,6 @@
 .tas-form-field__appearance--fill {
   .input__container {
-    @apply focus-within:ring-primary
+    @apply focus-within:ring-primary focus-within:ring-2
   }
 
   .form-input,

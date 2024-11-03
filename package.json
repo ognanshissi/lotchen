@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start:dev": "npx nx run Lotchen:serve:development",
-    "build": "npx nx run Lotchen:build:production"
+    "build": "npx nx run Lotchen:build:production",
+    "ui:watch": "npx nx run ui:build:development --watch"
   },
   "private": true,
   "dependencies": {

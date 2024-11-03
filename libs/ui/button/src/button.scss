@@ -21,21 +21,28 @@
 .tas__button__icon {
     width: 5rem;
     height: 5rem;
+  @apply hover:bg-gray-300;
 }
 
 // Button sizing
 .tas__button__size--small {
     @apply text-xs;
+  --tas-btn-padding-y: .4rem;
+  --tas-btn-padding-x: 1rem;
 }
 .tas__button__size--medium {
     @apply text-sm;
+  --tas-btn-padding-y: .8rem;
+  --tas-btn-padding-x: 1rem;
 }
 .tas__button__size--large {
-    @apply text-xl;
+  @apply text-xl;
+  --tas-btn-padding-y: 1rem;
+  --tas-btn-padding-x: 1rem;
 }
 
-.tas__filled__button__container,
-.tas__outlined__button__container,
-.tas__raised__button__container {
+.tas__filled__button__container:not(:disabled),
+.tas__outlined__button__container:not(:disabled),
+.tas__raised__button__container:not(:disabled) {
     @apply hover:shadow-lg;
 }

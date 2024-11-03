@@ -1,4 +1,4 @@
-import { Component, computed, forwardRef, OnInit, signal } from '@angular/core';
+import { Component, computed, forwardRef, input, OnInit, signal } from '@angular/core';
 import { FormField, TasLabel, TasSuffix } from '@talisoft/ui/form-field';
 import { TasIcon } from '@talisoft/ui/icon';
 import { AbstractControlValueAccessor } from '@talisoft/ui/core';
@@ -33,6 +33,9 @@ export class TasInputPassword
   extends AbstractControlValueAccessor<string>
   implements OnInit
 {
+
+  public placeholder = input<string>("Mot de passe");
+
   public showPassword = signal<boolean>(false);
 
   public passwordFieldType = computed(() => {

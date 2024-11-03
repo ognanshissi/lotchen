@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@talisoft/auth": ["libs/auth/src/index.ts"],
       "@talisoft/ui": ["libs/ui/src/index.ts"],
       "@talisoft/ui/*": ["libs/ui/*"]
     }

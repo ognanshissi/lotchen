@@ -30,7 +30,7 @@ import { TasLabel } from './label.component';
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <label class="block mb-1 mt-2" [for]="inputControl?.id">
+    <label class="block mb-1" [for]="inputControl?.id">
       <ng-content select="tas-label"></ng-content>
     </label>
     <div class="input__container flex items-center">
