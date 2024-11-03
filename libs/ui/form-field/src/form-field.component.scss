@@ -16,6 +16,10 @@ tas-form-field {
       }
     }
 
+    input, textarea {
+      @apply bg-transparent w-full;
+    }
+
     [tasSuffix], [tasPrefix] {
       @apply text-gray-400;
     }
@@ -32,6 +36,11 @@ tas-form-field {
       [tasSuffix], [tasPrefix] {
         @apply text-primary;
       }
+    }
+
+    // Disabled field
+    &:has(input:disabled), &:has(textarea:disabled) {
+      @apply bg-gray-50 cursor-not-allowed;
     }
   }
 

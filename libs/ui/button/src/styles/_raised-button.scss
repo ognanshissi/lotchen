@@ -1,3 +1,5 @@
+@import "mixins";
+
 @mixin raisedVariant($color) {
   background-color: rgb($color);
   color: white;
@@ -27,8 +29,8 @@
       @include raisedDisabled;
     }
 
-    &:hover {
-
+    &:hover:not(:disabled) {
+      @include button-shadow-focus(var(--tas-color-primary));
     }
   }
 
@@ -41,8 +43,8 @@
       @include raisedDisabled;
     }
 
-    &:hover {
-
+    &:hover:not(:disabled) {
+      @include button-shadow-focus(var(--tas-color-accent));
     }
   }
 
@@ -55,7 +57,7 @@
       @include raisedDisabled;
     }
 
-    &:hover {
+    &:hover:not(:disabled) {
 
     }
   }
@@ -68,7 +70,7 @@
       @include raisedDisabled;
     }
 
-    &:hover {
+    &:hover:not(:disabled) {
 
     }
   }

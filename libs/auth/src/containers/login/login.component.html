@@ -1,0 +1,37 @@
+<tas-container>
+  <form [formGroup]="loginForm" class="flex flex-col space-y-5" (ngSubmit)="submit()">
+    <div>
+      <tas-title class="text-center">Connexion</tas-title>
+      <p class="text-gray-400 pt-4">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. vero
+        voluptas. Cupiditate deserunt dicta dignissimos et ex odio vero!
+      </p>
+    </div>
+    <div class="flex flex-col space-y-5">
+      <tas-form-field>
+        <tas-label class="sr-only">Adresse électronique</tas-label>
+        <tas-icon tasPrefix iconName="feather:user"></tas-icon>
+        <input
+          type="email"
+          formControlName="email"
+          tasInput
+          placeholder="Adresse électronique"
+        />
+      </tas-form-field>
+      <div>
+        <tas-input-password formControlName="password"
+        ><span class="sr-only">Mot de passe</span></tas-input-password
+        >
+        <p class="flex justify-between items-center">
+          <tas-checkbox formControlName="rememberMe">Se souvenir de moi</tas-checkbox>
+          <a tas-text-button color="accent" href="#">
+            Mot de passe oublié ?</a
+          >
+        </p>
+      </div>
+    </div>
+    <button tas-raised-button type="submit" [isLoading]="loginForm.disabled" [disabled]="!loginForm.valid" color="primary">
+      Login
+    </button>
+  </form>
+</tas-container>

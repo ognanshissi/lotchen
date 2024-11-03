@@ -1,6 +1,14 @@
 .tas-form-field__appearance--fill {
   .input__container {
-    @apply focus-within:ring-primary focus-within:ring-2
+    @apply focus-within:ring-primary focus-within:ring-2;
+
+    &:has([tasInput].ng-invalid.ng-dirty) {
+      @apply focus-within:ring-functional-error border-functional-error;
+
+      [tasSuffix], [tasPrefix] {
+        @apply text-functional-error;
+      }
+    }
   }
 
   .form-input,

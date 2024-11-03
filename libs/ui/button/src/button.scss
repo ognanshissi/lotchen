@@ -4,6 +4,8 @@
 @use "./styles/raised-button";
 @use "./styles/text-button";
 
+
+
 .tas__button__base {
     @apply font-sans  disabled:cursor-not-allowed;
     outline: none;
@@ -45,4 +47,10 @@
 .tas__outlined__button__container:not(:disabled),
 .tas__raised__button__container:not(:disabled) {
     @apply hover:shadow-lg;
+
+  &:hover {
+
+  }
 }
+
+

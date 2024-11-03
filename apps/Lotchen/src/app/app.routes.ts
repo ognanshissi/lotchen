@@ -10,6 +10,10 @@ export const appRoutes: Route[] = [
   {
     path: 'auth',
     component: AuthLayoutComponent,
-    loadChildren: () => import("@talisoft/auth").then(m => m.authRoutes)
+    loadChildren: () => import("@talisoft/auth")
+  },
+  {
+    path: "dashboard",
+    loadChildren: () => import("@talisoft/dashboard")
   }
 ];

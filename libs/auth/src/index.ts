@@ -1,2 +1,5 @@
 export * from './layouts/auth-layout.component';
-export * from './auth.routes';
+import { authRoutes } from './auth.routes';
+
+
+export default authRoutes;

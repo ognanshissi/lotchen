@@ -6,20 +6,26 @@ import { AbstractControlValueAccessor } from '@talisoft/ui/core';
   selector: 'tas-checkbox',
   template: `
     @if (labelPosition() === 'left') {
-      <label [for]="componentId">
-        <ng-content></ng-content>
-      </label>
-    }
-    &nbsp; <input [id]="componentId" type="checkbox" class="form-checkbox" [formControl]="control" /> &nbsp;
-    @if (labelPosition() === 'right') {
-      <label [for]="componentId">
-        <ng-content></ng-content>
-      </label>
+    <label [for]="componentId">
+      <ng-content></ng-content>
+    </label>
+    } &nbsp;
+    <input
+      [id]="componentId"
+      type="checkbox"
+      class="form-checkbox"
+      [formControl]="control"
+    />
+    &nbsp; @if (labelPosition() === 'right') {
+    <label [for]="componentId">
+      <ng-content></ng-content>
+    </label>
     }
   `,
   standalone: true,
   imports: [ReactiveFormsModule],
   styleUrl: 'checkbox.scss',
+  exportAs: 'tasCheckbox',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -39,15 +45,19 @@ export class TasCheckbox
   componentId = 'tas-checkbox-id-' + Date.now();
 
   public ngOnInit(): void {
-    this.control.valueChanges.subscribe(value => {
+    this.control.valueChanges.subscribe((value) => {
       this.onTouched();
       this.onChange(value ?? false);
-    })
+    });
   }
 
   override writeValue(obj: boolean) {
     super.writeValue(obj);
-
     this.control.patchValue(obj);
+  }
+
+  override setDisabledState(isDisabled: boolean) {
+    super.setDisabledState(isDisabled);
+    isDisabled ? this.control.disable() : this.control.enable()
   }
 }

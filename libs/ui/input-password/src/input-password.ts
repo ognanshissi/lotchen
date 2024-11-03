@@ -3,9 +3,9 @@ import { FormField, TasLabel, TasSuffix } from '@talisoft/ui/form-field';
 import { TasIcon } from '@talisoft/ui/icon';
 import { AbstractControlValueAccessor } from '@talisoft/ui/core';
 import {
-  FormControl,
+  FormControl, NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
+  ReactiveFormsModule
 } from '@angular/forms';
 import { TasInput } from '@talisoft/ui/input';
 
@@ -27,14 +27,18 @@ import { TasInput } from '@talisoft/ui/input';
       useExisting: forwardRef(() => TasInputPassword),
       multi: true,
     },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => TasInputPassword),
+      multi: true,
+    }
   ],
 })
 export class TasInputPassword
   extends AbstractControlValueAccessor<string>
   implements OnInit
 {
-
-  public placeholder = input<string>("Mot de passe");
+  public placeholder = input<string>('Mot de passe');
 
   public showPassword = signal<boolean>(false);
 
@@ -53,5 +57,10 @@ export class TasInputPassword
   override writeValue(obj: string) {
     super.writeValue(obj);
     this.passwordControl.patchValue(obj);
+  }
+
+  override setDisabledState(isDisabled: boolean): void {
+    super.setDisabledState(isDisabled);
+    isDisabled ? this.passwordControl.disable() : this.passwordControl.enable();
   }
 }

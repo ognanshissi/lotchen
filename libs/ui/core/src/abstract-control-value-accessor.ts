@@ -1,5 +1,14 @@
-import { Component, forwardRef, HostBinding } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, forwardRef, HostBinding, signal } from '@angular/core';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR, NgControl,
+  ValidationErrors,
+  Validator,
+  Validators
+} from '@angular/forms';
+import { TasSelect } from '@talisoft/ui/select';
 
 @Component({
   template: '',
@@ -10,27 +19,36 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       useExisting: forwardRef(() => AbstractControlValueAccessor),
       multi: true,
     },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => AbstractControlValueAccessor),
+      multi: true,
+    },
   ],
 })
 export class AbstractControlValueAccessor<T = unknown>
-  implements ControlValueAccessor
+  implements ControlValueAccessor, Validator
 {
+
   static nextId = 0;
 
   @HostBinding('id')
   id = `tas-input-id-${+Date.now()}`;
 
-  protected _value!: T;
+  protected disabled = signal<boolean>(false);
 
-  public get value(): T {
-    return this._value;
-  }
+  protected _value!: T;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public onTouched = () => {};
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public onChange = (value: T) => {};
+
+
+  public get value(): T {
+    return this._value;
+  }
 
   /**
    *  Set the current value and update form control parent value
@@ -43,6 +61,10 @@ export class AbstractControlValueAccessor<T = unknown>
     this.onChange(value);
   }
 
+  constructor() {
+  }
+
+
   public writeValue(obj: T): void {
     this.value = obj;
   }
@@ -53,5 +75,17 @@ export class AbstractControlValueAccessor<T = unknown>
 
   public registerOnTouched(fn: never): void {
     this.onTouched = fn;
+  }
+
+  public setDisabledState(isDisabled: boolean) {
+    this.disabled.set(isDisabled);
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    return null;
+  }
+  registerOnValidatorChange?(fn: () => void): void {
+    this.onTouched = fn;
+    this.onChange = fn;
   }
 }
