@@ -4,6 +4,11 @@
 tas-form-field {
   @apply w-full relative mt-3;
 
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
+  }
+
   .input__container {
     @apply  w-full text-left items-center  border px-1 py-1 m-0 border-gray-300 focus-within:border-primary focus-within:shadow  bg-white;
     border-radius: var(--tas-field-border-radius) !important;

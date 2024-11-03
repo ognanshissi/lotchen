@@ -1,12 +1,11 @@
-import { Component, ElementRef, forwardRef, HostBinding, inject, signal } from '@angular/core';
+import { Component, forwardRef, HostBinding, signal } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
   NG_VALIDATORS,
-  NG_VALUE_ACCESSOR, NgControl,
+  NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
-  Validators
 } from '@angular/forms';
 
 @Component({

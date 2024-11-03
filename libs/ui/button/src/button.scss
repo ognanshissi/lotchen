@@ -47,10 +47,6 @@
 .tas__outlined__button__container:not(:disabled),
 .tas__raised__button__container:not(:disabled) {
     @apply hover:shadow-lg;
-
-  &:hover {
-
-  }
 }
 
 

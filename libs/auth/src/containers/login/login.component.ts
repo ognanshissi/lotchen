@@ -5,10 +5,15 @@ import { ButtonModule } from '@talisoft/ui/button';
 import { TasTitle } from '@talisoft/ui/title';
 import { FormField, TasLabel, TasPrefix } from '@talisoft/ui/form-field';
 import { TasInput } from '@talisoft/ui/input';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { TasCheckbox } from '@talisoft/ui/checkbox';
 import { TasContainer } from '@talisoft/ui/container';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasAlert } from '@talisoft/ui/alert';
 
@@ -31,6 +36,7 @@ import { TasAlert } from '@talisoft/ui/alert';
     TasPrefix,
     TasIcon,
     TasAlert,
+    RouterLink,
   ],
 })
 export class LoginComponent implements OnInit {

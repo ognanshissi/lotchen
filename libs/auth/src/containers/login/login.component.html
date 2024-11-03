@@ -1,7 +1,7 @@
 <tas-container>
   <form [formGroup]="loginForm" class="flex flex-col space-y-5" (ngSubmit)="submit()">
     <div>
-      <tas-title class="text-center">Connexion</tas-title>
+      <tas-title>Connexion</tas-title>
       <p class="text-gray-400 pt-4">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. vero
         voluptas. Cupiditate deserunt dicta dignissimos et ex odio vero!
@@ -25,14 +25,14 @@
         >
         <p class="flex justify-between items-center">
           <tas-checkbox formControlName="rememberMe">Se souvenir de moi</tas-checkbox>
-          <a tas-text-button color="accent" href="#">
+          <a tas-text-button color="accent" [routerLink]="['/auth', 'forgot-password']" [queryParams]="{email: loginForm.get('email')?.getRawValue()}">
             Mot de passe oublié ?</a
           >
         </p>
       </div>
     </div>
     <button tas-raised-button type="submit" [isLoading]="loginForm.disabled" [disabled]="!loginForm.valid" color="primary">
-      Login
+      Se connecter
     </button>
   </form>
 </tas-container>
