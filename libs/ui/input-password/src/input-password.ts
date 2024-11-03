@@ -3,9 +3,10 @@ import { FormField, TasLabel, TasSuffix } from '@talisoft/ui/form-field';
 import { TasIcon } from '@talisoft/ui/icon';
 import { AbstractControlValueAccessor } from '@talisoft/ui/core';
 import {
+  AbstractControl,
   FormControl, NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule
+  ReactiveFormsModule, ValidationErrors
 } from '@angular/forms';
 import { TasInput } from '@talisoft/ui/input';
 
@@ -31,7 +32,7 @@ import { TasInput } from '@talisoft/ui/input';
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => TasInputPassword),
       multi: true,
-    }
+    },
   ],
 })
 export class TasInputPassword
@@ -62,5 +63,10 @@ export class TasInputPassword
   override setDisabledState(isDisabled: boolean): void {
     super.setDisabledState(isDisabled);
     isDisabled ? this.passwordControl.disable() : this.passwordControl.enable();
+  }
+
+  override validate(control: AbstractControl): ValidationErrors | null {
+    this.passwordControl.setErrors(control.errors);
+    return super.validate(control);
   }
 }

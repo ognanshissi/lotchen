@@ -1,4 +1,4 @@
-import { Component, forwardRef, HostBinding, signal } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostBinding, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -85,6 +85,5 @@ export class AbstractControlValueAccessor<T = unknown>
   }
   registerOnValidatorChange?(fn: () => void): void {
     this.onTouched = fn;
-    this.onChange = fn;
   }
 }
