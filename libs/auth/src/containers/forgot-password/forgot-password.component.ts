@@ -23,8 +23,9 @@ import { TasInputEmail } from '@talisoft/ui/input-email';
       <div class="flex flex-col space-y-8">
         <tas-input-email
           [formControl]="emailControl"
-          placeholder="Votre adresse electronique"
-        ></tas-input-email>
+          placeholder="Votre adresse électronique"
+          >Adresse électronique</tas-input-email
+        >
 
         <button
           tas-outlined-button

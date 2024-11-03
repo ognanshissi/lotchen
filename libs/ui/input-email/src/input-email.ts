@@ -29,7 +29,7 @@ import { NgClass } from '@angular/common';
       <tas-label [ngClass]="{ 'sr-only': labelScreenOnly() }">
         <ng-content></ng-content>
       </tas-label>
-      <tas-icon tasPrefix iconName="feather:mail"></tas-icon>
+      <tas-icon tasPrefix iconName="feather:at-sign" iconSize="md"></tas-icon>
       <input
         type="email"
         tasInput

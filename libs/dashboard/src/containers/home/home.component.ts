@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasIcon } from '@talisoft/ui/icon';
 
 @Component({
-  selector: "dashboard-home",
-  template: `
-    <div class="text-center text-8xl">
-      Welcome, Here you can manage all your leads
-    </div>
-  `,
+  selector: 'dashboard-home',
+  templateUrl: './home.component.html',
   standalone: true,
+  imports: [ButtonModule, TasIcon],
 })
-export class HomeComponent {
-
-}
+export class HomeComponent {}

@@ -21,16 +21,15 @@
 }
 
 .tas__button__icon {
-    width: 5rem;
-    height: 5rem;
+  padding: 8px;
   @apply hover:bg-gray-300;
 }
 
 // Button sizing
 .tas__button__size--small {
     @apply text-xs;
-  --tas-btn-padding-y: .4rem;
-  --tas-btn-padding-x: 1rem;
+  --tas-btn-padding-y: .1rem;
+  --tas-btn-padding-x: .4rem;
 }
 .tas__button__size--medium {
     @apply text-sm;
