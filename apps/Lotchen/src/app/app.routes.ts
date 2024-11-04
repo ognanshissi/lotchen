@@ -1,19 +1,34 @@
 import { Route } from '@angular/router';
-import { AuthLayoutComponent } from '@talisoft/auth';
+import { AuthLayoutComponent, PortalLayoutComponent } from '@talisoft/common';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    redirectTo: "auth",
-    pathMatch: "full",
+    redirectTo: 'auth',
+    pathMatch: 'full',
   },
   {
     path: 'auth',
     component: AuthLayoutComponent,
-    loadChildren: () => import("@talisoft/auth")
+    loadChildren: () => import('@talisoft/auth'),
   },
   {
-    path: "dashboard",
-    loadChildren: () => import("@talisoft/dashboard")
-  }
+    path: 'portal',
+    component: PortalLayoutComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('@talisoft/dashboard'),
+      },
+    ],
+  },
+  {
+    path: '**',
+    redirectTo: 'auth/login',
+  },
 ];

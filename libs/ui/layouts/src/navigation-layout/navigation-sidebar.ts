@@ -18,11 +18,11 @@ import {
       }
 
       .menu-item__text {
-        @apply text-[13px];
+        @apply text-[12px];
       }
 
       .navigation-size__large {
-        @apply w-[250px];
+        @apply w-[270px];
       }
       .navigation-size__minimized {
         @apply w-[40px];

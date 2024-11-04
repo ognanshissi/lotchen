@@ -27,14 +27,20 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
         <!--  left  navigation -->
         <ng-content select="tas-navigation-sidebar"></ng-content>
         <!--  main -->
-        <main>
+        <main class="main-container-wrapper overflow-y-auto w-full">
           <ng-content></ng-content>
         </main>
       </div>
     </div>
   `,
   imports: [ButtonModule, TasIcon],
-  styles: [],
+  styles: [
+    `
+      .main-container-wrapper {
+        height: calc(100vh - 50px);
+      }
+    `,
+  ],
 })
 export class TasNavigationLayout implements AfterViewInit {
   public navigationNavbar =
