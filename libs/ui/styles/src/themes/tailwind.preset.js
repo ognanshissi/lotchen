@@ -27,13 +27,13 @@ module.exports = {
 
       //   Functional notification colors
         "functional-error": "var(--tas-color-functional-error)",
-        "functional-error-100": withOpacity('--tas-color-functional-error-100'),
-        "functional-success": withOpacity('--tas-color-functional-success'),
-        "functional-success-100": withOpacity('--tas-color-functional-success-100'),
+        "functional-error-100":  "var(--tas-color-functional-error-100)",
+        "functional-success":  "var(--tas-color-functional-success)",
+        "functional-success-100":  "var(--tas-color-functional-success-100)",
         "functional-warning": withOpacity('--tas-color-functional-warning'),
         "functional-warning-100": withOpacity('--tas-color-functional-warning-100'),
-        "functional-info": withOpacity('--tas-color-functional-info'),
-        "functional-info-100": withOpacity('--tas-color-functional-info-100'),
+        "functional-info":  "var(--tas-color-functional-info)",
+        "functional-info-100":  "var(--tas-color-functional-info-100)",
 
         black: withOpacity('--tas-color-black'),
       },

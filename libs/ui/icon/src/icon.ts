@@ -10,11 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'tas-icon',
-  template: `<mat-icon
-    [svgIcon]="iconName"
-    class="tas-icon__size"
-    [class]="iconClass()"
-  ></mat-icon>`,
+  template: `<mat-icon [svgIcon]="iconName" [class]="iconClass()"></mat-icon>`,
   standalone: true,
   imports: [MatIconModule],
   exportAs: 'tasIcon',

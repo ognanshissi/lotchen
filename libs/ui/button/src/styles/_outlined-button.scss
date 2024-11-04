@@ -10,7 +10,7 @@
 
 @mixin outlineHoverVariant($color) {
   @include button-shadow-focus($color);
-  background: rgba($color, 0.3);
+  background: rgba($color, 0.03);
 }
 
 @mixin outlineDisabled() {
