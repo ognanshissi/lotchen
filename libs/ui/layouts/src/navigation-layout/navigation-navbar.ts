@@ -14,26 +14,9 @@ import { TasIcon } from '@talisoft/ui/icon';
       <button (click)="toggleCollapseMenu.emit()">
         <tas-icon iconName="feather:menu" class="text-gray-500"></tas-icon>
       </button>
-      <p>
-        <span class="text-primary text-xl font-bold">Lotchen </span
-        ><span class="text-gray-500 text-xs">Micro-finance</span>
-      </p>
+      <ng-content select="[tasNavigationNavbarLeft]"></ng-content>
     </div>
-    <div class="flex space-x-4">
-      <button tas-raised-button color="primary" size="small">
-        <tas-icon iconName="feather:plus" iconSize="md"></tas-icon>
-      </button>
-
-      <div class="flex space-x-1 items-center">
-        <span class="sr-only">Ambroise BAZIE </span>
-        <button class="bg-gray-200 rounded-full p-2" title="Ambroise BAZIE">
-          <tas-icon
-            iconName="feather:user"
-            iconClass="text-gray-500"
-          ></tas-icon>
-        </button>
-      </div>
-    </div>`,
+    <ng-content select="[tasNavigationNavbarRight]"></ng-content>`,
   styles: [
     `
       tas-navigation-navbar {

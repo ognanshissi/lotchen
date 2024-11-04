@@ -18,7 +18,7 @@ import {
       }
 
       .menu-item__text {
-        @apply text-[12px];
+        @apply text-[13px];
       }
 
       .navigation-size__large {
