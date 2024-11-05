@@ -1,0 +1,50 @@
+<tas-navigation-layout>
+  <tas-navigation-navbar>
+    <div tasNavigationNavbarLeft>
+      <p>
+            <span class="text-primary text-xl font-bold">Lotchen </span
+            ><span class="text-gray-500 text-xs">Micro-finance</span>
+      </p>
+    </div>
+
+    <div tasNavigationNavbarRight>
+      <div class="flex space-x-4">
+        <button tas-raised-button color="primary" size="small">
+          <tas-icon iconName="feather:plus" iconSize="md"></tas-icon>
+        </button>
+
+        <div class="flex space-x-1 items-center">
+          <span class="sr-only">Ambroise BAZIE </span>
+          <button
+            class="bg-gray-200 rounded-full p-2"
+            title="Ambroise BAZIE"
+          >
+            <tas-icon
+              iconName="feather:user"
+              iconClass="text-gray-500"
+            ></tas-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </tas-navigation-navbar>
+  <tas-navigation-sidebar>
+    <div class="flex flex-col justify-between h-full">
+      <div>
+        <NavigationMenu>
+          <NavigationMenuItem iconName="feather:grid" [path]="['/portal', 'dashboard']">Tableau de bord</NavigationMenuItem>
+          <NavigationMenuItem iconName="feather:users" [path]="['/portal', 'contacts']">Clients & Prospects</NavigationMenuItem>
+          <NavigationMenuItem iconName="feather:shopping-bag" [path]="['/portal', 'products']">Produits et Services</NavigationMenuItem>
+          <NavigationMenuItem iconName="feather:percent" [path]="['/portal', 'loans']">Prêts et Remboursements</NavigationMenuItem>
+          <NavigationMenuItem iconName="feather:pie-chart" [path]="['/portal', 'reports']">Rapports et Analyses</NavigationMenuItem>
+          <NavigationMenuItem iconName="feather:sliders" [path]="['/portal', 'automation-workflows']">Automatisation et workflow</NavigationMenuItem>
+        </NavigationMenu>
+      </div>
+
+      <NavigationMenu>
+        <NavigationMenuItem iconName="feather:settings" [path]="['/admin', 'general-settings']">Paramétrage de l'organisation</NavigationMenuItem>
+      </NavigationMenu>
+    </div>
+  </tas-navigation-sidebar>
+  <router-outlet></router-outlet>
+</tas-navigation-layout>

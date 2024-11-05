@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
     this.loginForm.disable();
 
     setTimeout(() => {
-      this._router.navigate(['/dashboard']);
+      this._router.navigate(['/portal']);
     }, 2000);
   }
 }
