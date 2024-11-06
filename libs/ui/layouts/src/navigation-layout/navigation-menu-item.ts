@@ -22,7 +22,7 @@ import {
       [queryParams]="queryParams()"
       class="menu-item p-2 hover:bg-gray-200  flex space-x-2 text-sm items-center border-l-4 border-l-transparent"
     >
-      <tas-icon [iconName]="iconName()" class="text-gray-500"></tas-icon>
+      <tas-icon [iconName]="iconName()" class="text-gray-500" />
       <span class="menu-item__text"><ng-content></ng-content></span>
     </a>
   `,

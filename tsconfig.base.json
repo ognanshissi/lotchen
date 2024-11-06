@@ -16,8 +16,10 @@
     "baseUrl": ".",
     "paths": {
       "@talisoft/auth": ["libs/auth/src/index.ts"],
+      "@talisoft/clients": ["libs/clients/src/index.ts"],
       "@talisoft/common": ["libs/shared/common/src/index.ts"],
       "@talisoft/dashboard": ["libs/dashboard/src/index.ts"],
+      "@talisoft/prospects": ["libs/prospects/src/index.ts"],
       "@talisoft/ui": ["libs/ui/src/index.ts"],
       "@talisoft/ui/*": ["libs/ui/*"]
     }
