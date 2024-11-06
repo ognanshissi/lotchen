@@ -15,10 +15,10 @@ import { TasInputEmail } from '@talisoft/ui/input-email';
     <div class="flex flex-col space-y-4">
       <tas-title> Mot de passe oublié </tas-title>
 
-      <tas-text>
+      <Text>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
         rerum sunt tempore tenetur.
-      </tas-text>
+      </Text>
 
       <div class="flex flex-col space-y-8">
         <tas-input-email

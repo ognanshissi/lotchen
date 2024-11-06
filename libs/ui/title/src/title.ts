@@ -4,7 +4,7 @@ import { Component, HostBinding } from '@angular/core';
 @Component({
   selector: 'tas-title',
   template: `
-  <div class="text-2xl font-bold">
+  <div class="text-2xl font-bold text-gray-900">
     <ng-content></ng-content>
   </div>
   `,

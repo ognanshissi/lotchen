@@ -6,6 +6,8 @@ import {
   TasNavigationNavbar,
   TasNavigationSidebar,
 } from '@talisoft/ui/layouts';
+import { TasText } from '@talisoft/ui/text';
+import { TasTitle } from '@talisoft/ui/title';
 
 @Component({
   selector: 'dashboard-home',
@@ -17,6 +19,8 @@ import {
     TasNavigationLayout,
     TasNavigationNavbar,
     TasNavigationSidebar,
+    TasText,
+    TasTitle,
   ],
 })
 export class HomeComponent {}

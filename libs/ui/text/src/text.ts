@@ -1,21 +1,25 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostBinding,
   ViewEncapsulation,
 } from '@angular/core';
 
 @Component({
-  selector: 'tas-text',
+  selector: 'Text',
   template: ` <ng-content></ng-content>`,
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
-      tas-text {
-        @apply text-gray-600 block;
+      Text {
+        @apply text-gray-700 block text-sm;
       }
     `,
   ],
 })
-export class TasText {}
+export class TasText {
+  @HostBinding('role')
+  role = 'paragraph';
+}
