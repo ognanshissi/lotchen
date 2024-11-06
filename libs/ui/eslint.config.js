@@ -19,6 +19,7 @@ module.exports = [
     files: ['**/*.ts'],
     rules: {
       "@angular-eslint/directive-selector": "off",
+      "@angular-eslint/directive-class-suffix": "off",
       "@angular-eslint/component-selector": "off",
       "@angular-eslint/component-class-suffix": "off"
     }

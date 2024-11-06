@@ -7,12 +7,10 @@ import {
 } from '@angular/core';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
-import {
-  TasNavigationNavbar,
-  TasNavigationSidebar,
-} from '@talisoft/ui/layouts';
+import { TasNavigationSidebar } from './navigation-sidebar';
 import { map, Observable, shareReplay } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { TasNavigationNavbar } from './navigation-navbar';
 
 @Component({
   selector: 'tas-navigation-layout',

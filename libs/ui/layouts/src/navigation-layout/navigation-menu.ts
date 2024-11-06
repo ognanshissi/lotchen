@@ -1,4 +1,4 @@
-import { Component, contentChildren } from '@angular/core';
+import { Component, contentChildren, HostBinding } from '@angular/core';
 import { TasNavigationMenuItem } from './navigation-menu-item';
 
 @Component({
@@ -7,6 +7,14 @@ import { TasNavigationMenuItem } from './navigation-menu-item';
   standalone: true,
 })
 export class TasNavigationMenu {
+  static nextId = 0;
+
+  @HostBinding()
+  id = `navigation-menu-id-${TasNavigationMenu.nextId++}`;
+
+  @HostBinding('role')
+  role = 'listbox';
+
   public navigationMenuItems = contentChildren<TasNavigationMenuItem>(
     TasNavigationMenuItem,
     { descendants: true }
