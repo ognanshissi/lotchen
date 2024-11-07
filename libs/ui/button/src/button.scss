@@ -28,17 +28,17 @@
 // Button sizing
 .tas__button__size--small {
     @apply text-xs;
-  --tas-btn-padding-y: .1rem;
+  --tas-btn-padding-y: .2rem;
   --tas-btn-padding-x: .4rem;
 }
 .tas__button__size--medium {
     @apply text-sm;
-  --tas-btn-padding-y: .8rem;
-  --tas-btn-padding-x: 1rem;
+  --tas-btn-padding-y: .4rem;
+  --tas-btn-padding-x: .6rem;
 }
 .tas__button__size--large {
-  @apply text-xl;
-  --tas-btn-padding-y: 1rem;
+  @apply text-lg;
+  --tas-btn-padding-y: .8rem;
   --tas-btn-padding-x: 1rem;
 }
 

@@ -1,1 +1,3 @@
-export * from './lib/prospects/prospects.component';
+import { prospectRoutes } from './prospect.routes';
+
+export default prospectRoutes;

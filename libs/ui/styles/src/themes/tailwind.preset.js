@@ -39,6 +39,9 @@ module.exports = {
       },
       backgroundColor: {
         "surface": withOpacity('--tas-color-surface'),
+      },
+      container: {
+        center: true
       }
     },
   },

@@ -29,6 +29,7 @@ import { TasInputEmail } from '@talisoft/ui/input-email';
 
         <button
           tas-outlined-button
+          size="large"
           color="primary"
           [disabled]="!emailControl.valid"
         >

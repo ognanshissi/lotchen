@@ -25,6 +25,10 @@ export const appRoutes: Route[] = [
         path: 'dashboard',
         loadChildren: () => import('@talisoft/dashboard'),
       },
+      {
+        path: 'prospects',
+        loadChildren: () => import('@talisoft/prospects'),
+      },
     ],
   },
   {

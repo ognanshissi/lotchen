@@ -71,7 +71,8 @@
 
     // Neutral variant
     &.tas__button__variant--neutral {
-        @include outlineVariant(var(--tas-color-neutral));
+      @include outlineVariant(var(--tas-color-neutral));
+      @apply text-gray-500;
         // Modifier
         &:disabled {
             @include outlineDisabled

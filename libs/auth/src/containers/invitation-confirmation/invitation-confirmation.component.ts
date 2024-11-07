@@ -23,6 +23,7 @@ import { RouterLink } from '@angular/router';
       <div class="flex justify-end">
         <button
           tas-filled-button
+          size="large"
           color="primary"
           [routerLink]="['/auth', 'login']"
         >
