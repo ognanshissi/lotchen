@@ -24,7 +24,7 @@ const DEFAULT_SIDE_DRAWER_WIDTH = '500px';
     >
       <div
         style="height: calc(100vh - 20px)"
-        class="bg-white rounded-xl border border-gray-300 relative h-full overflow-hidden"
+        class="bg-white rounded-xl border border-gray-300 relative grid grid-rows-[60px_auto_50px] h-full overflow-hidden"
         [style]="{ width: width() }"
       >
         <ng-content select="tas-drawer-title"></ng-content>

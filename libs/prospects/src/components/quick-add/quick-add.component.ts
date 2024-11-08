@@ -27,34 +27,46 @@ import { TasInput } from '@talisoft/ui/input';
         </Text>
 
         <div class="flex flex-col gap-3">
-          <tas-form-field>
-            <tas-label>Nom</tas-label>
-            <input type="text" tasInput placeholder="Nom" />
-          </tas-form-field>
+          <div class="flex space-x-2">
+            <tas-form-field>
+              <tas-label>Nom</tas-label>
+              <input type="text" tasInput placeholder="Nom" />
+            </tas-form-field>
+
+            <tas-form-field>
+              <tas-label>Prenom</tas-label>
+              <input type="text" tasInput placeholder="Prénom" />
+            </tas-form-field>
+          </div>
 
           <tas-form-field>
-            <tas-label>Prenom</tas-label>
-            <input type="text" tasInput placeholder="Prénom" />
+            <tas-label>Date de naissance</tas-label>
+            <input
+              type="date"
+              dataformatas="dd/mm/yyyy"
+              tasInput
+              placeholder="Date de naissaince"
+            />
           </tas-form-field>
 
-          <tas-form-field>
-            <tas-label>Numéro de téléphone</tas-label>
-            <input type="text" tasInput placeholder="Numéro de téléphone" />
-          </tas-form-field>
+          <div class="flex space-x-2">
+            <tas-form-field>
+              <tas-label>Genre</tas-label>
+              <input type="text" tasInput placeholder="Genre" />
+            </tas-form-field>
 
-          <tas-input-email placeholder="Adresse électronique">
-            Adresse électronique
-          </tas-input-email>
-
-          <tas-form-field>
-            <tas-label>Zone géographique</tas-label>
-            <input type="text" tasInput placeholder="Zone géographique" />
-          </tas-form-field>
+            <tas-form-field>
+              <tas-label>Etat civil</tas-label>
+              <input type="text" tasInput placeholder="Etat civil" />
+            </tas-form-field>
+          </div>
         </div>
 
         <tas-drawer-action>
           <button tas-outlined-button closable-drawer>Fermer</button>
-          <button tas-raised-button color="primary">Enregistrer</button>
+          <button tas-raised-button color="primary" isLoading="true">
+            Enregistrer
+          </button>
         </tas-drawer-action>
       </tas-drawer-content>
     </tas-side-drawer>
