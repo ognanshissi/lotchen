@@ -13,7 +13,7 @@ tas-form-field {
     @apply  w-full text-left items-center  border px-1 py-1 m-0 border-gray-300 focus-within:border-primary focus-within:shadow  bg-white;
     border-radius: var(--tas-field-border-radius) !important;
 
-    &:has([tasInput].ng-touched.ng-dirty.ng-invalid) {
+    &:has([tasInput].ng-touched.ng-dirty.ng-invalid) , &:has(select.ng-touched.ng-dirty.ng-invalid) {
       @apply border-functional-error;
 
       [tasSuffix], [tasPrefix] {
@@ -21,7 +21,7 @@ tas-form-field {
       }
     }
 
-    input, textarea {
+    input, textarea, select {
       @apply bg-transparent w-full;
     }
 
@@ -44,7 +44,7 @@ tas-form-field {
     }
 
     // Disabled field
-    &:has(input:disabled), &:has(textarea:disabled) {
+    &:has(input:disabled), &:has(textarea:disabled), &:has(select:disabled) {
       @apply bg-gray-50 cursor-not-allowed;
     }
   }

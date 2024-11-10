@@ -1,0 +1,11 @@
+export * from './agencies.service';
+import { AgenciesApiService } from './agencies.service';
+export * from './health.service';
+import { HealthApiService } from './health.service';
+export * from './identity.service';
+import { IdentityApiService } from './identity.service';
+export * from './leads.service';
+import { LeadsApiService } from './leads.service';
+export * from './users.service';
+import { UsersApiService } from './users.service';
+export const APIS = [AgenciesApiService, HealthApiService, IdentityApiService, LeadsApiService, UsersApiService];

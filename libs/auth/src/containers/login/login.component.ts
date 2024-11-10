@@ -18,6 +18,8 @@ import { TasIcon } from '@talisoft/ui/icon';
 import { TasAlert } from '@talisoft/ui/alert';
 import { TasText } from '@talisoft/ui/text';
 import { TasInputEmail } from '@talisoft/ui/input-email';
+import { AuthenticationService } from '@talisoft/common';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'auth-login',
@@ -46,6 +48,7 @@ import { TasInputEmail } from '@talisoft/ui/input-email';
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
   private _router = inject(Router);
+  private readonly _authenticationService = inject(AuthenticationService);
 
   public ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -59,12 +62,22 @@ export class LoginComponent implements OnInit {
   }
 
   public submit(): void {
-    console.log(this.loginForm.getRawValue());
+    const { email, password } = this.loginForm.getRawValue();
     this.loginForm.disable();
 
-    setTimeout(() => {
-      this._router.navigate(['/portal']);
-    }, 2000);
+    this._authenticationService
+      .login({
+        email,
+        password,
+      })
+      .pipe(
+        finalize(() => {
+          this.loginForm.enable();
+        })
+      )
+      .subscribe((res) => {
+        console.log({ res });
+      });
   }
 }
 

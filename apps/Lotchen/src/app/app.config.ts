@@ -9,6 +9,9 @@ import { appRoutes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { TasIconRegistry } from '@talisoft/ui/icon';
+import { BASE_PATH } from '@talisoft/api';
+import { environment } from '../environments/environment';
+import { ENVIRONMENT_CONFIG } from '@talisoft/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +21,13 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
     importProvidersFrom(TasIconRegistry),
+    {
+      provide: BASE_PATH,
+      useValue: environment.apiUrl,
+    },
+    {
+      provide: ENVIRONMENT_CONFIG,
+      useValue: environment,
+    },
   ],
 };

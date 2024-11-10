@@ -44,7 +44,13 @@
               "maximumError": "4mb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "fileReplacements": [
+            {
+              "replace": "apps/Lotchen/src/environments/environment.ts",
+              "with": "apps/Lotchen/src/environments/environment.prod.ts"
+            }
+          ]
         },
         "development": {
           "buildOptimizer": false,
@@ -61,7 +67,13 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "Lotchen:build:production"
+          "buildTarget": "Lotchen:build:production",
+          "fileReplacements": [
+            {
+              "replace": "apps/Lotchen/src/environments/environment.ts",
+              "with": "apps/Lotchen/src/environments/environment.prod.ts"
+            }
+          ]
         },
         "development": {
           "buildTarget": "Lotchen:build:development",
@@ -105,7 +117,13 @@
       },
       "configurations": {
         "production": {
-          "outputHashing": "media"
+          "outputHashing": "media",
+          "fileReplacements": [
+            {
+              "replace": "apps/Lotchen/src/environments/environment.ts",
+              "with": "apps/Lotchen/src/environments/environment.prod.ts"
+            }
+          ]
         },
         "development": {
           "buildOptimizer": false,

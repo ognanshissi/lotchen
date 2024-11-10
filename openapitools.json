@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.7.0",
+    "generators": {
+      "api": {
+        "generatorName": "typescript-angular",
+        "output": "#{cwd}/libs/shared/api/src/lib",
+        "glob": "libs/shared/api/src/assets/api-swagger.json",
+        "additionalProperties": {
+          "supportsES6": "true",
+          "stringEnums": "true",
+          "modelFileSuffix": ".interface",
+          "fileNaming": "kebab-case",
+          "serviceSuffix": "ApiService"
+        }
+      }
+    }
+  }
+}

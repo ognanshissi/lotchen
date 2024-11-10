@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@talisoft/api": ["libs/shared/api/src/index.ts"],
       "@talisoft/auth": ["libs/auth/src/index.ts"],
       "@talisoft/clients": ["libs/clients/src/index.ts"],
       "@talisoft/common": ["libs/shared/common/src/index.ts"],

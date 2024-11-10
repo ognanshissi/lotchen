@@ -35,7 +35,9 @@ import { TasLabel } from './label.component';
     </label>
     <div class="input__container flex items-center">
       <ng-content select="tas-icon[tasPrefix], button[tasPrefix]"></ng-content>
-      <ng-content select="input[tasInput], tas-select"></ng-content>
+      <ng-content
+        select="input[tasInput], tas-select, select[tasNativeSelect]"
+      ></ng-content>
       <ng-content select="tas-icon[tasSuffix], button[tasSuffix]"></ng-content>
     </div>
     <ng-content select="tas-hint"></ng-content>

@@ -11,7 +11,7 @@ import { ButtonModule } from '@talisoft/ui/button';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import { TasInputEmail } from '@talisoft/ui/input-email';
 import { TasText } from '@talisoft/ui/text';
-import { TasInput } from '@talisoft/ui/input';
+import { TasInput, TasNativeSelect } from '@talisoft/ui/input';
 
 @Component({
   selector: 'prospects-quick-add',
@@ -41,18 +41,16 @@ import { TasInput } from '@talisoft/ui/input';
 
           <tas-form-field>
             <tas-label>Date de naissance</tas-label>
-            <input
-              type="date"
-              dataformatas="dd/mm/yyyy"
-              tasInput
-              placeholder="Date de naissaince"
-            />
+            <input type="date" tasInput placeholder="Date de naissaince" />
           </tas-form-field>
 
           <div class="flex space-x-2">
             <tas-form-field>
               <tas-label>Genre</tas-label>
-              <input type="text" tasInput placeholder="Genre" />
+              <select tasNativeSelect>
+                <option>Homme</option>
+                <option>Femme</option>
+              </select>
             </tas-form-field>
 
             <tas-form-field>
@@ -84,6 +82,7 @@ import { TasInput } from '@talisoft/ui/input';
     TasInputEmail,
     TasText,
     TasInput,
+    TasNativeSelect,
   ],
   standalone: true,
 })
