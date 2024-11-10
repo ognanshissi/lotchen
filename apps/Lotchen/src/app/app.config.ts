@@ -7,11 +7,15 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { TasIconRegistry } from '@talisoft/ui/icon';
 import { BASE_PATH } from '@talisoft/api';
 import { environment } from '../environments/environment';
-import { ENVIRONMENT_CONFIG } from '@talisoft/common';
+import { accessTokenInterceptor, ENVIRONMENT_CONFIG } from '@talisoft/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([accessTokenInterceptor])),
     importProvidersFrom(TasIconRegistry),
     {
       provide: BASE_PATH,
