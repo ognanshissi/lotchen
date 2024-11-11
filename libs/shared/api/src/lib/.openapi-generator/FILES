@@ -17,6 +17,7 @@ model/create-agency-command-request.interface.ts
 model/create-lead-command-request.interface.ts
 model/create-lead-command-response.interface.ts
 model/forgot-password-request.interface.ts
+model/get-all-agency-query-response.interface.ts
 model/health-check-response.interface.ts
 model/health-verify-access-token-response.interface.ts
 model/http-validation-problem-details.interface.ts

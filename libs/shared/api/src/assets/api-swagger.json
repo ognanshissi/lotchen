@@ -31,10 +31,20 @@
         "tags": [
           "Agencies"
         ],
-        "operationId": "FindAllAgencies",
+        "operationId": "AllAgency",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllAgencyQueryResponse"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -568,6 +578,24 @@
         "type": "object",
         "properties": {
           "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAllAgencyQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "street": {
             "type": "string",
             "nullable": true
           }

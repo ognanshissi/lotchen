@@ -13,7 +13,7 @@ import {
 } from '@angular/forms';
 import { TasCheckbox } from '@talisoft/ui/checkbox';
 import { TasContainer } from '@talisoft/ui/container';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasAlert } from '@talisoft/ui/alert';
 import { TasText } from '@talisoft/ui/text';
@@ -47,9 +47,14 @@ import { finalize } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
-  private _router = inject(Router);
+  private readonly _router = inject(Router);
+  private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _authenticationService = inject(AuthenticationService);
+  public errorMessage = this._authenticationService.errorMessage;
 
+  /**
+   * OnInit
+   */
   public ngOnInit(): void {
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required]),
@@ -75,8 +80,16 @@ export class LoginComponent implements OnInit {
           this.loginForm.enable();
         })
       )
-      .subscribe((res) => {
-        this._router.navigate(['/portal']);
+      .subscribe({
+        next: () => {
+          const redirectPath =
+            this._activatedRoute.snapshot.queryParamMap.get('redirectPath') ??
+            '/portal/dashboard';
+          this._router.navigate([redirectPath]);
+        },
+        error: () => {
+          this.loginForm.get('password')?.setValue('');
+        },
       });
   }
 }

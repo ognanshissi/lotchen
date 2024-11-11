@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
 import {
@@ -8,6 +8,7 @@ import {
 } from '@talisoft/ui/layouts';
 import { TasText } from '@talisoft/ui/text';
 import { TasTitle } from '@talisoft/ui/title';
+import { AgenciesApiService } from '@talisoft/api';
 
 @Component({
   selector: 'dashboard-home',
@@ -23,4 +24,12 @@ import { TasTitle } from '@talisoft/ui/title';
     TasTitle,
   ],
 })
-export class HomeComponent {}
+export class HomeComponent implements OnInit {
+  private readonly _agenciesApiService = inject(AgenciesApiService);
+
+  public ngOnInit() {
+    this._agenciesApiService
+      .allAgency()
+      .subscribe((agencies) => console.log(agencies));
+  }
+}

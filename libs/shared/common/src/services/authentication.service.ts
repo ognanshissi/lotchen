@@ -7,7 +7,7 @@ import {
   LoginRequest,
   RefreshRequest,
 } from '@talisoft/api';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 
 export const TOKEN_STORAGE_KEY = 'LOTCHEN_ACCESS_TOKEN';
 
@@ -30,14 +30,19 @@ export class AuthenticationService {
   public loadingUserInfo = this._loadingUserInfo.asReadonly();
 
   // Errors
-  private readonly _errorMessage = signal<unknown | null>(null);
+  private readonly _errorMessage = signal<string | null>(null);
   public errorMessage = this._errorMessage.asReadonly();
 
   private tokenExpiresIn = signal<number>(0);
 
   public login(loginRequest: LoginRequest): Observable<AccessTokenResponse> {
+    this._errorMessage.set(null);
     return this._identityApiService.loginPost(false, false, loginRequest).pipe(
-      tap((accessToken) => this.setAccessToken(accessToken))
+      tap((accessToken) => this.setAccessToken(accessToken)),
+      catchError(error => {
+        this._errorMessage.set("Email/Mot de passe incorrect!");
+        throw error;
+      })
     );
   }
 

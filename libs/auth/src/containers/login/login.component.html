@@ -8,6 +8,12 @@
       </Text>
     </div>
 
+    @if (errorMessage()) {
+      <tas-alert type="error">
+        {{ errorMessage() }}
+      </tas-alert>
+    }
+
     <div class="flex flex-col space-y-5">
       <tas-input-email labelScreenOnly formControlName="email" placeholder="Adresse électronique">
         Adresse électronique

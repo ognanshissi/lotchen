@@ -4,6 +4,7 @@ export * from './create-agency-command-request.interface';
 export * from './create-lead-command-request.interface';
 export * from './create-lead-command-response.interface';
 export * from './forgot-password-request.interface';
+export * from './get-all-agency-query-response.interface';
 export * from './health-check-response.interface';
 export * from './health-verify-access-token-response.interface';
 export * from './http-validation-problem-details.interface';

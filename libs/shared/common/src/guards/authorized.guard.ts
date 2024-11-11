@@ -14,7 +14,6 @@ export const authorized: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ): MaybeAsync<GuardResult> => {
-  console.log('Guard');
   const authenticationService = inject(AuthenticationService);
   const router = inject(Router);
   return authenticationService.verifyToken().pipe(

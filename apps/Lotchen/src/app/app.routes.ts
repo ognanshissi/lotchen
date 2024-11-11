@@ -2,7 +2,6 @@ import { Route } from '@angular/router';
 import {
   AuthLayoutComponent,
   authorized,
-  noAuthorized,
   PortalLayoutComponent,
 } from '@talisoft/common';
 
@@ -34,7 +33,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'auth',
-    canActivate: [noAuthorized],
     component: AuthLayoutComponent,
     loadChildren: () => import('@talisoft/auth'),
   },
