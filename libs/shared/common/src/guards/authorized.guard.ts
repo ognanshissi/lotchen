@@ -9,6 +9,7 @@ import {
 import { inject } from '@angular/core';
 import { AuthenticationService } from '../services';
 import { catchError, map, of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export const authorized: CanActivateFn = (
   route: ActivatedRouteSnapshot,
@@ -17,7 +18,8 @@ export const authorized: CanActivateFn = (
   const authenticationService = inject(AuthenticationService);
   const router = inject(Router);
   return authenticationService.verifyToken().pipe(
-    catchError(() => {
+    catchError((error: HttpErrorResponse) => {
+      console.log({ error });
       return of(false);
     }),
     map((res) => {

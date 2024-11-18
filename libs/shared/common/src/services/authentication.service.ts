@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { afterNextRender, inject, Injectable, signal } from '@angular/core';
 import {
   AccessTokenResponse,
   HealthApiService,
@@ -15,6 +15,9 @@ export const TOKEN_STORAGE_KEY = 'LOTCHEN_ACCESS_TOKEN';
   providedIn: 'root',
 })
 export class AuthenticationService {
+
+  private storage!: Storage;
+
   private readonly _identityApiService = inject(IdentityApiService);
   private readonly _healthApiService = inject(HealthApiService);
   // User signals
@@ -35,6 +38,13 @@ export class AuthenticationService {
 
   private tokenExpiresIn = signal<number>(0);
 
+  public constructor(
+  ) {
+    afterNextRender(() => {
+      this.storage = window.localStorage;
+    })
+  }
+
   public login(loginRequest: LoginRequest): Observable<AccessTokenResponse> {
     this._errorMessage.set(null);
     return this._identityApiService.loginPost(false, false, loginRequest).pipe(
@@ -52,8 +62,8 @@ export class AuthenticationService {
 
   public loadAccessToken(): string | null {
     if (this._accessToken()) return this.accessToken();
-    if (localStorage === null)  return null;
-    const storage =  JSON.parse(localStorage.getItem(TOKEN_STORAGE_KEY) || "") as AccessTokenResponse | null;
+    if (this.storage === undefined)  return null;
+    const storage =  JSON.parse(this.storage.getItem(TOKEN_STORAGE_KEY) || "") as AccessTokenResponse | null;
     if (storage === null)  return null;
     this._accessToken.set(storage.accessToken);
     return storage.accessToken;

@@ -22,12 +22,12 @@
         <tas-input-password formControlName="password"
         ><span class="sr-only">Mot de passe</span></tas-input-password
         >
-        <p class="flex justify-between items-center">
+        <div class="flex justify-between items-center">
           <tas-checkbox formControlName="rememberMe">Se souvenir de moi</tas-checkbox>
           <a tas-text-button color="primary" [routerLink]="['/auth', 'forgot-password']" [queryParams]="{email: loginForm.get('email')?.getRawValue()}">
             Mot de passe oublié ?</a
           >
-        </p>
+        </div>
       </div>
     </div>
     <button tas-raised-button type="submit" size="large" [isLoading]="loginForm.disabled" [disabled]="!loginForm.valid" color="primary">

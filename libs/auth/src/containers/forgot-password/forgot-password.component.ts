@@ -1,8 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TasTitle } from '@talisoft/ui/title';
-import { FormField, TasLabel, TasPrefix } from '@talisoft/ui/form-field';
-import { TasInput } from '@talisoft/ui/input';
-import { TasIcon } from '@talisoft/ui/icon';
 import { ButtonModule } from '@talisoft/ui/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -51,14 +48,9 @@ import { TasInputEmail } from '@talisoft/ui/input-email';
   standalone: true,
   imports: [
     TasTitle,
-    FormField,
-    TasInput,
-    TasIcon,
-    TasLabel,
     ButtonModule,
     RouterLink,
     ReactiveFormsModule,
-    TasPrefix,
     TasText,
     TasInputEmail,
   ],

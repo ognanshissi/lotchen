@@ -6,12 +6,10 @@ import {
   inject,
   input,
 } from '@angular/core';
-import {
-  TasDrawerAction,
-  TasDrawerContent,
-  TasDrawerTitle,
-} from '@talisoft/ui/side-drawer';
 import { DialogRef } from '@angular/cdk/dialog';
+import { TasDrawerTitle } from './drawer-title';
+import { TasDrawerContent } from './drawer-content';
+import { TasDrawerAction } from './drawer-action';
 
 const DEFAULT_SIDE_DRAWER_WIDTH = '500px';
 

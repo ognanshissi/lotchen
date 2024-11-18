@@ -17,6 +17,7 @@
         "tsConfig": "apps/Lotchen/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
+          "apps/Lotchen/src/robots.txt",
           {
             "glob": "**/*",
             "input": "apps/Lotchen/public"
@@ -130,8 +131,7 @@
           "optimization": false,
           "sourceMap": true,
           "extractLicenses": false,
-          "vendorChunk": true,
-          "port": 4223
+          "vendorChunk": true
         }
       },
       "defaultConfiguration": "production"
@@ -141,12 +141,12 @@
       "configurations": {
         "development": {
           "browserTarget": "Lotchen:build:development",
-          "serverTarget": "Lotchen:server:development"
+          "serverTarget": "Lotchen:server:development",
+          "port": 4223
         },
         "production": {
           "browserTarget": "Lotchen:build:production",
-          "serverTarget": "Lotchen:server:production",
-          "port": 4223
+          "serverTarget": "Lotchen:server:production"
         }
       },
       "defaultConfiguration": "development"
