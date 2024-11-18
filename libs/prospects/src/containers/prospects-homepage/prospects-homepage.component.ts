@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { TasTitle } from '@talisoft/ui/title';
-import { TasText } from '@talisoft/ui/text';
-import { ButtonModule } from '@talisoft/ui/button';
-import { TasIcon } from '@talisoft/ui/icon';
-import { SideDrawerService } from '@talisoft/ui/side-drawer';
+import { TasTitle } from '../../../../shared/ui/title';
+import { TasText } from '../../../../shared/ui/text';
+import { ButtonModule } from '../../../../shared/ui/button';
+import { TasIcon } from '../../../../shared/ui/icon';
+import { SideDrawerService } from '../../../../shared/ui/side-drawer';
 import { QuickAddComponent } from '../../components/quick-add/quick-add.component';
 
 @Component({

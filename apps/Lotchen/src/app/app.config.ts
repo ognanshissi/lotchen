@@ -12,7 +12,7 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { TasIconRegistry } from '@talisoft/ui/icon';
+import { TasIconRegistry } from '../../../../libs/shared/ui/icon';
 import { BASE_PATH } from '@talisoft/api';
 import { environment } from '../environments/environment';
 import { accessTokenInterceptor, ENVIRONMENT_CONFIG } from '@talisoft/common';

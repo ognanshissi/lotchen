@@ -21,8 +21,8 @@
       "@talisoft/common": ["libs/shared/common/src/index.ts"],
       "@talisoft/dashboard": ["libs/dashboard/src/index.ts"],
       "@talisoft/prospects": ["libs/prospects/src/index.ts"],
-      "@talisoft/ui": ["libs/ui/src/index.ts"],
-      "@talisoft/ui/*": ["libs/ui/*"]
+      "@talisoft/ui": ["libs/shared/ui/src/index.ts"],
+      "@talisoft/ui/*": ["libs/shared/ui/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

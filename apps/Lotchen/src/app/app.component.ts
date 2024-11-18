@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ButtonModule } from '@talisoft/ui/button';
+import { ButtonModule } from '../../../../libs/shared/ui/button';
 import { FormControl, Validators } from '@angular/forms';
-import { TasInputPassword } from '@talisoft/ui/input-password';
-import { TasTitle } from '@talisoft/ui/title';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, ButtonModule, TasInputPassword, TasTitle],
+  imports: [RouterModule, ButtonModule],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

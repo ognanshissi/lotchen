@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TasTitle } from '@talisoft/ui/title';
-import { TasAlert } from '@talisoft/ui/alert';
-import { ButtonModule } from '@talisoft/ui/button';
-import { TasIcon } from '@talisoft/ui/icon';
+import { TasTitle } from '../../../../shared/ui/title';
+import { TasAlert } from '../../../../shared/ui/alert';
+import { ButtonModule } from '../../../../shared/ui/button';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -33,7 +32,7 @@ import { RouterLink } from '@angular/router';
     </div>
   `,
   standalone: true,
-  imports: [TasTitle, TasAlert, ButtonModule, TasIcon, RouterLink],
+  imports: [TasTitle, TasAlert, ButtonModule, RouterLink],
 })
 export class InvitationConfirmationComponent implements OnInit {
   ngOnInit() {
