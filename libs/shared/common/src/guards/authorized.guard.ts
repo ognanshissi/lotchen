@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthenticationService } from '../services';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 
 export const authorized: CanActivateFn = (
   route: ActivatedRouteSnapshot,
@@ -17,6 +17,9 @@ export const authorized: CanActivateFn = (
   const authenticationService = inject(AuthenticationService);
   const router = inject(Router);
   return authenticationService.verifyToken().pipe(
+    catchError(() => {
+      return of(false);
+    }),
     map((res) => {
       if (!res) {
         const redirectPath = state.url ?? '/portal/dashboard';
