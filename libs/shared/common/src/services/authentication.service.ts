@@ -5,7 +5,7 @@ import {
   HealthVerifyAccessTokenResponse,
   IdentityApiService,
   LoginRequest,
-  RefreshRequest,
+  RefreshRequest
 } from '@talisoft/api';
 import { catchError, Observable, tap } from 'rxjs';
 
@@ -50,7 +50,7 @@ export class AuthenticationService {
     return this._identityApiService.loginPost(false, false, loginRequest).pipe(
       tap((accessToken) => this.setAccessToken(accessToken)),
       catchError(error => {
-        this._errorMessage.set("Email/Mot de passe incorrect!");
+        this._errorMessage.set("Email/Mot de passe incorrect !");
         throw error;
       })
     );
