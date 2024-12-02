@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ButtonModule } from '../../../../shared/ui/button';
-import { TasTitle } from '../../../../shared/ui/title';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasTitle } from '@talisoft/ui/title';
 import { AgenciesApiService } from '@talisoft/api';
 
 @Component({

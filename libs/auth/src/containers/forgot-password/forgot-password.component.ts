@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TasTitle } from '../../../../shared/ui/title';
-import { ButtonModule } from '../../../../shared/ui/button';
+import { TasTitle } from '@talisoft/ui/title';
+import { ButtonModule } from '@talisoft/ui/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TasText } from '../../../../shared/ui/text';
-import { TasInputEmail } from '../../../../shared/ui/input-email';
+import { TasText } from '@talisoft/ui/text';
+import { TasInputEmail } from '@talisoft/ui/input-email';
 
 @Component({
   selector: 'auth-forgot-password',

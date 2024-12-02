@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TasTitle } from '../../../../shared/ui/title';
-import { TasAlert } from '../../../../shared/ui/alert';
-import { ButtonModule } from '../../../../shared/ui/button';
+import { TasTitle } from '@talisoft/ui/title';
+import { TasAlert } from '@talisoft/ui/alert';
+import { ButtonModule } from '@talisoft/ui/button';
 import { RouterLink } from '@angular/router';
 
 @Component({
