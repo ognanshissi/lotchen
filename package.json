@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start:dev": "npx nx run Lotchen:serve:development",
+    "start": "npx nx run Lotchen:serve:development",
     "build": "npx nx run Lotchen:build:production",
     "ui:watch": "npx nx run ui:build:development --watch",
+    "ui:build": "npx nx run ui:build:development",
     "openapi-generator": "npx @openapitools/openapi-generator-cli generate  --generator-key api"
   },
   "private": true,
