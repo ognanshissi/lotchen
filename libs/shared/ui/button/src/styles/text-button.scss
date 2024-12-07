@@ -8,7 +8,10 @@
 
 // Text button
 .tas__text__button__container {
-  @apply hover:underline;
+
+  &:not(:disabled) {
+    @apply hover:underline;
+  }
 
   // primary variant
   &.tas__button__variant--primary {
@@ -17,10 +20,6 @@
     // Modifier
     &:disabled {
       @include textDisabled;
-    }
-
-    &:hover {
-
     }
   }
 
@@ -32,10 +31,6 @@
     &:disabled {
       @include textDisabled;
     }
-
-    &:hover {
-
-    }
   }
 
   // Warn variant
@@ -46,10 +41,6 @@
     &:disabled {
       @include textDisabled;
     }
-
-    &:hover {
-
-    }
   }
 
   // Neutral variant
@@ -58,10 +49,6 @@
     // Modifier
     &:disabled {
       @include textDisabled;
-    }
-
-    &:hover {
-
     }
   }
 }

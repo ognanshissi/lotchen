@@ -4,7 +4,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { AbstractControlValueAccessor } from 'libs/shared/ui/core';
+import { AbstractControlValueAccessor } from '@talisoft/ui/core';
 
 @Component({
   selector: 'tas-checkbox',

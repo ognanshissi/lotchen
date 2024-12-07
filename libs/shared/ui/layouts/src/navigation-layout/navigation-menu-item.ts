@@ -5,7 +5,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { TasIcon } from 'libs/shared/ui/icon';
+import { TasIcon } from '@talisoft/ui/icon';
 import {
   NavigationExtras,
   RouterLink,

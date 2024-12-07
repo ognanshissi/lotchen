@@ -8,14 +8,13 @@ import {
   viewChild,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AbstractControlValueAccessor } from 'libs/shared/ui/core';
+import { AbstractControlValueAccessor } from '@talisoft/ui/core';
 import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'tas-select',
   templateUrl: './select.html',
   standalone: true,
-  imports: [],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

@@ -6,9 +6,9 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { FormField, TasLabel, TasSuffix } from '../../form-field';
-import { TasIcon } from '../../icon';
-import { AbstractControlValueAccessor } from '../../core';
+import { FormField, TasLabel, TasSuffix } from '@talisoft/ui/form-field';
+import { TasIcon } from '@talisoft/ui/icon';
+import { AbstractControlValueAccessor } from '@talisoft/ui/core';
 import {
   AbstractControl,
   FormControl,
@@ -17,7 +17,7 @@ import {
   ReactiveFormsModule,
   ValidationErrors,
 } from '@angular/forms';
-import { TasInput } from '../../input';
+import { TasInput } from '@talisoft/ui/input';
 
 @Component({
   selector: 'tas-input-password',

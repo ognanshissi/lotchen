@@ -5,12 +5,12 @@ import {
   TasDrawerContent,
   TasDrawerTitle,
   TasSideDrawer,
-} from '../../../../shared/ui/side-drawer';
-import { TasTitle } from '../../../../shared/ui/title';
-import { ButtonModule } from '../../../../shared/ui/button';
-import { FormField, TasLabel } from '../../../../shared/ui/form-field';
-import { TasText } from '../../../../shared/ui/text';
-import { TasInput, TasNativeSelect } from '../../../../shared/ui/input';
+} from '@talisoft/ui/side-drawer';
+import { TasTitle } from '@talisoft/ui/title';
+import { ButtonModule } from '@talisoft/ui/button';
+import { FormField, TasLabel } from '@talisoft/ui/form-field';
+import { TasText } from '@talisoft/ui/text';
+import { TasInput, TasNativeSelect } from '@talisoft/ui/input';
 
 @Component({
   selector: 'prospects-quick-add',

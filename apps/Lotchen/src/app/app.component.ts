@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ButtonModule } from '../../../../libs/shared/ui/button';
-import { FormControl, Validators } from '@angular/forms';
+import { ButtonModule } from '@talisoft/ui/button';
 
 @Component({
   standalone: true,
@@ -12,9 +11,4 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class AppComponent {
   title = 'Lotchen';
-
-  public password = new FormControl(null, [
-    Validators.required,
-    Validators.minLength(6),
-  ]);
 }

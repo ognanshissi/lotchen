@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'Text, [text]',
+  selector: 'Text, [Text], tas-text',
   template: ` <ng-content></ng-content>`,
   standalone: true,
   encapsulation: ViewEncapsulation.None,

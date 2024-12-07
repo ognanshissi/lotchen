@@ -6,7 +6,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { TasIcon } from 'libs/shared/ui/icon';
+import { TasIcon } from '@talisoft/ui/icon';
 
 export type AlertType = 'success' | 'error' | 'info';
 

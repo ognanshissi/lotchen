@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject } from '@angular/core';
-import { AbstractFormFieldControl } from 'libs/shared/ui/form-field';
+import { AbstractFormFieldControl } from '@talisoft/ui/form-field';
 
 @Component({
   selector: 'select[tasNativeSelect]',

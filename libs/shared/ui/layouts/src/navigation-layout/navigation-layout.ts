@@ -5,7 +5,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ButtonModule } from 'libs/shared/ui/button';
+import { ButtonModule } from '@talisoft/ui/button';
 import { TasNavigationSidebar } from './navigation-sidebar';
 import { map, Observable, shareReplay } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';

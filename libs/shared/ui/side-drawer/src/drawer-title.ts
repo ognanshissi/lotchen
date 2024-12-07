@@ -5,7 +5,7 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
-import { TasIcon } from 'libs/shared/ui/icon';
+import { TasIcon } from '@talisoft/ui/icon';
 import { TasClosableDrawer } from './closable-drawer.directive';
 
 @Component({

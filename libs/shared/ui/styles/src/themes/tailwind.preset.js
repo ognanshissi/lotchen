@@ -30,8 +30,8 @@ module.exports = {
         "functional-error-100":  "var(--tas-color-functional-error-100)",
         "functional-success":  "var(--tas-color-functional-success)",
         "functional-success-100":  "var(--tas-color-functional-success-100)",
-        "functional-warning": withOpacity('--tas-color-functional-warning'),
-        "functional-warning-100": withOpacity('--tas-color-functional-warning-100'),
+        "functional-warning": "var(--tas-color-functional-warning)",
+        "functional-warning-100": "var(--tas-color-functional-warning-100)",
         "functional-info":  "var(--tas-color-functional-info)",
         "functional-info-100":  "var(--tas-color-functional-info-100)",
 

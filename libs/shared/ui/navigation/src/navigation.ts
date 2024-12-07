@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ButtonModule } from 'libs/shared/ui/button';
-import { TasIcon } from 'libs/shared/ui/icon';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasIcon } from '@talisoft/ui/icon';
 
 @Component({
   selector: 'tas-navigation',

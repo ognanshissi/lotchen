@@ -1,8 +1,11 @@
-@import "mixins";
-
 @mixin raisedVariant($color) {
   background-color: rgb($color);
   color: white;
+}
+@mixin button-shadow-focus($color) {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06),
+  0 0 0 1px rgba($color, 0.16),
+  0 0 0 4px rgba($color, 0.4) !important;
 }
 
 @mixin raisedDisabled() {

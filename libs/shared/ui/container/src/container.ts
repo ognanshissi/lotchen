@@ -1,5 +1,5 @@
 import { booleanAttribute, Component, input } from '@angular/core';
-import { TasSpinner } from 'libs/shared/ui/spinner';
+import { TasSpinner } from '@talisoft/ui/spinner';
 
 @Component({
   selector: 'tas-container',

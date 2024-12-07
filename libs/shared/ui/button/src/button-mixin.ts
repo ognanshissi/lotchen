@@ -9,7 +9,7 @@ import {
   Input,
   OnDestroy,
 } from '@angular/core';
-import { ThemeVariant } from 'libs/shared/ui/core';
+import { ThemeVariant } from '@talisoft/ui/core';
 
 // Button appearance
 const BUTTON_ATTRIBUTES = [

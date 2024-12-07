@@ -7,9 +7,9 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { AbstractControlValueAccessor } from 'libs/shared/ui/core';
-import { FormField, TasLabel, TasPrefix } from 'libs/shared/ui/form-field';
-import { TasInput } from 'libs/shared/ui/input';
+import { AbstractControlValueAccessor } from '@talisoft/ui/core';
+import { FormField, TasLabel, TasPrefix } from '@talisoft/ui/form-field';
+import { TasInput } from '@talisoft/ui/input';
 import {
   AbstractControl,
   FormControl,
@@ -19,7 +19,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { TasIcon } from 'libs/shared/ui/icon';
+import { TasIcon } from '@talisoft/ui/icon';
 import { NgClass } from '@angular/common';
 
 @Component({
