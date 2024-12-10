@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 
-
 @Component({
   selector: 'tas-spinner',
   template: `
@@ -10,6 +9,4 @@ import { Component } from '@angular/core';
     </svg>`,
   standalone: true,
 })
-export class TasSpinner {
-
-}
+export class TasSpinner {}

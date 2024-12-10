@@ -3,7 +3,7 @@ import {
   Component,
   EventEmitter,
   signal,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasClosableDrawer } from './closable-drawer.directive';

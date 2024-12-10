@@ -4,7 +4,7 @@ import {
   Component,
   contentChild,
   inject,
-  input,
+  input
 } from '@angular/core';
 import { DialogRef } from '@angular/cdk/dialog';
 import { TasDrawerTitle } from './drawer-title';

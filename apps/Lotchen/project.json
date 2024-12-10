@@ -24,7 +24,7 @@
           },
           {
             "glob": "**/*",
-            "input": "node_modules/@talisoft/ui/icon/assets",
+            "input": "libs/shared/ui/icon/src/assets",
             "output": "assets"
           }
         ],
