@@ -15,7 +15,7 @@ import {
 import { TasIconRegistry } from '@talisoft/ui/icon';
 import { BASE_PATH } from '@talisoft/api';
 import { environment } from '../environments/environment';
-import { accessTokenInterceptor, ENVIRONMENT_CONFIG } from '@talisoft/common';
+import { accessTokenInterceptor, ENVIRONMENT_CONFIG, tenantInterceptor } from '@talisoft/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch(), withInterceptors([accessTokenInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([accessTokenInterceptor, tenantInterceptor])),
     importProvidersFrom(TasIconRegistry),
     {
       provide: BASE_PATH,
