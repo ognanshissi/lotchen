@@ -16,6 +16,7 @@ import { TasText } from '@talisoft/ui/text';
 import { TasInputEmail } from '@talisoft/ui/input-email';
 import { AuthenticationService } from '@talisoft/common';
 import { finalize } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'auth-login',
@@ -77,8 +78,9 @@ export class LoginComponent implements OnInit {
             '/portal/dashboard';
           this._router.navigate([redirectPath]);
         },
-        error: () => {
-          this.loginForm.get('password')?.setValue('');
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+          // this.loginForm.get('password')?.setValue('');
         },
       });
   }

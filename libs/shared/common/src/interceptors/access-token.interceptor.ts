@@ -20,7 +20,6 @@ export const accessTokenInterceptor: HttpInterceptorFn = (
   const reqClone = req.clone({
     setHeaders: { authorization: `Bearer ${authService.loadAccessToken()}` },
   });
-
   return next(reqClone).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
@@ -34,5 +33,5 @@ export const accessTokenInterceptor: HttpInterceptorFn = (
 
 function urlIncludeNotSecuredPaths(url: string): boolean {
   const authPaths = ['login', 'logout'];
-  return authPaths.includes(url);
+  return authPaths.some(path => url.includes(path));
 }
