@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ButtonModule } from '../../../../../ui/button';
-import { TasIcon } from '../../../../../ui/icon';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasIcon } from '@talisoft/ui/icon';
 import {
   TasNavigationLayout,
   TasNavigationMenu,
   TasNavigationMenuItem,
   TasNavigationNavbar,
   TasNavigationSidebar,
-} from '../../../../../ui/layouts';
+} from '@talisoft/ui/layouts';
 
 @Component({
   selector: 'common-portal-layout',
