@@ -105,6 +105,13 @@ export class HealthApiService {
 
         let localVarHeaders = this.defaultHeaders;
 
+        let localVarCredential: string | undefined;
+        // authentication (BearerToken) required
+        localVarCredential = this.configuration.lookupCredential('BearerToken');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -139,7 +146,7 @@ export class HealthApiService {
             }
         }
 
-        let localVarPath = `/health`;
+        let localVarPath = `/v1/health`;
         return this.httpClient.request<HealthCheckResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -164,6 +171,13 @@ export class HealthApiService {
 
         let localVarHeaders = this.defaultHeaders;
 
+        let localVarCredential: string | undefined;
+        // authentication (BearerToken) required
+        localVarCredential = this.configuration.lookupCredential('BearerToken');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -198,7 +212,7 @@ export class HealthApiService {
             }
         }
 
-        let localVarPath = `/health/verify-accesstoken`;
+        let localVarPath = `/v1/health/verify-accesstoken`;
         return this.httpClient.request<HealthVerifyAccessTokenResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

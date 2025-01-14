@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AgencyAddress } from './agency-address.interface';
+import { TerritoryAgency } from './territory-agency.interface';
 
 
-export interface GetAllAgencyQueryResponse { 
+export interface GetTerritoryByIdQueryResponse { 
     id?: string;
     name?: string | null;
     description?: string | null;
-    address?: AgencyAddress;
-    createdAt?: string;
+    agencies?: Array<TerritoryAgency> | null;
 }
 

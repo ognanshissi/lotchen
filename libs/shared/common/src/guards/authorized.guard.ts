@@ -34,8 +34,8 @@ export const authorized: CanActivateFn = (
 };
 
 export const noAuthorized: CanActivateFn = (
-  route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot
+  _route: ActivatedRouteSnapshot,
+  _state: RouterStateSnapshot
 ): MaybeAsync<GuardResult> => {
   const authenticationService = inject(AuthenticationService);
   const router = inject(Router);

@@ -9,11 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CreateAgencyAddressDto } from './create-agency-address-dto.interface';
 
 
 export interface CreateAgencyCommandRequest { 
     name?: string | null;
-    address?: CreateAgencyAddressDto;
+    description?: string | null;
+    street?: string | null;
+    country?: string | null;
+    city?: string | null;
+    postalCode?: number;
 }
 

@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AgencyAddress } from './agency-address.interface';
 
 
-export interface GetAllAgencyQueryResponse { 
+export interface GetAllLeadResponse { 
     id?: string;
-    name?: string | null;
-    description?: string | null;
-    address?: AgencyAddress;
-    createdAt?: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email?: string | null;
+    status?: number;
+    contact?: string | null;
 }
 

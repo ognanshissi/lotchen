@@ -5,51 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/agencies": {
-      "post": {
-        "tags": [
-          "Agencies"
-        ],
-        "operationId": "CreateAgency",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAgencyCommandRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Agencies"
-        ],
-        "operationId": "AllAgency",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetAllAgencyQueryResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/health/verify-accesstoken": {
+    "/v1/health/verify-accesstoken": {
       "get": {
         "tags": [
           "Health"
@@ -79,7 +35,7 @@
         }
       }
     },
-    "/health": {
+    "/v1/health": {
       "get": {
         "tags": [
           "Health"
@@ -99,7 +55,7 @@
         }
       }
     },
-    "/register": {
+    "/identity/register": {
       "post": {
         "tags": [
           "Identity"
@@ -130,7 +86,7 @@
         }
       }
     },
-    "/login": {
+    "/identity/login": {
       "post": {
         "tags": [
           "Identity"
@@ -174,7 +130,7 @@
         }
       }
     },
-    "/refresh": {
+    "/identity/refresh": {
       "post": {
         "tags": [
           "Identity"
@@ -202,12 +158,12 @@
         }
       }
     },
-    "/confirmEmail": {
+    "/identity/confirmEmail": {
       "get": {
         "tags": [
           "Identity"
         ],
-        "operationId": "MapIdentityApi-/confirmEmail",
+        "operationId": "MapIdentityApi-identity/confirmEmail",
         "parameters": [
           {
             "name": "userId",
@@ -238,7 +194,7 @@
         }
       }
     },
-    "/resendConfirmationEmail": {
+    "/identity/resendConfirmationEmail": {
       "post": {
         "tags": [
           "Identity"
@@ -259,7 +215,7 @@
         }
       }
     },
-    "/forgotPassword": {
+    "/identity/forgotPassword": {
       "post": {
         "tags": [
           "Identity"
@@ -290,7 +246,7 @@
         }
       }
     },
-    "/resetPassword": {
+    "/identity/resetPassword": {
       "post": {
         "tags": [
           "Identity"
@@ -321,7 +277,7 @@
         }
       }
     },
-    "/manage/2fa": {
+    "/identity/manage/2fa": {
       "post": {
         "tags": [
           "Identity"
@@ -362,7 +318,7 @@
         }
       }
     },
-    "/manage/info": {
+    "/identity/manage/info": {
       "get": {
         "tags": [
           "Identity"
@@ -433,19 +389,62 @@
         }
       }
     },
-    "/leads": {
+    "/v1/identity/logout": {
+      "post": {
+        "tags": [
+          "Identity"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/identity/register": {
+      "post": {
+        "tags": [
+          "Identity"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/v1/leads": {
       "post": {
         "tags": [
           "Leads"
         ],
-        "summary": "Create a lead",
-        "description": "Create a lead and return the created lead Id",
         "operationId": "CreateLead",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateLeadCommandRequest"
+                "$ref": "#/components/schemas/CreateLeadCommand"
               }
             }
           },
@@ -457,7 +456,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateLeadCommandResponse"
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Leads"
+        ],
+        "operationId": "GetAllLeads",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllLeadResponse"
+                  }
                 }
               }
             }
@@ -465,14 +496,215 @@
         }
       }
     },
-    "/users/me": {
+    "/v1/leads/{leadId}": {
       "get": {
         "tags": [
-          "Users"
+          "Leads"
+        ],
+        "operationId": "GetLeadById",
+        "parameters": [
+          {
+            "name": "leadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/leads/{leadId}/is-primary-contact-confirmed": {
+      "get": {
+        "tags": [
+          "Leads"
+        ],
+        "operationId": "VerifyLeadPrimaryContact",
+        "parameters": [
+          {
+            "name": "leadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/territories": {
+      "post": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "CreateTerritory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTerritoryCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTerritoryCommandResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "GetAllTerritory",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllTerritoryQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/territories/{territoryId}": {
+      "get": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "GetTerritoryById",
+        "parameters": [
+          {
+            "name": "territoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTerritoryByIdQueryResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/v1/territories/{territoryId}/agencies": {
+      "post": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "CreateAgency",
+        "parameters": [
+          {
+            "name": "territoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAgencyCommandRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAgencyCommandResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "GetAllAgency",
+        "parameters": [
+          {
+            "name": "territoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllAgencyQueryResponse"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -508,18 +740,18 @@
         },
         "additionalProperties": false
       },
-      "CreateAgencyAddressDto": {
+      "AgencyAddress": {
         "type": "object",
         "properties": {
           "street": {
             "type": "string",
             "nullable": true
           },
-          "city": {
+          "country": {
             "type": "string",
             "nullable": true
           },
-          "country": {
+          "city": {
             "type": "string",
             "nullable": true
           },
@@ -537,13 +769,44 @@
             "type": "string",
             "nullable": true
           },
-          "address": {
-            "$ref": "#/components/schemas/CreateAgencyAddressDto"
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "street": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
       },
-      "CreateLeadCommandRequest": {
+      "CreateAgencyCommandResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateLeadCommand": {
         "type": "object",
         "properties": {
           "firstName": {
@@ -554,19 +817,49 @@
             "type": "string",
             "nullable": true
           },
+          "contact": {
+            "type": "string",
+            "nullable": true
+          },
           "dateOfBirth": {
             "type": "string",
             "format": "date"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "CreateLeadCommandResponse": {
+      "CreateTerritoryCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateTerritoryCommandResponse": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
             "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -595,8 +888,88 @@
             "type": "string",
             "nullable": true
           },
-          "street": {
+          "description": {
             "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/AgencyAddress"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAllLeadResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "contact": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAllTerritoryQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetTerritoryByIdQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "agencies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TerritoryAgency"
+            },
             "nullable": true
           }
         },
@@ -656,7 +1029,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "InfoRequest": {
         "type": "object",
@@ -732,6 +1105,24 @@
         },
         "additionalProperties": false
       },
+      "RegisterCommand": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "confirmPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RegisterRequest": {
         "required": [
           "email",
@@ -782,6 +1173,28 @@
           "newPassword": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TerritoryAgency": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -842,6 +1255,24 @@
         },
         "additionalProperties": false
       }
+    },
+    "securitySchemes": {
+      "BearerToken": {
+        "type": "http",
+        "description": "Token-based authentication using the Bearer scheme",
+        "scheme": "Bearer"
+      },
+      "TenancyHeader": {
+        "type": "apiKey",
+        "description": "Tenant-based authentication using the Tenant scheme",
+        "name": "Tenant Authorization",
+        "in": "header"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "BearerToken": []
+    }
+  ]
 }

@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AgencyAddress } from './agency-address.interface';
 
 
-export interface GetAllAgencyQueryResponse { 
-    id?: string;
-    name?: string | null;
-    description?: string | null;
-    address?: AgencyAddress;
-    createdAt?: string;
+export interface RegisterCommand { 
+    email?: string | null;
+    password?: string | null;
+    confirmPassword?: string | null;
 }
 

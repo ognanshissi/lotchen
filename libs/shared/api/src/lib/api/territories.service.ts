@@ -19,11 +19,19 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateLeadCommand } from '../model/create-lead-command.interface';
+import { CreateAgencyCommandRequest } from '../model/create-agency-command-request.interface';
 // @ts-ignore
-import { GetAllLeadResponse } from '../model/get-all-lead-response.interface';
+import { CreateAgencyCommandResponse } from '../model/create-agency-command-response.interface';
 // @ts-ignore
-import { HttpValidationProblemDetails } from '../model/http-validation-problem-details.interface';
+import { CreateTerritoryCommand } from '../model/create-territory-command.interface';
+// @ts-ignore
+import { CreateTerritoryCommandResponse } from '../model/create-territory-command-response.interface';
+// @ts-ignore
+import { GetAllAgencyQueryResponse } from '../model/get-all-agency-query-response.interface';
+// @ts-ignore
+import { GetAllTerritoryQueryResponse } from '../model/get-all-territory-query-response.interface';
+// @ts-ignore
+import { GetTerritoryByIdQueryResponse } from '../model/get-territory-by-id-query-response.interface';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -34,7 +42,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class LeadsApiService {
+export class TerritoriesApiService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -97,16 +105,20 @@ export class LeadsApiService {
     }
 
     /**
-     * @param createLeadCommand 
+     * @param territoryId 
+     * @param createAgencyCommandRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createLead(createLeadCommand: CreateLeadCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
-    public createLead(createLeadCommand: CreateLeadCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
-    public createLead(createLeadCommand: CreateLeadCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
-    public createLead(createLeadCommand: CreateLeadCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (createLeadCommand === null || createLeadCommand === undefined) {
-            throw new Error('Required parameter createLeadCommand was null or undefined when calling createLead.');
+    public createAgency(territoryId: string, createAgencyCommandRequest: CreateAgencyCommandRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CreateAgencyCommandResponse>;
+    public createAgency(territoryId: string, createAgencyCommandRequest: CreateAgencyCommandRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CreateAgencyCommandResponse>>;
+    public createAgency(territoryId: string, createAgencyCommandRequest: CreateAgencyCommandRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CreateAgencyCommandResponse>>;
+    public createAgency(territoryId: string, createAgencyCommandRequest: CreateAgencyCommandRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (territoryId === null || territoryId === undefined) {
+            throw new Error('Required parameter territoryId was null or undefined when calling createAgency.');
+        }
+        if (createAgencyCommandRequest === null || createAgencyCommandRequest === undefined) {
+            throw new Error('Required parameter createAgencyCommandRequest was null or undefined when calling createAgency.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -122,8 +134,7 @@ export class LeadsApiService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                'application/json',
-                'application/problem+json'
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -162,11 +173,11 @@ export class LeadsApiService {
             }
         }
 
-        let localVarPath = `/v1/leads`;
-        return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/v1/territories/${this.configuration.encodeParam({name: "territoryId", value: territoryId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/agencies`;
+        return this.httpClient.request<CreateAgencyCommandResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createLeadCommand,
+                body: createAgencyCommandRequest,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -178,13 +189,17 @@ export class LeadsApiService {
     }
 
     /**
+     * @param createTerritoryCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllLeads(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<GetAllLeadResponse>>;
-    public getAllLeads(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<GetAllLeadResponse>>>;
-    public getAllLeads(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<GetAllLeadResponse>>>;
-    public getAllLeads(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createTerritory(createTerritoryCommand: CreateTerritoryCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CreateTerritoryCommandResponse>;
+    public createTerritory(createTerritoryCommand: CreateTerritoryCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CreateTerritoryCommandResponse>>;
+    public createTerritory(createTerritoryCommand: CreateTerritoryCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CreateTerritoryCommandResponse>>;
+    public createTerritory(createTerritoryCommand: CreateTerritoryCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (createTerritoryCommand === null || createTerritoryCommand === undefined) {
+            throw new Error('Required parameter createTerritoryCommand was null or undefined when calling createTerritory.');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -218,74 +233,14 @@ export class LeadsApiService {
         }
 
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
-
-        let localVarPath = `/v1/leads`;
-        return this.httpClient.request<Array<GetAllLeadResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param leadId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getLeadById(leadId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public getLeadById(leadId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public getLeadById(leadId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public getLeadById(leadId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (leadId === null || leadId === undefined) {
-            throw new Error('Required parameter leadId was null or undefined when calling getLeadById.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (BearerToken) required
-        localVarCredential = this.configuration.lookupCredential('BearerToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        let localVarTransferCache: boolean | undefined = options && options.transferCache;
-        if (localVarTransferCache === undefined) {
-            localVarTransferCache = true;
-        }
-
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
@@ -298,10 +253,11 @@ export class LeadsApiService {
             }
         }
 
-        let localVarPath = `/v1/leads/${this.configuration.encodeParam({name: "leadId", value: leadId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
-        return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/v1/territories`;
+        return this.httpClient.request<CreateTerritoryCommandResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                body: createTerritoryCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -313,16 +269,16 @@ export class LeadsApiService {
     }
 
     /**
-     * @param leadId 
+     * @param territoryId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public verifyLeadPrimaryContact(leadId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<boolean>;
-    public verifyLeadPrimaryContact(leadId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<boolean>>;
-    public verifyLeadPrimaryContact(leadId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<boolean>>;
-    public verifyLeadPrimaryContact(leadId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (leadId === null || leadId === undefined) {
-            throw new Error('Required parameter leadId was null or undefined when calling verifyLeadPrimaryContact.');
+    public getAllAgency(territoryId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<GetAllAgencyQueryResponse>>;
+    public getAllAgency(territoryId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<GetAllAgencyQueryResponse>>>;
+    public getAllAgency(territoryId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<GetAllAgencyQueryResponse>>>;
+    public getAllAgency(territoryId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (territoryId === null || territoryId === undefined) {
+            throw new Error('Required parameter territoryId was null or undefined when calling getAllAgency.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -368,8 +324,144 @@ export class LeadsApiService {
             }
         }
 
-        let localVarPath = `/v1/leads/${this.configuration.encodeParam({name: "leadId", value: leadId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/is-primary-contact-confirmed`;
-        return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/v1/territories/${this.configuration.encodeParam({name: "territoryId", value: territoryId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/agencies`;
+        return this.httpClient.request<Array<GetAllAgencyQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllTerritory(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<GetAllTerritoryQueryResponse>>;
+    public getAllTerritory(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<GetAllTerritoryQueryResponse>>>;
+    public getAllTerritory(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<GetAllTerritoryQueryResponse>>>;
+    public getAllTerritory(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (BearerToken) required
+        localVarCredential = this.configuration.lookupCredential('BearerToken');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+        let localVarTransferCache: boolean | undefined = options && options.transferCache;
+        if (localVarTransferCache === undefined) {
+            localVarTransferCache = true;
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/v1/territories`;
+        return this.httpClient.request<Array<GetAllTerritoryQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param territoryId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getTerritoryById(territoryId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetTerritoryByIdQueryResponse>;
+    public getTerritoryById(territoryId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetTerritoryByIdQueryResponse>>;
+    public getTerritoryById(territoryId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetTerritoryByIdQueryResponse>>;
+    public getTerritoryById(territoryId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (territoryId === null || territoryId === undefined) {
+            throw new Error('Required parameter territoryId was null or undefined when calling getTerritoryById.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (BearerToken) required
+        localVarCredential = this.configuration.lookupCredential('BearerToken');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+        let localVarTransferCache: boolean | undefined = options && options.transferCache;
+        if (localVarTransferCache === undefined) {
+            localVarTransferCache = true;
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/v1/territories/${this.configuration.encodeParam({name: "territoryId", value: territoryId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        return this.httpClient.request<GetTerritoryByIdQueryResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
