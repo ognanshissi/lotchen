@@ -47,7 +47,7 @@ export class AuthenticationService {
 
   public login(loginRequest: LoginRequest): Observable<AccessTokenResponse> {
     this._errorMessage.set(null);
-    return this._identityApiService.loginPost(false, false, loginRequest).pipe(
+    return this._identityApiService.identityLoginPost(false, false, loginRequest).pipe(
       tap((accessToken) => this.setAccessToken(accessToken)),
       catchError(error => {
         this._errorMessage.set("Email/Mot de passe incorrect !");
@@ -72,7 +72,7 @@ export class AuthenticationService {
   public refreshToken(
     refreshRequest: RefreshRequest
   ): Observable<AccessTokenResponse> {
-    return this._identityApiService.refreshPost(refreshRequest).pipe(
+    return this._identityApiService.identityRefreshPost(refreshRequest).pipe(
       tap((accessToken) => this.setAccessToken(accessToken)),
     )
   }

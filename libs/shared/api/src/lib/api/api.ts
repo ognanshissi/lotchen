@@ -6,4 +6,6 @@ export * from './leads.service';
 import { LeadsApiService } from './leads.service';
 export * from './territories.service';
 import { TerritoriesApiService } from './territories.service';
-export const APIS = [HealthApiService, IdentityApiService, LeadsApiService, TerritoriesApiService];
+export  * from './agencies.service';
+import { AgenciesApiService } from './agencies.service';
+export const APIS = [HealthApiService, IdentityApiService, LeadsApiService, TerritoriesApiService, AgenciesApiService];

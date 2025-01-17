@@ -23,18 +23,18 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'dashboard',
-        loadChildren: () => import('@talisoft/dashboard'),
+        loadChildren: () => import('@lotchen/ui/dashboard'),
       },
       {
         path: 'prospects',
-        loadChildren: () => import('@talisoft/prospects'),
+        loadChildren: () => import('@lotchen/ui/prospects'),
       },
     ],
   },
   {
     path: 'auth',
     component: AuthLayoutComponent,
-    loadChildren: () => import('@talisoft/auth'),
+    loadChildren: () => import('@lotchen/ui/auth'),
   },
   {
     path: '**',

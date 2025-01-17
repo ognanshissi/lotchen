@@ -16,11 +16,11 @@
     "baseUrl": ".",
     "paths": {
       "@talisoft/api": ["libs/shared/api/src/index.ts"],
-      "@talisoft/auth": ["libs/auth/src/index.ts"],
-      "@talisoft/clients": ["libs/clients/src/index.ts"],
+      "@lotchen/ui/auth": ["libs/ui/auth/src/index.ts"],
+      "@lotchen/ui/clients": ["libs/ui/clients/src/index.ts"],
       "@talisoft/common": ["libs/shared/common/src/index.ts"],
-      "@talisoft/dashboard": ["libs/dashboard/src/index.ts"],
-      "@talisoft/prospects": ["libs/prospects/src/index.ts"],
+      "@lotchen/ui/dashboard": ["libs/ui/dashboard/src/index.ts"],
+      "@lotchen/ui/prospects": ["libs/ui/prospects/src/index.ts"],
       "@talisoft/ui": ["libs/shared/ui/src/index.ts"],
       "@talisoft/ui/*": ["libs/shared/ui/*"]
     }
