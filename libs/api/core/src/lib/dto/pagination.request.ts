@@ -7,6 +7,6 @@ export class PaginationRequest {
 
 export interface PagingFilter {
   code: string;
-  operator: 'eq' | 'or' | 'lt' | 'gte' | 'lte';
+  operator: 'eq' | 'or' | 'lt' | 'gte' | 'lte' | 'gt';
   value: string;
 }

@@ -14,7 +14,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TasAlert } from '@talisoft/ui/alert';
 import { TasText } from '@talisoft/ui/text';
 import { TasInputEmail } from '@talisoft/ui/input-email';
-import { AuthenticationService } from '@talisoft/common';
+import { AuthenticationService } from '@lotchen/ui/common';
 import { finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -23,17 +23,16 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: 'login.component.html',
   standalone: true,
   imports: [
-    TasInputPassword,
     ButtonModule,
     TasTitle,
     ReactiveFormsModule,
-    TasCheckbox,
-    TasCheckbox,
     TasContainer,
     TasAlert,
     RouterLink,
     TasText,
     TasInputEmail,
+    TasInputPassword,
+    TasCheckbox,
   ],
 })
 export class LoginComponent implements OnInit {

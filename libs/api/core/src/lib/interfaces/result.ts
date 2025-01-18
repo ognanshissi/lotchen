@@ -1,6 +1,6 @@
 import { ApplicationError } from './error';
 
-export class Result {
+export class Result<T> {
   private constructor(isSuccess: boolean, error: ApplicationError) {
     if (
       (isSuccess && error != ApplicationError.none()) ||
@@ -19,11 +19,11 @@ export class Result {
 
   public error!: ApplicationError;
 
-  public static success(): Result {
-    return new Result(true, ApplicationError.none());
+  public static success<T>(): Result<T> {
+    return new Result<T>(true, ApplicationError.none());
   }
 
-  public static failure(error: ApplicationError): Result {
-    return new Result(false, error);
+  public static failure<T>(error: ApplicationError): Result<T> {
+    return new Result<T>(false, error);
   }
 }

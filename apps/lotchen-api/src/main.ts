@@ -13,8 +13,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableVersioning({
-    type: VersioningType.HEADER,
-    header: 'X-API-Version',
+    type: VersioningType.URI,
   });
   app.useGlobalPipes(new ValidationPipe());
   const globalPrefix = 'api';

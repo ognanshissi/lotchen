@@ -5,7 +5,7 @@
     (ngSubmit)="submit()"
   >
     <div>
-      <Title>Connexion</Title>
+      <tas-title>Connexion</tas-title>
       <Text class="pt-4">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. vero voluptas.
         Cupiditate deserunt dicta dignissimos et ex odio vero!
@@ -19,19 +19,21 @@
     }
 
     <div class="flex flex-col space-y-5">
-      <InputEmail
+      <tast-input-email
         labelScreenOnly
         formControlName="email"
         placeholder="Adresse électronique"
       >
         Adresse électronique
-      </InputEmail>
+      </tast-input-email>
       <div>
-        <InputPassword formControlName="password">
+        <tas-input-password formControlName="password">
           <span class="sr-only">Mot de passe</span>
-        </InputPassword>
+        </tas-input-password>
         <div class="flex justify-between items-center">
-          <Checkbox formControlName="rememberMe">Se souvenir de moi</Checkbox>
+          <tas-checkbox formControlName="rememberMe"
+            >Se souvenir de moi</tas-checkbox
+          >
           <a
             tas-text-button
             color="primary"

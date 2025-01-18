@@ -24,7 +24,7 @@
       "@lotchen/ui/dashboard": ["libs/ui/dashboard/src/index.ts"],
       "@lotchen/ui/prospects": ["libs/ui/prospects/src/index.ts"],
       "@talisoft/api": ["libs/shared/api/src/index.ts"],
-      "@lotchen/ui/common": ["libs/shared/common/src/index.ts"],
+      "@lotchen/ui/common": ["libs/ui/common/src/index.ts"],
       "@talisoft/ui": ["libs/shared/ui/src/index.ts"],
       "@talisoft/ui/*": ["libs/shared/ui/*"]
     }
