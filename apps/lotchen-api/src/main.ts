@@ -3,16 +3,43 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import fs from 'node:fs';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableVersioning({
+    type: VersioningType.HEADER,
+    header: 'X-API-Version',
+  });
+  app.useGlobalPipes(new ValidationPipe());
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+  app.enableCors();
   const port = process.env.PORT || 3000;
-  await app.listen(port);
+
+  const config = new DocumentBuilder()
+    .setTitle('Talisoft.Lotchen.API')
+    .setDescription('The Lotchen API description')
+    .setVersion('1.0')
+    .addTag('Lotchen-api')
+    // .addServer(`http://localhost:${port}`, 'Local server http')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  // fs.writeFileSync(
+  //   './libs/shared/api/src/assets/lotchen-api-swagger.json',
+  //   JSON.stringify(document, null, 2),
+  //   'utf8'
+  // );
+
+  SwaggerModule.setup('swagger', app, document, {
+    yamlDocumentUrl: 'swagger/json',
+  });
+  app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );

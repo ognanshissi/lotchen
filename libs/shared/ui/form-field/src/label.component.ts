@@ -1,11 +1,11 @@
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 /**
  * Tas Label
- * 
+ *
  */
 @Component({
-  selector: 'tas-label',
+  selector: 'tas-label, Label',
   template: `<ng-content></ng-content>`,
   standalone: true,
 })

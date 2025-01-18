@@ -1,20 +1,20 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TasInputPassword } from 'libs/shared/ui/input-password';
-import { ButtonModule } from 'libs/shared/ui/button';
-import { TasTitle } from 'libs/shared/ui/title';
+import { TasInputPassword } from '@talisoft/ui/input-password';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasTitle } from '@talisoft/ui/title';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { TasCheckbox } from 'libs/shared/ui/checkbox';
-import { TasContainer } from 'libs/shared/ui/container';
+import { TasCheckbox } from '@talisoft/ui/checkbox';
+import { TasContainer } from '@talisoft/ui/container';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TasAlert } from 'libs/shared/ui/alert';
-import { TasText } from 'libs/shared/ui/text';
-import { TasInputEmail } from 'libs/shared/ui/input-email';
-import { AuthenticationService } from 'libs/shared/common/src';
+import { TasAlert } from '@talisoft/ui/alert';
+import { TasText } from '@talisoft/ui/text';
+import { TasInputEmail } from '@talisoft/ui/input-email';
+import { AuthenticationService } from '@talisoft/common';
 import { finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -85,6 +85,5 @@ export class LoginComponent implements OnInit {
       });
   }
 }
-
 
 export default LoginComponent;

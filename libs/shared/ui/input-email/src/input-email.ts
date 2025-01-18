@@ -23,7 +23,7 @@ import { TasIcon } from '@talisoft/ui/icon';
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'tas-input-email',
+  selector: 'tas-input-email, InputEmail',
   template: `
     <tas-form-field>
       <tas-label [ngClass]="{ 'sr-only': labelScreenOnly() }">

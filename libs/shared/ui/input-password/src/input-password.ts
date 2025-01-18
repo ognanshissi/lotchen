@@ -20,7 +20,7 @@ import {
 import { TasInput } from '@talisoft/ui/input';
 
 @Component({
-  selector: 'tas-input-password',
+  selector: 'tas-input-password, InputPassword',
   templateUrl: './input-password.html',
   standalone: true,
   imports: [

@@ -11,13 +11,13 @@ import { TasIcon } from '@talisoft/ui/icon';
 export type AlertType = 'success' | 'error' | 'info';
 
 @Component({
-  selector: 'tas-alert',
+  selector: 'tas-alert, Alert',
   standalone: true,
   template: `
-      <tas-icon [iconName]="iconName()"></tas-icon>
-      <div class="alert-content">
-        <ng-content></ng-content>
-      </div>
+    <tas-icon [iconName]="iconName()"></tas-icon>
+    <div class="alert-content">
+      <ng-content></ng-content>
+    </div>
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,6 +29,7 @@ export type AlertType = 'success' | 'error' | 'info';
         &.tas-alert__success {
           @apply text-functional-success border-functional-success;
         }
+
         &.tas-alert__info {
           @apply text-functional-info border-functional-info;
         }
@@ -37,16 +38,12 @@ export type AlertType = 'success' | 'error' | 'info';
           @apply border-functional-error text-functional-error;
         }
       }
-
-
-    `
+    `,
   ],
   imports: [TasIcon],
 })
 export class TasAlert {
-
   public type = input<AlertType>('info');
-
 
   public iconName = computed(() => {
     switch (this.type()) {
@@ -57,7 +54,7 @@ export class TasAlert {
       default:
         return 'feather:info';
     }
-  })
+  });
 
   @HostBinding('class')
   public get classes() {
@@ -65,7 +62,6 @@ export class TasAlert {
       'tas-alert__success': this.type() === 'success',
       'tas-alert__error': this.type() === 'error',
       'tas-alert__info': this.type() === 'info',
-    }
+    };
   }
-
 }

@@ -7,7 +7,7 @@ import {
 import { AbstractControlValueAccessor } from '@talisoft/ui/core';
 
 @Component({
-  selector: 'tas-checkbox',
+  selector: 'tas-checkbox, Checkbox',
   template: `
     @if (labelPosition() === 'left') {
     <label [for]="componentId">
@@ -62,6 +62,6 @@ export class TasCheckbox
 
   override setDisabledState(isDisabled: boolean) {
     super.setDisabledState(isDisabled);
-    isDisabled ? this.control.disable() : this.control.enable()
+    isDisabled ? this.control.disable() : this.control.enable();
   }
 }
