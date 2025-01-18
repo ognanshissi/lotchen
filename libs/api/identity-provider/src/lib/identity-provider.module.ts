@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
+import { UsersController } from './controllers/users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
 import { Profile, ProfileSchema } from './schemas/profile.schema';
+import { CreateUserCommandHandler } from './application/users/create/create-user-command-handler';
+import { GetAllUserQueryHandler } from './application/users/get-all/get-all-user-query-handler';
 
 @Module({
   imports: [
@@ -12,7 +14,7 @@ import { Profile, ProfileSchema } from './schemas/profile.schema';
     ]),
   ],
   controllers: [UsersController],
-  providers: [],
+  providers: [CreateUserCommandHandler, GetAllUserQueryHandler],
   exports: [],
 })
 export class IdentityProviderModule {}
