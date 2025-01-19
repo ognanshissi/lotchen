@@ -9,6 +9,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { LoginCommandHandler } from './application/auth/login/login-command';
 import * as process from 'node:process';
 import { AuthController } from './controllers/auth.controller';
+import { RefreshTokenCommandHandler } from './application/auth/refresh-token/refresh-token.command';
+import { ForgotPasswordCommandHandler } from './application/auth/forgot-password/forgot-password.command';
+import { ResetPasswordCommandHandler } from './application/auth/reset-password/reset-password.command';
 
 @Module({
   imports: [
@@ -29,6 +32,9 @@ import { AuthController } from './controllers/auth.controller';
     CreateUserCommandHandler,
     GetAllUserQueryHandler,
     LoginCommandHandler,
+    RefreshTokenCommandHandler,
+    ForgotPasswordCommandHandler,
+    ResetPasswordCommandHandler,
   ],
   exports: [],
 })

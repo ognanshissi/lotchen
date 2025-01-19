@@ -30,9 +30,9 @@ import { HttpErrorResponse } from '@angular/common/http';
     TasAlert,
     RouterLink,
     TasText,
-    TasInputEmail,
     TasInputPassword,
     TasCheckbox,
+    TasInputEmail,
   ],
 })
 export class LoginComponent implements OnInit {

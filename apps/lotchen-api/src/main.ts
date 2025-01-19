@@ -8,6 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import fs from 'node:fs';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,7 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   app.enableCors();
+  app.use(helmet());
   const port = process.env.PORT || 3000;
 
   const config = new DocumentBuilder()

@@ -1,21 +1,82 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Request,
+} from '@nestjs/common';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   LoginCommand,
   LoginCommandHandler,
-  LoginCommandResponse,
+  AccessTokenResponse,
 } from '../application/auth/login/login-command';
+import {
+  RefreshTokenCommand,
+  RefreshTokenCommandHandler,
+} from '../application/auth/refresh-token/refresh-token.command';
+import { Request as ExpressRequest } from 'express';
+import {
+  ForgotPasswordCommand,
+  ForgotPasswordCommandHandler,
+  ForgotPasswordCommandResponse,
+} from '../application/auth/forgot-password/forgot-password.command';
+import {
+  ResetPasswordCommand,
+  ResetPasswordCommandHandler,
+  ResetPasswordCommandResponse,
+} from '../application/auth/reset-password/reset-password.command';
 
-@ApiTags('Identity Provider')
+@ApiTags('Auth')
 @Controller({ version: '1', path: 'auth' })
 export class AuthController {
-  constructor(private readonly _loginCommandHandler: LoginCommandHandler) {}
+  constructor(
+    private readonly _loginCommandHandler: LoginCommandHandler,
+    private readonly _refreshTokenCommandHandler: RefreshTokenCommandHandler,
+    private readonly _forgotPasswordCommandHandler: ForgotPasswordCommandHandler,
+    private readonly _resetPasswordCommandHandler: ResetPasswordCommandHandler
+  ) {}
 
   @HttpCode(HttpStatus.OK)
-  @Post()
+  @Post('login')
+  @ApiResponse({
+    type: AccessTokenResponse,
+  })
   public async login(
     @Body() request: LoginCommand
-  ): Promise<LoginCommandResponse> {
+  ): Promise<AccessTokenResponse> {
     return this._loginCommandHandler.handlerAsync(request);
+  }
+
+  @ApiResponse({
+    type: AccessTokenResponse,
+  })
+  @Post('refresh-token')
+  async refreshToken(
+    @Body() command: RefreshTokenCommand,
+    @Request() req: ExpressRequest
+  ): Promise<AccessTokenResponse> {
+    return await this._refreshTokenCommandHandler.handlerAsync(command, req);
+  }
+
+  @Post('forgot-password')
+  @ApiResponse({
+    type: ForgotPasswordCommandResponse,
+  })
+  async forgotPassword(
+    @Body() request: ForgotPasswordCommand
+  ): Promise<ForgotPasswordCommandResponse> {
+    return await this._forgotPasswordCommandHandler.handlerAsync(request);
+  }
+
+  @Post('reset-password')
+  @ApiResponse({
+    type: ResetPasswordCommandResponse,
+  })
+  async resetPassword(
+    @Body() request: ResetPasswordCommand
+  ): Promise<ResetPasswordCommandResponse> {
+    return await this._resetPasswordCommandHandler.handlerAsync(request);
   }
 }

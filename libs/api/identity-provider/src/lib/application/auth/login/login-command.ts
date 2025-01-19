@@ -5,18 +5,23 @@ import { User, UserExtention } from '../../../schemas/user.schema';
 import { Model } from 'mongoose';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class LoginCommand {
   @ApiProperty()
+  @IsEmail()
+  @IsNotEmpty()
   email!: string;
   @ApiProperty()
+  @IsNotEmpty()
   password!: string;
 }
 
-export class LoginCommandResponse {
+export class AccessTokenResponse {
   @ApiProperty()
   accessToken!: string;
   @ApiProperty()
+  @IsNumber()
   expiresIn!: number;
   @ApiProperty()
   refreshToken!: string;
@@ -24,7 +29,7 @@ export class LoginCommandResponse {
 
 @Injectable()
 export class LoginCommandHandler
-  implements RequestHandler<LoginCommand, LoginCommandResponse>
+  implements RequestHandler<LoginCommand, AccessTokenResponse>
 {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
@@ -33,7 +38,7 @@ export class LoginCommandHandler
 
   public async handlerAsync(
     request: LoginCommand
-  ): Promise<LoginCommandResponse> {
+  ): Promise<AccessTokenResponse> {
     const userExist = await this.userModel
       .findOne({ email: request.email })
       .exec();
@@ -55,11 +60,17 @@ export class LoginCommandHandler
 
     return {
       accessToken: await this._jwtService.signAsync(payload),
-      refreshToken: await this._jwtService.signAsync({
-        ...payload,
-        type: 'refreshToken',
-      }),
+      refreshToken: await this._jwtService.signAsync(
+        {
+          ...payload,
+          type: 'refreshToken',
+        },
+        {
+          secret: process.env['SECRET'],
+          expiresIn: '7d',
+        }
+      ),
       expiresIn: 3600,
-    } as LoginCommandResponse;
+    } as AccessTokenResponse;
   }
 }

@@ -21,7 +21,7 @@
           }
         },
         "tags": [
-          "Identity Provider"
+          "Users"
         ]
       },
       "get": {
@@ -40,7 +40,7 @@
           }
         },
         "tags": [
-          "Identity Provider"
+          "Users"
         ]
       }
     },
@@ -54,11 +54,11 @@
           }
         },
         "tags": [
-          "Identity Provider"
+          "Users"
         ]
       }
     },
-    "/api/v1/auth": {
+    "/api/v1/auth/login": {
       "post": {
         "operationId": "AuthController_login_v1",
         "parameters": [],
@@ -73,12 +73,112 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenResponse"
+                }
+              }
+            }
           }
         },
         "tags": [
-          "Identity Provider"
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh-token": {
+      "post": {
+        "operationId": "AuthController_refreshToken_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/forgot-password": {
+      "post": {
+        "operationId": "AuthController_forgotPassword_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForgotPasswordCommandResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/reset-password": {
+      "post": {
+        "operationId": "AuthController_resetPassword_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordCommandResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
         ]
       }
     }
@@ -146,6 +246,103 @@
         "required": [
           "email",
           "password"
+        ]
+      },
+      "AccessTokenResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "expiresIn": {
+            "type": "number"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessToken",
+          "expiresIn",
+          "refreshToken"
+        ]
+      },
+      "RefreshTokenCommand": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "ForgotPasswordCommand": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "redirectPath": {
+            "type": "string",
+            "description": "Url where the user will be redirected after clicking on the link inside the mail"
+          }
+        },
+        "required": [
+          "email",
+          "redirectPath"
+        ]
+      },
+      "ForgotPasswordCommandResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "url": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "message",
+          "url"
+        ]
+      },
+      "ResetPasswordCommand": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "token passed in the url"
+          },
+          "oldPassword": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "oldPassword",
+          "password",
+          "confirmPassword"
+        ]
+      },
+      "ResetPasswordCommandResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message to describe the completed action"
+          }
+        },
+        "required": [
+          "message"
         ]
       }
     }

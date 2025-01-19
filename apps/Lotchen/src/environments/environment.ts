@@ -1,4 +1,4 @@
-import { EnvironmentConfig } from '@talisoft/common';
+import { EnvironmentConfig } from '@lotchen/ui/common';
 
 export const environment: EnvironmentConfig = {
   production: false,

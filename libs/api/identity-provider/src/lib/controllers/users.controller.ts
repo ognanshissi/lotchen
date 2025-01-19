@@ -15,7 +15,7 @@ import { GetAllUserQueryHandler } from '../application/users/get-all/get-all-use
 import { GetAllUserQuery } from '../application/users/get-all/get-all-user-query';
 import { AuthGuard } from '../guards/auth.guard';
 
-@ApiTags('Identity Provider')
+@ApiTags('Users')
 @Controller({
   version: '1',
   path: 'users',
