@@ -1,4 +1,4 @@
-import { CommandHandler, RequestHandler } from '@lotchen/api/core';
+import { CommandHandler } from '@lotchen/api/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
@@ -11,7 +11,7 @@ import {
   UserForgotPassword,
 } from './forgot-password.event';
 import { JwtService } from '@nestjs/jwt';
-import { Url } from 'url';
+import { UserToken } from '../../../schemas/user-token.schema';
 
 export class ForgotPasswordCommand {
   @IsEmail()
@@ -40,6 +40,8 @@ export class ForgotPasswordCommandHandler
 {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
+    @InjectModel(UserToken.name)
+    private readonly userTokenModel: Model<UserToken>,
     private _eventEmitter: EventEmitter2,
     private readonly _jwtService: JwtService
   ) {}
@@ -64,6 +66,11 @@ export class ForgotPasswordCommandHandler
       expiresIn: '1h',
     });
 
+    await this.userTokenModel.create({
+      content: token,
+      aim: payload.type,
+      user: user,
+    });
     // Token is valid for one hour
 
     this._eventEmitter.emit(

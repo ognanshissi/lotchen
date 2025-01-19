@@ -2,10 +2,11 @@ import { CommandHandler } from '@lotchen/api/core';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { User, UserExtention } from '../../../schemas/user.schema';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
+import { UserToken } from '../../../schemas/user-token.schema';
 
 export class ResetPasswordCommand {
   @IsNotEmpty()
@@ -40,17 +41,29 @@ export class ResetPasswordCommandHandler
 {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    private readonly _jwtService: JwtService
+    private readonly _jwtService: JwtService,
+    @InjectModel(UserToken.name)
+    private readonly userTokenModel: Model<UserToken>
   ) {}
 
   public async handlerAsync(
     command: ResetPasswordCommand
   ): Promise<ResetPasswordCommandResponse> {
-    const { sub, username, type } = await this._jwtService.verifyAsync<{
+    const { sub, username } = await this._jwtService.verifyAsync<{
       sub: string;
       type: string;
       username: string;
     }>(command.token, { secret: process.env['SECRET'] });
+
+    const userToken = await this.userTokenModel.findOne({
+      content: command.token,
+      user: sub,
+      usedAt: null,
+    });
+
+    if (!userToken) {
+      throw new BadRequestException("L'utilisateur n'existe pas !");
+    }
 
     if (command.password !== command.confirmPassword) {
       throw new BadRequestException('Les mots de passe ne correspondent pas !');
