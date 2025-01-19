@@ -12,6 +12,7 @@ import { AuthController } from './controllers/auth.controller';
 import { RefreshTokenCommandHandler } from './application/auth/refresh-token/refresh-token.command';
 import { ForgotPasswordCommandHandler } from './application/auth/forgot-password/forgot-password.command';
 import { ResetPasswordCommandHandler } from './application/auth/reset-password/reset-password.command';
+import { UserToken, UserTokenSchema } from './schemas/user-token.schema';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ResetPasswordCommandHandler } from './application/auth/reset-password/r
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Profile.name, schema: ProfileSchema },
+      { name: UserToken.name, schema: UserTokenSchema },
     ]),
   ],
   controllers: [UsersController, AuthController],
