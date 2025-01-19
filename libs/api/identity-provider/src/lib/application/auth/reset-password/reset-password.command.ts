@@ -92,6 +92,12 @@ export class ResetPasswordCommandHandler
       { password: encryptedPassword, salt }
     );
 
+    // Update token used property
+    await this.userTokenModel.findOneAndUpdate(
+      { content: command.token },
+      { usedAt: new Date() }
+    );
+
     return {
       message: 'Félicitations, votre mot de passe a été modifié.',
     } as ResetPasswordCommandResponse;

@@ -13,6 +13,9 @@ import { RefreshTokenCommandHandler } from './application/auth/refresh-token/ref
 import { ForgotPasswordCommandHandler } from './application/auth/forgot-password/forgot-password.command';
 import { ResetPasswordCommandHandler } from './application/auth/reset-password/reset-password.command';
 import { UserToken, UserTokenSchema } from './schemas/user-token.schema';
+import { Permission, PermissionSchema } from './schemas/permission.schema';
+import { Role, RoleSchema } from './schemas/role.schema';
+import { ProfileController } from './controllers/profile.controller';
 
 @Module({
   imports: [
@@ -27,9 +30,11 @@ import { UserToken, UserTokenSchema } from './schemas/user-token.schema';
       { name: User.name, schema: UserSchema },
       { name: Profile.name, schema: ProfileSchema },
       { name: UserToken.name, schema: UserTokenSchema },
+      { name: Permission.name, schema: PermissionSchema },
+      { name: Role.name, schema: RoleSchema },
     ]),
   ],
-  controllers: [UsersController, AuthController],
+  controllers: [UsersController, AuthController, ProfileController],
   providers: [
     CreateUserCommandHandler,
     GetAllUserQueryHandler,

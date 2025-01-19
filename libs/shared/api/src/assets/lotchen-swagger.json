@@ -44,20 +44,6 @@
         ]
       }
     },
-    "/api/v1/users/me": {
-      "get": {
-        "operationId": "UsersController_profile_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Users"
-        ]
-      }
-    },
     "/api/v1/auth/login": {
       "post": {
         "operationId": "AuthController_login_v1",
@@ -179,6 +165,20 @@
         },
         "tags": [
           "Auth"
+        ]
+      }
+    },
+    "/api/v1/profile/me": {
+      "get": {
+        "operationId": "ProfileController_profile_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Profile"
         ]
       }
     }
