@@ -1,11 +1,3 @@
-export * from './health.service';
-import { HealthApiService } from './health.service';
-export * from './identity.service';
-import { IdentityApiService } from './identity.service';
-export * from './leads.service';
-import { LeadsApiService } from './leads.service';
-export * from './territories.service';
-import { TerritoriesApiService } from './territories.service';
-export  * from './agencies.service';
-import { AgenciesApiService } from './agencies.service';
-export const APIS = [HealthApiService, IdentityApiService, LeadsApiService, TerritoriesApiService, AgenciesApiService];
+export * from './users.service';
+import { UsersApiService } from './users.service';
+export const APIS = [UsersApiService];

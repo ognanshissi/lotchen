@@ -86,26 +86,6 @@ export class Configuration {
         else {
             this.credentials = {};
         }
-
-        // init default BearerToken credential
-        if (!this.credentials['BearerToken']) {
-            this.credentials['BearerToken'] = () => {
-                return typeof this.accessToken === 'function'
-                    ? this.accessToken()
-                    : this.accessToken;
-            };
-        }
-
-        // init default TenancyHeader credential
-        if (!this.credentials['TenancyHeader']) {
-            this.credentials['TenancyHeader'] = () => {
-                if (this.apiKeys === null || this.apiKeys === undefined) {
-                    return undefined;
-                } else {
-                    return this.apiKeys['TenancyHeader'] || this.apiKeys['Tenant Authorization'];
-                }
-            };
-        }
     }
 
     /**

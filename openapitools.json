@@ -7,7 +7,7 @@
       "api": {
         "generatorName": "typescript-angular",
         "output": "#{cwd}/libs/shared/api/src/lib",
-        "glob": "libs/shared/api/src/assets/lotchen-api-swagger.json",
+        "glob": "libs/shared/api/src/assets/lotchen-swagger.json",
         "additionalProperties": {
           "supportsES6": "true",
           "stringEnums": "true",

@@ -4,7 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserExtention } from '../../../schemas/user.schema';
 import { Model } from 'mongoose';
 import { Profile } from '../../../schemas/profile.schema';
-import { Address } from '../../../schemas/address';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -34,8 +33,6 @@ export class CreateUserCommandHandler
 
     const profile = new this.profileModel({
       user: user._id,
-      firstName: 'Ambroise',
-      lastName: 'Bazie',
       dateOfBirth: new Date('1992-11-21'),
       contactInfo: {
         email: user.email,
@@ -45,8 +42,12 @@ export class CreateUserCommandHandler
             contact: '07877446734',
             isPrimary: true,
           },
+          workNumber: {
+            isConfirmed: false,
+            contact: '0777132974',
+            isPrimary: false,
+          },
         },
-        address: new Address(),
       },
     });
     await user.save();

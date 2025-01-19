@@ -29,11 +29,11 @@ async function bootstrap() {
     // .addServer(`http://localhost:${port}`, 'Local server http')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  // fs.writeFileSync(
-  //   './libs/shared/api/src/assets/lotchen-api-swagger.json',
-  //   JSON.stringify(document, null, 2),
-  //   'utf8'
-  // );
+  fs.writeFileSync(
+    './libs/shared/api/src/assets/lotchen-swagger.json',
+    JSON.stringify(document, null, 2),
+    'utf8'
+  );
 
   SwaggerModule.setup('swagger', app, document, {
     yamlDocumentUrl: 'swagger/json',
