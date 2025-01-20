@@ -16,6 +16,8 @@ import { UserToken, UserTokenSchema } from './schemas/user-token.schema';
 import { Permission, PermissionSchema } from './schemas/permission.schema';
 import { Role, RoleSchema } from './schemas/role.schema';
 import { ProfileController } from './controllers/profile.controller';
+import { DeleteUserCommandHandler } from './application/users/delete/delete-user.command';
+import { FindUserByIdQueryHandler } from './application/users/findby-id/find-user-by-id.query';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { ProfileController } from './controllers/profile.controller';
     RefreshTokenCommandHandler,
     ForgotPasswordCommandHandler,
     ResetPasswordCommandHandler,
+    DeleteUserCommandHandler,
+    FindUserByIdQueryHandler,
   ],
   exports: [],
 })

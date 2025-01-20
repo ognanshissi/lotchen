@@ -33,6 +33,8 @@ export class CreateUserCommandHandler
 
     const profile = new this.profileModel({
       user: user._id,
+      firstName: '',
+      lastName: '',
       dateOfBirth: new Date('1992-11-21'),
       contactInfo: {
         email: user.email,

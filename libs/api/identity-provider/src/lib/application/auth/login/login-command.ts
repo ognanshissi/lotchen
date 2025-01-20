@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { RequestHandler } from '@lotchen/api/core';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserExtention } from '../../../schemas/user.schema';
+import { User, UserExtension } from '../../../schemas/user.schema';
 import { Model } from 'mongoose';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -50,7 +50,7 @@ export class LoginCommandHandler
     }
 
     if (
-      !(await UserExtention.comparePassword(
+      !(await UserExtension.comparePassword(
         request.password,
         userExist.password
       ))

@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { User, UserExtention } from '../../../schemas/user.schema';
+import { User, UserExtension } from '../../../schemas/user.schema';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { UserToken } from '../../../schemas/user-token.schema';
@@ -79,18 +79,18 @@ export class ResetPasswordCommandHandler
     }
 
     if (
-      !(await UserExtention.comparePassword(command.oldPassword, user.password))
+      !(await UserExtension.comparePassword(command.oldPassword, user.password))
     ) {
       throw new BadRequestException("L'ancien mot de passe est incorrecte !");
     }
 
     const { salt, encryptedPassword } =
-      await UserExtention.generatePasswordHash(command.password);
+      await UserExtension.generatePasswordHash(command.password);
 
-    await this.userModel.findOneAndUpdate(
-      { id: user._id },
-      { password: encryptedPassword, salt }
-    );
+    await this.userModel.findByIdAndUpdate(user._id, {
+      password: encryptedPassword,
+      salt,
+    });
 
     // Update token used property
     await this.userTokenModel.findOneAndUpdate(

@@ -19,14 +19,17 @@ export class User extends AggregateRoot {
   isActive!: boolean;
   @Prop({ default: false })
   isVerified!: boolean;
-  @Prop()
+  @Prop({ default: false })
   isLocked!: boolean;
 
-  @Prop()
+  @Prop({ default: false })
   isSuperAdmin!: boolean;
 
-  @Prop()
+  @Prop({ default: false })
   isSystemAdmin!: boolean;
+
+  @Prop({ default: false, type: Boolean })
+  isEmailConfirmed!: boolean;
 
   @Prop()
   salt!: string;
@@ -34,7 +37,7 @@ export class User extends AggregateRoot {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-export class UserExtention {
+export class UserExtension {
   public static async generatePasswordHash(
     password: string
   ): Promise<{ encryptedPassword: string; salt: string }> {
