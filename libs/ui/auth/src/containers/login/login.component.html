@@ -2,7 +2,6 @@
   <form
     [formGroup]="loginForm"
     class="flex flex-col space-y-5"
-    style="display: flex; flex-direction: row"
     (ngSubmit)="submit()"
   >
     <div>
@@ -33,8 +32,8 @@
         </tas-input-password>
         <div class="flex justify-between items-center">
           <tas-checkbox formControlName="rememberMe"
-            >Se souvenir de moi</tas-checkbox
-          >
+            >Se souvenir de moi
+          </tas-checkbox>
           <a
             tas-text-button
             color="primary"

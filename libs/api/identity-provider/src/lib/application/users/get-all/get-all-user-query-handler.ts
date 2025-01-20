@@ -14,10 +14,10 @@ export class GetAllUserQueryHandler
   ) {}
 
   public async handlerAsync(): Promise<GetAllUserQuery[]> {
-    const data = await this.userModel.find({}, 'id email').exec();
+    const data = await this.userModel.find({}, 'id email').lean().exec();
 
     return data.map((item) => {
-      return { id: item.id, email: item.email } as GetAllUserQuery;
+      return { id: item._id, email: item.email } as GetAllUserQuery;
     });
   }
 }

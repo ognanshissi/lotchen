@@ -7,9 +7,14 @@ import { ContactInfo } from './contact-info';
 
 export type ProfileDocument = HydratedDocument<Profile>;
 
+export enum LanguageEnum {
+  FR = 'fr-FR',
+  EN = 'en-US',
+}
+
 @Schema({ timestamps: true, collection: 'identity_profiles' })
 export class Profile extends AggregateRoot {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
+  @Prop({ type: mongoose.Schema.Types.UUID, ref: 'User', required: true })
   user!: User;
 
   @Prop()
@@ -26,6 +31,12 @@ export class Profile extends AggregateRoot {
 
   @Prop()
   profilePictureUrl!: string;
+
+  @Prop({
+    type: String,
+    default: LanguageEnum.FR,
+  })
+  defaultLanguage!: LanguageEnum;
 }
 
 export const ProfileSchema = SchemaFactory.createForClass(Profile);

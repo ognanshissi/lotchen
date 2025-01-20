@@ -224,12 +224,33 @@
         "operationId": "ProfileController_profile_v1",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserProfileQueryResponse"
+                }
+              }
+            }
           }
         },
         "tags": [
           "Profile"
+        ]
+      }
+    },
+    "/api/v1/permissions/generate-permissions": {
+      "post": {
+        "operationId": "PermissionsController_generatePermissions_v1",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Permissions"
         ]
       }
     }
@@ -425,6 +446,53 @@
         },
         "required": [
           "message"
+        ]
+      },
+      "ContactInfoDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "GetUserProfileQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "defaultLanguage": {
+            "type": "string"
+          },
+          "contactInfo": {
+            "$ref": "#/components/schemas/ContactInfoDto"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "firstName",
+          "lastName",
+          "dateOfBirth",
+          "defaultLanguage",
+          "contactInfo"
         ]
       }
     }

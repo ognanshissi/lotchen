@@ -18,6 +18,8 @@ import { Role, RoleSchema } from './schemas/role.schema';
 import { ProfileController } from './controllers/profile.controller';
 import { DeleteUserCommandHandler } from './application/users/delete/delete-user.command';
 import { FindUserByIdQueryHandler } from './application/users/findby-id/find-user-by-id.query';
+import { PermissionsController } from './controllers/permissions.controller';
+import { GetUserProfileQueryHandler } from './application/profile/get-profile/get-user-profile.query';
 
 @Module({
   imports: [
@@ -36,7 +38,12 @@ import { FindUserByIdQueryHandler } from './application/users/findby-id/find-use
       { name: Role.name, schema: RoleSchema },
     ]),
   ],
-  controllers: [UsersController, AuthController, ProfileController],
+  controllers: [
+    UsersController,
+    AuthController,
+    ProfileController,
+    PermissionsController,
+  ],
   providers: [
     CreateUserCommandHandler,
     GetAllUserQueryHandler,
@@ -46,6 +53,7 @@ import { FindUserByIdQueryHandler } from './application/users/findby-id/find-use
     ResetPasswordCommandHandler,
     DeleteUserCommandHandler,
     FindUserByIdQueryHandler,
+    GetUserProfileQueryHandler,
   ],
   exports: [],
 })

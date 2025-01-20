@@ -1,6 +1,10 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../guards/auth.guard';
+import {
+  GetUserProfileQueryHandler,
+  GetUserProfileQueryResponse,
+} from '../application/profile/get-profile/get-user-profile.query';
 
 @ApiTags('Profile')
 @Controller({
@@ -8,9 +12,20 @@ import { AuthGuard } from '../guards/auth.guard';
   path: 'profile',
 })
 export class ProfileController {
+  constructor(
+    private readonly _getUserProfileQueryHandler: GetUserProfileQueryHandler
+  ) {}
+
   @Get('me')
   @UseGuards(AuthGuard)
-  public async profile(@Request() req: { user: unknown }) {
-    return req.user;
+  @ApiResponse({
+    type: GetUserProfileQueryResponse,
+  })
+  public async profile(
+    @Request() req: { user: { sub: string; username: string } }
+  ) {
+    return await this._getUserProfileQueryHandler.handlerAsync({
+      userId: req.user.sub,
+    });
   }
 }

@@ -1,8 +1,8 @@
 import { RequestHandler } from '@lotchen/api/core';
 import { CreateUserCommand } from './create-user-command';
-import { InjectModel } from '@nestjs/mongoose';
-import { User, UserExtention } from '../../../schemas/user.schema';
-import { Model } from 'mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { User, UserExtension } from '../../../schemas/user.schema';
+import { Connection, Model } from 'mongoose';
 import { Profile } from '../../../schemas/profile.schema';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
@@ -12,7 +12,8 @@ export class CreateUserCommandHandler
 {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(Profile.name) private readonly profileModel: Model<Profile>
+    @InjectModel(Profile.name) private readonly profileModel: Model<Profile>,
+    @InjectConnection() private readonly connection: Connection
   ) {}
 
   public async handlerAsync(request: CreateUserCommand): Promise<null> {
@@ -23,7 +24,11 @@ export class CreateUserCommandHandler
     // check unique email
 
     const { salt, encryptedPassword } =
-      await UserExtention.generatePasswordHash(request.password);
+      await UserExtension.generatePasswordHash(request.password);
+
+    const session = await this.connection.startSession();
+
+    session.startTransaction();
 
     const user = new this.userModel({
       email: request.email,
@@ -52,8 +57,13 @@ export class CreateUserCommandHandler
         },
       },
     });
+
     await user.save();
     await profile.save();
+
+    await session.commitTransaction();
+
+    await session.endSession();
 
     return null;
   }

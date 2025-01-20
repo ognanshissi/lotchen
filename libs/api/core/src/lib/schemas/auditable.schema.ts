@@ -1,5 +1,6 @@
 import { Prop } from '@nestjs/mongoose';
-import { TenantSchema } from '../interfaces';
+
+import { randomUUID } from 'crypto';
 
 export class AuditableSchema {
   @Prop({ required: true, type: String, default: 'system' })
@@ -12,10 +13,7 @@ export class AuditableSchema {
   isDeleted!: boolean;
 }
 
-export abstract class AggregateRoot
-  extends AuditableSchema
-  implements TenantSchema
-{
-  @Prop({ default: 'localhost', required: true, type: String })
-  tenantId!: string;
+export abstract class AggregateRoot extends AuditableSchema {
+  @Prop({ default: () => randomUUID(), required: true, type: 'UUID' })
+  _id!: string;
 }

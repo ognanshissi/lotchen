@@ -1,4 +1,3 @@
-import * as mongoose from 'mongoose';
 import { HydratedDocument } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Permission } from './permission.schema';
@@ -10,9 +9,7 @@ export class Role {
   @Prop({ type: String, required: true })
   name!: string;
 
-  @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Permission' }],
-  })
+  @Prop({ type: [Permission] })
   permissions!: Permission[];
 }
 

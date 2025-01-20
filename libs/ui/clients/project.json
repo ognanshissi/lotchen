@@ -1,7 +1,7 @@
 {
   "name": "clients",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/clients/src",
+  "sourceRoot": "libs/ui/clients/src",
   "prefix": "lib",
   "projectType": "library",
   "tags": [],
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/clients/jest.config.ts"
+        "jestConfig": "libs/ui/clients/jest.config.ts"
       }
     },
     "lint": {

@@ -1,7 +1,7 @@
 {
   "name": "auth",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/auth/src",
+  "sourceRoot": "libs/ui/auth/src",
   "prefix": "lib",
   "projectType": "library",
   "tags": [],
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/auth/jest.config.ts"
+        "jestConfig": "libs/ui/auth/jest.config.ts"
       }
     },
     "lint": {

@@ -1,7 +1,9 @@
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AggregateRoot } from '@lotchen/api/core';
 import * as bcrypt from 'bcrypt';
+import { Role } from './role.schema';
+import { Permission } from './permission.schema';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -11,10 +13,19 @@ export class User extends AggregateRoot {
   password!: string;
   @Prop({ unique: true })
   email!: string;
-  @Prop()
-  roles!: string[];
-  @Prop()
-  permissions!: string[];
+  @Prop({
+    type: [
+      {
+        type: mongoose.Schema.Types.UUID,
+        ref: 'Role',
+      },
+    ],
+  })
+  roles!: Role[];
+  @Prop({
+    type: [Permission],
+  })
+  permissions!: Permission[];
   @Prop()
   isActive!: boolean;
   @Prop({ default: false })
