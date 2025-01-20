@@ -1,9 +1,5 @@
 import { Route } from '@angular/router';
-import {
-  AuthLayoutComponent,
-  authorized,
-  PortalLayoutComponent,
-} from '@lotchen/ui/common';
+import { AuthLayoutComponent, PortalLayoutComponent } from '@lotchen/ui/common';
 
 export const appRoutes: Route[] = [
   {
@@ -14,7 +10,6 @@ export const appRoutes: Route[] = [
   {
     path: 'portal',
     component: PortalLayoutComponent,
-    canActivate: [authorized],
     children: [
       {
         path: '',
