@@ -58,7 +58,7 @@ export class ResetPasswordCommandHandler
     const userToken = await this.userTokenModel.findOne({
       content: command.token,
       user: sub,
-      usedAt: null,
+      revokedAt: null,
     });
 
     if (!userToken) {
@@ -95,7 +95,7 @@ export class ResetPasswordCommandHandler
     // Update token used property
     await this.userTokenModel.findOneAndUpdate(
       { content: command.token },
-      { usedAt: new Date() }
+      { revokedAt: new Date() }
     );
 
     return {

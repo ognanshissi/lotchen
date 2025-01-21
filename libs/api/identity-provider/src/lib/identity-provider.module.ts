@@ -20,6 +20,7 @@ import { DeleteUserCommandHandler } from './application/users/delete/delete-user
 import { FindUserByIdQueryHandler } from './application/users/findby-id/find-user-by-id.query';
 import { PermissionsController } from './controllers/permissions.controller';
 import { GetUserProfileQueryHandler } from './application/profile/get-profile/get-user-profile.query';
+import { RolesController } from './controllers/roles.controller';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { GetUserProfileQueryHandler } from './application/profile/get-profile/ge
     AuthController,
     ProfileController,
     PermissionsController,
+    RolesController,
   ],
   providers: [
     CreateUserCommandHandler,

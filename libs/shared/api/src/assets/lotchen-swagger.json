@@ -253,6 +253,20 @@
           "Permissions"
         ]
       }
+    },
+    "/api/v1/roles/generate-predefined-roles": {
+      "post": {
+        "operationId": "RolesController_generatePredefinedRoles_v1",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Roles"
+        ]
+      }
     }
   },
   "info": {

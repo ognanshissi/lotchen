@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { User } from './user.schema';
 import { ContactInfo } from './contact-info';
 
@@ -14,7 +14,7 @@ export enum LanguageEnum {
 
 @Schema({ timestamps: true, collection: 'identity_profiles' })
 export class Profile extends AggregateRoot {
-  @Prop({ type: mongoose.Schema.Types.UUID, ref: 'User', required: true })
+  @Prop({ type: Types.UUID, ref: 'User', required: true })
   user!: User;
 
   @Prop()
@@ -29,7 +29,7 @@ export class Profile extends AggregateRoot {
   @Prop()
   dateOfBirth!: Date;
 
-  @Prop()
+  @Prop({ type: String })
   profilePictureUrl!: string;
 
   @Prop({

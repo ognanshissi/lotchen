@@ -53,7 +53,7 @@ export class RefreshTokenCommandHandler
       .findOne(
         {
           content: command.refreshToken,
-          usedAt: null,
+          revokedAt: null,
         },
         'content'
       )
@@ -65,7 +65,7 @@ export class RefreshTokenCommandHandler
     }
 
     // Get sub from the header bearer token
-    const { sub } = await this._jwtService.decode<{ sub: string }>(token);
+    const { sub } = this._jwtService.decode<{ sub: string }>(token);
 
     if (sub !== verifyRefreshToken['sub']) {
       throw new UnauthorizedException();
@@ -95,11 +95,12 @@ export class RefreshTokenCommandHandler
 
     await this.userTokenModel.findOneAndUpdate(
       { content: existingToken.content },
-      { usedAt: new Date() }
+      { revokedAt: new Date() }
     ); // this action invalidate the token
     await this.userTokenModel.create({
       content: refreshToken,
       user: userExist,
+      aim: 'refreshToken',
     }); // save the new token
 
     return {

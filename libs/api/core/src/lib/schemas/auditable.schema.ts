@@ -2,7 +2,7 @@ import { Prop } from '@nestjs/mongoose';
 
 import { randomUUID } from 'crypto';
 
-export class AuditableSchema {
+export abstract class AuditableSchema {
   @Prop({ required: true, type: String, default: 'system' })
   createdBy!: string; // profile_id
 
@@ -14,6 +14,11 @@ export class AuditableSchema {
 }
 
 export abstract class AggregateRoot extends AuditableSchema {
+  @Prop({ default: () => randomUUID(), required: true, type: 'UUID' })
+  _id!: string;
+}
+
+export abstract class SchemaIdentifier {
   @Prop({ default: () => randomUUID(), required: true, type: 'UUID' })
   _id!: string;
 }
