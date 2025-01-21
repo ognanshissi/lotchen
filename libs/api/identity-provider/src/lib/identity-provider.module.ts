@@ -23,7 +23,6 @@ import { identityModelsProvider } from './models.provider';
       global: true,
       secret: process.env['SECRET'],
       signOptions: {
-        algorithm: 'RS512',
         expiresIn: process.env['TOKEN_EXPIRES_IN'], // for default token expiration
       },
     }),
