@@ -1,6 +1,5 @@
 import { CommandHandler } from '@lotchen/api/core';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { User, UserExtension } from '../../../schemas/user.schema';
@@ -40,9 +39,9 @@ export class ResetPasswordCommandHandler
   implements CommandHandler<ResetPasswordCommand, ResetPasswordCommandResponse>
 {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>,
+    @Inject('USER_MODEL') private readonly userModel: Model<User>,
     private readonly _jwtService: JwtService,
-    @InjectModel(UserToken.name)
+    @Inject('USER_TOKEN_MODEL')
     private readonly userTokenModel: Model<UserToken>
   ) {}
 

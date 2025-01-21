@@ -1,10 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { CommandHandler } from '@lotchen/api/core';
-import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../../schemas/user.schema';
 import { Model } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 export class DeleteUserCommand {
   @ApiProperty()
@@ -16,9 +15,7 @@ export class DeleteUserCommand {
 export class DeleteUserCommandHandler
   implements CommandHandler<DeleteUserCommand, void>
 {
-  constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>
-  ) {}
+  constructor(@Inject('USER_MODEL') private readonly userModel: Model<User>) {}
 
   public async handlerAsync(command: DeleteUserCommand): Promise<void> {
     const user = await this.userModel

@@ -8,7 +8,7 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserCommandHandler } from '../application/users/create/create-user-command-handler';
 import { CreateUserCommand } from '../application/users/create/create-user-command';
 import { GetAllUserQueryHandler } from '../application/users/get-all/get-all-user-query-handler';
@@ -22,6 +22,10 @@ import {
   FindUserByIdQueryResponse,
 } from '../application/users/findby-id/find-user-by-id.query';
 
+@ApiHeader({
+  name: 'x-tenant-fqn',
+  description: 'The Tenant Fqn',
+})
 @ApiTags('Users')
 @Controller({
   version: '1',

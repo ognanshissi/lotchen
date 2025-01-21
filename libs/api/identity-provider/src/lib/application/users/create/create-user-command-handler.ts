@@ -1,19 +1,18 @@
 import { RequestHandler } from '@lotchen/api/core';
 import { CreateUserCommand } from './create-user-command';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { User, UserExtension } from '../../../schemas/user.schema';
 import { Connection, Model } from 'mongoose';
 import { Profile } from '../../../schemas/profile.schema';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CreateUserCommandHandler
   implements RequestHandler<CreateUserCommand, null>
 {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(Profile.name) private readonly profileModel: Model<Profile>,
-    @InjectConnection() private readonly connection: Connection
+    @Inject('USER_MODEL') private readonly userModel: Model<User>,
+    @Inject('PROFILE_MODEL') private readonly profileModel: Model<Profile>,
+    @Inject('TENANT_CONNECTION') private readonly connection: Connection
   ) {}
 
   public async handlerAsync(request: CreateUserCommand): Promise<null> {

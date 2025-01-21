@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { RequestHandler } from '@lotchen/api/core';
-import { InjectModel } from '@nestjs/mongoose';
 import { User, UserExtension } from '../../../schemas/user.schema';
 import { Model } from 'mongoose';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 import { UserToken } from '../../../schemas/user-token.schema';
@@ -33,9 +32,9 @@ export class LoginCommandHandler
   implements RequestHandler<LoginCommand, AccessTokenResponse>
 {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>,
+    @Inject('USER_MODEL') private readonly userModel: Model<User>,
     private readonly _jwtService: JwtService,
-    @InjectModel(UserToken.name) private readonly tokenModel: Model<UserToken>
+    @Inject('USER_TOKEN_MODEL') private readonly tokenModel: Model<UserToken>
   ) {}
 
   public async handlerAsync(
@@ -67,7 +66,7 @@ export class LoginCommandHandler
       },
       {
         secret: process.env['SECRET'],
-        expiresIn: '7d',
+        expiresIn: process.env['REFRESH_TOKEN_EXPIRES_IN'],
       }
     );
     await this.tokenModel.create({

@@ -1,10 +1,9 @@
 import { CommandHandler } from '@lotchen/api/core';
-import { InjectModel } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { Model } from 'mongoose';
 import { User } from '../../../schemas/user.schema';
-import { NotFoundException } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
   ForgotPasswordEvent,
@@ -39,8 +38,8 @@ export class ForgotPasswordCommandHandler
     CommandHandler<ForgotPasswordCommand, ForgotPasswordCommandResponse>
 {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(UserToken.name)
+    @Inject('USER_MODEL') private readonly userModel: Model<User>,
+    @Inject('USER_TOKEN_MODEL')
     private readonly userTokenModel: Model<UserToken>,
     private _eventEmitter: EventEmitter2,
     private readonly _jwtService: JwtService

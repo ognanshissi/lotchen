@@ -1,16 +1,21 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { InjectConnection } from '@nestjs/mongoose';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { ApiHeader, ApiTags } from '@nestjs/swagger';
 import { Connection } from 'mongoose';
 import { PermissionAction } from '../utils/permission.action';
 
+@ApiHeader({
+  name: 'x-tenant-fqn',
+  description: 'The Tenant Fqn',
+})
 @Controller({
   version: '1',
   path: 'permissions',
 })
 @ApiTags('Permissions')
 export class PermissionsController {
-  constructor(@InjectConnection() private readonly connection: Connection) {}
+  constructor(
+    @Inject('TENANT_CONNECTION') private readonly connection: Connection
+  ) {}
 
   @Post('/generate-permissions')
   async generatePermissions(@Body() req: any): Promise<any> {

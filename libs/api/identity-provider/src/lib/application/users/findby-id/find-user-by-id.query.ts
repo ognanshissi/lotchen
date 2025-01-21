@@ -1,10 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { QueryHandler } from '@lotchen/api/core';
-import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../../schemas/user.schema';
 import { Model, ObjectId } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 export class FindUserByIdQuery {
   @ApiProperty()
@@ -33,9 +32,7 @@ export class FindUserByIdQueryResponse {
 export class FindUserByIdQueryHandler
   implements QueryHandler<FindUserByIdQuery, FindUserByIdQueryResponse>
 {
-  constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>
-  ) {}
+  constructor(@Inject('USER_MODEL') private readonly userModel: Model<User>) {}
 
   public async handlerAsync(
     query: FindUserByIdQuery

@@ -1,19 +1,20 @@
-import { Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { InjectModel } from '@nestjs/mongoose';
+import { Controller, Inject, Post } from '@nestjs/common';
+import { ApiHeader, ApiTags } from '@nestjs/swagger';
 import { Role } from '../schemas/role.schema';
 import { Model } from 'mongoose';
 import { predefinedRoles } from '../utils/roles.predefined';
 
+@ApiHeader({
+  name: 'x-tenant-fqn',
+  description: 'The Tenant Fqn',
+})
 @Controller({
   version: '1',
   path: 'roles',
 })
 @ApiTags('Roles')
 export class RolesController {
-  constructor(
-    @InjectModel(Role.name) private readonly roleModel: Model<Role>
-  ) {}
+  constructor(@Inject('ROLE_MODEL') private readonly roleModel: Model<Role>) {}
 
   @Post('generate-predefined-roles')
   async generatePredefinedRoles() {

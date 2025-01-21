@@ -1,8 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { QueryHandler } from '@lotchen/api/core';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Profile } from '../../../schemas/profile.schema';
 import { Model } from 'mongoose';
 
@@ -45,7 +44,7 @@ export class GetUserProfileQueryHandler
   implements QueryHandler<GetUserProfileQuery, GetUserProfileQueryResponse>
 {
   constructor(
-    @InjectModel(Profile.name) private readonly profileModel: Model<Profile>
+    @Inject('PROFILE_MODEL') private readonly profileModel: Model<Profile>
   ) {}
 
   public async handlerAsync(

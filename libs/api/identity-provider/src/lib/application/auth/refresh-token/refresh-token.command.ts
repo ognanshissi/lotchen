@@ -1,9 +1,8 @@
 import { CommandHandler } from '@lotchen/api/core';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { AccessTokenResponse } from '../login/login-command';
 import { IsNotEmpty } from 'class-validator';
-import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../../../schemas/user.schema';
 import { Model } from 'mongoose';
@@ -22,8 +21,8 @@ export class RefreshTokenCommandHandler
 {
   constructor(
     private readonly _jwtService: JwtService,
-    @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(UserToken.name)
+    @Inject('USER_MODEL') private readonly userModel: Model<User>,
+    @Inject('USER_TOKEN_MODEL')
     private readonly userTokenModel: Model<UserToken>
   ) {}
 
@@ -89,7 +88,7 @@ export class RefreshTokenCommandHandler
       },
       {
         secret: process.env['SECRET'],
-        expiresIn: '7d',
+        expiresIn: process.env['REFRESH_TOKEN_EXPIRES_IN'],
       }
     );
 

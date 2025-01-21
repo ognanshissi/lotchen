@@ -6,11 +6,11 @@ import {
   Post,
   Request,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
+  AccessTokenResponse,
   LoginCommand,
   LoginCommandHandler,
-  AccessTokenResponse,
 } from '../application/auth/login/login-command';
 import {
   RefreshTokenCommand,
@@ -28,6 +28,10 @@ import {
   ResetPasswordCommandResponse,
 } from '../application/auth/reset-password/reset-password.command';
 
+@ApiHeader({
+  name: 'x-tenant-fqn',
+  description: 'The Tenant Fqn',
+})
 @ApiTags('Auth')
 @Controller({ version: '1', path: 'auth' })
 export class AuthController {

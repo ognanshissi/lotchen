@@ -1,4 +1,4 @@
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../guards/auth.guard';
 import {
@@ -6,6 +6,10 @@ import {
   GetUserProfileQueryResponse,
 } from '../application/profile/get-profile/get-user-profile.query';
 
+@ApiHeader({
+  name: 'x-tenant-fqn',
+  description: 'The Tenant Fqn',
+})
 @ApiTags('Profile')
 @Controller({
   version: '1',
