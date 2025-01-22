@@ -19,7 +19,7 @@ import {
   accessTokenInterceptor,
   ENVIRONMENT_CONFIG,
   tenantInterceptor,
-} from '@lotchen/ui/common';
+} from '@lotchen/lotchen/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [

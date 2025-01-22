@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { IdentityProviderModule } from '@lotchen/api/identity-provider';
+import { IdentityProviderModule } from '@lotchen/lotchen-api/identity-provider';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';

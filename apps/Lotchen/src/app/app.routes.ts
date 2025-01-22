@@ -1,5 +1,8 @@
 import { Route } from '@angular/router';
-import { AuthLayoutComponent, PortalLayoutComponent } from '@lotchen/ui/common';
+import {
+  AuthLayoutComponent,
+  PortalLayoutComponent,
+} from '@lotchen/lotchen/common';
 
 export const appRoutes: Route[] = [
   {
@@ -18,18 +21,18 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'dashboard',
-        loadChildren: () => import('@lotchen/ui/dashboard'),
+        loadChildren: () => import('@lotchen/lotchen/dashboard'),
       },
       {
         path: 'prospects',
-        loadChildren: () => import('@lotchen/ui/prospects'),
+        loadChildren: () => import('@lotchen/lotchen/prospects'),
       },
     ],
   },
   {
     path: 'auth',
     component: AuthLayoutComponent,
-    loadChildren: () => import('@lotchen/ui/auth'),
+    loadChildren: () => import('@lotchen/lotchen/auth'),
   },
   {
     path: '**',
