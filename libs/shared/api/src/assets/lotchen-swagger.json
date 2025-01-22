@@ -473,12 +473,16 @@
           },
           "refreshToken": {
             "type": "string"
+          },
+          "tokenType": {
+            "type": "string"
           }
         },
         "required": [
           "accessToken",
           "expiresIn",
-          "refreshToken"
+          "refreshToken",
+          "tokenType"
         ]
       },
       "RefreshTokenCommand": {

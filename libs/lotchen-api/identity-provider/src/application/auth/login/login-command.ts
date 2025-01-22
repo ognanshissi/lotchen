@@ -24,6 +24,9 @@ export class AccessTokenResponse {
   expiresIn!: number;
   @ApiProperty()
   refreshToken!: string;
+
+  @ApiProperty()
+  tokenType!: string;
 }
 
 @Injectable()
@@ -71,6 +74,7 @@ export class LoginCommandHandler
       accessToken: await this._jwtService.signAsync(payload),
       refreshToken: refreshToken,
       expiresIn: 3600,
+      tokenType: 'Bearer',
     } as AccessTokenResponse;
   }
 }

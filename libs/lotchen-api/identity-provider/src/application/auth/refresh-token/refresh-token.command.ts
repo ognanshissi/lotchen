@@ -103,6 +103,7 @@ export class RefreshTokenCommandHandler
       accessToken: await this._jwtService.signAsync(payload),
       refreshToken: refreshToken,
       expiresIn: 3600,
+      tokenType: 'Bearer',
     } as AccessTokenResponse;
   }
 
