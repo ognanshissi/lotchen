@@ -1,7 +1,7 @@
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ApiHeader, ApiTags } from '@nestjs/swagger';
 import { Connection } from 'mongoose';
-import { PermissionAction } from '../utils/permission.action';
+import { PermissionAction } from '@lotchen/api/core';
 
 @ApiHeader({
   name: 'x-tenant-fqn',

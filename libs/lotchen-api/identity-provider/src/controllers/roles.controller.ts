@@ -2,7 +2,7 @@ import { Controller, Inject, Post } from '@nestjs/common';
 import { ApiHeader, ApiTags } from '@nestjs/swagger';
 import { Role } from '../schemas/role.schema';
 import { Model } from 'mongoose';
-import { predefinedRoles } from '../utils/roles.predefined';
+import { predefinedRoles } from '@lotchen/api/core';
 
 @ApiHeader({
   name: 'x-tenant-fqn',
