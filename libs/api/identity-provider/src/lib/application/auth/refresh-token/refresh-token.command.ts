@@ -10,7 +10,7 @@ import { Request } from 'express';
 import { UserToken } from '../../../schemas/user-token.schema';
 
 export class RefreshTokenCommand {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'refreshToken est obligatoire .' })
   @ApiProperty()
   refreshToken!: string;
 }
@@ -52,14 +52,13 @@ export class RefreshTokenCommandHandler
       .findOne(
         {
           content: command.refreshToken,
-          revokedAt: null,
         },
         'content'
       )
       .lean()
       .exec();
 
-    if (!existingToken) {
+    if (existingToken) {
       throw new UnauthorizedException();
     }
 
@@ -78,6 +77,14 @@ export class RefreshTokenCommandHandler
       throw new UnauthorizedException();
     }
 
+    // save the used refresh token
+    await this.userTokenModel.create({
+      content: command.refreshToken,
+      user: userExist,
+      aim: 'refreshToken',
+      revokedAt: new Date(),
+    }); // save the new token
+
     // new tokens
     const payload = { sub: userExist.id, username: userExist.email };
 
@@ -91,16 +98,6 @@ export class RefreshTokenCommandHandler
         expiresIn: process.env['REFRESH_TOKEN_EXPIRES_IN'],
       }
     );
-
-    await this.userTokenModel.findOneAndUpdate(
-      { content: existingToken.content },
-      { revokedAt: new Date() }
-    ); // this action invalidate the token
-    await this.userTokenModel.create({
-      content: refreshToken,
-      user: userExist,
-      aim: 'refreshToken',
-    }); // save the new token
 
     return {
       accessToken: await this._jwtService.signAsync(payload),

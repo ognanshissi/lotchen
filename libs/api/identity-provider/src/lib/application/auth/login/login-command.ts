@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
-import { UserToken } from '../../../schemas/user-token.schema';
 
 export class LoginCommand {
   @ApiProperty()
@@ -33,8 +32,7 @@ export class LoginCommandHandler
 {
   constructor(
     @Inject('USER_MODEL') private readonly userModel: Model<User>,
-    private readonly _jwtService: JwtService,
-    @Inject('USER_TOKEN_MODEL') private readonly tokenModel: Model<UserToken>
+    private readonly _jwtService: JwtService
   ) {}
 
   public async handlerAsync(
@@ -69,11 +67,6 @@ export class LoginCommandHandler
         expiresIn: process.env['REFRESH_TOKEN_EXPIRES_IN'],
       }
     );
-    await this.tokenModel.create({
-      content: refreshToken,
-      aim: 'refreshToken',
-      user: userExist,
-    });
     return {
       accessToken: await this._jwtService.signAsync(payload),
       refreshToken: refreshToken,
