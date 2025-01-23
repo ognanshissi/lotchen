@@ -14,6 +14,7 @@ import { PermissionsController } from './controllers/permissions.controller';
 import { GetUserProfileQueryHandler } from './application/profile/get-profile/get-user-profile.query';
 import { RolesController } from './controllers/roles.controller';
 import { identityModelsProvider } from './models.provider';
+import { AssignPermissionsCommandHandler } from './application/profile/assign-permissions/assign-permissions.command';
 
 @Module({
   imports: [],
@@ -35,6 +36,7 @@ import { identityModelsProvider } from './models.provider';
     DeleteUserCommandHandler,
     FindUserByIdQueryHandler,
     GetUserProfileQueryHandler,
+    AssignPermissionsCommandHandler,
   ],
   exports: [],
 })

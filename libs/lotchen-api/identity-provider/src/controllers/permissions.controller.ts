@@ -1,7 +1,13 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { ApiHeader, ApiTags } from '@nestjs/swagger';
-import { Connection } from 'mongoose';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { ApiHeader, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Connection, Model } from 'mongoose';
 import { PermissionAction } from '@lotchen/api/core';
+import { Permission } from '../schemas/permission.schema';
+
+export class FindAllPermissionQuery {
+  @ApiProperty()
+  code!: string;
+}
 
 @ApiHeader({
   name: 'x-tenant-fqn',
@@ -14,7 +20,9 @@ import { PermissionAction } from '@lotchen/api/core';
 @ApiTags('Permissions')
 export class PermissionsController {
   constructor(
-    @Inject('TENANT_CONNECTION') private readonly connection: Connection
+    @Inject('TENANT_CONNECTION') private readonly connection: Connection,
+    @Inject('PERMISSION_MODEL')
+    private readonly permissionModel: Model<Permission>
   ) {}
 
   @Post('/generate-permissions')
@@ -22,7 +30,6 @@ export class PermissionsController {
     const permissions = Object.values(PermissionAction).map(
       (item) => item as string
     );
-
     await this.connection.dropCollection('identity_permissions');
     await this.connection.collection('identity_permissions').insertMany([
       ...permissions.map((permission) => {
@@ -32,5 +39,16 @@ export class PermissionsController {
       }),
     ]);
     return permissions;
+  }
+
+  /**
+   * Get all permissions
+   */
+  @Get('')
+  @ApiResponse({
+    type: FindAllPermissionQuery,
+  })
+  async findAll(): Promise<FindAllPermissionQuery[]> {
+    return this.permissionModel.find().lean().select('code');
   }
 }

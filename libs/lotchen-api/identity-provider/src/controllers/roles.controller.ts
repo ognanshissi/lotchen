@@ -1,4 +1,4 @@
-import { Controller, Inject, Post } from '@nestjs/common';
+import { Controller, Get, Inject, Post } from '@nestjs/common';
 import { ApiHeader, ApiTags } from '@nestjs/swagger';
 import { Role } from '../schemas/role.schema';
 import { Model } from 'mongoose';
@@ -28,5 +28,15 @@ export class RolesController {
         }),
       ],
     });
+  }
+
+  @Get()
+  async roles(): Promise<any> {
+    return this.roleModel
+      .find({}, 'id name permissions')
+      .populate('permissions')
+      .select('code')
+      .lean()
+      .exec();
   }
 }

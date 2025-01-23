@@ -319,6 +319,47 @@
         ]
       }
     },
+    "/api/v1/profile/{userId}/assign-permissions": {
+      "put": {
+        "operationId": "ProfileController_assignPermissions_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignPermissionsCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Profile"
+        ]
+      }
+    },
     "/api/v1/permissions/generate-permissions": {
       "post": {
         "operationId": "PermissionsController_generatePermissions_v1",
@@ -342,6 +383,36 @@
         ]
       }
     },
+    "/api/v1/permissions": {
+      "get": {
+        "operationId": "PermissionsController_findAll_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindAllPermissionQuery"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Permissions"
+        ]
+      }
+    },
     "/api/v1/roles/generate-predefined-roles": {
       "post": {
         "operationId": "RolesController_generatePredefinedRoles_v1",
@@ -357,6 +428,29 @@
         ],
         "responses": {
           "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
+    "/api/v1/roles": {
+      "get": {
+        "operationId": "RolesController_roles_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": ""
           }
         },
@@ -608,6 +702,32 @@
           "dateOfBirth",
           "defaultLanguage",
           "contactInfo"
+        ]
+      },
+      "AssignPermissionsCommandRequest": {
+        "type": "object",
+        "properties": {
+          "permissions": {
+            "description": "List of permissions keys",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "permissions"
+        ]
+      },
+      "FindAllPermissionQuery": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
         ]
       }
     }
