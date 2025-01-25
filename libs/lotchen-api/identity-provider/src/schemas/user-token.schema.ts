@@ -13,7 +13,7 @@ export class UserToken extends SchemaIdentifier {
   @Prop({ required: true })
   content!: string;
 
-  @Prop({ default: null })
+  @Prop({ default: null, type: Date })
   revokedAt!: Date | null;
 
   @Prop({ type: String })

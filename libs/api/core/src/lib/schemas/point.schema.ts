@@ -5,7 +5,7 @@ export class Point {
   @Prop({ type: String, enum: ['Point'], required: true })
   type!: string;
 
-  @Prop({ type: [Number], required: String })
+  @Prop({ type: [Number], required: true })
   coordinates!: [number];
 }
 

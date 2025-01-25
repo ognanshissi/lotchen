@@ -1,11 +1,11 @@
-import { AuditableSchema } from '@lotchen/api/core';
+import { AggregateRoot } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User } from './user.schema';
 import { Agency } from './agency.schema';
 
 @Schema({ collection: 'identity_teams', timestamps: true })
-export class Team extends AuditableSchema {
+export class Team extends AggregateRoot {
   @Prop({ unique: true, type: String })
   name!: string;
   @Prop({

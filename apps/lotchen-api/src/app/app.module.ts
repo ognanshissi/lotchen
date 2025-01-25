@@ -1,12 +1,12 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { IdentityProviderModule } from '@lotchen/lotchen-api/identity-provider';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, RouterModule } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { mongooseModuleAsyncOptions } from './mongoose-module-options';
 import { CoreModule, TenantMiddleware } from '@lotchen/api/core';
+import { IdentityProviderModule } from '@lotchen/lotchen-api/identity-provider';
 
 @Module({
   imports: [
@@ -16,6 +16,12 @@ import { CoreModule, TenantMiddleware } from '@lotchen/api/core';
     EventEmitterModule.forRoot(),
     IdentityProviderModule,
     CoreModule,
+    RouterModule.register([
+      {
+        path: 'identity',
+        module: IdentityProviderModule,
+      },
+    ]),
   ],
   controllers: [],
   providers: [

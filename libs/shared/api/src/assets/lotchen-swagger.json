@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/v1/users": {
+    "/api/v1/identity/users": {
       "post": {
         "operationId": "UsersController_createUser_v1",
         "parameters": [
@@ -62,7 +62,7 @@
         ]
       }
     },
-    "/api/v1/users/{id}": {
+    "/api/v1/identity/users/{id}": {
       "get": {
         "operationId": "UsersController_findById_v1",
         "parameters": [
@@ -129,7 +129,7 @@
         ]
       }
     },
-    "/api/v1/users/{id}/assign-permissions": {
+    "/api/v1/identity/users/{id}/assign-permissions": {
       "put": {
         "operationId": "UsersController_assignPermissions_v1",
         "parameters": [
@@ -170,7 +170,7 @@
         ]
       }
     },
-    "/api/v1/users/{id}/assign-roles": {
+    "/api/v1/identity/users/{id}/assign-roles": {
       "put": {
         "operationId": "UsersController_assignRoles_v1",
         "parameters": [
@@ -211,7 +211,7 @@
         ]
       }
     },
-    "/api/v1/users/{id}/roles": {
+    "/api/v1/identity/users/{id}/roles": {
       "get": {
         "operationId": "UsersController_userRoles_v1",
         "parameters": [
@@ -242,7 +242,7 @@
         ]
       }
     },
-    "/api/v1/users/{id}/permissions": {
+    "/api/v1/identity/users/{id}/permissions": {
       "get": {
         "operationId": "UsersController_userPermissions_v1",
         "parameters": [
@@ -280,7 +280,7 @@
         ]
       }
     },
-    "/api/v1/auth/login": {
+    "/api/v1/identity/auth/login": {
       "post": {
         "operationId": "AuthController_login_v1",
         "parameters": [
@@ -320,7 +320,7 @@
         ]
       }
     },
-    "/api/v1/auth/refresh-token": {
+    "/api/v1/identity/auth/refresh-token": {
       "post": {
         "operationId": "AuthController_refreshToken_v1",
         "parameters": [
@@ -360,7 +360,7 @@
         ]
       }
     },
-    "/api/v1/auth/forgot-password": {
+    "/api/v1/identity/auth/forgot-password": {
       "post": {
         "operationId": "AuthController_forgotPassword_v1",
         "parameters": [
@@ -400,7 +400,7 @@
         ]
       }
     },
-    "/api/v1/auth/reset-password": {
+    "/api/v1/identity/auth/reset-password": {
       "post": {
         "operationId": "AuthController_resetPassword_v1",
         "parameters": [
@@ -440,7 +440,7 @@
         ]
       }
     },
-    "/api/v1/profile/me": {
+    "/api/v1/identity/profile/me": {
       "get": {
         "operationId": "ProfileController_profile_v1",
         "parameters": [
@@ -470,7 +470,7 @@
         ]
       }
     },
-    "/api/v1/permissions/generate": {
+    "/api/v1/identity/permissions/generate": {
       "post": {
         "operationId": "PermissionsController_generatePermissions_v1",
         "parameters": [
@@ -493,7 +493,7 @@
         ]
       }
     },
-    "/api/v1/permissions": {
+    "/api/v1/identity/permissions": {
       "get": {
         "operationId": "PermissionsController_findAll_v1",
         "parameters": [
@@ -523,7 +523,7 @@
         ]
       }
     },
-    "/api/v1/roles/generate-predefined-roles": {
+    "/api/v1/identity/roles/generate-predefined-roles": {
       "post": {
         "operationId": "RolesController_generatePredefinedRoles_v1",
         "parameters": [
@@ -546,7 +546,7 @@
         ]
       }
     },
-    "/api/v1/roles": {
+    "/api/v1/identity/roles": {
       "get": {
         "operationId": "RolesController_findAll_v1",
         "parameters": [
@@ -566,6 +566,30 @@
         },
         "tags": [
           "Roles"
+        ]
+      }
+    },
+    "/api/v1/identity/territories": {
+      "post": {
+        "operationId": "TerritoriesController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTerritoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Territories"
         ]
       }
     }
@@ -890,6 +914,27 @@
         },
         "required": [
           "code"
+        ]
+      },
+      "CreateTerritoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the territory",
+            "example": "Ivory Coast"
+          },
+          "coordinates": {
+            "description": "Coordinates of the territory, probably a known country such as Ivory Coast",
+            "example": "[7.5455112, -5.547545]",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "name"
         ]
       }
     }

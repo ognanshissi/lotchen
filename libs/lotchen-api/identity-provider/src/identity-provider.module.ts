@@ -17,6 +17,8 @@ import { identityModelsProvider } from './models.provider';
 import { AssignPermissionsCommandHandler } from './application/users/assign-permissions/assign-permissions.command';
 import { AssignRolesCommandHandler } from './application/users/assign-roles/assign-roles.command';
 import { GetUserPermissionsQueryHandler } from './application/users/get-permissions/get-user-permissions.query';
+import { TerritoriesService } from './services/territories.service';
+import { TerritoriesController } from './controllers/territories.controller';
 
 @Module({
   imports: [],
@@ -26,6 +28,7 @@ import { GetUserPermissionsQueryHandler } from './application/users/get-permissi
     ProfileController,
     PermissionsController,
     RolesController,
+    TerritoriesController,
   ],
   providers: [
     ...identityModelsProvider,
@@ -41,6 +44,7 @@ import { GetUserPermissionsQueryHandler } from './application/users/get-permissi
     AssignPermissionsCommandHandler,
     AssignRolesCommandHandler,
     GetUserPermissionsQueryHandler,
+    TerritoriesService,
   ],
   exports: [],
 })

@@ -1,10 +1,10 @@
-import { Address, AuditableSchema } from '@lotchen/api/core';
+import { Address, AggregateRoot } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Territory } from './territory.schema';
 import * as mongoose from 'mongoose';
 
 @Schema({ collection: 'identity_agencies', timestamps: true })
-export class Agency extends AuditableSchema {
+export class Agency extends AggregateRoot {
   @Prop({
     type: Address,
   })
