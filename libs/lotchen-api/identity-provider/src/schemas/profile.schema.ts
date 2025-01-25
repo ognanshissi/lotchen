@@ -1,4 +1,4 @@
-import { AggregateRoot } from '@lotchen/api/core';
+import { AggregateRoot, LanguageEnum } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { HydratedDocument, Types } from 'mongoose';
@@ -6,11 +6,6 @@ import { User } from './user.schema';
 import { ContactInfo } from './contact-info';
 
 export type ProfileDocument = HydratedDocument<Profile>;
-
-export enum LanguageEnum {
-  FR = 'fr-FR',
-  EN = 'en-US',
-}
 
 @Schema({ timestamps: true, collection: 'identity_profiles' })
 export class Profile extends AggregateRoot {
@@ -26,7 +21,7 @@ export class Profile extends AggregateRoot {
   @Prop({ type: mongoose.Schema.Types.Mixed, required: true })
   contactInfo!: ContactInfo;
 
-  @Prop()
+  @Prop({ type: Date, default: null })
   dateOfBirth!: Date;
 
   @Prop({ type: String })
@@ -35,6 +30,7 @@ export class Profile extends AggregateRoot {
   @Prop({
     type: String,
     default: LanguageEnum.FR,
+    enum: LanguageEnum,
   })
   defaultLanguage!: LanguageEnum;
 }

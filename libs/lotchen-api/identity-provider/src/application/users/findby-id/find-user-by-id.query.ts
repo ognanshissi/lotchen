@@ -11,6 +11,14 @@ export class FindUserByIdQuery {
   id!: string;
 }
 
+export class FindUserByIdQueryRoleDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty()
+  name!: string;
+}
+
 export class FindUserByIdQueryResponse {
   @ApiProperty()
   id!: ObjectId;
@@ -26,6 +34,12 @@ export class FindUserByIdQueryResponse {
 
   @ApiProperty({ type: Boolean })
   isSuperAdmin!: boolean;
+
+  @ApiProperty({ type: [String] })
+  permissions!: string[];
+
+  @ApiProperty({ type: () => FindUserByIdQueryRoleDto })
+  roles!: FindUserByIdQueryRoleDto[];
 }
 
 @Injectable()
@@ -43,6 +57,8 @@ export class FindUserByIdQueryHandler
         isDeleted: false,
         isSystemAdmin: false,
       })
+      .populate('roles')
+      .populate('permissions')
       .exec();
 
     if (!user) {
@@ -55,6 +71,15 @@ export class FindUserByIdQueryHandler
       isLocked: user.isLocked,
       isVerified: user.isVerified,
       isSuperAdmin: user.isSuperAdmin,
+      roles: user.roles.map((role) => {
+        return {
+          name: role.name,
+          id: role._id,
+        } as FindUserByIdQueryRoleDto;
+      }),
+      permissions: user.permissions.map((permission) => {
+        return permission.code;
+      }),
     };
   }
 }

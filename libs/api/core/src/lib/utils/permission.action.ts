@@ -8,6 +8,7 @@ export enum PermissionAction {
   userDeleteBulk = 'user_delete_bulk',
   userCreateAdmin = 'user_create_admin',
   userDeleteAdmin = 'user_delete_admin',
+  userManage = 'user_manage',
 
   // roles
   roleCreate = 'role_create',

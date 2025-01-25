@@ -31,7 +31,7 @@ export class RolesController {
   }
 
   @Get()
-  async roles(): Promise<any> {
+  async findAll(): Promise<any> {
     return this.roleModel
       .find({}, 'id name permissions')
       .populate('permissions')

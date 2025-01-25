@@ -25,7 +25,7 @@ export class PermissionsController {
     private readonly permissionModel: Model<Permission>
   ) {}
 
-  @Post('/generate-permissions')
+  @Post('/generate')
   async generatePermissions(@Body() req: any): Promise<any> {
     const permissions = Object.values(PermissionAction).map(
       (item) => item as string
@@ -49,6 +49,6 @@ export class PermissionsController {
     type: FindAllPermissionQuery,
   })
   async findAll(): Promise<FindAllPermissionQuery[]> {
-    return this.permissionModel.find().lean().select('code');
+    return this.permissionModel.find({}, 'code').lean().exec();
   }
 }

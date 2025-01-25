@@ -14,7 +14,9 @@ import { PermissionsController } from './controllers/permissions.controller';
 import { GetUserProfileQueryHandler } from './application/profile/get-profile/get-user-profile.query';
 import { RolesController } from './controllers/roles.controller';
 import { identityModelsProvider } from './models.provider';
-import { AssignPermissionsCommandHandler } from './application/profile/assign-permissions/assign-permissions.command';
+import { AssignPermissionsCommandHandler } from './application/users/assign-permissions/assign-permissions.command';
+import { AssignRolesCommandHandler } from './application/users/assign-roles/assign-roles.command';
+import { GetUserPermissionsQueryHandler } from './application/users/get-permissions/get-user-permissions.query';
 
 @Module({
   imports: [],
@@ -37,6 +39,8 @@ import { AssignPermissionsCommandHandler } from './application/profile/assign-pe
     FindUserByIdQueryHandler,
     GetUserProfileQueryHandler,
     AssignPermissionsCommandHandler,
+    AssignRolesCommandHandler,
+    GetUserPermissionsQueryHandler,
   ],
   exports: [],
 })
