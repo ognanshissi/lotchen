@@ -9,4 +9,4 @@ export class Point {
   coordinates!: [number];
 }
 
-export const PointSchema = SchemaFactory;
+export const PointSchema = SchemaFactory.createForClass(Point);
