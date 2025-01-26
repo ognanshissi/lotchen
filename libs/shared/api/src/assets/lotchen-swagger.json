@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/v1/identity/users": {
+    "/api/v1/users": {
       "post": {
         "operationId": "UsersController_createUser_v1",
         "parameters": [
@@ -34,7 +34,7 @@
         ]
       },
       "get": {
-        "operationId": "UsersController_findAll_v1",
+        "operationId": "UsersController_allUsers_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -62,9 +62,9 @@
         ]
       }
     },
-    "/api/v1/identity/users/{id}": {
+    "/api/v1/users/{id}": {
       "get": {
-        "operationId": "UsersController_findById_v1",
+        "operationId": "UsersController_findUserById_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -100,7 +100,7 @@
         ]
       },
       "delete": {
-        "operationId": "UsersController_delete_v1",
+        "operationId": "UsersController_deleteUser_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -129,9 +129,9 @@
         ]
       }
     },
-    "/api/v1/identity/users/{id}/assign-permissions": {
+    "/api/v1/users/{id}/assign-permissions": {
       "put": {
-        "operationId": "UsersController_assignPermissions_v1",
+        "operationId": "UsersController_assignPermissionsToUser_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -170,9 +170,9 @@
         ]
       }
     },
-    "/api/v1/identity/users/{id}/assign-roles": {
+    "/api/v1/users/{id}/assign-roles": {
       "put": {
-        "operationId": "UsersController_assignRoles_v1",
+        "operationId": "UsersController_assignRolesToUser_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -211,9 +211,9 @@
         ]
       }
     },
-    "/api/v1/identity/users/{id}/roles": {
+    "/api/v1/users/{id}/roles": {
       "get": {
-        "operationId": "UsersController_userRoles_v1",
+        "operationId": "UsersController_updateUserRoles_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -242,9 +242,9 @@
         ]
       }
     },
-    "/api/v1/identity/users/{id}/permissions": {
+    "/api/v1/users/{id}/permissions": {
       "get": {
-        "operationId": "UsersController_userPermissions_v1",
+        "operationId": "UsersController_updateUserPermissions_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -280,7 +280,7 @@
         ]
       }
     },
-    "/api/v1/identity/auth/login": {
+    "/api/v1/auth/login": {
       "post": {
         "operationId": "AuthController_login_v1",
         "parameters": [
@@ -320,7 +320,7 @@
         ]
       }
     },
-    "/api/v1/identity/auth/refresh-token": {
+    "/api/v1/auth/refresh-token": {
       "post": {
         "operationId": "AuthController_refreshToken_v1",
         "parameters": [
@@ -360,7 +360,7 @@
         ]
       }
     },
-    "/api/v1/identity/auth/forgot-password": {
+    "/api/v1/auth/forgot-password": {
       "post": {
         "operationId": "AuthController_forgotPassword_v1",
         "parameters": [
@@ -400,7 +400,7 @@
         ]
       }
     },
-    "/api/v1/identity/auth/reset-password": {
+    "/api/v1/auth/reset-password": {
       "post": {
         "operationId": "AuthController_resetPassword_v1",
         "parameters": [
@@ -440,9 +440,9 @@
         ]
       }
     },
-    "/api/v1/identity/profile/me": {
+    "/api/v1/profile/me": {
       "get": {
-        "operationId": "ProfileController_profile_v1",
+        "operationId": "ProfileController_currentUser_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -470,7 +470,7 @@
         ]
       }
     },
-    "/api/v1/identity/permissions/generate": {
+    "/api/v1/permissions/generate": {
       "post": {
         "operationId": "PermissionsController_generatePermissions_v1",
         "parameters": [
@@ -493,9 +493,9 @@
         ]
       }
     },
-    "/api/v1/identity/permissions": {
+    "/api/v1/permissions": {
       "get": {
-        "operationId": "PermissionsController_findAll_v1",
+        "operationId": "PermissionsController_allPermissions_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -523,7 +523,7 @@
         ]
       }
     },
-    "/api/v1/identity/roles/generate-predefined-roles": {
+    "/api/v1/roles/generate-predefined-roles": {
       "post": {
         "operationId": "RolesController_generatePredefinedRoles_v1",
         "parameters": [
@@ -546,9 +546,9 @@
         ]
       }
     },
-    "/api/v1/identity/roles": {
+    "/api/v1/roles": {
       "get": {
-        "operationId": "RolesController_findAll_v1",
+        "operationId": "RolesController_allRoles_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -569,16 +569,25 @@
         ]
       }
     },
-    "/api/v1/identity/territories": {
+    "/api/v1/territories": {
       "post": {
-        "operationId": "TerritoriesController_create_v1",
-        "parameters": [],
+        "operationId": "TerritoriesController_createTerritory_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTerritoryDto"
+                "$ref": "#/components/schemas/CreateTerritoryCommand"
               }
             }
           }
@@ -590,6 +599,58 @@
         },
         "tags": [
           "Territories"
+        ]
+      },
+      "get": {
+        "operationId": "TerritoriesController_allTerritories_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindAllTerritoriesQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Territories"
+        ]
+      }
+    },
+    "/api/v1/agencies": {
+      "post": {
+        "operationId": "AgenciesController_createAgency_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAgencyCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Agencies"
         ]
       }
     }
@@ -916,7 +977,7 @@
           "code"
         ]
       },
-      "CreateTerritoryDto": {
+      "CreateTerritoryCommand": {
         "type": "object",
         "properties": {
           "name": {
@@ -935,6 +996,77 @@
         },
         "required": [
           "name"
+        ]
+      },
+      "FindAllTerritoriesQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "coordinates": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "coordinates"
+        ]
+      },
+      "CreateAgencyAddressDto": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "Street",
+            "example": "Avenue Fadiga"
+          },
+          "city": {
+            "type": "string",
+            "description": "City",
+            "example": "Abidjan"
+          },
+          "location": {
+            "description": "Coordinates of the place (Office), probably a known country such as Ivory Coast",
+            "example": "[7.5455112, -5.547545]",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "street",
+          "city"
+        ]
+      },
+      "CreateAgencyCommand": {
+        "type": "object",
+        "properties": {
+          "territoryId": {
+            "type": "string",
+            "description": "Territory ID, the territory where the office will be linked"
+          },
+          "name": {
+            "type": "string",
+            "description": "Agency name",
+            "example": "Agence de Plateau"
+          },
+          "address": {
+            "$ref": "#/components/schemas/CreateAgencyAddressDto"
+          }
+        },
+        "required": [
+          "territoryId",
+          "name",
+          "address"
         ]
       }
     }

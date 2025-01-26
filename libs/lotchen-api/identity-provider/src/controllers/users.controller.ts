@@ -71,7 +71,7 @@ export class UsersController {
   @ApiResponse({
     type: GetAllUserQuery,
   })
-  public async findAll() {
+  public async allUsers() {
     return await this._getAllUserQueryHandler.handlerAsync();
   }
 
@@ -80,13 +80,13 @@ export class UsersController {
   @ApiResponse({
     type: FindUserByIdQueryResponse,
   })
-  async findById(@Param('id') id: string) {
+  async findUserById(@Param('id') id: string) {
     return await this._findUserByIdQueryHandler.handlerAsync({ id });
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delete(@Param() command: DeleteUserCommand) {
+  async deleteUser(@Param() command: DeleteUserCommand) {
     await this._deleteUserCommandHandler.handlerAsync(command);
   }
 
@@ -95,7 +95,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
   })
-  async assignPermissions(
+  async assignPermissionsToUser(
     @Body() body: AssignPermissionsCommandRequest,
     @Param('id') userId: string
   ): Promise<void> {
@@ -110,7 +110,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
   })
-  async assignRoles(
+  async assignRolesToUser(
     @Body() request: AssignRolesCommandRequest,
     @Param('id') userId: string
   ): Promise<void> {
@@ -122,7 +122,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get(':id/roles')
-  async userRoles(@Param('id') userId: string): Promise<any> {
+  async updateUserRoles(@Param('id') userId: string): Promise<any> {
     console.log();
   }
 
@@ -131,7 +131,7 @@ export class UsersController {
   @ApiResponse({
     type: GetUserPermissionsQueryResponse,
   })
-  async userPermissions(
+  async updateUserPermissions(
     @Param('id') userId: string
   ): Promise<GetUserPermissionsQueryResponse[]> {
     return await this._getUserPermissionsQueryHandler.handlerAsync({ userId });

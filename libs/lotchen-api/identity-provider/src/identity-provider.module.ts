@@ -17,8 +17,10 @@ import { identityModelsProvider } from './models.provider';
 import { AssignPermissionsCommandHandler } from './application/users/assign-permissions/assign-permissions.command';
 import { AssignRolesCommandHandler } from './application/users/assign-roles/assign-roles.command';
 import { GetUserPermissionsQueryHandler } from './application/users/get-permissions/get-user-permissions.query';
-import { TerritoriesService } from './services/territories.service';
 import { TerritoriesController } from './controllers/territories.controller';
+import { territoriesHandlers } from './application/territories';
+import { agenciesHandlers } from './application/agencies';
+import { AgenciesController } from './controllers/agencies.controller';
 
 @Module({
   imports: [],
@@ -29,9 +31,12 @@ import { TerritoriesController } from './controllers/territories.controller';
     PermissionsController,
     RolesController,
     TerritoriesController,
+    AgenciesController,
   ],
   providers: [
     ...identityModelsProvider,
+    ...territoriesHandlers,
+    ...agenciesHandlers,
     CreateUserCommandHandler,
     GetAllUserQueryHandler,
     LoginCommandHandler,
@@ -44,7 +49,6 @@ import { TerritoriesController } from './controllers/territories.controller';
     AssignPermissionsCommandHandler,
     AssignRolesCommandHandler,
     GetUserPermissionsQueryHandler,
-    TerritoriesService,
   ],
   exports: [],
 })

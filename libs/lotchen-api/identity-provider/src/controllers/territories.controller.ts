@@ -1,38 +1,42 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
-import { ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TerritoriesService } from '../services/territories.service';
-
-export class CreateTerritoryDto {
-  @ApiProperty({
-    type: String,
-    description: 'Name of the territory',
-    example: 'Ivory Coast',
-  })
-  name!: string;
-
-  @ApiProperty({
-    type: [Number],
-    required: false,
-    description:
-      'Coordinates of the territory, probably a known country such as Ivory Coast',
-    example: '[7.5455112, -5.547545]',
-  })
-  coordinates!: [number];
-}
+import { Body, Controller, Get, HttpStatus, Post } from '@nestjs/common';
+import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  CreateTerritoryCommand,
+  CreateTerritoryCommandHandler,
+  FindAllTerritoriesQueryHandler,
+  FindAllTerritoriesQueryResponse,
+} from '../application/territories';
 
 @Controller({
   version: '1',
   path: 'territories',
 })
+@ApiHeader({
+  name: 'x-tenant-fqn',
+  description: 'The Tenant Fqn',
+})
 @ApiTags('Territories')
 export class TerritoriesController {
-  constructor(private readonly _territoriesService: TerritoriesService) {}
+  constructor(
+    private readonly _createTerritoryCommandHandler: CreateTerritoryCommandHandler,
+    private readonly _findAllTerritoriesQueryHandler: FindAllTerritoriesQueryHandler
+  ) {}
 
   @ApiResponse({
     status: HttpStatus.CREATED,
   })
   @Post()
-  async create(@Body() payload: CreateTerritoryDto): Promise<void> {
-    return this._territoriesService.createAsync(payload);
+  async createTerritory(
+    @Body() payload: CreateTerritoryCommand
+  ): Promise<void> {
+    return this._createTerritoryCommandHandler.handlerAsync(payload);
+  }
+
+  @Get()
+  @ApiResponse({
+    type: FindAllTerritoriesQueryResponse,
+  })
+  async allTerritories(): Promise<FindAllTerritoriesQueryResponse[]> {
+    return await this._findAllTerritoriesQueryHandler.handlerAsync();
   }
 }

@@ -25,7 +25,7 @@ export class ProfileController {
   @ApiResponse({
     type: GetUserProfileQueryResponse,
   })
-  public async profile(
+  public async currentUser(
     @Request() req: { user: { sub: string; username: string } }
   ) {
     return await this._getUserProfileQueryHandler.handlerAsync({

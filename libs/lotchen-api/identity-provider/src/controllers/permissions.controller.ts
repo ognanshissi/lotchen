@@ -48,7 +48,7 @@ export class PermissionsController {
   @ApiResponse({
     type: FindAllPermissionQuery,
   })
-  async findAll(): Promise<FindAllPermissionQuery[]> {
+  async allPermissions(): Promise<FindAllPermissionQuery[]> {
     return this.permissionModel.find({}, 'code').lean().exec();
   }
 }

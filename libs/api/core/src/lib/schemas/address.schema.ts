@@ -19,9 +19,6 @@ export class Address extends SchemaIdentifier {
   @Prop({ type: Number })
   public codePostal!: string;
 
-  @Prop({ type: String })
-  zip!: string;
-
   @Prop({ type: PointSchema, required: false })
   public location!: Point;
 }
