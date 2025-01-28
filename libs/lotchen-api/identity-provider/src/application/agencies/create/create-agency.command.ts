@@ -2,7 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { CommandHandler } from '@lotchen/api/core';
 import { AgenciesProvider } from '../agencies.provider';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { TerritoriesProvider } from '../../territories/territories.provider';
 
 export class CreateAgencyAddressDto {
   @ApiProperty({
@@ -24,7 +25,10 @@ export class CreateAgencyAddressDto {
       'Coordinates of the place (Office), probably a known country such as Ivory Coast',
     example: '[7.5455112, -5.547545]',
   })
-  location!: [number];
+  coordinates!: [number];
+
+  @ApiProperty({ type: String, required: false })
+  postalCode?: string;
 }
 
 export class CreateAgencyCommand {
@@ -51,31 +55,58 @@ export class CreateAgencyCommand {
   address!: CreateAgencyAddressDto;
 }
 
+@Injectable()
 export class CreateAgencyCommandHandler
   implements CommandHandler<CreateAgencyCommand, void>
 {
-  constructor(private readonly agenciesProvider: AgenciesProvider) {}
+  constructor(
+    private readonly agenciesProvider: AgenciesProvider,
+    private readonly territoriesProvider: TerritoriesProvider
+  ) {}
 
   public async handlerAsync(command: CreateAgencyCommand): Promise<void> {
-    const agency = new this.agenciesProvider.AgencyModel({
-      name: command.name,
-      territory: command.territoryId,
-      address: {
-        street: command?.address?.street,
-        city: command?.address?.city,
-        location: {
-          type: 'Point',
-          coordinates: command?.address?.location,
+    try {
+      const territory = await this.territoriesProvider.TerritoryModel.findOne({
+        _id: command.territoryId,
+      }).exec();
+
+      if (!territory) {
+        throw new BadRequestException('Territory not found !');
+      }
+
+      const agency = new this.agenciesProvider.AgencyModel({
+        name: command.name,
+        territory: command.territoryId,
+        address: {
+          street: command?.address?.street,
+          city: command?.address?.city,
+          postalCode: command?.address?.postalCode,
+          location: {
+            type: 'Point',
+            coordinates: command?.address?.coordinates,
+          },
         },
-      },
-    });
+      });
 
-    const validationErrors = agency.validateSync();
+      const validationError = agency.validateSync();
 
-    if (validationErrors) {
-      throw new BadRequestException(validationErrors.errors);
+      if (validationError) {
+        throw new BadRequestException(validationError.errors);
+      }
+
+      await agency.save();
+
+      // update agencies path on territory
+      territory.agencies.push(agency.id);
+      await territory.save();
+    } catch (error: any) {
+      if (error?.errorResponse?.code === 11000) {
+        throw new BadRequestException(
+          `Agency with name '${command.name}' already exist !`
+        );
+      } else {
+        throw new BadRequestException(error);
+      }
     }
-
-    await agency.save();
   }
 }

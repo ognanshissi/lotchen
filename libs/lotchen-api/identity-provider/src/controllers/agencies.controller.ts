@@ -1,8 +1,12 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateAgencyCommand,
   CreateAgencyCommandHandler,
+  FindAgencyByIdQueryHandler,
+  FindAgencyByIdQueryResponse,
+  FindAllAgenciesQueryHandler,
+  FindAllAgenciesQueryResponse,
 } from '../application/agencies';
 
 @Controller({
@@ -12,7 +16,9 @@ import {
 @ApiTags('Agencies')
 export class AgenciesController {
   constructor(
-    private readonly _createAgencyCommandHandler: CreateAgencyCommandHandler
+    private readonly _createAgencyCommandHandler: CreateAgencyCommandHandler,
+    private readonly _findAgencyByIdQueryHandler: FindAgencyByIdQueryHandler,
+    private readonly _findAllAgenciesQueryHandler: FindAllAgenciesQueryHandler
   ) {}
 
   @Post()
@@ -21,5 +27,20 @@ export class AgenciesController {
   })
   async createAgency(@Body() payload: CreateAgencyCommand): Promise<void> {
     return await this._createAgencyCommandHandler.handlerAsync(payload);
+  }
+
+  @Get()
+  @ApiResponse({
+    type: FindAllAgenciesQueryResponse,
+  })
+  async findAllAgencies(): Promise<FindAllAgenciesQueryResponse[]> {
+    return await this._findAllAgenciesQueryHandler.handlerAsync();
+  }
+
+  @Get('/:id')
+  async findAgencyById(
+    @Param('id') id: string
+  ): Promise<FindAgencyByIdQueryResponse> {
+    return this._findAgencyByIdQueryHandler.handlerAsync({ id });
   }
 }

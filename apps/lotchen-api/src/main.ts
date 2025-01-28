@@ -1,8 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import fs from 'node:fs';
@@ -38,7 +33,7 @@ async function bootstrap() {
   );
 
   SwaggerModule.setup('swagger', app, document, {
-    yamlDocumentUrl: 'swagger/json',
+    yamlDocumentUrl: 'swagger/yml',
   });
   app.listen(port);
   Logger.log(

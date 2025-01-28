@@ -1,7 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { CommandHandler } from '@lotchen/api/core';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { TerritoriesProvider } from '../territories.provider';
 
 export class CreateTerritoryCommand {
@@ -30,19 +34,24 @@ export class CreateTerritoryCommandHandler
   constructor(private readonly territoriesProvider: TerritoriesProvider) {}
 
   public async handlerAsync(command: CreateTerritoryCommand): Promise<void> {
-    const territory = new this.territoriesProvider.TerritoryModel({
-      name: command.name,
-      location: {
-        type: 'Point',
-        coordinates: command?.coordinates,
-      },
-    });
+    try {
+      const territory = new this.territoriesProvider.TerritoryModel({
+        name: command.name,
+        location: {
+          type: 'Point',
+          coordinates: command?.coordinates,
+        },
+      });
 
-    const errors = territory.validateSync();
-
-    if (errors) {
-      throw new BadRequestException(errors.errors);
+      await territory.save();
+    } catch (error: any) {
+      if (error.errorResponse.code === 11000) {
+        throw new BadRequestException(
+          `There is a territory with name '${command.name}'`
+        );
+      } else {
+        throw new InternalServerErrorException();
+      }
     }
-    await territory.save();
   }
 }

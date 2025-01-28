@@ -5,10 +5,12 @@ import {
   Point,
   PointSchema,
 } from '@lotchen/api/core';
+import { Agency } from './agency.schema';
+import * as mongoose from 'mongoose';
 
 @Schema({ collection: 'identity_territories', timestamps: true })
 export class Territory extends AggregateRoot {
-  @Prop({ type: String })
+  @Prop({ type: String, unique: true })
   name!: string;
 
   @Prop({
@@ -23,6 +25,16 @@ export class Territory extends AggregateRoot {
 
   @Prop({ type: PointSchema, required: false })
   location!: Point;
+
+  @Prop({
+    type: [
+      {
+        type: mongoose.Schema.Types.UUID,
+        ref: 'Agency',
+      },
+    ],
+  })
+  agencies!: Agency[];
 }
 
 export const TerritorySchema = SchemaFactory.createForClass(Territory);

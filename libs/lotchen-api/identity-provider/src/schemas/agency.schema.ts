@@ -3,6 +3,17 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Territory } from './territory.schema';
 import * as mongoose from 'mongoose';
 
+@Schema({ timestamps: false, id: false, _id: false })
+export class AgencyOption {
+  @Prop({
+    default: 10,
+    type: Number,
+  })
+  dailyLeadsQuota!: number;
+}
+
+export const AgencyOptionSchema = SchemaFactory.createForClass(AgencyOption);
+
 @Schema({ collection: 'identity_agencies', timestamps: true })
 export class Agency extends AggregateRoot {
   @Prop({
@@ -17,7 +28,16 @@ export class Agency extends AggregateRoot {
   })
   address!: Address;
 
-  @Prop({ type: mongoose.Schema.Types.UUID, ref: 'territory' })
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  isPrincipalAgency!: boolean;
+
+  @Prop({ type: AgencyOptionSchema })
+  options!: AgencyOption;
+
+  @Prop({ type: mongoose.Schema.Types.UUID, ref: 'Territory' })
   territory!: Territory;
 }
 

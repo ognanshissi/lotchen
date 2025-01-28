@@ -630,6 +630,37 @@
         ]
       }
     },
+    "/api/v1/territories/{id}/agencies": {
+      "get": {
+        "operationId": "TerritoriesController_territoryAgencies_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Territories"
+        ]
+      }
+    },
     "/api/v1/agencies": {
       "post": {
         "operationId": "AgenciesController_createAgency_v1",
@@ -646,6 +677,48 @@
         },
         "responses": {
           "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Agencies"
+        ]
+      },
+      "get": {
+        "operationId": "AgenciesController_findAllAgencies_v1",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindAllAgenciesQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Agencies"
+        ]
+      }
+    },
+    "/api/v1/agencies/{id}": {
+      "get": {
+        "operationId": "AgenciesController_findAgencyById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": ""
           }
         },
@@ -1033,13 +1106,16 @@
             "description": "City",
             "example": "Abidjan"
           },
-          "location": {
+          "coordinates": {
             "description": "Coordinates of the place (Office), probably a known country such as Ivory Coast",
             "example": "[7.5455112, -5.547545]",
             "type": "array",
             "items": {
               "type": "number"
             }
+          },
+          "postalCode": {
+            "type": "string"
           }
         },
         "required": [
@@ -1066,6 +1142,59 @@
         "required": [
           "territoryId",
           "name",
+          "address"
+        ]
+      },
+      "FindAllAgenciesAddressDto": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "Street",
+            "example": "Avenue Fadiga"
+          },
+          "city": {
+            "type": "string",
+            "description": "City",
+            "example": "Abidjan"
+          },
+          "coordinates": {
+            "description": "Coordinates of the place (Office)",
+            "example": "[7.5455112, -5.547545]",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "postalCode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "street",
+          "city"
+        ]
+      },
+      "FindAllAgenciesQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "territoryId": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/FindAllAgenciesAddressDto"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "territoryId",
           "address"
         ]
       }
