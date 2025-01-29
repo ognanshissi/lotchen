@@ -11,7 +11,7 @@ import { TasIcon } from '@talisoft/ui/icon';
 export type AlertType = 'success' | 'error' | 'info';
 
 @Component({
-  selector: 'tas-alert, Alert',
+  selector: 'tas-alert',
   standalone: true,
   template: `
     <tas-icon [iconName]="iconName()"></tas-icon>

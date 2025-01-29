@@ -15,16 +15,18 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@lotchen/api/core": ["libs/api/core/src/index.ts"],
       "@lotchen/lotchen-api/identity-provider": [
         "libs/lotchen-api/identity-provider/src/index.ts"
       ],
-      "@lotchen/api/core": ["libs/api/core/src/index.ts"],
       "@lotchen/lotchen/auth": ["libs/lotchen/auth/src/index.ts"],
       "@lotchen/lotchen/clients": ["libs/lotchen/clients/src/index.ts"],
+      "@lotchen/lotchen/common": ["libs/lotchen/common/src/index.ts"],
       "@lotchen/lotchen/dashboard": ["libs/lotchen/dashboard/src/index.ts"],
       "@lotchen/lotchen/prospects": ["libs/lotchen/prospects/src/index.ts"],
-      "@talisoft/api": ["libs/shared/api/src/index.ts"],
-      "@lotchen/lotchen/common": ["libs/lotchen/common/src/index.ts"],
+      "@talisoft/api/lotchen-client-api": [
+        "libs/shared/api/lotchen-client-api/src/index.ts"
+      ],
       "@talisoft/ui": ["libs/shared/ui/src/index.ts"],
       "@talisoft/ui/*": ["libs/shared/ui/*"]
     }

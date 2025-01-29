@@ -11,6 +11,7 @@ import { ButtonModule } from '@talisoft/ui/button';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import { TasText } from '@talisoft/ui/text';
 import { TasInput, TasNativeSelect } from '@talisoft/ui/input';
+import { TasIcon } from '@talisoft/ui/icon';
 
 @Component({
   selector: 'prospects-quick-add',
@@ -60,9 +61,13 @@ import { TasInput, TasNativeSelect } from '@talisoft/ui/input';
         </div>
 
         <tas-drawer-action>
-          <button tas-outlined-button closable-drawer>Fermer</button>
-          <button tas-raised-button color="primary" isLoading="true">
-            Enregistrer
+          <button tas-outlined-button closable-drawer>
+            <tas-icon [iconName]="'close'"></tas-icon>
+            Fermer
+          </button>
+          <button tas-raised-button color="primary">
+            <tas-icon iconName="check"></tas-icon>
+            sauvegarder
           </button>
         </tas-drawer-action>
       </tas-drawer-content>
@@ -81,6 +86,7 @@ import { TasInput, TasNativeSelect } from '@talisoft/ui/input';
     TasText,
     TasInput,
     TasNativeSelect,
+    TasIcon,
   ],
   standalone: true,
 })

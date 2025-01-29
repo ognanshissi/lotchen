@@ -97,7 +97,6 @@ export class CreateAgencyCommandHandler
       await agency.save();
 
       // update agencies path on territory
-      territory.agencies.push(agency.id);
       await territory.save();
     } catch (error: any) {
       if (error?.errorResponse?.code === 11000) {

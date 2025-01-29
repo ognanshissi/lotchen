@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateAgencyCommand,
   CreateAgencyCommandHandler,
@@ -12,6 +12,10 @@ import {
 @Controller({
   version: '1',
   path: 'agencies',
+})
+@ApiHeader({
+  name: 'x-tenant-fqn',
+  description: 'The Tenant Fqn',
 })
 @ApiTags('Agencies')
 export class AgenciesController {

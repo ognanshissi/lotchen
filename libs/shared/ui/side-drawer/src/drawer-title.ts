@@ -3,10 +3,11 @@ import {
   Component,
   EventEmitter,
   signal,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasClosableDrawer } from './closable-drawer.directive';
+import { ButtonModule } from '@talisoft/ui/button';
 
 @Component({
   selector: 'tas-drawer-title',
@@ -16,12 +17,14 @@ import { TasClosableDrawer } from './closable-drawer.directive';
       <ng-content></ng-content>
     </div>
     @if (closable()) {
-    <button closable-drawer type="button" title="close side drawer">
-      <tas-icon
-        iconName="feather:x-circle"
-        iconSize="lg"
-        aria-label="Close side drawer Icon"
-      ></tas-icon>
+    <button
+      closable-drawer
+      rounded
+      tas-outlined-button
+      type="button"
+      title="close side drawer"
+    >
+      <tas-icon iconName="close" aria-label="Close side drawer Icon"></tas-icon>
     </button>
     }
   `,
@@ -34,7 +37,7 @@ import { TasClosableDrawer } from './closable-drawer.directive';
   ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TasIcon, TasClosableDrawer],
+  imports: [TasIcon, TasClosableDrawer, ButtonModule],
 })
 export class TasDrawerTitle {
   public close: EventEmitter<void> = new EventEmitter<void>();

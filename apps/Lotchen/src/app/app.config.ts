@@ -13,7 +13,7 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { TasIconRegistry } from '@talisoft/ui/icon';
-import { BASE_PATH } from '@talisoft/api';
+import { BASE_PATH as BASE_PATH_LOTCHEN_API } from '@talisoft/api/lotchen-client-api';
 import { environment } from '../environments/environment';
 import {
   accessTokenInterceptor,
@@ -33,7 +33,7 @@ export const appConfig: ApplicationConfig = {
     ),
     importProvidersFrom(TasIconRegistry),
     {
-      provide: BASE_PATH,
+      provide: BASE_PATH_LOTCHEN_API,
       useValue: environment.apiUrl,
     },
     {

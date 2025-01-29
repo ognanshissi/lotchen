@@ -11,9 +11,6 @@ export class FindAllTerritoriesQueryResponse {
 
   @ApiProperty()
   name!: string;
-
-  @ApiProperty({ type: [Number] })
-  coordinates!: [number];
 }
 
 @Injectable()
@@ -31,7 +28,6 @@ export class FindAllTerritoriesQueryHandler
       return {
         id: territory.id,
         name: territory.name,
-        coordinates: territory.location.coordinates,
       } as FindAllTerritoriesQueryResponse;
     });
   }

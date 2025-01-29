@@ -1,8 +1,8 @@
 import {
+  HttpEvent,
+  HttpHandlerFn,
   HttpInterceptorFn,
   HttpRequest,
-  HttpHandlerFn,
-  HttpEvent,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,7 @@ export const tenantInterceptor: HttpInterceptorFn = (
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
   const reqClone = req.clone({
-    setHeaders: { 'X-TENANT-FQN': 'localhost' },
+    setHeaders: { 'X-TENANT-FQN': 'db' },
   });
   return next(reqClone);
 };

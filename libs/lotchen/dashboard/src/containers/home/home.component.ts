@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasTitle } from '@talisoft/ui/title';
-import { AgenciesApiService } from '@talisoft/api';
+import { AgenciesApiService } from '@talisoft/api/lotchen-client-api';
+
 @Component({
   selector: 'dashboard-home',
   templateUrl: './home.component.html',
@@ -13,7 +14,7 @@ export class HomeComponent implements OnInit {
 
   public ngOnInit() {
     this._agenciesApiService
-      .allAgency()
+      .agenciesControllerFindAllAgenciesV1()
       .subscribe((agencies) => console.log(agencies));
   }
 }

@@ -27,7 +27,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   fs.writeFileSync(
-    './libs/shared/api/src/assets/lotchen-swagger.json',
+    './libs/shared/api/openapi-documents/lotchen-api-swagger.json',
     JSON.stringify(document, null, 2),
     'utf8'
   );

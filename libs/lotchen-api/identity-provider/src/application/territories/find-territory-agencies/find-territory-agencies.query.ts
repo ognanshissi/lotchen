@@ -40,14 +40,14 @@ export class FindTerritoryAgenciesQueryResponse {
   @ApiProperty()
   name!: string;
 
-  @ApiProperty({
-    type: Boolean,
-    description: 'Indicate if the agency is the main agency',
-  })
-  isPrincipalAgency!: boolean;
-
-  @ApiProperty({ type: () => FindTerritoryAgenciesAddressDto })
-  address!: FindTerritoryAgenciesAddressDto;
+  // @ApiProperty({
+  //   type: Boolean,
+  //   description: 'Indicate if the agency is the main agency',
+  // })
+  // isPrincipalAgency!: boolean;
+  //
+  // @ApiProperty({ type: () => FindTerritoryAgenciesAddressDto })
+  // address!: FindTerritoryAgenciesAddressDto;
 }
 
 @Injectable()
@@ -66,7 +66,7 @@ export class FindTerritoryAgenciesQueryHandler
     const territory = await this.territoriesProvider.TerritoryModel.findOne({
       _id: query.id,
     })
-      .populate('agencies')
+      .populate('children')
       .lean()
       .exec();
 
@@ -74,17 +74,10 @@ export class FindTerritoryAgenciesQueryHandler
       throw new NotFoundException('Territory not found !');
     }
 
-    return territory.agencies.map((agency) => {
+    return territory.children.map((territory) => {
       return {
-        id: agency._id,
-        name: agency.name,
-        isPrincipalAgency: agency.isPrincipalAgency,
-        address: {
-          street: agency.address.street,
-          city: agency.address.city,
-          postalCode: agency.address.postalCode,
-          coordinates: agency.address.location.coordinates,
-        },
+        id: territory._id,
+        name: territory.name,
       };
     });
   }

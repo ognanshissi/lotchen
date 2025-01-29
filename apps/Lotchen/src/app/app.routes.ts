@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import {
+  AdminLayoutComponent,
   AuthLayoutComponent,
   PortalLayoutComponent,
 } from '@lotchen/lotchen/common';
@@ -26,6 +27,16 @@ export const appRoutes: Route[] = [
       {
         path: 'prospects',
         loadChildren: () => import('@lotchen/lotchen/prospects'),
+      },
+    ],
+  },
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: '',
       },
     ],
   },

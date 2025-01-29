@@ -4,10 +4,10 @@
   "generator-cli": {
     "version": "7.7.0",
     "generators": {
-      "api": {
+      "lotchen": {
         "generatorName": "typescript-angular",
-        "output": "#{cwd}/libs/shared/api/src/lib",
-        "glob": "libs/shared/api/src/assets/lotchen-api-swagger.json",
+        "output": "#{cwd}/libs/shared/api/lotchen-client-api/src/lib",
+        "glob": "libs/shared/api/openapi-documents/lotchen-api-swagger.json",
         "additionalProperties": {
           "supportsES6": "true",
           "stringEnums": "true",

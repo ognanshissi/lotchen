@@ -1,12 +1,10 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post } from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateTerritoryCommand,
   CreateTerritoryCommandHandler,
   FindAllTerritoriesQueryHandler,
   FindAllTerritoriesQueryResponse,
-  FindTerritoryAgenciesQueryHandler,
-  FindTerritoryAgenciesQueryResponse,
 } from '../application/territories';
 
 @Controller({
@@ -21,8 +19,7 @@ import {
 export class TerritoriesController {
   constructor(
     private readonly _createTerritoryCommandHandler: CreateTerritoryCommandHandler,
-    private readonly _findAllTerritoriesQueryHandler: FindAllTerritoriesQueryHandler,
-    private readonly _findTerritoryAgenciesQueryHandler: FindTerritoryAgenciesQueryHandler
+    private readonly _findAllTerritoriesQueryHandler: FindAllTerritoriesQueryHandler
   ) {}
 
   @ApiResponse({
@@ -37,16 +34,17 @@ export class TerritoriesController {
 
   @Get()
   @ApiResponse({
+    status: HttpStatus.OK,
     type: FindAllTerritoriesQueryResponse,
   })
   async allTerritories(): Promise<FindAllTerritoriesQueryResponse[]> {
     return await this._findAllTerritoriesQueryHandler.handlerAsync();
   }
 
-  @Get('/:id/agencies')
-  async territoryAgencies(
-    @Param('id') id: string
-  ): Promise<FindTerritoryAgenciesQueryResponse[]> {
-    return await this._findTerritoryAgenciesQueryHandler.handlerAsync({ id });
-  }
+  // @Get('/:id/agencies')
+  // async territoryAgencies(
+  //   @Param('id') id: string
+  // ): Promise<FindTerritoryAgenciesQueryResponse[]> {
+  //   return await this._findTerritoryAgenciesQueryHandler.handlerAsync({ id });
+  // }
 }

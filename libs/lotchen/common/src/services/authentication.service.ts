@@ -1,13 +1,11 @@
 import { afterNextRender, inject, Injectable, signal } from '@angular/core';
+import { catchError, Observable, of, tap } from 'rxjs';
 import {
   AccessTokenResponse,
-  HealthApiService,
-  HealthVerifyAccessTokenResponse,
-  IdentityApiService,
-  LoginRequest,
-  RefreshRequest,
-} from '@talisoft/api';
-import { catchError, Observable, tap } from 'rxjs';
+  AuthApiService,
+  LoginCommand,
+  RefreshTokenCommand,
+} from '@talisoft/api/lotchen-client-api';
 
 export const TOKEN_STORAGE_KEY = 'LOTCHEN_ACCESS_TOKEN';
 
@@ -17,8 +15,7 @@ export const TOKEN_STORAGE_KEY = 'LOTCHEN_ACCESS_TOKEN';
 export class AuthenticationService {
   private storage!: Storage;
 
-  private readonly _identityApiService = inject(IdentityApiService);
-  private readonly _healthApiService = inject(HealthApiService);
+  private readonly _authService = inject(AuthApiService);
   // User signals
   private readonly _connectedUser = signal<unknown | null>(null);
   public connectedUser = this._connectedUser.asReadonly();
@@ -43,21 +40,24 @@ export class AuthenticationService {
     });
   }
 
-  public login(loginRequest: LoginRequest): Observable<AccessTokenResponse> {
+  public login(loginRequest: LoginCommand): Observable<AccessTokenResponse> {
     this._errorMessage.set(null);
-    return this._identityApiService
-      .identityLoginPost(false, false, loginRequest)
-      .pipe(
-        tap((accessToken) => this.setAccessToken(accessToken)),
-        catchError((error) => {
-          this._errorMessage.set('Email/Mot de passe incorrect !');
-          throw error;
-        })
-      );
+    return this._authService.authControllerLoginV1(loginRequest).pipe(
+      tap((accessToken) => this.setAccessToken(accessToken)),
+      catchError((error) => {
+        this._errorMessage.set('Email/Mot de passe incorrect !');
+        throw error;
+      })
+    );
   }
 
-  public verifyToken(): Observable<HealthVerifyAccessTokenResponse> {
-    return this._healthApiService.verifyAccessToken();
+  /**
+   * Need to be reimplemented
+   *
+   * TODO: Create an api that will be used to verify the token
+   */
+  public verifyToken(): Observable<{ success: boolean }> {
+    return of({ success: true });
   }
 
   public loadAccessToken(): string | null {
@@ -72,10 +72,10 @@ export class AuthenticationService {
   }
 
   public refreshToken(
-    refreshRequest: RefreshRequest
+    refreshRequest: RefreshTokenCommand
   ): Observable<AccessTokenResponse> {
-    return this._identityApiService
-      .identityRefreshPost(refreshRequest)
+    return this._authService
+      .authControllerRefreshTokenV1(refreshRequest)
       .pipe(tap((accessToken) => this.setAccessToken(accessToken)));
   }
 

@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   input,
+  OnInit,
   ViewEncapsulation,
 } from '@angular/core';
 import { TasIcon } from '@talisoft/ui/icon';
@@ -32,9 +33,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: 'navigation-menu-item.scss',
 })
-export class TasNavigationMenuItem {
+export class TasNavigationMenuItem implements OnInit {
   public iconName = input<string>('');
   public path = input<string | any[] | UrlTree>();
   public exactMatch = input(false, { transform: booleanAttribute });
   public queryParams = input<NavigationExtras>({});
+
+  public ngOnInit() {}
 }
