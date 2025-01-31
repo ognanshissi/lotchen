@@ -1,0 +1,15 @@
+export * from './agencies.service';
+import { AgenciesApiService } from './agencies.service';
+export * from './auth.service';
+import { AuthApiService } from './auth.service';
+export * from './permissions.service';
+import { PermissionsApiService } from './permissions.service';
+export * from './profile.service';
+import { ProfileApiService } from './profile.service';
+export * from './roles.service';
+import { RolesApiService } from './roles.service';
+export * from './territories.service';
+import { TerritoriesApiService } from './territories.service';
+export * from './users.service';
+import { UsersApiService } from './users.service';
+export const APIS = [AgenciesApiService, AuthApiService, PermissionsApiService, ProfileApiService, RolesApiService, TerritoriesApiService, UsersApiService];
