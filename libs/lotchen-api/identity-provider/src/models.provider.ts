@@ -1,19 +1,25 @@
 import { Connection } from 'mongoose';
-import { User, UserSchema } from './schemas/user.schema';
-import { Role, RoleSchema } from './schemas/role.schema';
-import { UserToken, UserTokenSchema } from './schemas/user-token.schema';
+import { User, UserSchema, UserToken, UserTokenSchema } from './users';
+import { Role, RoleSchema } from './roles';
 import { Provider } from '@nestjs/common';
-import { Permission, PermissionSchema } from './schemas/permission.schema';
-import { Profile, ProfileSchema } from './schemas/profile.schema';
-import { Territory, TerritorySchema } from './schemas/territory.schema';
-import { Agency, AgencySchema } from './schemas/agency.schema';
-import { Team, TeamSchema } from './schemas/team.schema';
+import { Permission, PermissionSchema } from './permissions';
+import { Profile, ProfileSchema } from './profile';
+import { Territory, TerritorySchema } from './territories/territory.schema';
+import { Team, TeamSchema } from './teams';
+import { Agency, AgencySchema } from './agencies/agency.schema';
 
 export const identityModelsProvider: Provider[] = [
   {
     provide: 'USER_MODEL',
     useFactory: async (tenantConnection: Connection) => {
       return tenantConnection.model(User.name, UserSchema);
+    },
+    inject: ['TENANT_CONNECTION'],
+  },
+  {
+    provide: 'AGENCY_MODEL',
+    useFactory: async (tenantConnection: Connection) => {
+      return tenantConnection.model(Agency.name, AgencySchema);
     },
     inject: ['TENANT_CONNECTION'],
   },
@@ -50,13 +56,6 @@ export const identityModelsProvider: Provider[] = [
     provide: 'TERRITORY_MODEL',
     useFactory: async (tenantConnection: Connection) => {
       return tenantConnection.model(Territory.name, TerritorySchema);
-    },
-    inject: ['TENANT_CONNECTION'],
-  },
-  {
-    provide: 'AGENCY_MODEL',
-    useFactory: async (tenantConnection: Connection) => {
-      return tenantConnection.model(Agency.name, AgencySchema);
     },
     inject: ['TENANT_CONNECTION'],
   },

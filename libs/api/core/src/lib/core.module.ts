@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { TenantConnectionProvider } from './tenant/tenant-connection.provider';
 import { JwtModule } from '@nestjs/jwt';
 import * as process from 'node:process';
+import { AuthGuard } from './guards/auth.guard';
 
 @Global()
 @Module({
@@ -15,7 +16,7 @@ import * as process from 'node:process';
     }),
   ],
   controllers: [],
-  providers: [TenantConnectionProvider],
-  exports: [TenantConnectionProvider],
+  providers: [TenantConnectionProvider, AuthGuard],
+  exports: [TenantConnectionProvider, AuthGuard],
 })
 export class CoreModule {}

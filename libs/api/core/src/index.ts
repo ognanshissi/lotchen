@@ -5,3 +5,4 @@ export * from './lib/schemas';
 export * from './lib/utils';
 export * from './lib/core.module';
 export * from './lib/tenant/tenant.middleware';
+export * from './lib/guards/auth.guard';
