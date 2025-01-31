@@ -721,6 +721,56 @@
           "Agencies"
         ]
       }
+    },
+    "/api/v1/teams": {
+      "post": {
+        "operationId": "TeamsController_createTeam_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTeamCommandResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Teams"
+        ]
+      },
+      "get": {
+        "operationId": "TeamsController_findAllTeams_v1",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindAllTeamsQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Teams"
+        ]
+      }
     }
   },
   "info": {
@@ -1190,6 +1240,96 @@
           "name",
           "territoryId",
           "address"
+        ]
+      },
+      "CreateTeamCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the team"
+          },
+          "description": {
+            "type": "string"
+          },
+          "managerId": {
+            "type": "string"
+          },
+          "memberIds": {
+            "description": "User Ids to link into the team",
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CreateTeamCommandResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "FindAllTeamsQueryUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "firstName",
+          "lastName"
+        ]
+      },
+      "FindAllTeamsQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "manager": {
+            "$ref": "#/components/schemas/FindAllTeamsQueryUserDto"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "manager",
+          "members"
         ]
       }
     }

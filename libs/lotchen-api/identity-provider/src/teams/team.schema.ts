@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { User } from '../users/user.schema';
+import { User } from '../users';
 
 @Schema({ collection: 'identity_teams', timestamps: true })
 export class Team extends AggregateRoot {

@@ -5,7 +5,6 @@ import { Provider } from '@nestjs/common';
 import { Permission, PermissionSchema } from './permissions';
 import { Profile, ProfileSchema } from './profile';
 import { Territory, TerritorySchema } from './territories/territory.schema';
-import { Team, TeamSchema } from './teams';
 import { Agency, AgencySchema } from './agencies/agency.schema';
 
 export const identityModelsProvider: Provider[] = [
@@ -56,13 +55,6 @@ export const identityModelsProvider: Provider[] = [
     provide: 'TERRITORY_MODEL',
     useFactory: async (tenantConnection: Connection) => {
       return tenantConnection.model(Territory.name, TerritorySchema);
-    },
-    inject: ['TENANT_CONNECTION'],
-  },
-  {
-    provide: 'TEAM_MODEL',
-    useFactory: async (tenantConnection: Connection) => {
-      return tenantConnection.model(Team.name, TeamSchema);
     },
     inject: ['TENANT_CONNECTION'],
   },
