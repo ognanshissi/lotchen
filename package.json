@@ -1,5 +1,5 @@
 {
-  "name": "@talisoft/lotchen",
+  "name": "@lotchen/source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -10,7 +10,7 @@
     "ssr:dev": "npx nx run Lotchen:serve-ssr",
     "ui:watch": "npx nx run ui:build:development --watch",
     "ui:build": "npx nx run ui:build:development --verbose",
-    "openapi-generator": "npx @openapitools/openapi-generator-cli generate  --generator-key api  --verbose",
+    "openapi-generator": "npx @openapitools/openapi-generator-cli generate  --generator-key lotchen  --verbose",
     "prepare": "husky"
   },
   "lint-staged": {

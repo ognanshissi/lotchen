@@ -35,7 +35,13 @@ import {
   GetUserPermissionsQueryHandler,
   GetUserPermissionsQueryResponse,
 } from './get-permissions/get-user-permissions.query';
-import { AuthGuard } from '@lotchen/api/core';
+import { ApiPaginationResponse, AuthGuard } from '@lotchen/api/core';
+import {
+  PaginateAllUsersCommand,
+  PaginateAllUsersCommandDto,
+  PaginateAllUsersCommandHandler,
+  PaginateAllUsersCommandResponse,
+} from './paginate-all/paginate-all-users.command';
 
 @ApiHeader({
   name: 'x-tenant-fqn',
@@ -54,7 +60,8 @@ export class UsersController {
     private readonly _findUserByIdQueryHandler: FindUserByIdQueryHandler,
     private readonly _assignPermissionsCommandHandler: AssignPermissionsCommandHandler,
     private readonly _assignRolesCommandHandler: AssignRolesCommandHandler,
-    private readonly _getUserPermissionsQueryHandler: GetUserPermissionsQueryHandler
+    private readonly _getUserPermissionsQueryHandler: GetUserPermissionsQueryHandler,
+    private readonly _paginateAllUserCommandHandler: PaginateAllUsersCommandHandler
   ) {}
 
   @Post()
@@ -135,5 +142,16 @@ export class UsersController {
     @Param('id') userId: string
   ): Promise<GetUserPermissionsQueryResponse[]> {
     return await this._getUserPermissionsQueryHandler.handlerAsync({ userId });
+  }
+
+  @ApiPaginationResponse(PaginateAllUsersCommandDto)
+  @Post('/search')
+  @ApiResponse({
+    status: 200,
+  })
+  async searchUserPaginate(
+    @Body() payload: PaginateAllUsersCommand
+  ): Promise<PaginateAllUsersCommandResponse> {
+    return await this._paginateAllUserCommandHandler.handlerAsync(payload);
   }
 }

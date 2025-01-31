@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PaginateAllUsersCommandDtoTeam } from './paginate-all-users-command-dto-team.interface';
 
 
-export interface FindAllTerritoriesQueryResponse { 
+export interface PaginateAllUsersCommandDto { 
     id: string;
-    name: string;
+    email: string;
+    team: PaginateAllUsersCommandDtoTeam;
 }
 

@@ -1,3 +1,12 @@
+import { PaginateAllUsersCommandHandler } from './paginate-all/paginate-all-users.command';
+import { AssignRolesCommandHandler } from './assign-roles/assign-roles.command';
+import { AssignPermissionsCommandHandler } from './assign-permissions/assign-permissions.command';
+import { CreateUserCommandHandler } from './create/create-user-command-handler';
+import { DeleteUserCommandHandler } from './delete/delete-user.command';
+import { FindUserByIdQueryHandler } from './findby-id/find-user-by-id.query';
+import { GetUserPermissionsQueryHandler } from './get-permissions/get-user-permissions.query';
+import { GetAllUserQueryHandler } from './get-all/get-all-user-query-handler';
+
 export * from './user.schema';
 export * from './user-token.schema';
 export * from './users.controller';
@@ -11,14 +20,6 @@ export * from './get-all/get-all-user-query-handler';
 export * from './get-all/get-all-user-query';
 export * from './get-permissions/get-user-permissions.query';
 
-import { AssignRolesCommandHandler } from './assign-roles/assign-roles.command';
-import { AssignPermissionsCommandHandler } from './assign-permissions/assign-permissions.command';
-import { CreateUserCommandHandler } from './create/create-user-command-handler';
-import { DeleteUserCommandHandler } from './delete/delete-user.command';
-import { FindUserByIdQueryHandler } from './findby-id/find-user-by-id.query';
-import { GetUserPermissionsQueryHandler } from './get-permissions/get-user-permissions.query';
-import { GetAllUserQueryHandler } from './get-all/get-all-user-query-handler';
-
 export const usersHandlers = [
   AssignRolesCommandHandler,
   AssignPermissionsCommandHandler,
@@ -27,4 +28,5 @@ export const usersHandlers = [
   FindUserByIdQueryHandler,
   GetUserPermissionsQueryHandler,
   GetAllUserQueryHandler,
+  PaginateAllUsersCommandHandler,
 ];

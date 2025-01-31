@@ -11,8 +11,16 @@
  */
 
 
-export interface FindAllTerritoriesQueryResponse { 
-    id: string;
-    name: string;
+export interface PaginateAllUsersCommand { 
+    /**
+     * 
+     */
+    filters: Array<string>;
+    sort?: object;
+    /**
+     * Page Index
+     */
+    pageIndex: number;
+    pageSize: number;
 }
 

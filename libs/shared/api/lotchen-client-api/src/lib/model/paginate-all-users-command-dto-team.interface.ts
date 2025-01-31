@@ -11,8 +11,8 @@
  */
 
 
-export interface FindAllTerritoriesQueryResponse { 
-    id: string;
-    name: string;
+export interface PaginateAllUsersCommandDtoTeam { 
+    id?: string;
+    name?: string;
 }
 

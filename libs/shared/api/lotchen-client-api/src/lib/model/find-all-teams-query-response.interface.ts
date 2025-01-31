@@ -9,10 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FindAllTeamsQueryUserDto } from './find-all-teams-query-user-dto.interface';
 
 
-export interface FindAllTerritoriesQueryResponse { 
+export interface FindAllTeamsQueryResponse { 
     id: string;
     name: string;
+    description: string;
+    manager: FindAllTeamsQueryUserDto;
+    members: Array<FindAllTeamsQueryUserDto>;
 }
 

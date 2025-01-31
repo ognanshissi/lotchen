@@ -16,7 +16,7 @@ export const ApiPaginationResponse = <TModel extends Type<unknown>>(
           },
           {
             properties: {
-              results: {
+              data: {
                 type: 'array',
                 items: { $ref: getSchemaPath(model) },
               },

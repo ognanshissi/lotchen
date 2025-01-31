@@ -63,8 +63,6 @@ export class CreateTeamCommandHandler
         const manager = await this.UserModel.findOne(
           {
             _id: command.managerId,
-            isActive: true,
-            isLocked: false,
             isDeleted: false,
           },
           '_id'
@@ -79,10 +77,31 @@ export class CreateTeamCommandHandler
         managerId = manager._id;
       }
 
+      // Members
+      const membersIds: string[] = [];
+      if (command.memberIds.length) {
+        for (const memberId of command.memberIds) {
+          const user = await this.UserModel.findOne(
+            {
+              _id: memberId,
+              isDeleted: false,
+            },
+            '_id'
+          )
+            .lean()
+            .exec();
+
+          if (user) {
+            membersIds.push(user._id);
+          }
+        }
+      }
+
       const createdTeam = new this._teamsProvider.TeamModel({
         name: command.name,
         description: command.description,
         manager: managerId,
+        members: membersIds,
       });
 
       const errors = createdTeam.validateSync();

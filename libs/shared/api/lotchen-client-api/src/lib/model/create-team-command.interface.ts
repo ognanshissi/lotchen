@@ -11,8 +11,16 @@
  */
 
 
-export interface FindAllTerritoriesQueryResponse { 
-    id: string;
+export interface CreateTeamCommand { 
+    /**
+     * Name of the team
+     */
     name: string;
+    description?: string;
+    managerId?: string;
+    /**
+     * User Ids to link into the team
+     */
+    memberIds?: Array<string>;
 }
 

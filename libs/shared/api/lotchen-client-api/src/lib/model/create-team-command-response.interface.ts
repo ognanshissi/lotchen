@@ -11,8 +11,7 @@
  */
 
 
-export interface FindAllTerritoriesQueryResponse { 
+export interface CreateTeamCommandResponse { 
     id: string;
-    name: string;
 }
 

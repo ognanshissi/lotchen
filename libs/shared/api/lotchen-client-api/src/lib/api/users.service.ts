@@ -30,6 +30,10 @@ import { FindUserByIdQueryResponse } from '../model/find-user-by-id-query-respon
 import { GetAllUserQuery } from '../model/get-all-user-query.interface';
 // @ts-ignore
 import { GetUserPermissionsQueryResponse } from '../model/get-user-permissions-query-response.interface';
+// @ts-ignore
+import { PaginateAllUsersCommand } from '../model/paginate-all-users-command.interface';
+// @ts-ignore
+import { UsersControllerSearchUserPaginateV1200Response } from '../model/users-controller-search-user-paginate-v1200-response.interface';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -524,6 +528,83 @@ export class UsersApiService {
         return this.httpClient.request<FindUserByIdQueryResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param paginateAllUsersCommand 
+     * @param xTenantFqn The Tenant Fqn
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public usersControllerSearchUserPaginateV1(paginateAllUsersCommand: PaginateAllUsersCommand, xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UsersControllerSearchUserPaginateV1200Response>;
+    public usersControllerSearchUserPaginateV1(paginateAllUsersCommand: PaginateAllUsersCommand, xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UsersControllerSearchUserPaginateV1200Response>>;
+    public usersControllerSearchUserPaginateV1(paginateAllUsersCommand: PaginateAllUsersCommand, xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UsersControllerSearchUserPaginateV1200Response>>;
+    public usersControllerSearchUserPaginateV1(paginateAllUsersCommand: PaginateAllUsersCommand, xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (paginateAllUsersCommand === null || paginateAllUsersCommand === undefined) {
+            throw new Error('Required parameter paginateAllUsersCommand was null or undefined when calling usersControllerSearchUserPaginateV1.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+        if (xTenantFqn !== undefined && xTenantFqn !== null) {
+            localVarHeaders = localVarHeaders.set('x-tenant-fqn', String(xTenantFqn));
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+        let localVarTransferCache: boolean | undefined = options && options.transferCache;
+        if (localVarTransferCache === undefined) {
+            localVarTransferCache = true;
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/users/search`;
+        return this.httpClient.request<UsersControllerSearchUserPaginateV1200Response>('post', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: paginateAllUsersCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

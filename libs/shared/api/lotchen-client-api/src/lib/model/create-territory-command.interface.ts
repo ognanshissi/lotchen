@@ -16,9 +16,11 @@ export interface CreateTerritoryCommand {
      * Name of the territory
      */
     name: string;
+    description: string;
     /**
-     * Coordinates of the territory, probably a known country such as Ivory Coast
+     * Territory children
      */
-    coordinates?: Array<number>;
+    childrenIds?: Array<string>;
+    parentId?: string;
 }
 

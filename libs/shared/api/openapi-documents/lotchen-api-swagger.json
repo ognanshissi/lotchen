@@ -280,6 +280,61 @@
         ]
       }
     },
+    "/api/v1/users/search": {
+      "post": {
+        "operationId": "UsersController_searchUserPaginate_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaginateAllUsersCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "title": "PaginationResponseOfPaginateAllUsersCommandDto",
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PaginateAllUsersCommandDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
     "/api/v1/auth/login": {
       "post": {
         "operationId": "AuthController_login_v1",
@@ -921,6 +976,105 @@
           "code"
         ]
       },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "number",
+            "description": ""
+          },
+          "pageIndex": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "totalElements",
+          "pageIndex",
+          "pageSize",
+          "totalPages",
+          "data"
+        ]
+      },
+      "PaginateAllUsersCommandDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "team": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": ""
+              },
+              "name": {
+                "type": "string",
+                "example": "Team Alpha"
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "team"
+        ]
+      },
+      "PaginateAllUsersCommand": {
+        "type": "object",
+        "properties": {
+          "filters": {
+            "description": "",
+            "example": [
+              {
+                "fieldName": "firstName",
+                "operator": "eq",
+                "value": "James Gordon"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sort": {
+            "type": "object"
+          },
+          "pageIndex": {
+            "type": "number",
+            "description": "Page Index",
+            "example": 0,
+            "minimum": 0
+          },
+          "pageSize": {
+            "type": "number",
+            "maximum": 30,
+            "minimum": 5,
+            "example": 5
+          }
+        },
+        "required": [
+          "filters",
+          "pageIndex",
+          "pageSize"
+        ]
+      },
       "LoginCommand": {
         "type": "object",
         "properties": {
@@ -1320,7 +1474,7 @@
           "members": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/FindAllTeamsQueryUserDto"
             }
           }
         },

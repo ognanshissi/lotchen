@@ -4,7 +4,7 @@ export class Pagination<TData> {
   @ApiProperty({ description: '', type: Number })
   public totalElements!: number;
   @ApiProperty()
-  public pageNumber!: number;
+  public pageIndex!: number;
   @ApiProperty()
   public pageSize!: number;
   @ApiProperty()

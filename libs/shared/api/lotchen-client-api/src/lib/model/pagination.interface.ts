@@ -11,8 +11,14 @@
  */
 
 
-export interface FindAllTerritoriesQueryResponse { 
-    id: string;
-    name: string;
+export interface Pagination { 
+    /**
+     * 
+     */
+    totalElements: number;
+    pageIndex: number;
+    pageSize: number;
+    totalPages: number;
+    data: Array<string>;
 }
 

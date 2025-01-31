@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { QueryHandler } from '@lotchen/api/core';
 import { Injectable } from '@nestjs/common';
 import { TeamsProvider } from '../teams.provider';
@@ -29,7 +29,10 @@ export class FindAllTeamsQueryResponse {
   @ApiProperty({ type: () => FindAllTeamsQueryUserDto })
   manager!: FindAllTeamsQueryUserDto | null;
 
-  @ApiProperty({ type: () => Array<FindAllTeamsQueryUserDto> })
+  @ApiProperty({
+    type: 'array',
+    items: { $ref: getSchemaPath(FindAllTeamsQueryUserDto) },
+  })
   members!: FindAllTeamsQueryUserDto[] | [];
 }
 

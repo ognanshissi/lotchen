@@ -11,8 +11,10 @@
  */
 
 
-export interface FindAllTerritoriesQueryResponse { 
+export interface FindAllTeamsQueryUserDto { 
     id: string;
-    name: string;
+    email: string;
+    firstName: string;
+    lastName: string;
 }
 
