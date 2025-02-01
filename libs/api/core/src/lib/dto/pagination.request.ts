@@ -16,6 +16,7 @@ export class PaginationRequest {
     example: 0,
     minimum: 0,
   })
+  @IsNumber()
   public pageIndex!: number;
   @ApiProperty({ type: Number, maximum: 30, minimum: 5, example: 5 })
   @IsNumber()
@@ -24,6 +25,8 @@ export class PaginationRequest {
 
 export interface PagingFilter {
   fieldName: string;
-  operator: 'eq' | 'or' | 'lt' | 'gte' | 'lte' | 'gt';
-  value: string;
+  operator: 'eq' | 'lt' | 'gte' | 'lte' | 'gt' | 'in' | 'nin' | 'ne';
+  value: string | string[] | boolean;
 }
+
+export type logicalOperator = 'and' | 'or' | 'not' | 'nor';

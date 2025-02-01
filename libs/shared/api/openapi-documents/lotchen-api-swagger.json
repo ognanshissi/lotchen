@@ -780,7 +780,16 @@
     "/api/v1/teams": {
       "post": {
         "operationId": "TeamsController_createTeam_v1",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -809,7 +818,16 @@
       },
       "get": {
         "operationId": "TeamsController_findAllTeams_v1",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "default": {
             "description": "",
@@ -1007,6 +1025,21 @@
           "data"
         ]
       },
+      "PaginateAllUsersTeamDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
       "PaginateAllUsersCommandDto": {
         "type": "object",
         "properties": {
@@ -1016,23 +1049,35 @@
           "email": {
             "type": "string"
           },
-          "team": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "example": ""
-              },
-              "name": {
-                "type": "string",
-                "example": "Team Alpha"
-              }
+          "isVerified": {
+            "type": "boolean"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "team": {
+            "$ref": "#/components/schemas/PaginateAllUsersTeamDto"
           }
         },
         "required": [
           "id",
           "email",
+          "isVerified",
+          "isActive",
+          "roles",
+          "permissions",
           "team"
         ]
       },

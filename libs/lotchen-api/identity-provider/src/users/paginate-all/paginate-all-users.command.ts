@@ -1,5 +1,6 @@
 import {
   CommandHandler,
+  filterQueryGenerator,
   Pagination,
   PaginationRequest,
 } from '@lotchen/api/core';
@@ -11,6 +12,14 @@ import { Team } from '../../teams';
 
 export class PaginateAllUsersCommand extends PaginationRequest {}
 
+export class PaginateAllUsersTeamDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty()
+  name!: string;
+}
+
 export class PaginateAllUsersCommandDto {
   @ApiProperty()
   id!: string;
@@ -18,20 +27,22 @@ export class PaginateAllUsersCommandDto {
   @ApiProperty()
   email!: string;
 
+  @ApiProperty({ type: Boolean })
+  isVerified!: boolean;
+
+  @ApiProperty({ type: Boolean })
+  isActive!: boolean;
+
+  @ApiProperty({ type: [String] })
+  roles!: string[];
+
+  @ApiProperty({ type: [String] })
+  permissions!: string[];
+
   @ApiProperty({
-    type: 'object',
-    properties: {
-      id: {
-        type: 'string',
-        example: '',
-      },
-      name: {
-        type: 'string',
-        example: 'Team Alpha',
-      },
-    },
+    type: () => PaginateAllUsersTeamDto,
   })
-  team!: Record<string, string> | null;
+  team!: PaginateAllUsersTeamDto | null;
 }
 
 export class PaginateAllUsersCommandResponse extends Pagination<PaginateAllUsersCommandDto> {}
@@ -49,51 +60,31 @@ export class PaginateAllUsersCommandHandler
   public async handlerAsync(
     command: PaginateAllUsersCommand
   ): Promise<PaginateAllUsersCommandResponse> {
-    const queryFilter = {
-      isDeleted: false,
-    };
+    const queryFilter = filterQueryGenerator(command.filters);
 
-    const totalDocuments = await this.UserModel.countDocuments(
-      queryFilter
-    ).exec();
-    const totalPages = Math.ceil(totalDocuments / command.pageSize);
-
-    const results = await this.UserModel.find(queryFilter, undefined, {
-      sort: command.sort,
-      skip: Math.max(command.pageIndex * command.pageSize, 0),
-      limit: Math.min(command.pageSize, totalDocuments),
-    })
+    const totalDocuments = await this.UserModel.countDocuments(queryFilter)
       .lean()
       .exec();
+    const totalPages = Math.ceil(totalDocuments / command.pageSize);
+
+    const results = await this.UserModel.aggregate([
+      { $match: queryFilter },
+      { $skip: Math.max(command.pageIndex * command.pageSize, 0) },
+      { $limit: Math.min(command.pageSize, totalDocuments) },
+    ]).exec();
 
     const usersTeam: { [key: string]: any } = {};
 
-    for (const user of results) {
-      const team = await this.TeamModel.findOne(
-        {
-          isDeleted: false,
-          $or: [
-            {
-              members: {
-                $in: [user._id],
-              },
-            },
-            {
-              manager: user._id,
-            },
-          ],
-        },
-
-        '_id id name'
-      )
-        .lean()
-        .exec();
-      if (team) {
-        usersTeam[user._id] = team;
-      } else {
-        usersTeam[user._id] = null;
-      }
-    }
+    // const teams = await this.TeamModel.aggregate([
+    //   { $project: { name: 1, id: 1, manager: 1, members: 1 } },
+    //   {
+    //     $match: {
+    //       manager: {
+    //         $in: results.map((item) => item.id),
+    //       },
+    //     },
+    //   },
+    // ]);
 
     return {
       pageIndex: command.pageIndex,
@@ -104,6 +95,10 @@ export class PaginateAllUsersCommandHandler
           return {
             email: item.email,
             id: item._id,
+            isVerified: item.isVerified,
+            isActive: item.isActive,
+            roles: [],
+            permissions: item.permissions,
             team: {
               id: usersTeam[item._id]?._id,
               name: usersTeam[item._id]?.name,

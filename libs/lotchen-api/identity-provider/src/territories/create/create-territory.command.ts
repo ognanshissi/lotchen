@@ -41,7 +41,9 @@ export class CreateTerritoryCommandHandler
           _id: command.parentId,
         },
         '_id'
-      );
+      )
+        .lean()
+        .exec();
 
       // Get children
       const children = await this.territoriesProvider.TerritoryModel.find(
@@ -51,13 +53,15 @@ export class CreateTerritoryCommandHandler
           },
         },
         '_id'
-      );
+      )
+        .lean()
+        .exec();
 
       const territory = new this.territoriesProvider.TerritoryModel({
         name: command.name,
         description: command.description,
-        children: command.childrenIds,
-        parent: command.parentId,
+        children: children?.map((item) => item._id),
+        parent: parent?._id,
       });
       await territory.save();
     } catch (error: any) {

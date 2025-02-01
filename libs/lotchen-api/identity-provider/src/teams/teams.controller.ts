@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateTeamCommand,
   CreateTeamCommandHandler,
@@ -13,6 +13,10 @@ import {
 @Controller({
   version: '1',
   path: 'teams',
+})
+@ApiHeader({
+  name: 'x-tenant-fqn',
+  description: 'The Tenant Fqn',
 })
 @ApiTags('Teams')
 export class TeamsController {

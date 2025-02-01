@@ -4,6 +4,7 @@ import { AggregateRoot } from '@lotchen/api/core';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../roles';
 import { Permission } from '../permissions';
+import { Team, TeamSchema } from '../teams';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -68,6 +69,9 @@ export class User extends AggregateRoot {
 
   @Prop()
   salt!: string;
+
+  @Prop({ type: TeamSchema })
+  teams!: Team[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
