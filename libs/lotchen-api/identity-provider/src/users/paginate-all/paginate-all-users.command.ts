@@ -43,6 +43,12 @@ export class PaginateAllUsersCommandDto {
     type: () => PaginateAllUsersTeamDto,
   })
   team!: PaginateAllUsersTeamDto | null;
+
+  @ApiProperty({ type: Date })
+  createdAt!: Date;
+
+  @ApiProperty()
+  updatedAt!: Date;
 }
 
 export class PaginateAllUsersCommandResponse extends Pagination<PaginateAllUsersCommandDto> {}
@@ -98,6 +104,8 @@ export class PaginateAllUsersCommandHandler
             isVerified: item.isVerified,
             isActive: item.isActive,
             roles: [],
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt,
             permissions: item.permissions,
             team: {
               id: usersTeam[item._id]?._id,

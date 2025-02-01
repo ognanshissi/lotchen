@@ -1069,6 +1069,14 @@
           },
           "team": {
             "$ref": "#/components/schemas/PaginateAllUsersTeamDto"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
           }
         },
         "required": [
@@ -1078,7 +1086,9 @@
           "isActive",
           "roles",
           "permissions",
-          "team"
+          "team",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "PaginateAllUsersCommand": {
