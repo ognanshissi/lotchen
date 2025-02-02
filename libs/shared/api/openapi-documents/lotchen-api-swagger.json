@@ -1025,21 +1025,6 @@
           "data"
         ]
       },
-      "PaginateAllUsersTeamDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "name"
-        ]
-      },
       "PaginateAllUsersCommandDto": {
         "type": "object",
         "properties": {
@@ -1067,8 +1052,11 @@
               "type": "string"
             }
           },
-          "team": {
-            "$ref": "#/components/schemas/PaginateAllUsersTeamDto"
+          "teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaginateAllUsersTeamDto"
+            }
           },
           "createdAt": {
             "format": "date-time",
@@ -1086,7 +1074,7 @@
           "isActive",
           "roles",
           "permissions",
-          "team",
+          "teams",
           "createdAt",
           "updatedAt"
         ]

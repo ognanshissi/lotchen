@@ -4,7 +4,7 @@ import {
   Pagination,
   PaginationRequest,
 } from '@lotchen/api/core';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Inject, Injectable } from '@nestjs/common';
 import { User } from '../user.schema';
 import { Model } from 'mongoose';
@@ -40,9 +40,10 @@ export class PaginateAllUsersCommandDto {
   permissions!: string[];
 
   @ApiProperty({
-    type: () => PaginateAllUsersTeamDto,
+    type: 'array',
+    items: { $ref: getSchemaPath(PaginateAllUsersTeamDto) },
   })
-  team!: PaginateAllUsersTeamDto | null;
+  teams!: PaginateAllUsersTeamDto[];
 
   @ApiProperty({ type: Date })
   createdAt!: Date;
@@ -79,18 +80,27 @@ export class PaginateAllUsersCommandHandler
       { $limit: Math.min(command.pageSize, totalDocuments) },
     ]).exec();
 
-    const usersTeam: { [key: string]: any } = {};
+    const userIds = results.map((item) => item._id);
 
-    // const teams = await this.TeamModel.aggregate([
-    //   { $project: { name: 1, id: 1, manager: 1, members: 1 } },
-    //   {
-    //     $match: {
-    //       manager: {
-    //         $in: results.map((item) => item.id),
-    //       },
-    //     },
-    //   },
-    // ]);
+    const teams = await this.TeamModel.aggregate([
+      { $project: { name: 1, id: 1, manager: 1, members: 1 } },
+      {
+        $match: {
+          $or: [
+            {
+              manager: {
+                $in: userIds,
+              },
+            },
+            {
+              members: {
+                $in: userIds,
+              },
+            },
+          ],
+        },
+      },
+    ]);
 
     return {
       pageIndex: command.pageIndex,
@@ -99,18 +109,15 @@ export class PaginateAllUsersCommandHandler
       data: [
         ...results.map((item) => {
           return {
-            email: item.email,
             id: item._id,
+            email: item.email,
             isVerified: item.isVerified,
             isActive: item.isActive,
-            roles: [],
+            roles: item.roles,
             createdAt: item.createdAt,
             updatedAt: item.updatedAt,
             permissions: item.permissions,
-            team: {
-              id: usersTeam[item._id]?._id,
-              name: usersTeam[item._id]?.name,
-            },
+            teams: [],
           } satisfies PaginateAllUsersCommandDto;
         }),
       ],
