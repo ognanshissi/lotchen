@@ -25,6 +25,7 @@
       "@lotchen/lotchen/common": ["libs/lotchen/common/src/index.ts"],
       "@lotchen/lotchen/dashboard": ["libs/lotchen/dashboard/src/index.ts"],
       "@lotchen/lotchen/prospects": ["libs/lotchen/prospects/src/index.ts"],
+      "@lotchen/settings": ["libs/lotchen/settings/src/index.ts"],
       "@talisoft/api/lotchen-client-api": [
         "libs/shared/api/lotchen-client-api/src/index.ts"
       ],

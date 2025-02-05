@@ -1,4 +1,4 @@
-import { Component, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'tas-title, Title, [Title]',
@@ -8,9 +8,11 @@ import { Component, HostBinding } from '@angular/core';
     </div>
   `,
   standalone: true,
-  exportAs: 'TasTitle'
+  exportAs: 'TasTitle',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TasTitle {
   static nextId = 0;
   @HostBinding() id = `tas-title-id-${TasTitle.nextId++}`;
+  @HostBinding('role') role = 'title';
 }

@@ -11,7 +11,8 @@
     "ui:watch": "npx nx run ui:build:development --watch",
     "ui:build": "npx nx run ui:build:development --verbose",
     "openapi-generator": "npx @openapitools/openapi-generator-cli generate  --generator-key lotchen  --verbose",
-    "prepare": "husky"
+    "prepare": "husky",
+    "api": "pm2 start dist/apps/lotchen-api/main.js"
   },
   "lint-staged": {
     "**/*": "eslint --quiet --fix"

@@ -69,6 +69,15 @@ export class PaginateAllUsersCommandHandler
   ): Promise<PaginateAllUsersCommandResponse> {
     const queryFilter = filterQueryGenerator(command.filters);
 
+    const { createHmac } = await import('node:crypto');
+
+    const secret = 'abcdef';
+    const hash = createHmac('sha256', secret)
+      .update('I love my wife 2')
+      .digest('hex');
+
+    console.log(hash);
+
     const totalDocuments = await this.UserModel.countDocuments(queryFilter)
       .lean()
       .exec();
