@@ -30,14 +30,14 @@
 
     <div class="grid grid-cols-3 gap-6 mt-8">
       @for (item of selectedMenu().children; track item.id) {
-      <button
+      <a
         class="p-4 border border-gray-200 rounded-lg hover:bg-white text-left min-h-[80px]"
         *ngIf="item.type === 'basic'"
-        (click)="toggleSelectedMenuGroup(item)"
+        [routerLink]="item.link"
       >
         <p class="font-semibold">{{ item.title }}</p>
         <tas-text>{{ item.description }}</tas-text>
-      </button>
+      </a>
       }
     </div>
     }

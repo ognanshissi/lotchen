@@ -8,32 +8,33 @@ import { Request, Response } from 'express';
 
 export class TenantMiddleware implements NestMiddleware {
   use(
-    req: Request & { tenant_fqn: string },
+    req: Request & { tenant_fqdn: string },
     res: Response,
     next: (error?: Error | any) => void
   ) {
-    const tenantHeader = req.headers['x-tenant-fqn'] as string;
+    const tenantHeader = req.headers['x-tenant-fqdn'] as string;
 
     if (!tenantHeader) {
-      throw new BadRequestException('X-TENANT-FQN not provided');
+      throw new BadRequestException('X-TENANT-FQDN not provided');
     }
 
+    // This must be loaded from database (Tenant Master - api)
     const tenants = [
       {
         isLocked: false,
         name: 'Finafrica Microfinance Senegal',
-        fqn: 'finafrica_microfinance',
+        fqdn: 'finafrica_microfinance',
         underMaintenance: false,
       },
       {
         isLocked: false,
         name: 'Finafrica Microfinance Guinee',
-        fqn: 'db',
+        fqdn: 'db',
         underMaintenance: false,
       },
     ];
 
-    const tenant = tenants.find((tenant) => tenant.fqn === tenantHeader);
+    const tenant = tenants.find((tenant) => tenant.fqdn === tenantHeader);
     if (!tenant) {
       throw new NotFoundException('Tenant not found');
     }
@@ -41,7 +42,7 @@ export class TenantMiddleware implements NestMiddleware {
     if (tenant.isLocked) {
       throw new UnauthorizedException('Tenant is not authorized!');
     }
-    req.tenant_fqn = tenant.fqn;
+    req.tenant_fqdn = tenant.fqdn;
     next();
   }
 }

@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { TasTitle } from '@talisoft/ui/title';
 import { TasText } from '@talisoft/ui/text';
 import { NgClass, NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 export interface MenuItem {
   title: string;
@@ -26,7 +27,7 @@ export interface MenuItem {
       }
     `,
   ],
-  imports: [TasTitle, TasText, NgIf, NgClass],
+  imports: [TasTitle, TasText, NgIf, NgClass, RouterLink],
 })
 export class OverviewComponent {
   private readonly menuData: MenuItem[] = [
