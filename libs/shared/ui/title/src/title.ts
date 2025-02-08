@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 @Component({
   selector: 'tas-title, Title, [Title]',
   template: `
-    <div class="text-xl font-bold text-gray-900">
+    <div class="text-xl font-bold text-gray-700">
       <ng-content></ng-content>
     </div>
   `,

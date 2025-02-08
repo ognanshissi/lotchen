@@ -2,7 +2,7 @@
   "name": "settings",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/lotchen/settings/src",
-  "prefix": "lib",
+  "prefix": "settings",
   "projectType": "library",
   "tags": [],
   "targets": {
