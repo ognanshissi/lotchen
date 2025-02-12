@@ -1,12 +1,24 @@
 import { Routes } from '@angular/router';
+import RolesComponent from './containers/roles/roles.component';
+import UsersComponent from './containers/users/users.component';
+import OverviewComponent from './containers/overview/overview.component';
 
 export const settingsRoutes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./containers/overview/overview.component'),
+    loadComponent: () => OverviewComponent,
   },
   {
     path: 'users',
-    loadComponent: () => import('./containers/users/users.component'),
+    loadComponent: () => UsersComponent,
+  },
+  {
+    path: 'roles',
+    loadComponent: () => RolesComponent,
+  },
+  {
+    path: 'territories',
+    loadComponent: () =>
+      import('./containers/territories/territories.component'),
   },
 ];

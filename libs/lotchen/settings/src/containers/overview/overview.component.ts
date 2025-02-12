@@ -76,7 +76,7 @@ export class OverviewComponent {
           title: 'Territoires',
           type: 'basic',
           id: 'teams_territories_territory',
-          link: '/settings/territory',
+          link: '/settings/territorries',
           description: 'Gestion des utilisateurs et groupes par territoires',
         },
       ],

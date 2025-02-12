@@ -2,7 +2,7 @@ import { AggregateRoot, LanguageEnum } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { User } from '../users/user.schema';
+import { User } from '../users';
 import { ContactInfo } from './contact-info';
 
 export type ProfileDocument = HydratedDocument<Profile>;

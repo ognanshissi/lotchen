@@ -3,12 +3,13 @@ import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasTitle } from '@talisoft/ui/title';
 import { UsersApiService } from '@talisoft/api/lotchen-client-api';
+import { TasText } from '@talisoft/ui/text';
 
 @Component({
   selector: 'settings-users',
   templateUrl: './users.component.html',
   standalone: true,
-  imports: [ButtonModule, TasIcon, TasTitle],
+  imports: [ButtonModule, TasIcon, TasTitle, TasText],
 })
 export class UsersComponent {
   private readonly _usersService = inject(UsersApiService);

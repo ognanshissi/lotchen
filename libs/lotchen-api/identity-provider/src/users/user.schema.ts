@@ -72,6 +72,12 @@ export class User extends AggregateRoot {
 
   @Prop({ type: TeamSchema })
   teams!: Team[];
+
+  @Prop({
+    type: mongoose.Schema.Types.UUID,
+    ref: 'User',
+  })
+  reportedTo!: User; // Superior, person to refer to
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,9 +1,20 @@
 <div class="mx-auto p-4">
   <div class="flex justify-between items-center">
-    <tas-title>Les utilisateurs</tas-title>
-    <button tas-raised-button color="primary" (click)="addUserDialog()">
-      <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
-      Ajouter un utilisateur
-    </button>
+    <div>
+      <tas-title>Utilisateurs</tas-title>
+      <tas-text
+        >Gestion des utilisateurs, création attribution a un équipe</tas-text
+      >
+    </div>
+
+    <div class="flex space-x-2">
+      <button tas-raised-button color="primary" (click)="addUserDialog()">
+        <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
+        Ajouter un utilisateur
+      </button>
+      <button tas-outlined-button color="accent">
+        Importer des utilisateurs
+      </button>
+    </div>
   </div>
 </div>
