@@ -20,7 +20,7 @@
     <tas-title>Liste des leads / prospects</tas-title>
   </card-header>
 
-  <tas-table [data]="data">
+  <tas-table [data]="data" (selectionItems)="handleSelectionItems($event)">
     <ng-template #header>
       <tr>
         <th rowSelectionMaster></th>

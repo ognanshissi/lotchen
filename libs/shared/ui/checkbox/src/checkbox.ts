@@ -27,7 +27,7 @@ import { AbstractControlValueAccessor } from '@talisoft/ui/core';
       type="checkbox"
       class="form-checkbox"
       [checked]="checked()"
-      (change)="handleChange($event)"
+      (change)="handleChange($any($event.target).checked)"
       [formControl]="control"
     />
     &nbsp; @if (labelPosition() === 'right') {
@@ -56,14 +56,14 @@ export class TasCheckbox
 
   public checked = input<boolean>(false);
 
-  public change = output<boolean>();
+  public valueChange = output<boolean>();
 
   public labelPosition = input<'left' | 'right'>('right');
 
   componentId = 'tas-checkbox-id-' + Date.now();
 
-  public handleChange(event: Event) {
-    this.change.emit((event.target as HTMLInputElement)?.checked);
+  public handleChange(event: boolean) {
+    this.valueChange.emit(event);
   }
 
   public ngOnChanges(changes: SimpleChanges) {

@@ -2,14 +2,15 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  contentChild,
   ContentChild,
+  contentChildren,
   input,
   OnChanges,
   OnInit,
   output,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -22,6 +23,7 @@ import { TableDataSource } from './table-datasource';
 import { TableEntity } from './table-entity';
 import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { RowSelectionMaster } from './row-selection-master';
+import { RowSelectionItem } from './row-selection-item';
 
 @Component({
   selector: 'tas-table',
@@ -41,6 +43,8 @@ export class TasTable<T extends TableEntity>
   public columns = input<TableColumn[]>([]);
   public isLoading = input<boolean>(false);
 
+  public selectionItems = output<T[]>();
+
   public paginator = viewChild<MatPaginator>(MatPaginator);
   public sort = viewChild<MatSort>(MatSort);
 
@@ -54,8 +58,16 @@ export class TasTable<T extends TableEntity>
     (o1, o2) => o1[this.identifierField()] === o2[this.identifierField()]
   );
 
-  @ViewChild(RowSelectionMaster, { static: false })
-  rowSelectionMaster!: RowSelectionMaster;
+  public rowSelectionMaster = contentChild<RowSelectionMaster>(
+    RowSelectionMaster,
+    {
+      descendants: true,
+    }
+  );
+
+  public rowSelectionItems = contentChildren(RowSelectionItem, {
+    descendants: true,
+  });
 
   // ContentChild
   @ContentChild('header') header!: TemplateRef<any>;
@@ -64,9 +76,45 @@ export class TasTable<T extends TableEntity>
   public dataSource!: TableDataSource<T>;
 
   public ngAfterViewInit() {
-    if (this.rowSelectionMaster) {
-      this.rowSelectionMaster.toggleMaster();
+    // Whenever the selection change emit selectionItems event
+    this.selection.changed.subscribe(() => {
+      this.selectionItems.emit(this.selection.selected);
+    });
+
+    // Master selection
+    if (this.rowSelectionMaster() && this.rowSelectionItems()) {
+      this._handleMasterSelection();
+      this._handleItemSelection();
     }
+  }
+
+  private _handleMasterSelection(): void {
+    this.rowSelectionMaster()?.valueChange.subscribe((res) => {
+      // Check all checkboxes
+      this.rowSelectionItems()?.forEach((rowItem) => {
+        rowItem.toggle();
+      });
+      // Select all
+      if (res) {
+        this.selection.select(...this.data());
+      } else {
+        this.selection.clear();
+      }
+    });
+  }
+
+  private _handleItemSelection(): void {
+    this.rowSelectionItems().map((item: RowSelectionItem, index: number) => {
+      const currentItem = this.data().find((el, i) => i === index);
+      if (currentItem) {
+        item.valueChange.subscribe(() => {
+          this.selection.toggle(currentItem);
+          this.rowSelectionMaster()?.isChecked.set(
+            this.selection.selected.length === this.data().length
+          );
+        });
+      }
+    });
   }
 
   public ngOnInit(): void {

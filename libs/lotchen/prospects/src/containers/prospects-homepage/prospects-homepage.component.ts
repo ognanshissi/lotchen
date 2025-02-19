@@ -43,6 +43,10 @@ export class ProspectsHomepageComponent {
     },
   ];
 
+  public handleSelectionItems(event: unknown[]) {
+    console.log(event);
+  }
+
   openQuickAdd() {
     this._sideDrawerService.open(QuickAddComponent).closed.subscribe((res) => {
       console.log(res);
