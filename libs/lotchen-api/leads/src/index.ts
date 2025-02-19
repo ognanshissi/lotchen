@@ -1,1 +1,1 @@
-export * from './lib/leads/leads.component';
+export * from './lib/leads.module';

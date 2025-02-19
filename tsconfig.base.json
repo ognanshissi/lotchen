@@ -16,6 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@lotchen/api/core": ["libs/api/core/src/index.ts"],
+      "@lotchen/lotchen-api/dynamic-form": [
+        "libs/lotchen-api/dynamic-form/src/index.ts"
+      ],
       "@lotchen/lotchen-api/leads": ["libs/lotchen-api/leads/src/index.ts"],
       "@lotchen/lotchen-api/contact": ["libs/lotchen-api/contact/src/index.ts"],
       "@lotchen/lotchen-api/identity-provider": [
