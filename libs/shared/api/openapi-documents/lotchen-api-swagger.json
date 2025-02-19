@@ -269,7 +269,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetUserPermissionsQueryResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetUserPermissionsQueryResponse"
+                  }
                 }
               }
             }
@@ -567,7 +570,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindAllPermissionQuery"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllPermissionQuery"
+                  }
                 }
               }
             }
@@ -629,9 +635,9 @@
         "operationId": "TerritoriesController_createTerritory_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -660,9 +666,9 @@
         "operationId": "TerritoriesController_allTerritories_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -674,7 +680,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindAllTerritoriesQueryResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllTerritoriesQueryResponse"
+                  }
                 }
               }
             }
@@ -834,7 +843,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindAllTeamsQueryResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllTeamsQueryResponse"
+                  }
                 }
               }
             }
@@ -842,6 +854,77 @@
         },
         "tags": [
           "Teams"
+        ]
+      }
+    },
+    "/api/v1/organizations": {
+      "get": {
+        "operationId": "OrganizationsController_findAllOrganizations_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllOrganizationQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Organizations"
+        ]
+      },
+      "post": {
+        "operationId": "OrganizationsController_createOrganization_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrganizationCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Organizations"
         ]
       }
     }
@@ -1025,6 +1108,21 @@
           "data"
         ]
       },
+      "PaginateAllUsersTeamDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
       "PaginateAllUsersCommandDto": {
         "type": "object",
         "properties": {
@@ -1079,22 +1177,23 @@
           "updatedAt"
         ]
       },
+      "FilterBase": {
+        "type": "object",
+        "properties": {
+          "globalText": {
+            "type": "string",
+            "description": "Global Text search"
+          }
+        },
+        "required": [
+          "globalText"
+        ]
+      },
       "PaginateAllUsersCommand": {
         "type": "object",
         "properties": {
           "filters": {
-            "description": "",
-            "example": [
-              {
-                "fieldName": "firstName",
-                "operator": "eq",
-                "value": "James Gordon"
-              }
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "$ref": "#/components/schemas/FilterBase"
           },
           "sort": {
             "type": "object"
@@ -1327,11 +1426,28 @@
           },
           "name": {
             "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of creation"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Latest updated At"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Person who created the entry"
           }
         },
         "required": [
           "id",
-          "name"
+          "name",
+          "createdAt",
+          "updatedAt",
+          "createdBy"
         ]
       },
       "CreateAgencyAddressDto": {
@@ -1527,6 +1643,52 @@
           "description",
           "manager",
           "members"
+        ]
+      },
+      "FindAllOrganizationQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateOrganizationCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the organization (Subsidiary)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the organization, scope and country where is located"
+          }
+        },
+        "required": [
+          "name",
+          "description"
         ]
       }
     }

@@ -1,4 +1,168 @@
-<div class="p-2">
-  <tas-title>Tableau de bord</tas-title>
+<tas-title>Tableau de bord</tas-title>
+<div class="pt-4">
+  <!-- Key Metrics -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <tas-card class="p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+          <div class="bg-blue-50 p-3 rounded-lg">
+            <tas-icon
+              iconName="payments"
+              class="w-6 h-6 text-blue-600"
+            ></tas-icon>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-sm text-gray-500">Portefeuille total</h3>
+            <div class="flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">2.5M FCFA</p>
+              <span class="ml-2 text-sm text-green-500">+15%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">Objectif mensuel</span>
+          <span class="text-gray-900">3M FCFA</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+          <div class="bg-blue-600 h-2 rounded-full" style="width: 83%"></div>
+        </div>
+      </div>
+    </tas-card>
+
+    <tas-card class="p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+          <div class="bg-green-50 p-3 rounded-lg">
+            <tas-icon
+              iconName="groups"
+              iconClass="w-6 h-6 text-green-600"
+            ></tas-icon>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-sm text-gray-500">Clients actifs</h3>
+            <div class="flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">1,234</p>
+              <span class="ml-2 text-sm text-green-500">+8%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">Nouveaux ce mois</span>
+          <span class="text-gray-900">45 clients</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+          <div class="bg-green-600 h-2 rounded-full" style="width: 75%"></div>
+        </div>
+      </div>
+    </tas-card>
+
+    <tas-card class="p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+          <div class="bg-yellow-50 p-3 rounded-lg">
+            <tas-icon
+              iconName="warning"
+              class="w-6 h-6 text-yellow-600"
+            ></tas-icon>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-sm text-gray-500">PAR 30</h3>
+            <div class="flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">3.2%</p>
+              <span class="ml-2 text-sm text-red-500">+0.5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">Montant à risque</span>
+          <span class="text-gray-900">4.2M FCFA</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+          <div class="bg-yellow-600 h-2 rounded-full" style="width: 32%"></div>
+        </div>
+      </div>
+    </tas-card>
+
+    <tas-card class="p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+          <div class="bg-purple-50 p-3 rounded-lg">
+            <tas-icon
+              iconName="trending_up"
+              class="w-6 h-6 text-purple-600"
+            ></tas-icon>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-sm text-gray-500">Taux de remboursement</h3>
+            <div class="flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">98.5%</p>
+              <span class="ml-2 text-sm text-green-500">+2%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">Objectif</span>
+          <span class="text-gray-900">99%</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+          <div
+            class="bg-purple-600 h-2 rounded-full"
+            style="width: 98.5%"
+          ></div>
+        </div>
+      </div>
+    </tas-card>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="grid grid-cols-2 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">
+          Décaissements vs Remboursements
+        </h3>
+        <div class="flex items-center space-x-2">
+          <button
+            class="px-3 py-1 text-sm bg-gray-100 rounded-lg text-gray-600"
+          >
+            Mois
+          </button>
+          <button class="px-3 py-1 text-sm bg-white rounded-lg text-gray-600">
+            Trimestre
+          </button>
+          <button class="px-3 py-1 text-sm bg-white rounded-lg text-gray-600">
+            Année
+          </button>
+        </div>
+      </div>
+      <div class="h-[300px]">
+        <canvas id="loanChart"></canvas>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">
+          Répartition du portefeuille
+        </h3>
+        <button class="p-2 hover:bg-gray-100 rounded-lg">
+          <tas-icon
+            iconName="more_vert"
+            class="w-5 h-5 text-gray-400"
+          ></tas-icon>
+        </button>
+      </div>
+      <div class="h-[300px]">
+        <canvas id="portfolioChart"></canvas>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="h-[900px]"></div>

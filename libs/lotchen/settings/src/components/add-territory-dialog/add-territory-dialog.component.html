@@ -1,0 +1,31 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title>Ajouter un territoire</tas-title>
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus,
+      excepturi fuga fugit harum ipsum minus molestiae nobis possimus!
+    </Text>
+
+    <div class="flex flex-col gap-3">
+      <div class="flex space-x-2">
+        <tas-form-field>
+          <tas-label>Nom</tas-label>
+          <input type="text" tasInput placeholder="Nom" />
+        </tas-form-field>
+      </div>
+    </div>
+
+    <tas-drawer-action>
+      <button tas-outlined-button closable-drawer>
+        <tas-icon [iconName]="'close'"></tas-icon>
+        Fermer
+      </button>
+      <button tas-raised-button color="primary">
+        <tas-icon iconName="check"></tas-icon>
+        sauvegarder
+      </button>
+    </tas-drawer-action>
+  </tas-drawer-content>
+</tas-side-drawer>

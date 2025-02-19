@@ -1,16 +1,15 @@
 import {
   CommandHandler,
-  filterQueryGenerator,
   Pagination,
   PaginationRequest,
 } from '@lotchen/api/core';
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Inject, Injectable } from '@nestjs/common';
 import { User } from '../user.schema';
 import { Model } from 'mongoose';
 import { Team } from '../../teams';
 
-export class PaginateAllUsersCommand extends PaginationRequest {}
+export class PaginateAllUsersCommand extends PaginationRequest<any> {}
 
 export class PaginateAllUsersTeamDto {
   @ApiProperty()
@@ -20,6 +19,7 @@ export class PaginateAllUsersTeamDto {
   name!: string;
 }
 
+@ApiExtraModels(PaginateAllUsersTeamDto)
 export class PaginateAllUsersCommandDto {
   @ApiProperty()
   id!: string;
@@ -67,12 +67,11 @@ export class PaginateAllUsersCommandHandler
   public async handlerAsync(
     command: PaginateAllUsersCommand
   ): Promise<PaginateAllUsersCommandResponse> {
-    const queryFilter = filterQueryGenerator(command.filters);
+    const queryFilter = {};
 
     const { createHmac } = await import('node:crypto');
 
-    const secret = 'abcdef';
-    const hash = createHmac('sha256', secret)
+    const hash = createHmac('sha256', process.env['SECRET'] ?? '')
       .update('I love my wife 2')
       .digest('hex');
 

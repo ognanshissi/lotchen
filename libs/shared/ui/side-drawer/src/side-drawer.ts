@@ -18,16 +18,17 @@ const DEFAULT_SIDE_DRAWER_WIDTH = '500px';
   standalone: true,
   template: `
     <div
-      class="absolute top-0 left-0 right-0 flex justify-end w-full h-full pr-2 overflow-y-hidden items-center"
+      class="absolute top-0 left-0 right-0 flex justify-end w-full h-full overflow-y-hidden items-center"
     >
       <div
-        style="height: calc(100vh - 20px)"
-        class="bg-white rounded-xl  relative grid grid-rows-[60px_auto_50px] h-full overflow-hidden"
+        class="bg-white  relative flex justify-between flex-col h-full overflow-hidden"
         [style]="{ width: width() }"
       >
-        <ng-content select="tas-drawer-title"></ng-content>
-        <div class="overflow-y-auto p-4" style="height: calc(100vh - 58px)">
-          <ng-content select="tas-drawer-content"></ng-content>
+        <div>
+          <ng-content select="tas-drawer-title"></ng-content>
+          <div class="overflow-y-auto p-4" style="height: calc(100vh - 58px)">
+            <ng-content select="tas-drawer-content"></ng-content>
+          </div>
         </div>
         <ng-content select="tas-drawer-action"></ng-content>
       </div>

@@ -9,12 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PaginateAllUsersCommandDtoTeam } from './paginate-all-users-command-dto-team.interface';
+import { PaginateAllUsersTeamDto } from './paginate-all-users-team-dto.interface';
 
 
 export interface PaginateAllUsersCommandDto { 
     id: string;
     email: string;
-    team: PaginateAllUsersCommandDtoTeam;
+    isVerified: boolean;
+    isActive: boolean;
+    roles: Array<string>;
+    permissions: Array<string>;
+    teams: Array<PaginateAllUsersTeamDto>;
+    createdAt: string;
+    updatedAt: string;
 }
 

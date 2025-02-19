@@ -9,6 +9,8 @@ import { territoriesHandlers } from './territories';
 import { AgenciesController, agenciesHandlers } from './agencies';
 import { PermissionsController } from './permissions';
 import { TeamsController, teamsHandlers } from './teams';
+import { organizationsHandlers } from './organizations';
+import { OrganizationsController } from './organizations/organizations.controller';
 
 @Module({
   imports: [],
@@ -21,8 +23,10 @@ import { TeamsController, teamsHandlers } from './teams';
     TerritoriesController,
     AgenciesController,
     TeamsController,
+    OrganizationsController,
   ],
   providers: [
+    ...organizationsHandlers,
     ...identityModelsProvider,
     ...territoriesHandlers,
     ...agenciesHandlers,

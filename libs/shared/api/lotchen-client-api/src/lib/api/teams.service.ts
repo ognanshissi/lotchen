@@ -98,18 +98,22 @@ export class TeamsApiService {
 
     /**
      * @param createTeamCommand 
+     * @param xTenantFqn The Tenant Fqn
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teamsControllerCreateTeamV1(createTeamCommand: CreateTeamCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CreateTeamCommandResponse>;
-    public teamsControllerCreateTeamV1(createTeamCommand: CreateTeamCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CreateTeamCommandResponse>>;
-    public teamsControllerCreateTeamV1(createTeamCommand: CreateTeamCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CreateTeamCommandResponse>>;
-    public teamsControllerCreateTeamV1(createTeamCommand: CreateTeamCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public teamsControllerCreateTeamV1(createTeamCommand: CreateTeamCommand, xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CreateTeamCommandResponse>;
+    public teamsControllerCreateTeamV1(createTeamCommand: CreateTeamCommand, xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CreateTeamCommandResponse>>;
+    public teamsControllerCreateTeamV1(createTeamCommand: CreateTeamCommand, xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CreateTeamCommandResponse>>;
+    public teamsControllerCreateTeamV1(createTeamCommand: CreateTeamCommand, xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (createTeamCommand === null || createTeamCommand === undefined) {
             throw new Error('Required parameter createTeamCommand was null or undefined when calling teamsControllerCreateTeamV1.');
         }
 
         let localVarHeaders = this.defaultHeaders;
+        if (xTenantFqn !== undefined && xTenantFqn !== null) {
+            localVarHeaders = localVarHeaders.set('x-tenant-fqn', String(xTenantFqn));
+        }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
@@ -170,15 +174,19 @@ export class TeamsApiService {
     }
 
     /**
+     * @param xTenantFqn The Tenant Fqn
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teamsControllerFindAllTeamsV1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<FindAllTeamsQueryResponse>;
-    public teamsControllerFindAllTeamsV1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<FindAllTeamsQueryResponse>>;
-    public teamsControllerFindAllTeamsV1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<FindAllTeamsQueryResponse>>;
-    public teamsControllerFindAllTeamsV1(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public teamsControllerFindAllTeamsV1(xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllTeamsQueryResponse>>;
+    public teamsControllerFindAllTeamsV1(xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllTeamsQueryResponse>>>;
+    public teamsControllerFindAllTeamsV1(xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllTeamsQueryResponse>>>;
+    public teamsControllerFindAllTeamsV1(xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
+        if (xTenantFqn !== undefined && xTenantFqn !== null) {
+            localVarHeaders = localVarHeaders.set('x-tenant-fqn', String(xTenantFqn));
+        }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
@@ -215,7 +223,7 @@ export class TeamsApiService {
         }
 
         let localVarPath = `/api/v1/teams`;
-        return this.httpClient.request<FindAllTeamsQueryResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<FindAllTeamsQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

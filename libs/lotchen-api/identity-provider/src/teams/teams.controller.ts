@@ -37,7 +37,7 @@ export class TeamsController {
 
   @Get()
   @ApiResponse({
-    type: FindAllTeamsQueryResponse,
+    type: [FindAllTeamsQueryResponse],
   })
   async findAllTeams(): Promise<FindAllTeamsQueryResponse[]> {
     return await this._findAllTeamsQueryHandler.handlerAsync();

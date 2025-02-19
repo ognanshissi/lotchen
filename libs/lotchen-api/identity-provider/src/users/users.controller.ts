@@ -136,7 +136,7 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Get(':id/permissions')
   @ApiResponse({
-    type: GetUserPermissionsQueryResponse,
+    type: [GetUserPermissionsQueryResponse],
   })
   async updateUserPermissions(
     @Param('id') userId: string
@@ -146,9 +146,6 @@ export class UsersController {
 
   @ApiPaginationResponse(PaginateAllUsersCommandDto)
   @Post('/search')
-  @ApiResponse({
-    status: 200,
-  })
   async searchUserPaginate(
     @Body() payload: PaginateAllUsersCommand
   ): Promise<PaginateAllUsersCommandResponse> {

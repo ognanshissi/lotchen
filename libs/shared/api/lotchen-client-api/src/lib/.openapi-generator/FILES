@@ -24,6 +24,7 @@ model/create-team-command-response.interface.ts
 model/create-team-command.interface.ts
 model/create-territory-command.interface.ts
 model/create-user-command.interface.ts
+model/filter-base.interface.ts
 model/find-all-agencies-address-dto.interface.ts
 model/find-all-agencies-query-response.interface.ts
 model/find-all-permission-query.interface.ts
@@ -39,9 +40,9 @@ model/get-user-permissions-query-response.interface.ts
 model/get-user-profile-query-response.interface.ts
 model/login-command.interface.ts
 model/models.ts
-model/paginate-all-users-command-dto-team.interface.ts
 model/paginate-all-users-command-dto.interface.ts
 model/paginate-all-users-command.interface.ts
+model/paginate-all-users-team-dto.interface.ts
 model/pagination.interface.ts
 model/refresh-token-command.interface.ts
 model/reset-password-command-response.interface.ts

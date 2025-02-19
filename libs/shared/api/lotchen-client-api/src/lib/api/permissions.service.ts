@@ -97,9 +97,9 @@ export class PermissionsApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public permissionsControllerAllPermissionsV1(xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<FindAllPermissionQuery>;
-    public permissionsControllerAllPermissionsV1(xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<FindAllPermissionQuery>>;
-    public permissionsControllerAllPermissionsV1(xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<FindAllPermissionQuery>>;
+    public permissionsControllerAllPermissionsV1(xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllPermissionQuery>>;
+    public permissionsControllerAllPermissionsV1(xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllPermissionQuery>>>;
+    public permissionsControllerAllPermissionsV1(xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllPermissionQuery>>>;
     public permissionsControllerAllPermissionsV1(xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -142,7 +142,7 @@ export class PermissionsApiService {
         }
 
         let localVarPath = `/api/v1/permissions`;
-        return this.httpClient.request<FindAllPermissionQuery>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<FindAllPermissionQuery>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

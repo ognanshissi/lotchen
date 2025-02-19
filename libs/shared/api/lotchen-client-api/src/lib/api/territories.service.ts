@@ -95,18 +95,18 @@ export class TerritoriesApiService {
     }
 
     /**
-     * @param xTenantFqn The Tenant Fqn
+     * @param xTenantFqdn The Tenant Fqdn
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public territoriesControllerAllTerritoriesV1(xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<FindAllTerritoriesQueryResponse>;
-    public territoriesControllerAllTerritoriesV1(xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<FindAllTerritoriesQueryResponse>>;
-    public territoriesControllerAllTerritoriesV1(xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<FindAllTerritoriesQueryResponse>>;
-    public territoriesControllerAllTerritoriesV1(xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public territoriesControllerAllTerritoriesV1(xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllTerritoriesQueryResponse>>;
+    public territoriesControllerAllTerritoriesV1(xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllTerritoriesQueryResponse>>>;
+    public territoriesControllerAllTerritoriesV1(xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllTerritoriesQueryResponse>>>;
+    public territoriesControllerAllTerritoriesV1(xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
-        if (xTenantFqn !== undefined && xTenantFqn !== null) {
-            localVarHeaders = localVarHeaders.set('x-tenant-fqn', String(xTenantFqn));
+        if (xTenantFqdn !== undefined && xTenantFqdn !== null) {
+            localVarHeaders = localVarHeaders.set('x-tenant-fqdn', String(xTenantFqdn));
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -144,7 +144,7 @@ export class TerritoriesApiService {
         }
 
         let localVarPath = `/api/v1/territories`;
-        return this.httpClient.request<FindAllTerritoriesQueryResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<FindAllTerritoriesQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -159,21 +159,21 @@ export class TerritoriesApiService {
 
     /**
      * @param createTerritoryCommand 
-     * @param xTenantFqn The Tenant Fqn
+     * @param xTenantFqdn The Tenant Fqdn
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public territoriesControllerCreateTerritoryV1(createTerritoryCommand: CreateTerritoryCommand, xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public territoriesControllerCreateTerritoryV1(createTerritoryCommand: CreateTerritoryCommand, xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public territoriesControllerCreateTerritoryV1(createTerritoryCommand: CreateTerritoryCommand, xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public territoriesControllerCreateTerritoryV1(createTerritoryCommand: CreateTerritoryCommand, xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public territoriesControllerCreateTerritoryV1(createTerritoryCommand: CreateTerritoryCommand, xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public territoriesControllerCreateTerritoryV1(createTerritoryCommand: CreateTerritoryCommand, xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public territoriesControllerCreateTerritoryV1(createTerritoryCommand: CreateTerritoryCommand, xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public territoriesControllerCreateTerritoryV1(createTerritoryCommand: CreateTerritoryCommand, xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (createTerritoryCommand === null || createTerritoryCommand === undefined) {
             throw new Error('Required parameter createTerritoryCommand was null or undefined when calling territoriesControllerCreateTerritoryV1.');
         }
 
         let localVarHeaders = this.defaultHeaders;
-        if (xTenantFqn !== undefined && xTenantFqn !== null) {
-            localVarHeaders = localVarHeaders.set('x-tenant-fqn', String(xTenantFqn));
+        if (xTenantFqdn !== undefined && xTenantFqdn !== null) {
+            localVarHeaders = localVarHeaders.set('x-tenant-fqdn', String(xTenantFqdn));
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;

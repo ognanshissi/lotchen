@@ -1,14 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 
-export class PaginationRequest {
-  @ApiProperty({
-    description: '',
-    example: [
-      { fieldName: 'firstName', operator: 'eq', value: 'James Gordon' },
-    ],
-  })
-  public filters!: PagingFilter[];
+export class FilterBase<T> {
+  @ApiProperty({ description: 'Global Text search', type: String })
+  globalText!: string;
+  filters!: T;
+}
+
+export class PaginationRequest<TFilter> {
+  @ApiProperty({ type: () => FilterBase<TFilter> })
+  public filters!: FilterBase<TFilter>;
   @ApiProperty({ required: false })
   public sort?: Record<string, unknown>;
   @ApiProperty({

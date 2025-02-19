@@ -11,6 +11,12 @@ export abstract class AuditableSchema {
 
   @Prop({ required: true, type: Boolean, default: false })
   isDeleted!: boolean;
+
+  @Prop({ type: Date })
+  createdAt!: Date;
+
+  @Prop({ type: Date, default: null })
+  updatedAt!: Date;
 }
 
 export abstract class AggregateRoot extends AuditableSchema {

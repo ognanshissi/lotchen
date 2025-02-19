@@ -9,13 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FilterBase } from './filter-base.interface';
 
 
 export interface PaginateAllUsersCommand { 
-    /**
-     * 
-     */
-    filters: Array<string>;
+    filters: FilterBase;
     sort?: object;
     /**
      * Page Index

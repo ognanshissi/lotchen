@@ -1,0 +1,28 @@
+<div class="w-full overflow-hidden">
+  <table class="w-full overflow-x-scroll">
+    <ng-container *ngIf="header">
+      <thead>
+        <ng-container
+          *ngTemplateOutlet="header; context: {$implicit: columns()}"
+        ></ng-container>
+      </thead>
+    </ng-container>
+
+    <ng-container *ngIf="body">
+      <tbody class="divide-y divide-gray-200">
+        @for (item of data(); track item[identifierField()]) {
+        <ng-container
+          *ngTemplateOutlet="body; context: { $implicit: item }"
+        ></ng-container>
+        }
+      </tbody>
+    </ng-container>
+  </table>
+
+  <div
+    class="text-center p-4 text-gray-500"
+    *ngIf="!isLoading() && !data().length"
+  >
+    Aucun élement trouvé
+  </div>
+</div>

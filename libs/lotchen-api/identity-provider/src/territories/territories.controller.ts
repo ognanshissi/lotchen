@@ -1,4 +1,11 @@
-import { Body, Controller, Get, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Inject,
+  Post,
+} from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateTerritoryCommand,
@@ -6,18 +13,20 @@ import {
   FindAllTerritoriesQueryHandler,
   FindAllTerritoriesQueryResponse,
 } from './index';
+import { CURRENT_ORGANIZATION_ID } from '../../../../api/core/src/lib/current-organization/current-organization.provider';
 
 @Controller({
   version: '1',
   path: 'territories',
 })
 @ApiHeader({
-  name: 'x-tenant-fqn',
-  description: 'The Tenant Fqn',
+  name: 'x-tenant-fqdn',
+  description: 'The Tenant Fqdn',
 })
 @ApiTags('Territories')
 export class TerritoriesController {
   constructor(
+    @Inject(CURRENT_ORGANIZATION_ID) private readonly organizationId: string,
     private readonly _createTerritoryCommandHandler: CreateTerritoryCommandHandler,
     private readonly _findAllTerritoriesQueryHandler: FindAllTerritoriesQueryHandler
   ) {}
@@ -35,14 +44,15 @@ export class TerritoriesController {
   @Get()
   @ApiResponse({
     status: HttpStatus.OK,
-    type: FindAllTerritoriesQueryResponse,
+    type: [FindAllTerritoriesQueryResponse],
   })
   async allTerritories(): Promise<FindAllTerritoriesQueryResponse[]> {
+    console.log(this.organizationId);
     return await this._findAllTerritoriesQueryHandler.handlerAsync();
   }
 
-  // @Get('/:id/agencies')
-  // async territoryAgencies(
+  // @Get('/:id/teams')
+  // async territoryTeams(
   //   @Param('id') id: string
   // ): Promise<FindTerritoryAgenciesQueryResponse[]> {
   //   return await this._findTerritoryAgenciesQueryHandler.handlerAsync({ id });

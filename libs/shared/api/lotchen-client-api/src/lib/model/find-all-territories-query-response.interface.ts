@@ -14,5 +14,13 @@
 export interface FindAllTerritoriesQueryResponse { 
     id: string;
     name: string;
+    /**
+     * Date of creation
+     */
+    createdAt: string;
+    /**
+     * Person who created the entry
+     */
+    createdBy: string;
 }
 

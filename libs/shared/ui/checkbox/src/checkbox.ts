@@ -1,4 +1,12 @@
-import { Component, forwardRef, input, OnInit } from '@angular/core';
+import {
+  Component,
+  forwardRef,
+  input,
+  OnChanges,
+  OnInit,
+  output,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormControl,
   NG_VALUE_ACCESSOR,
@@ -18,6 +26,8 @@ import { AbstractControlValueAccessor } from '@talisoft/ui/core';
       [id]="componentId"
       type="checkbox"
       class="form-checkbox"
+      [checked]="checked()"
+      (change)="handleChange($event)"
       [formControl]="control"
     />
     &nbsp; @if (labelPosition() === 'right') {
@@ -40,13 +50,29 @@ import { AbstractControlValueAccessor } from '@talisoft/ui/core';
 })
 export class TasCheckbox
   extends AbstractControlValueAccessor<boolean>
-  implements OnInit
+  implements OnInit, OnChanges
 {
   public control = new FormControl(false);
+
+  public checked = input<boolean>(false);
+
+  public change = output<boolean>();
 
   public labelPosition = input<'left' | 'right'>('right');
 
   componentId = 'tas-checkbox-id-' + Date.now();
+
+  public handleChange(event: Event) {
+    this.change.emit((event.target as HTMLInputElement)?.checked);
+  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+    if (changes['checked']) {
+      // this.onTouched();
+      // this.onChange(changes['checked'].currentValue);
+      this.control.patchValue(changes['checked'].currentValue);
+    }
+  }
 
   public ngOnInit(): void {
     this.control.valueChanges.subscribe((value) => {

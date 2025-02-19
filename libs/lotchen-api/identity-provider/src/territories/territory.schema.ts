@@ -6,13 +6,16 @@ import {
   PointSchema,
 } from '@lotchen/api/core';
 import * as mongoose from 'mongoose';
-import { User } from '../users/user.schema';
-import { Team } from '../teams/team.schema';
+import { User } from '../users';
+import { Team } from '../teams';
 
 @Schema({ collection: 'identity_territories', timestamps: true })
 export class Territory extends AggregateRoot {
   @Prop({ type: String, unique: true })
   name!: string;
+
+  @Prop({ type: String, required: true })
+  organizationId!: string;
 
   @Prop({ type: String })
   description!: string;

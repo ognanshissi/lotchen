@@ -5,12 +5,37 @@ import { TerritoriesProvider } from '../territories.provider';
 
 export class FindAllTerritoriesQuery {}
 
+export class TerritoriesQueryUserDto {
+  @ApiProperty({ description: 'User Id', type: String })
+  id!: string;
+  @ApiProperty({ description: 'Email', type: 'string' })
+  email!: string;
+
+  @ApiProperty({
+    description: 'User Full name, FirstName and LastName combined',
+    type: String,
+  })
+  fullName!: string;
+}
+
 export class FindAllTerritoriesQueryResponse {
   @ApiProperty()
   id!: string;
 
   @ApiProperty()
   name!: string;
+
+  @ApiProperty({ description: 'Date of creation', type: Date })
+  createdAt!: Date;
+
+  @ApiProperty({ type: Date, description: 'Latest updated At' })
+  updatedAt!: Date;
+
+  @ApiProperty({
+    description: 'Person who created the entry',
+    type: String,
+  })
+  createdBy!: string;
 }
 
 @Injectable()
@@ -21,13 +46,19 @@ export class FindAllTerritoriesQueryHandler
 
   public async handlerAsync(): Promise<FindAllTerritoriesQueryResponse[]> {
     const territories = await this.territoryProvider.TerritoryModel.find(
-      {}
-    ).exec();
+      {},
+      '_id name createdAt createdBy updatedAt updatedBy parent'
+    )
+      .lean()
+      .exec();
 
     return territories.map((territory) => {
       return {
-        id: territory.id,
+        id: territory._id,
         name: territory.name,
+        createdAt: territory.createdAt,
+        updatedAt: territory.updatedAt,
+        createdBy: territory.createdBy,
       } as FindAllTerritoriesQueryResponse;
     });
   }
