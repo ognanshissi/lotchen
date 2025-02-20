@@ -7,7 +7,7 @@
     aria-labelledby="listbox-label"
   >
     <span
-      [ngClass]="{'font-medium text-gray-900': displayValue.value, 'text-gray-400':!displayValue.value}"
+      [ngClass]="{'font-normal text-gray-900': displayValue.value, 'text-gray-400':!displayValue.value}"
     >
       {{ displayValue.value ? displayValue.label : "Choisissez une option" }}
     </span>
