@@ -19,9 +19,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateAgencyCommand } from '../model/create-agency-command.interface';
+import { CreateOrganizationCommand } from '../model/create-organization-command.interface';
 // @ts-ignore
-import { FindAllAgenciesQueryResponse } from '../model/find-all-agencies-query-response.interface';
+import { FindAllOrganizationQueryResponse } from '../model/find-all-organization-query-response.interface';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -32,7 +32,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class AgenciesApiService {
+export class OrganizationsApiService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -95,28 +95,29 @@ export class AgenciesApiService {
     }
 
     /**
-     * @param createAgencyCommand 
-     * @param xTenantFqn The Tenant Fqn
+     * @param createOrganizationCommand 
+     * @param xTenantFqdn The Tenant Fqdn
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public agenciesControllerCreateAgencyV1(createAgencyCommand: CreateAgencyCommand, xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public agenciesControllerCreateAgencyV1(createAgencyCommand: CreateAgencyCommand, xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public agenciesControllerCreateAgencyV1(createAgencyCommand: CreateAgencyCommand, xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public agenciesControllerCreateAgencyV1(createAgencyCommand: CreateAgencyCommand, xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (createAgencyCommand === null || createAgencyCommand === undefined) {
-            throw new Error('Required parameter createAgencyCommand was null or undefined when calling agenciesControllerCreateAgencyV1.');
+    public organizationsControllerCreateOrganizationV1(createOrganizationCommand: CreateOrganizationCommand, xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
+    public organizationsControllerCreateOrganizationV1(createOrganizationCommand: CreateOrganizationCommand, xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
+    public organizationsControllerCreateOrganizationV1(createOrganizationCommand: CreateOrganizationCommand, xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
+    public organizationsControllerCreateOrganizationV1(createOrganizationCommand: CreateOrganizationCommand, xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (createOrganizationCommand === null || createOrganizationCommand === undefined) {
+            throw new Error('Required parameter createOrganizationCommand was null or undefined when calling organizationsControllerCreateOrganizationV1.');
         }
 
         let localVarHeaders = this.defaultHeaders;
-        if (xTenantFqn !== undefined && xTenantFqn !== null) {
-            localVarHeaders = localVarHeaders.set('x-tenant-fqn', String(xTenantFqn));
+        if (xTenantFqdn !== undefined && xTenantFqdn !== null) {
+            localVarHeaders = localVarHeaders.set('x-tenant-fqdn', String(xTenantFqdn));
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -155,11 +156,11 @@ export class AgenciesApiService {
             }
         }
 
-        let localVarPath = `/api/v1/agencies`;
-        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/organizations`;
+        return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createAgencyCommand,
+                body: createOrganizationCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -171,84 +172,18 @@ export class AgenciesApiService {
     }
 
     /**
-     * @param id 
-     * @param xTenantFqn The Tenant Fqn
+     * @param xTenantFqdn The Tenant Fqdn
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public agenciesControllerFindAgencyByIdV1(id: string, xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public agenciesControllerFindAgencyByIdV1(id: string, xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public agenciesControllerFindAgencyByIdV1(id: string, xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public agenciesControllerFindAgencyByIdV1(id: string, xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling agenciesControllerFindAgencyByIdV1.');
-        }
+    public organizationsControllerFindAllOrganizationsV1(xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllOrganizationQueryResponse>>;
+    public organizationsControllerFindAllOrganizationsV1(xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllOrganizationQueryResponse>>>;
+    public organizationsControllerFindAllOrganizationsV1(xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllOrganizationQueryResponse>>>;
+    public organizationsControllerFindAllOrganizationsV1(xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
-        if (xTenantFqn !== undefined && xTenantFqn !== null) {
-            localVarHeaders = localVarHeaders.set('x-tenant-fqn', String(xTenantFqn));
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        let localVarTransferCache: boolean | undefined = options && options.transferCache;
-        if (localVarTransferCache === undefined) {
-            localVarTransferCache = true;
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/agencies/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param xTenantFqn The Tenant Fqn
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public agenciesControllerFindAllAgenciesV1(xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllAgenciesQueryResponse>>;
-    public agenciesControllerFindAllAgenciesV1(xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllAgenciesQueryResponse>>>;
-    public agenciesControllerFindAllAgenciesV1(xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllAgenciesQueryResponse>>>;
-    public agenciesControllerFindAllAgenciesV1(xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-        if (xTenantFqn !== undefined && xTenantFqn !== null) {
-            localVarHeaders = localVarHeaders.set('x-tenant-fqn', String(xTenantFqn));
+        if (xTenantFqdn !== undefined && xTenantFqdn !== null) {
+            localVarHeaders = localVarHeaders.set('x-tenant-fqdn', String(xTenantFqdn));
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -285,8 +220,8 @@ export class AgenciesApiService {
             }
         }
 
-        let localVarPath = `/api/v1/agencies`;
-        return this.httpClient.request<Array<FindAllAgenciesQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/organizations`;
+        return this.httpClient.request<Array<FindAllOrganizationQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

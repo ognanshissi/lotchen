@@ -4,6 +4,7 @@ api.module.ts
 api/agencies.service.ts
 api/api.ts
 api/auth.service.ts
+api/organizations.service.ts
 api/permissions.service.ts
 api/profile.service.ts
 api/roles.service.ts
@@ -20,6 +21,7 @@ model/assign-roles-command-request.interface.ts
 model/contact-info-dto.interface.ts
 model/create-agency-address-dto.interface.ts
 model/create-agency-command.interface.ts
+model/create-organization-command.interface.ts
 model/create-team-command-response.interface.ts
 model/create-team-command.interface.ts
 model/create-territory-command.interface.ts
@@ -27,6 +29,7 @@ model/create-user-command.interface.ts
 model/filter-base.interface.ts
 model/find-all-agencies-address-dto.interface.ts
 model/find-all-agencies-query-response.interface.ts
+model/find-all-organization-query-response.interface.ts
 model/find-all-permission-query.interface.ts
 model/find-all-teams-query-response.interface.ts
 model/find-all-teams-query-user-dto.interface.ts

@@ -35,7 +35,8 @@ import { AbstractFormFieldControl } from '@talisoft/ui/form-field';
   input[tasInput][type=color],
   input[tasInput][type=date],
   input[tasInput][type=week],
-  input[tasInput][type=month]`,
+  input[tasInput][type=month],
+  textarea[tasInput]`,
   standalone: true,
   template: ``,
   styleUrls: ['./input.scss'],
@@ -43,14 +44,13 @@ import { AbstractFormFieldControl } from '@talisoft/ui/form-field';
   exportAs: 'TasInput',
   providers: [
     {
-      provide: AbstractFormFieldControl, useExisting: TasInput
-    }
-  ]
+      provide: AbstractFormFieldControl,
+      useExisting: TasInput,
+    },
+  ],
 })
 export class TasInput extends AbstractFormFieldControl {
-
   private readonly _elementRef = inject(ElementRef);
-
 
   constructor() {
     super();

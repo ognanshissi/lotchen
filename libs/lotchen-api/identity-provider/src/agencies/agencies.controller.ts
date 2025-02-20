@@ -35,7 +35,7 @@ export class AgenciesController {
 
   @Get()
   @ApiResponse({
-    type: FindAllAgenciesQueryResponse,
+    type: [FindAllAgenciesQueryResponse],
   })
   async findAllAgencies(): Promise<FindAllAgenciesQueryResponse[]> {
     return await this._findAllAgenciesQueryHandler.handlerAsync();

@@ -111,9 +111,9 @@ export class UsersApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public usersControllerAllUsersV1(xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetAllUserQuery>;
-    public usersControllerAllUsersV1(xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetAllUserQuery>>;
-    public usersControllerAllUsersV1(xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetAllUserQuery>>;
+    public usersControllerAllUsersV1(xTenantFqn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<GetAllUserQuery>>;
+    public usersControllerAllUsersV1(xTenantFqn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<GetAllUserQuery>>>;
+    public usersControllerAllUsersV1(xTenantFqn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<GetAllUserQuery>>>;
     public usersControllerAllUsersV1(xTenantFqn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -156,7 +156,7 @@ export class UsersApiService {
         }
 
         let localVarPath = `/api/v1/users`;
-        return this.httpClient.request<GetAllUserQuery>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<GetAllUserQuery>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

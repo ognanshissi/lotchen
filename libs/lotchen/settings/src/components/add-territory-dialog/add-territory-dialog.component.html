@@ -9,10 +9,24 @@
     </Text>
 
     <div class="flex flex-col gap-3">
-      <div class="flex space-x-2">
+      <div class="flex flex-col space-y-3">
         <tas-form-field>
           <tas-label>Nom</tas-label>
           <input type="text" tasInput placeholder="Nom" />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Description</tas-label>
+          <textarea tasInput placeholder="Description"></textarea>
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Choisissez un responsable</tas-label>
+          <tas-select
+            [options]="users()"
+            [optionLabel]="'email'"
+            [optionValue]="'userId'"
+          ></tas-select>
         </tas-form-field>
       </div>
     </div>

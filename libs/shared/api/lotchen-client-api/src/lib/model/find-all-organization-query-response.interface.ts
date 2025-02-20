@@ -11,14 +11,10 @@
  */
 
 
-export interface GetAllUserQuery { 
-    userId: string;
-    /**
-     * User email 
-     */
-    email: string;
-    firstName: string;
-    lastName: string;
+export interface FindAllOrganizationQueryResponse { 
+    id: string;
+    name: string;
+    description: string;
     createdAt: string;
     updatedAt: string;
 }

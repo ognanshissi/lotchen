@@ -51,7 +51,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetAllUserQuery"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllUserQuery"
+                  }
                 }
               }
             }
@@ -744,7 +747,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindAllAgenciesQueryResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllAgenciesQueryResponse"
+                  }
                 }
               }
             }
@@ -966,17 +972,35 @@
       "GetAllUserQuery": {
         "type": "object",
         "properties": {
-          "id": {
+          "userId": {
             "type": "string"
           },
           "email": {
             "type": "string",
             "description": "User email "
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
           }
         },
         "required": [
-          "id",
-          "email"
+          "userId",
+          "email",
+          "firstName",
+          "lastName",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "SchemaObjectId": {

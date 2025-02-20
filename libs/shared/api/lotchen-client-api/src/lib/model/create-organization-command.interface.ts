@@ -11,15 +11,14 @@
  */
 
 
-export interface GetAllUserQuery { 
-    userId: string;
+export interface CreateOrganizationCommand { 
     /**
-     * User email 
+     * Name of the organization (Subsidiary)
      */
-    email: string;
-    firstName: string;
-    lastName: string;
-    createdAt: string;
-    updatedAt: string;
+    name: string;
+    /**
+     * Description of the organization, scope and country where is located
+     */
+    description: string;
 }
 

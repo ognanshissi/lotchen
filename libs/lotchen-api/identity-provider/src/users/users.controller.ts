@@ -76,9 +76,9 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Get()
   @ApiResponse({
-    type: GetAllUserQuery,
+    type: [GetAllUserQuery],
   })
-  public async allUsers() {
+  public async allUsers(): Promise<GetAllUserQuery[]> {
     return await this._getAllUserQueryHandler.handlerAsync();
   }
 
