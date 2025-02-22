@@ -10,7 +10,7 @@
     "ssr:dev": "npx nx run Lotchen:serve-ssr",
     "ui:watch": "npx nx run ui:build:development --watch",
     "ui:build": "npx nx run ui:build:development --verbose",
-    "openapi-generator": "npx @openapitools/openapi-generator-cli generate  --generator-key lotchen  --verbose",
+    "openapi-generator": "npx @openapitools/openapi-generator-cli generate  --generator-key lotchen --verbose",
     "prepare": "husky",
     "api": "pm2 start dist/apps/lotchen-api/main.js"
   },

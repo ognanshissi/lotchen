@@ -1551,6 +1551,10 @@
           "createdBy": {
             "type": "string",
             "description": "Person who created the entry"
+          },
+          "parentName": {
+            "type": "string",
+            "description": "Name of the territory parent if so"
           }
         },
         "required": [
@@ -1558,7 +1562,8 @@
           "name",
           "createdAt",
           "updatedAt",
-          "createdBy"
+          "createdBy",
+          "parentName"
         ]
       },
       "CreateAgencyAddressDto": {

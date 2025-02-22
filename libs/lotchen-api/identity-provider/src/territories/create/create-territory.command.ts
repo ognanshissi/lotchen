@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { CommandHandler } from '@lotchen/api/core';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { CommandHandler, RequestExtendedWithUser } from '@lotchen/api/core';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { TerritoriesProvider } from '../territories.provider';
+import { REQUEST } from '@nestjs/core';
+import { TerritoriesErrors } from '../territories-errors';
 
 export class CreateTerritoryCommand {
   @ApiProperty({
@@ -31,16 +33,34 @@ export class CreateTerritoryCommand {
 export class CreateTerritoryCommandHandler
   implements CommandHandler<CreateTerritoryCommand, void>
 {
-  constructor(private readonly territoriesProvider: TerritoriesProvider) {}
+  constructor(
+    private readonly territoriesProvider: TerritoriesProvider,
+    @Inject(REQUEST)
+    private readonly request: RequestExtendedWithUser
+  ) {}
 
   public async handlerAsync(command: CreateTerritoryCommand): Promise<void> {
     try {
+      const existTerritory =
+        await this.territoriesProvider.TerritoryModel.findOne(
+          { name: command.name },
+          '_id name'
+        )
+          .lean()
+          .exec();
+
+      if (existTerritory) {
+        throw new BadRequestException(
+          TerritoriesErrors.territoryAlreadyExist(command.name)
+        );
+      }
+
       // territory parent
       const parent = await this.territoriesProvider.TerritoryModel.findOne(
         {
-          _id: command.parentId,
+          name: command.parentId,
         },
-        '_id'
+        '_id name'
       )
         .lean()
         .exec();
@@ -57,11 +77,21 @@ export class CreateTerritoryCommandHandler
         .lean()
         .exec();
 
+      const { firstName, lastName, username, sub } = this.request.user;
+
       const territory = new this.territoriesProvider.TerritoryModel({
         name: command.name,
         description: command.description,
         children: children?.map((item) => item._id),
-        parent: parent?._id,
+        parent: parent?._id ?? null,
+        parentName: parent?.name ?? null,
+        createdBy: sub,
+        createdByInfo: {
+          userId: sub,
+          firstName,
+          lastName,
+          email: username,
+        },
       });
       await territory.save();
     } catch (error: any) {

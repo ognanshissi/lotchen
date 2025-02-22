@@ -26,5 +26,9 @@ export interface FindAllTerritoriesQueryResponse {
      * Person who created the entry
      */
     createdBy: string;
+    /**
+     * Name of the territory parent if so
+     */
+    parentName: string;
 }
 

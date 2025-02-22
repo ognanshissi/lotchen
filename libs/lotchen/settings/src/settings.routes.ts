@@ -3,6 +3,8 @@ import RolesComponent from './containers/roles/roles.component';
 import UsersComponent from './containers/users/users.component';
 import OverviewComponent from './containers/overview/overview.component';
 import UserAddComponent from './containers/users/user-add/user-add.component';
+import TeamsComponent from './containers/teams/teams.component';
+import TerritoriesComponent from './containers/territories/territories.component';
 
 export const settingsRoutes: Routes = [
   {
@@ -23,7 +25,10 @@ export const settingsRoutes: Routes = [
   },
   {
     path: 'territories',
-    loadComponent: () =>
-      import('./containers/territories/territories.component'),
+    loadComponent: () => TerritoriesComponent,
+  },
+  {
+    path: 'teams',
+    loadComponent: () => TeamsComponent,
   },
 ];

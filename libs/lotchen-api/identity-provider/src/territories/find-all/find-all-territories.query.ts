@@ -36,6 +36,12 @@ export class FindAllTerritoriesQueryResponse {
     type: String,
   })
   createdBy!: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'Name of the territory parent if so',
+  })
+  parentName!: string;
 }
 
 @Injectable()
@@ -47,7 +53,10 @@ export class FindAllTerritoriesQueryHandler
   public async handlerAsync(): Promise<FindAllTerritoriesQueryResponse[]> {
     const territories = await this.territoryProvider.TerritoryModel.find(
       {},
-      '_id name createdAt createdBy updatedAt updatedBy parent'
+      '_id name createdAt  updatedAt updatedBy parent children teams createdByInfo parentName',
+      {
+        sort: 'createdAt',
+      }
     )
       .lean()
       .exec();
@@ -56,9 +65,10 @@ export class FindAllTerritoriesQueryHandler
       return {
         id: territory._id,
         name: territory.name,
+        parentName: territory.parentName,
         createdAt: territory.createdAt,
         updatedAt: territory.updatedAt,
-        createdBy: territory.createdBy,
+        createdBy: `${territory.createdByInfo.firstName} ${territory.createdByInfo.lastName}`,
       } as FindAllTerritoriesQueryResponse;
     });
   }

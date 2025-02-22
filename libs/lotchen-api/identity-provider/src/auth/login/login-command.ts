@@ -6,6 +6,8 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 import { RoleDocument } from '../../roles';
+import { AuthErrors } from '../auth-errors';
+import { ProfileDocument } from '../../profile';
 
 export class LoginCommand {
   @ApiProperty()
@@ -37,6 +39,8 @@ export class LoginCommandHandler
   constructor(
     @Inject('USER_MODEL') private readonly userModel: Model<UserDocument>,
     @Inject('ROLE_MODEL') private readonly roleModel: Model<RoleDocument>,
+    @Inject('PROFILE_MODEL')
+    private readonly profileModel: Model<ProfileDocument>,
     private readonly _jwtService: JwtService
   ) {}
 
@@ -44,7 +48,7 @@ export class LoginCommandHandler
     request: LoginCommand
   ): Promise<AccessTokenResponse> {
     const userExist = await this.userModel
-      .findOne({ email: request.email })
+      .findOne({ email: request.email }, 'password roles isLocked email _id id')
       .exec();
 
     if (!userExist) {
@@ -61,25 +65,34 @@ export class LoginCommandHandler
     }
 
     if (userExist.isLocked) {
-      throw new UnauthorizedException(
-        'User is locked, please contact your administrator'
-      );
+      throw new UnauthorizedException(AuthErrors.userLocked);
     }
 
     // Get permissions from roles
     const roles = await this.roleModel
       .find(
         {
-          id: { $in: [...userExist.roles.map((item) => item.toString())] },
+          _id: { $in: [...userExist.roles] },
         },
         'permissions'
       )
       .lean()
       .exec();
 
+    // Get user profile
+    const profile = await this.profileModel
+      .findOne({ user: userExist.id }, 'firstName lastName id')
+      .lean()
+      .exec();
+
+    console.log({ profile });
+
     const payload = {
       sub: userExist.id,
       username: userExist.email,
+      firstName: profile?.firstName ?? '',
+      lastName: profile?.lastName ?? '',
+      profileId: profile?._id ?? '',
       permissions: [...roles.map((role) => role.permissions).flat()],
     };
 

@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpStatus,
-  Inject,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post } from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateTerritoryCommand,
@@ -13,7 +6,7 @@ import {
   FindAllTerritoriesQueryHandler,
   FindAllTerritoriesQueryResponse,
 } from './index';
-import { CURRENT_ORGANIZATION_ID } from '../../../../api/core/src/lib/current-organization/current-organization.provider';
+import { Permissions, PermissionsAction } from '@lotchen/api/core';
 
 @Controller({
   version: '1',
@@ -26,7 +19,6 @@ import { CURRENT_ORGANIZATION_ID } from '../../../../api/core/src/lib/current-or
 @ApiTags('Territories')
 export class TerritoriesController {
   constructor(
-    @Inject(CURRENT_ORGANIZATION_ID) private readonly organizationId: string,
     private readonly _createTerritoryCommandHandler: CreateTerritoryCommandHandler,
     private readonly _findAllTerritoriesQueryHandler: FindAllTerritoriesQueryHandler
   ) {}
@@ -35,6 +27,10 @@ export class TerritoriesController {
     status: HttpStatus.CREATED,
   })
   @Post()
+  @Permissions(
+    PermissionsAction.territoryCreate,
+    PermissionsAction.allRecordManage
+  )
   async createTerritory(
     @Body() payload: CreateTerritoryCommand
   ): Promise<void> {
@@ -47,7 +43,6 @@ export class TerritoriesController {
     type: [FindAllTerritoriesQueryResponse],
   })
   async allTerritories(): Promise<FindAllTerritoriesQueryResponse[]> {
-    console.log(this.organizationId);
     return await this._findAllTerritoriesQueryHandler.handlerAsync();
   }
 

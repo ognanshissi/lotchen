@@ -1,0 +1,25 @@
+<button tas-button [routerLink]="['/settings']">
+  <tas-icon iconName="arrow_back"></tas-icon>
+  Retour
+</button>
+<div class="flex justify-between">
+  <div>
+    <tas-title>Equipes</tas-title>
+    <tas-text class="text-gray-500">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias,
+      architecto dolores eum facere fugiat id ipsam iure
+    </tas-text>
+  </div>
+
+  <div class="flex space-x-3">
+    <button tas-raised-button color="primary" (click)="openAddDialog()">
+      <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
+      Ajouter une équipe
+    </button>
+
+    <button tas-outlined-button color="accent">
+      <tas-icon iconName="feather:download"></tas-icon>
+      Importer des équipes
+    </button>
+  </div>
+</div>

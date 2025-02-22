@@ -13,6 +13,7 @@ import { AddTerritoryDialogComponent } from '../../components/add-territory-dial
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import { TasInput } from '@talisoft/ui/input';
 import { catchError, of } from 'rxjs';
+import { TimeagoPipe } from '@talisoft/ui/timeago';
 
 @Component({
   selector: 'settings-territories',
@@ -31,6 +32,7 @@ import { catchError, of } from 'rxjs';
     TasInput,
     TasLabel,
     TasCardHeader,
+    TimeagoPipe,
   ],
 })
 export class TerritoriesComponent {

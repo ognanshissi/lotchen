@@ -6,16 +6,16 @@ import {
   PointSchema,
 } from '@lotchen/api/core';
 import * as mongoose from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 import { User } from '../users';
 import { Team } from '../teams';
 
+export type TerritoryDocument = HydratedDocument<Territory>;
+
 @Schema({ collection: 'identity_territories', timestamps: true })
 export class Territory extends AggregateRoot {
-  @Prop({ type: String, unique: true })
+  @Prop({ type: String, unique: true, index: true })
   name!: string;
-
-  @Prop({ type: String, required: true })
-  organizationId!: string;
 
   @Prop({ type: String })
   description!: string;
@@ -45,6 +45,12 @@ export class Territory extends AggregateRoot {
     ],
   })
   children!: Territory[];
+
+  @Prop({ type: [String] })
+  childrenNames!: string[];
+
+  @Prop({ type: String })
+  parentName!: string;
 
   @Prop({
     type: mongoose.Schema.Types.UUID,

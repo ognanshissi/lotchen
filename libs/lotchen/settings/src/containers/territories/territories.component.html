@@ -190,7 +190,9 @@
             }}</a>
           </td>
           <td>
-            <span class="bg-gray-200 rounded-full px-4 py-1">N/A</span>
+            <span class="bg-gray-200 rounded-full px-4 py-1">{{
+              item.parentName ?? 'N/A'
+            }}</span>
           </td>
           <td>
             <div class="flex space-x-2">
@@ -203,8 +205,8 @@
             </div>
           </td>
           <td>{{ item.createdBy }}</td>
-          <td>{{ item.createdAt }}</td>
-          <td>{{ item.createdAt }}</td>
+          <td>{{ item.createdAt | dateTimeAgo }}</td>
+          <td>{{ item.createdAt | dateTimeAgo }}</td>
           <td tasTableItemAction>
             <button tas-outlined-button color="primary">Consulter</button>
           </td>

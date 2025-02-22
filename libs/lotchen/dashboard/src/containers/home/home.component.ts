@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasTitle } from '@talisoft/ui/title';
-import { AgenciesApiService } from '@talisoft/api/lotchen-client-api';
 import { TasIcon } from '@talisoft/ui/icon';
 import { Chart } from 'chart.js/auto';
 import { TasCard } from '@talisoft/ui/card';
@@ -12,16 +11,8 @@ import { TasCard } from '@talisoft/ui/card';
   standalone: true,
   imports: [ButtonModule, TasTitle, TasIcon, TasCard],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
-  private readonly _agenciesApiService = inject(AgenciesApiService);
-
-  public ngOnInit() {
-    this._agenciesApiService
-      .agenciesControllerFindAllAgenciesV1()
-      .subscribe((agencies) => console.log(agencies));
-  }
-
-  ngAfterViewInit() {
+export class HomeComponent implements AfterViewInit {
+  public ngAfterViewInit() {
     setTimeout(() => {
       this.createLoanChart();
       this.createPortfolioChart();

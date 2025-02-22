@@ -2,10 +2,9 @@ import { CommandHandler } from '@lotchen/api/core';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { User, UserExtension } from '../../users/user.schema';
+import { User, UserExtension, UserToken } from '../../users';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { UserToken } from '../../users/user-token.schema';
 
 export class ResetPasswordCommand {
   @IsNotEmpty()

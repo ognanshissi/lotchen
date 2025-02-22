@@ -40,6 +40,9 @@ export enum PermissionsAction {
   permissionList = 'permission_list',
   permissionUpdate = 'permission_update',
   permissionRead = 'permission_read',
+
+  // super admin permission
+  allRecordManage = 'all_records_manage',
 }
 
 export const permissionsActions: PermissionGroup[] = [

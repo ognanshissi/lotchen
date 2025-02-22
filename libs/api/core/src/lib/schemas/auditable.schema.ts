@@ -1,10 +1,25 @@
-import { Prop } from '@nestjs/mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
 import { randomUUID } from 'crypto';
 import { Document } from 'mongoose';
+
+@Schema({ id: false, _id: false, versionKey: false, timestamps: false })
+export class ActivityUser {
+  @Prop({ type: 'UUID' })
+  userId!: string;
+  @Prop({ type: String })
+  firstName!: string;
+  @Prop({ type: String })
+  lastName!: string;
+  @Prop({ type: String })
+  email!: string;
+}
 
 export abstract class AuditableSchema extends Document {
   @Prop({ required: false, type: String, default: null })
   createdBy!: string;
+
+  @Prop({ required: false, type: ActivityUser, default: null })
+  createdByInfo!: ActivityUser;
 
   @Prop({ required: false, type: String, default: null })
   updatedBy!: string;

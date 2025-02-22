@@ -13,6 +13,7 @@ export const predefinedRoles: { [key: string]: string[] } = {
     PermissionsAction.userDeleteAdmin,
     PermissionsAction.territoryCreate,
     PermissionsAction.territoryUpdate,
+    PermissionsAction.allRecordManage,
   ],
   Sale: [PermissionsAction.roleCreate],
   SalesManager: [PermissionsAction.roleCreate],

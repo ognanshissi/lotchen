@@ -21,46 +21,21 @@
         </tas-form-field>
 
         <tas-form-field>
-          <tas-label>Parent</tas-label>
-          <tas-select
-            [options]="[]"
-            placeholder="Selectionner un parent"
-          ></tas-select>
-        </tas-form-field>
-
-        <tas-form-field>
-          <tas-label>Descendant</tas-label>
-          <tas-select
-            [options]="[]"
-            placeholder="Selectionner les descendants"
-          ></tas-select>
-        </tas-form-field>
-
-        <tas-form-field>
-          <tas-label>Equipe et/ou utilisateurs</tas-label>
-          <tas-select [options]="[]"></tas-select>
-        </tas-form-field>
-
-        <tas-form-field>
-          <tas-label>Choisissez un responsable</tas-label>
+          <tas-label>Responsable</tas-label>
           <tas-select
             [options]="users()"
-            [optionLabel]="'email'"
-            [optionValue]="'userId'"
+            placeholder="Selectionner le responsable de l'èquipe"
+          ></tas-select>
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Utilisateurs</tas-label>
+          <tas-select
+            [options]="users()"
+            placeholder="Selectionner le utilisateurs"
           ></tas-select>
         </tas-form-field>
       </div>
     </div>
-
-    <tas-drawer-action>
-      <button tas-outlined-button closable-drawer>
-        <tas-icon [iconName]="'close'"></tas-icon>
-        Fermer
-      </button>
-      <button tas-raised-button color="primary">
-        <tas-icon iconName="check"></tas-icon>
-        sauvegarder
-      </button>
-    </tas-drawer-action>
   </tas-drawer-content>
 </tas-side-drawer>

@@ -13,7 +13,7 @@
 
 export interface AssignRolesCommandRequest { 
     /**
-     * List of permissions keys
+     * List of role Ids
      */
     roles: Array<string>;
 }
