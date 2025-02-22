@@ -4,6 +4,8 @@ import { JwtModule } from '@nestjs/jwt';
 import * as process from 'node:process';
 import { AuthGuard } from './guards/auth.guard';
 import { currentOrganizationProvider } from './current-organization/current-organization.provider';
+import { PermissionsGuard } from './guards/permissions.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Global()
 @Module({
@@ -16,8 +18,18 @@ import { currentOrganizationProvider } from './current-organization/current-orga
       },
     }),
   ],
-  controllers: [],
-  providers: [TenantConnectionProvider, currentOrganizationProvider, AuthGuard],
-  exports: [TenantConnectionProvider, currentOrganizationProvider, AuthGuard],
+  providers: [
+    TenantConnectionProvider,
+    currentOrganizationProvider,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard,
+    },
+  ],
+  exports: [TenantConnectionProvider, currentOrganizationProvider],
 })
 export class CoreModule {}

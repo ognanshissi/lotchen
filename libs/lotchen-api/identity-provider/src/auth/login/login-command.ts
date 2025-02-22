@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { RequestHandler } from '@lotchen/api/core';
-import { User, UserExtension } from '../../users';
+import { UserDocument, UserExtension } from '../../users';
 import { Model } from 'mongoose';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
+import { RoleDocument } from '../../roles';
 
 export class LoginCommand {
   @ApiProperty()
@@ -34,7 +35,8 @@ export class LoginCommandHandler
   implements RequestHandler<LoginCommand, AccessTokenResponse>
 {
   constructor(
-    @Inject('USER_MODEL') private readonly userModel: Model<User>,
+    @Inject('USER_MODEL') private readonly userModel: Model<UserDocument>,
+    @Inject('ROLE_MODEL') private readonly roleModel: Model<RoleDocument>,
     private readonly _jwtService: JwtService
   ) {}
 
@@ -58,7 +60,28 @@ export class LoginCommandHandler
       throw new UnauthorizedException();
     }
 
-    const payload = { sub: userExist.id, username: userExist.email };
+    if (userExist.isLocked) {
+      throw new UnauthorizedException(
+        'User is locked, please contact your administrator'
+      );
+    }
+
+    // Get permissions from roles
+    const roles = await this.roleModel
+      .find(
+        {
+          id: { $in: [...userExist.roles.map((item) => item.toString())] },
+        },
+        'permissions'
+      )
+      .lean()
+      .exec();
+
+    const payload = {
+      sub: userExist.id,
+      username: userExist.email,
+      permissions: [...roles.map((role) => role.permissions).flat()],
+    };
 
     const refreshToken = await this._jwtService.signAsync(
       {

@@ -58,7 +58,6 @@ export class FindUserByIdQueryHandler
         isSystemAdmin: false,
       })
       .populate('roles')
-      .populate('permissions')
       .exec();
 
     if (!user) {
@@ -77,9 +76,7 @@ export class FindUserByIdQueryHandler
           id: role._id,
         } as FindUserByIdQueryRoleDto;
       }),
-      permissions: user.permissions.map((permission) => {
-        return permission.code;
-      }),
+      permissions: user.roles.map((role) => role.permissions).flat(),
     };
   }
 }

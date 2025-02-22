@@ -1,30 +1,30 @@
 import { Prop } from '@nestjs/mongoose';
-
 import { randomUUID } from 'crypto';
+import { Document } from 'mongoose';
 
-export abstract class AuditableSchema {
-  @Prop({ required: true, type: String, default: 'system' })
-  createdBy!: string; // profile_id
+export abstract class AuditableSchema extends Document {
+  @Prop({ required: false, type: String, default: null })
+  createdBy!: string;
 
-  @Prop({ required: true, type: String, default: 'system' })
+  @Prop({ required: false, type: String, default: null })
   updatedBy!: string;
 
-  @Prop({ required: true, type: Boolean, default: false })
-  isDeleted!: boolean;
+  @Prop({ required: false, type: Date, default: null })
+  deletedAt!: Date;
 
-  @Prop({ type: Date })
+  @Prop({ type: Date, default: Date.now })
   createdAt!: Date;
 
-  @Prop({ type: Date, default: null })
+  @Prop({ type: Date, default: Date.now })
   updatedAt!: Date;
 }
 
 export abstract class AggregateRoot extends AuditableSchema {
   @Prop({ default: () => randomUUID(), required: true, type: 'UUID' })
-  _id!: string;
+  override _id!: string;
 }
 
-export abstract class SchemaIdentifier {
+export abstract class SchemaIdentifier extends Document {
   @Prop({ default: () => randomUUID(), required: true, type: 'UUID' })
-  _id!: string;
+  override _id!: string;
 }

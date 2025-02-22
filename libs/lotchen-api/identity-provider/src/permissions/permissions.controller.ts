@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { Controller, Get, Inject, Post } from '@nestjs/common';
 import { ApiHeader, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Connection, Model } from 'mongoose';
-import { PermissionAction } from '@lotchen/api/core';
+import { PermissionsAction } from '@lotchen/api/core';
 import { Permission } from './permission.schema';
 
 export class FindAllPermissionQuery {
@@ -10,8 +10,8 @@ export class FindAllPermissionQuery {
 }
 
 @ApiHeader({
-  name: 'x-tenant-fqn',
-  description: 'The Tenant Fqn',
+  name: 'x-tenant-fqdn',
+  description: 'The Tenant Fqdn',
 })
 @Controller({
   version: '1',
@@ -26,19 +26,23 @@ export class PermissionsController {
   ) {}
 
   @Post('/generate')
-  async generatePermissions(@Body() req: any): Promise<any> {
-    const permissions = Object.values(PermissionAction).map(
+  @ApiResponse({
+    type: [String],
+  })
+  async generatePermissions(): Promise<string[]> {
+    const permissionCodes = Object.values(PermissionsAction).map(
       (item) => item as string
     );
-    await this.connection.dropCollection('identity_permissions');
+
+    await this.permissionModel.db.dropCollection('identity_permissions');
     await this.connection.collection('identity_permissions').insertMany([
-      ...permissions.map((permission) => {
+      ...permissionCodes.map((code: string) => {
         return {
-          code: permission,
+          code: code,
         };
       }),
     ]);
-    return permissions;
+    return permissionCodes;
   }
 
   /**

@@ -31,10 +31,7 @@ import {
   AssignRolesCommandHandler,
   AssignRolesCommandRequest,
 } from './assign-roles/assign-roles.command';
-import {
-  GetUserPermissionsQueryHandler,
-  GetUserPermissionsQueryResponse,
-} from './get-permissions/get-user-permissions.query';
+import { GetUserPermissionsQueryHandler } from './get-permissions/get-user-permissions.query';
 import { ApiPaginationResponse, AuthGuard } from '@lotchen/api/core';
 import {
   PaginateAllUsersCommand,
@@ -42,6 +39,10 @@ import {
   PaginateAllUsersCommandHandler,
   PaginateAllUsersCommandResponse,
 } from './paginate-all/paginate-all-users.command';
+import {
+  InviteUserCommand,
+  InviteUserCommandHandler,
+} from './invite-user/invite-user.command';
 
 @ApiHeader({
   name: 'x-tenant-fqn',
@@ -61,7 +62,8 @@ export class UsersController {
     private readonly _assignPermissionsCommandHandler: AssignPermissionsCommandHandler,
     private readonly _assignRolesCommandHandler: AssignRolesCommandHandler,
     private readonly _getUserPermissionsQueryHandler: GetUserPermissionsQueryHandler,
-    private readonly _paginateAllUserCommandHandler: PaginateAllUsersCommandHandler
+    private readonly _paginateAllUserCommandHandler: PaginateAllUsersCommandHandler,
+    private readonly _inviteUserCommandHandler: InviteUserCommandHandler
   ) {}
 
   @Post()
@@ -82,7 +84,7 @@ export class UsersController {
     return await this._getAllUserQueryHandler.handlerAsync();
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':id')
   @ApiResponse({
     type: FindUserByIdQueryResponse,
@@ -128,19 +130,20 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @Get(':id/roles')
-  async updateUserRoles(@Param('id') userId: string): Promise<any> {
+  @Post(':id/roles')
+  async updateUserRoles(
+    @Param('id') userId: string,
+    @Body('roles') roles: string[]
+  ): Promise<any> {
     console.log();
   }
 
   @UseGuards(AuthGuard)
   @Get(':id/permissions')
   @ApiResponse({
-    type: [GetUserPermissionsQueryResponse],
+    type: [String],
   })
-  async updateUserPermissions(
-    @Param('id') userId: string
-  ): Promise<GetUserPermissionsQueryResponse[]> {
+  async petUserPermissions(@Param('id') userId: string): Promise<string[]> {
     return await this._getUserPermissionsQueryHandler.handlerAsync({ userId });
   }
 
@@ -150,5 +153,11 @@ export class UsersController {
     @Body() payload: PaginateAllUsersCommand
   ): Promise<PaginateAllUsersCommandResponse> {
     return await this._paginateAllUserCommandHandler.handlerAsync(payload);
+  }
+
+  @Post('/invite-user')
+  @ApiResponse({})
+  public async inviteUser(@Body() request: InviteUserCommand): Promise<any> {
+    return this._inviteUserCommandHandler.handlerAsync(request);
   }
 }

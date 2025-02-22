@@ -47,6 +47,8 @@ export class TasSelect<T>
     true
   );
 
+  public placeholder = input('Choisissez une option');
+
   public filter = input(false, { transform: booleanAttribute });
 
   public options = input<{ [key: string]: any }[]>();

@@ -6,6 +6,7 @@ import { DeleteUserCommandHandler } from './delete/delete-user.command';
 import { FindUserByIdQueryHandler } from './findby-id/find-user-by-id.query';
 import { GetUserPermissionsQueryHandler } from './get-permissions/get-user-permissions.query';
 import { GetAllUserQueryHandler } from './get-all/get-all-user-query-handler';
+import { InviteUserCommandHandler } from './invite-user/invite-user.command';
 
 export * from './user.schema';
 export * from './user-token.schema';
@@ -29,4 +30,5 @@ export const usersHandlers = [
   GetUserPermissionsQueryHandler,
   GetAllUserQueryHandler,
   PaginateAllUsersCommandHandler,
+  InviteUserCommandHandler,
 ];

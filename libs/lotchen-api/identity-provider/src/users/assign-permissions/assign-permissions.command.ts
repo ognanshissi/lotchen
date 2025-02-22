@@ -3,7 +3,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Model } from 'mongoose';
 import { User } from '../user.schema';
-import { Permission } from '../../permissions/permission.schema';
+import { Permission } from '../../permissions';
 
 export class AssignPermissionsCommand {
   userId!: string;
@@ -48,7 +48,7 @@ export class AssignPermissionsCommandHandler
       .exec();
 
     if (permissions.length) {
-      user.permissions = [...permissions]; // update the current list of permissions
+      user.permissions = [...permissions.map((permission) => permission.code)]; // update the current list of permissions
       await user.save();
     }
   }

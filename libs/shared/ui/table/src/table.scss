@@ -4,7 +4,7 @@ tas-table {
       padding: 10px;
       text-align: left;
       text-transform: uppercase;
-      @apply text-gray-500 font-medium text-sm tracking-wider  border-y border-y-gray-200;
+      @apply text-gray-500 font-medium text-sm tracking-wider  border-y border-y-gray-200 text-nowrap;
     }
 
     th[rowSelectionMaster] {
@@ -34,6 +34,10 @@ tas-table {
       border: rgba(var(--tas-color-primary));
       text-align: left;
       @apply whitespace-nowrap;
+    }
+
+    td.is-row-selected {
+      @apply bg-gray-50;
     }
 
     td[tasTableItemAction] {

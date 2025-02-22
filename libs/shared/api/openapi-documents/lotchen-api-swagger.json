@@ -215,7 +215,7 @@
       }
     },
     "/api/v1/users/{id}/roles": {
-      "get": {
+      "post": {
         "operationId": "UsersController_updateUserRoles_v1",
         "parameters": [
           {
@@ -236,7 +236,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": ""
           }
         },
@@ -247,7 +247,7 @@
     },
     "/api/v1/users/{id}/permissions": {
       "get": {
-        "operationId": "UsersController_updateUserPermissions_v1",
+        "operationId": "UsersController_petUserPermissions_v1",
         "parameters": [
           {
             "name": "x-tenant-fqn",
@@ -274,7 +274,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/GetUserPermissionsQueryResponse"
+                    "type": "string"
                   }
                 }
               }
@@ -334,6 +334,39 @@
                 }
               }
             }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/users/invite-user": {
+      "post": {
+        "operationId": "UsersController_inviteUser_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteUserCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": ""
           }
         },
         "tags": [
@@ -536,17 +569,27 @@
         "operationId": "PermissionsController_generatePermissions_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -559,9 +602,9 @@
         "operationId": "PermissionsController_allPermissions_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -592,9 +635,9 @@
         "operationId": "RolesController_generatePredefinedRoles_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -615,9 +658,9 @@
         "operationId": "RolesController_allRoles_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -1079,7 +1122,7 @@
         "type": "object",
         "properties": {
           "roles": {
-            "description": "List of permissions keys",
+            "description": "List of role Ids",
             "type": "array",
             "items": {
               "type": "string"
@@ -1088,17 +1131,6 @@
         },
         "required": [
           "roles"
-        ]
-      },
-      "GetUserPermissionsQueryResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "code"
         ]
       },
       "Pagination": {
@@ -1239,6 +1271,61 @@
           "filters",
           "pageIndex",
           "pageSize"
+        ]
+      },
+      "InviteUserCommand": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "FirstName"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "LastName"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Job title"
+          },
+          "workNumber": {
+            "type": "string",
+            "description": "Work number"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "description": "Mobile number"
+          },
+          "reportTo": {
+            "type": "string",
+            "description": "The user will report to this person"
+          },
+          "role": {
+            "type": "string",
+            "description": "The user role id"
+          },
+          "teams": {
+            "description": "List of teams the user is linked",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "jobTitle",
+          "workNumber",
+          "mobileNumber",
+          "reportTo",
+          "role",
+          "teams"
         ]
       },
       "LoginCommand": {

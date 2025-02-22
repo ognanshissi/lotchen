@@ -3,7 +3,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AggregateRoot } from '@lotchen/api/core';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../roles';
-import { Permission } from '../permissions';
 import { Team, TeamSchema } from '../teams';
 
 export type UserDocument = HydratedDocument<User>;
@@ -27,9 +26,9 @@ export class User extends AggregateRoot {
   roles!: Role[];
 
   @Prop({
-    type: [Permission],
+    type: [String],
   })
-  permissions!: Permission[];
+  permissions!: string[];
 
   @Prop()
   isActive!: boolean;

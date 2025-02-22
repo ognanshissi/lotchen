@@ -1,22 +1,70 @@
 <tas-card>
   <card-header>
-    <tas-title>Utilisateurs</tas-title>
-    <tas-text
-      >Gestion des utilisateurs, création attribution a un équipe
-    </tas-text>
+    <div class="flex justify-between">
+      <div>
+        <tas-title>Utilisateurs</tas-title>
+        <tas-text
+          >Gestion des utilisateurs, création attribution a un équipe
+        </tas-text>
+      </div>
+      <div class="flex space-x-2">
+        <button tas-raised-button color="primary" [routerLink]="['create']">
+          <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
+          Ajouter un utilisateur
+        </button>
+        <button tas-outlined-button color="accent">
+          Importer des utilisateurs
+        </button>
+      </div>
+    </div>
   </card-header>
 </tas-card>
 
 <tas-card class="mt-4">
   <card-header>
-    <div class="flex space-x-2">
-      <button tas-raised-button color="primary" (click)="addUserDialog()">
-        <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
-        Ajouter un utilisateur
-      </button>
-      <button tas-outlined-button color="accent">
-        Importer des utilisateurs
-      </button>
-    </div>
+    <tas-title>Liste des utilisateurs</tas-title>
   </card-header>
+
+  <div>
+    <tas-table [data]="users() ?? []" identifierField="id">
+      <ng-template #header>
+        <tr>
+          <th rowSelectionMaster></th>
+          <th>Nom Prénom</th>
+          <th>Email</th>
+          <th>Manageur</th>
+          <th>Role</th>
+          <th>Territoires</th>
+          <th>Equipes</th>
+          <th>Créé par</th>
+          <th>Date de création</th>
+          <th>Dernière modification</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-item>
+        <tr>
+          <td rowSelectionItem></td>
+          <td>
+            <a [routerLink]="[item.userId]" class="font-semibold underline"
+              >{{ item.firstName }} {{ item.lastName }}</a
+            >
+          </td>
+          <td>
+            {{ item.email }}
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{ item.createdBy }}</td>
+          <td>{{ item.createdAt | dateTimeAgo }}</td>
+          <td>{{ item.createdAt | dateTimeAgo }}</td>
+          <td tasTableItemAction>
+            <button tas-button color="primary">Consulter</button>
+          </td>
+        </tr>
+      </ng-template>
+    </tas-table>
+  </div>
 </tas-card>

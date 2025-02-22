@@ -1,4 +1,11 @@
-import { Component, output, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostBinding,
+  output,
+  signal,
+} from '@angular/core';
+
 import { TasCheckbox } from '@talisoft/ui/checkbox';
 
 @Component({
@@ -18,6 +25,15 @@ export class RowSelectionItem {
 
   public toggle() {
     this.isChecked.set(!this.isChecked());
+  }
+
+  constructor(private readonly _elementRef: ElementRef<any>) {
+    console.log(this._elementRef.nativeElement.parent);
+  }
+
+  @HostBinding('class')
+  public get classes() {
+    return { 'is-row-selected': this.isChecked() };
   }
 
   public handleChangeEvent(event: boolean) {

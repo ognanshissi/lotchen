@@ -6,15 +6,18 @@ import {
 
 @Component({
   selector: 'tas-card',
-  template: ` <ng-content select="card-header"></ng-content>
-    <ng-content> </ng-content>`,
+  template: `
+    <ng-content select="card-header"></ng-content>
+    <ng-content></ng-content>
+    <ng-content select="card-action"></ng-content>
+  `,
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   styles: [
     `
       tas-card {
-        @apply rounded-lg border border-gray-300 py-4 block bg-white;
+        @apply rounded-lg border border-gray-300 block bg-white;
       }
     `,
   ],

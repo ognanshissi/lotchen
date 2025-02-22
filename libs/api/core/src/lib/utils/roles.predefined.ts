@@ -1,16 +1,21 @@
-import { PermissionAction } from './permission.action';
+import { PermissionsAction } from './permission.action';
 
-export const predefinedRoles = {
+export const predefinedRoles: { [key: string]: string[] } = {
   Administrator: [
-    PermissionAction.permissionCreate,
-    PermissionAction.permissionDelete,
-    PermissionAction.permissionList,
-    PermissionAction.permissionRead,
-    PermissionAction.permissionUpdate,
-    PermissionAction.userCreate,
-    PermissionAction.userCreateAdmin,
-    PermissionAction.userDelete,
-    PermissionAction.userRead,
-    PermissionAction.userList,
+    PermissionsAction.roleCreate,
+    PermissionsAction.roleList,
+    PermissionsAction.roleRead,
+    PermissionsAction.roleDelete,
+    PermissionsAction.userCreate,
+    PermissionsAction.userDelete,
+    PermissionsAction.userManage,
+    PermissionsAction.userCreateAdmin,
+    PermissionsAction.userDeleteAdmin,
+    PermissionsAction.territoryCreate,
+    PermissionsAction.territoryUpdate,
   ],
+  Sale: [PermissionsAction.roleCreate],
+  SalesManager: [PermissionsAction.roleCreate],
+  Manager: [PermissionsAction.roleCreate],
+  User: [PermissionsAction.roleCreate],
 };

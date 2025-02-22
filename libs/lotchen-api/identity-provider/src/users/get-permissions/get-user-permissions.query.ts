@@ -15,25 +15,19 @@ export class GetUserPermissionsQueryResponse {
 
 @Injectable()
 export class GetUserPermissionsQueryHandler
-  implements
-    QueryHandler<GetUserPermissionsQuery, GetUserPermissionsQueryResponse[]>
+  implements QueryHandler<GetUserPermissionsQuery, string[]>
 {
   constructor(@Inject('USER_MODEL') private readonly userModel: Model<User>) {}
 
   public async handlerAsync(
     query: GetUserPermissionsQuery | undefined
-  ): Promise<GetUserPermissionsQueryResponse[]> {
+  ): Promise<string[]> {
     const user = await this.userModel
-      .findOne({ _id: query?.userId })
-      .populate('permissions')
+      .findOne({ _id: query?.userId }, 'permissions')
       .exec();
-
     if (!user) {
-      throw new NotFoundException('Utilisateur introuvable');
+      throw new NotFoundException('User not found');
     }
-
-    return (user.permissions ?? []).map((permission) => {
-      return { code: permission.code } as GetUserPermissionsQueryResponse;
-    });
+    return user.permissions;
   }
 }

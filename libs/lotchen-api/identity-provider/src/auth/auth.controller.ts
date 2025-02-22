@@ -27,6 +27,7 @@ import {
   ResetPasswordCommandHandler,
   ResetPasswordCommandResponse,
 } from './reset-password/reset-password.command';
+import { Public } from '@lotchen/api/core';
 
 @ApiHeader({
   name: 'x-tenant-fqn',
@@ -44,6 +45,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
+  @Public()
   @ApiResponse({
     type: AccessTokenResponse,
   })

@@ -1,0 +1,89 @@
+<button tas-button [routerLink]="['/settings', 'users']">
+  <tas-icon iconName="arrow_back"></tas-icon>
+  Retour
+</button>
+<tas-title>Ajouter un utilisateur</tas-title>
+<tas-text>Veuillez renseigner tout les champs obligatoire</tas-text>
+
+<div class="w-2/3 mt-4">
+  <tas-card>
+    <div class="p-4">
+      <!--  email, firstName and lastName -->
+      <tas-title>Informations générale</tas-title>
+      <div class="grid grid-cols-2 gap-3">
+        <tas-form-field class="col-span-full">
+          <tas-label>Adresse éléctronique</tas-label>
+          <input
+            type="email"
+            tasInput
+            placeholder="Veuillez saisir l'adresse éléctronique de l'utilisateur"
+          />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Nom</tas-label>
+          <input type="text" tasInput placeholder="Nom de l'utilisateur" />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Prénom</tas-label>
+          <input type="text" tasInput placeholder="Prénom de l'utilisateur" />
+        </tas-form-field>
+
+        <tas-form-field class="col-span-full">
+          <tas-label>Occupation</tas-label>
+          <input type="text" tasInput placeholder="Occupation" />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Contact de travail</tas-label>
+          <input type="tel" tasInput />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Numéro de téléphone</tas-label>
+          <input type="tel" tasInput />
+        </tas-form-field>
+      </div>
+
+      <br />
+      <!--    Territories et teams -->
+      <tas-form-field>
+        <tas-label>Choisissez l'équipe de l'utilisateur</tas-label>
+        <tas-select [options]="[]"></tas-select>
+      </tas-form-field>
+      <br />
+
+      <!--    Manager  / Report to -->
+      <tas-form-field>
+        <tas-label>Choisissez un responsable</tas-label>
+        <tas-select
+          [options]="[]"
+          placeholder="Choisissez un responsable"
+        ></tas-select>
+      </tas-form-field>
+
+      <br />
+      <!--    Roles and permissions -->
+      <tas-title>Rôle</tas-title>
+      <tas-form-field>
+        <tas-label>Choisissez un rôle</tas-label>
+        <tas-select
+          [options]="[]"
+          placeholder="Choisissez le role de l'utilisateur"
+        ></tas-select>
+      </tas-form-field>
+    </div>
+
+    <card-action class="flex">
+      <button tas-outlined-button [routerLink]="['/settings', 'users']">
+        <tas-icon iconName="close"></tas-icon>
+        Annuler
+      </button>
+      <button tas-raised-button color="primary">
+        <tas-icon iconName="check"></tas-icon>
+        Enregistrer
+      </button>
+    </card-action>
+  </tas-card>
+</div>

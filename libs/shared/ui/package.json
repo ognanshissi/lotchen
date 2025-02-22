@@ -5,7 +5,8 @@
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
     "@angular/cdk": "^18.2.3",
-    "@angular/material": "^18.2.11"
+    "@angular/material": "^18.2.11",
+    "date-fns": "^4.1.0"
   },
   "sideEffects": false
 }

@@ -2,8 +2,8 @@ import { CommandHandler } from '@lotchen/api/core';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Model } from 'mongoose';
-import { User } from '../user.schema';
-import { Role } from '../../roles';
+import { UserDocument } from '../user.schema';
+import { RoleDocument } from '../../roles';
 
 export class AssignRolesCommand {
   userId!: string;
@@ -13,7 +13,7 @@ export class AssignRolesCommand {
 export class AssignRolesCommandRequest {
   @ApiProperty({
     type: [String],
-    description: 'List of permissions keys',
+    description: 'List of role Ids',
   })
   roles!: string[];
 }
@@ -23,8 +23,8 @@ export class AssignRolesCommandHandler
   implements CommandHandler<AssignRolesCommand, any>
 {
   constructor(
-    @Inject('USER_MODEL') private readonly userModel: Model<User>,
-    @Inject('ROLE_MODEL') private readonly roleModel: Model<Role>
+    @Inject('USER_MODEL') private readonly userModel: Model<UserDocument>,
+    @Inject('ROLE_MODEL') private readonly roleModel: Model<RoleDocument>
   ) {}
 
   public async handlerAsync(command: AssignRolesCommand): Promise<any> {
@@ -38,14 +38,16 @@ export class AssignRolesCommandHandler
     // This action will clean unwanted permissions
     const roles = await this.roleModel
       .find({
-        id: {
+        name: {
           $in: [...command.roles],
         },
       })
       .exec();
 
     if (roles.length) {
-      user.roles = [...roles]; // update the current list of permissions
+      user.roles = [...roles];
+      // update the current list of permissions
+      user.permissions = roles.map((role) => role.permissions).flat();
       await user.save();
     }
   }
