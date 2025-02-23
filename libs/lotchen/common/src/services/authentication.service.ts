@@ -13,7 +13,7 @@ export const TOKEN_STORAGE_KEY = 'LOTCHEN_ACCESS_TOKEN';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private storage!: Storage;
+  private storage: Storage = window.localStorage;
 
   private readonly _authService = inject(AuthApiService);
   // User signals
@@ -62,7 +62,6 @@ export class AuthenticationService {
 
   public loadAccessToken(): string | null {
     if (this._accessToken()) return this.accessToken();
-    if (this.storage === undefined) return null;
     const storage = JSON.parse(
       this.storage.getItem(TOKEN_STORAGE_KEY) || ''
     ) as AccessTokenResponse | null;

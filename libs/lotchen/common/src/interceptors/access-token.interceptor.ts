@@ -31,6 +31,12 @@ export const accessTokenInterceptor: HttpInterceptorFn = (
 };
 
 function urlIncludeNotSecuredPaths(url: string): boolean {
-  const authPaths = ['login', 'logout'];
-  return authPaths.some((path) => url.includes(path));
+  const publicPaths = [
+    'login',
+    'logout',
+    'forgot-password',
+    'reset-password',
+    'webforms-generated',
+  ];
+  return publicPaths.some((path) => url.includes(path));
 }

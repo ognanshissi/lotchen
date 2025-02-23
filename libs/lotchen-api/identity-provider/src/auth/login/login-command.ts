@@ -85,8 +85,6 @@ export class LoginCommandHandler
       .lean()
       .exec();
 
-    console.log({ profile });
-
     const payload = {
       sub: userExist.id,
       username: userExist.email,

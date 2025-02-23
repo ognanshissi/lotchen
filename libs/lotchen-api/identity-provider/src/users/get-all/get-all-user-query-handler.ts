@@ -17,7 +17,9 @@ export class GetAllUserQueryHandler
 
   public async handlerAsync(): Promise<GetAllUserQuery[]> {
     const profiles = await this.profileModel
-      .find({}, 'contactInfo firstName lastName createdAt updatedAt user')
+      .find({}, 'contactInfo firstName lastName createdAt updatedAt user', {
+        sort: { createdAt: 1 },
+      })
       .populate('user', '_id')
       .lean()
       .exec();
