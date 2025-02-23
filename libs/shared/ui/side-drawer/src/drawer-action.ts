@@ -13,7 +13,7 @@ import {
   styles: [
     `
       tas-drawer-action {
-        @apply block bg-white sticky bottom-0 flex justify-end space-x-4 mt-4 py-2 z-10 w-full;
+        @apply block bg-white border-t border-gray-300 px-2 sticky bottom-0 flex justify-end space-x-4 mt-4 py-3 z-10 w-full;
       }
     `,
   ],

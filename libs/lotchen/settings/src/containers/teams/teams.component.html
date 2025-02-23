@@ -23,3 +23,70 @@
     </button>
   </div>
 </div>
+
+<!-- Table -->
+<tas-card class="mt-4">
+  <card-header>
+    <div class="flex justify-between">
+      <div>
+        <tas-title>Liste des équipes</tas-title>
+        <tas-text class="text-sm text-gray-400"
+          >{{ teams()?.length ?? 0 }} équipes</tas-text
+        >
+      </div>
+      <div class="flex space-x-2 items-center justify-center">
+        <div>
+          <tas-form-field>
+            <tas-label class="sr-only">Recherche</tas-label>
+            <input
+              type="search"
+              tasInput
+              size="small"
+              class="w-[400px]"
+              placeholder="Rechercher un territoire..."
+            />
+          </tas-form-field>
+        </div>
+
+        <button tas-text-button>
+          <tas-icon iconName="feather:filter" [iconSize]="'lg'"></tas-icon>
+        </button>
+      </div>
+    </div>
+  </card-header>
+
+  <div>
+    <tas-table [data]="teams()" identifierField="id">
+      <ng-template #header>
+        <tr>
+          <th>Nom</th>
+          <th>Responsable</th>
+          <th>Membres</th>
+          <th>Créé par</th>
+          <th>Date de création</th>
+          <th>Dernière modification</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-item>
+        <tr>
+          <td>
+            <a [routerLink]="[item.id]" class="font-semibold underline">{{
+              item.name
+            }}</a>
+          </td>
+          <td></td>
+          <td>
+            <span class="bg-gray-200 rounded-full px-4 py-1">{{ 'N/A' }}</span>
+          </td>
+          <td>{{ item.createdBy }}</td>
+          <td>{{ item.createdAt }}</td>
+          <td>{{ item.createdAt }}</td>
+          <td tasTableItemAction>
+            <button tas-outlined-button color="primary">Consulter</button>
+          </td>
+        </tr>
+      </ng-template>
+    </tas-table>
+  </div>
+</tas-card>
