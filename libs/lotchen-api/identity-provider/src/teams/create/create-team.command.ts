@@ -1,10 +1,12 @@
-import { CommandHandler } from '@lotchen/api/core';
+import { CommandHandler, RequestExtendedWithUser } from '@lotchen/api/core';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { TeamsProvider } from '../teams.provider';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { Model } from 'mongoose';
-import { User } from '../../users';
+import { UserDocument } from '../../users';
+import { ProfileDocument } from '../../profile';
+import { REQUEST } from '@nestjs/core';
 
 export class CreateTeamCommand {
   @ApiProperty({ type: String, description: 'Name of the team' })
@@ -37,7 +39,10 @@ export class CreateTeamCommandHandler
 {
   constructor(
     private readonly _teamsProvider: TeamsProvider,
-    @Inject('USER_MODEL') private readonly UserModel: Model<User>
+    @Inject('USER_MODEL') private readonly UserModel: Model<UserDocument>,
+    @Inject('PROFILE_MODEL')
+    private readonly ProfileModel: Model<ProfileDocument>,
+    @Inject(REQUEST) private readonly request: RequestExtendedWithUser
   ) {}
 
   public async handlerAsync(
@@ -59,13 +64,18 @@ export class CreateTeamCommandHandler
 
       // Check manager information
       let managerId: string | null = null;
+      let managerInfo: {
+        firstName: string;
+        lastName: string;
+        userId: string;
+        email: string;
+      } | null = null;
       if (command.managerId) {
-        const manager = await this.UserModel.findOne(
+        const manager = await this.ProfileModel.findOne(
           {
-            _id: command.managerId,
-            isDeleted: false,
+            user: command.managerId,
           },
-          '_id'
+          'id firstName lastName contactInfo'
         )
           .lean()
           .exec();
@@ -75,6 +85,12 @@ export class CreateTeamCommandHandler
         }
 
         managerId = manager._id;
+        managerInfo = {
+          firstName: manager.firstName,
+          lastName: manager.lastName,
+          email: manager.contactInfo.email,
+          userId: manager._id,
+        };
       }
 
       // Members
@@ -101,7 +117,15 @@ export class CreateTeamCommandHandler
         name: command.name,
         description: command.description,
         manager: managerId,
+        managerInfo: managerInfo,
         members: membersIds,
+        createdBy: this.request.user.sub,
+        createdByInfo: {
+          userId: this.request.user.sub,
+          email: this.request.user.username,
+          firstName: this.request.user.firstName,
+          lastName: this.request.user.lastName,
+        },
       });
 
       const errors = createdTeam.validateSync();

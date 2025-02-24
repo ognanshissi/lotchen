@@ -1,4 +1,4 @@
-import { AggregateRoot } from '@lotchen/api/core';
+import { ActivityUser, AggregateRoot } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User } from '../users';
@@ -23,6 +23,9 @@ export class Team extends AggregateRoot {
     required: false,
   })
   manager!: User;
+
+  @Prop({ type: ActivityUser, required: true })
+  managerInfo!: ActivityUser;
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);

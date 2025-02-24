@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import {
+  TasClosableDrawer,
   TasDrawerAction,
   TasDrawerContent,
   TasDrawerTitle,
@@ -32,6 +33,7 @@ import { TasInput } from '@talisoft/ui/input';
     ButtonModule,
     TasIcon,
     TasInput,
+    TasClosableDrawer,
   ],
 })
 export class AddTeamDialogComponent {

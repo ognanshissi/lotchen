@@ -1731,6 +1731,10 @@
           "lastName"
         ]
       },
+      "FindAllTeamsQueryAuthorAuditDto": {
+        "type": "object",
+        "properties": {}
+      },
       "FindAllTeamsQueryResponse": {
         "type": "object",
         "properties": {
@@ -1751,6 +1755,24 @@
             "items": {
               "$ref": "#/components/schemas/FindAllTeamsQueryUserDto"
             }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of creation"
+          },
+          "createdBy": {
+            "description": "Created by user informations",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FindAllTeamsQueryAuthorAuditDto"
+              }
+            ]
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of last update"
           }
         },
         "required": [
@@ -1758,7 +1780,10 @@
           "name",
           "description",
           "manager",
-          "members"
+          "members",
+          "createdAt",
+          "createdBy",
+          "updatedAt"
         ]
       },
       "FindAllOrganizationQueryResponse": {
