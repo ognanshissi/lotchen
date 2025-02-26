@@ -15,8 +15,8 @@ import {
   path: 'teams',
 })
 @ApiHeader({
-  name: 'x-tenant-fqn',
-  description: 'The Tenant Fqn',
+  name: 'x-tenant-fqdn',
+  description: 'The Tenant Fqdn',
 })
 @ApiTags('Teams')
 export class TeamsController {
@@ -39,7 +39,7 @@ export class TeamsController {
   @ApiResponse({
     type: [FindAllTeamsQueryResponse],
   })
-  async findAllTeams(): Promise<FindAllTeamsQueryResponse[]> {
+  public async findAllTeams(): Promise<FindAllTeamsQueryResponse[]> {
     return await this._findAllTeamsQueryHandler.handlerAsync();
   }
 }

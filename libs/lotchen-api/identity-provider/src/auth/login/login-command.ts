@@ -49,6 +49,10 @@ export class LoginCommandHandler
   ): Promise<AccessTokenResponse> {
     const userExist = await this.userModel
       .findOne({ email: request.email }, 'password roles isLocked email _id id')
+      .populate({
+        path: 'roles',
+        select: 'id name permissions',
+      })
       .exec();
 
     if (!userExist) {
@@ -68,16 +72,7 @@ export class LoginCommandHandler
       throw new UnauthorizedException(AuthErrors.userLocked);
     }
 
-    // Get permissions from roles
-    const roles = await this.roleModel
-      .find(
-        {
-          _id: { $in: [...userExist.roles] },
-        },
-        'permissions'
-      )
-      .lean()
-      .exec();
+    console.log(userExist);
 
     // Get user profile
     const profile = await this.profileModel
@@ -91,7 +86,7 @@ export class LoginCommandHandler
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',
       profileId: profile?._id ?? '',
-      permissions: [...roles.map((role) => role.permissions).flat()],
+      permissions: [...userExist.roles.map((role) => role.permissions).flat()],
     };
 
     const refreshToken = await this._jwtService.signAsync(

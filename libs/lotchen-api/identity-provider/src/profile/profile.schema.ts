@@ -10,7 +10,6 @@ export type ProfileDocument = HydratedDocument<Profile>;
 @Schema({
   timestamps: true,
   collection: 'identity_profiles',
-  collation: { locale: 'en', strength: 2 },
 })
 export class Profile extends AggregateRoot {
   @Prop({ type: Types.UUID, ref: 'User', required: true })
@@ -25,10 +24,10 @@ export class Profile extends AggregateRoot {
   @Prop({ type: mongoose.Schema.Types.Mixed, required: true })
   contactInfo!: ContactInfo;
 
-  @Prop({ type: String, default: '' })
+  @Prop({ type: String, default: null })
   jobTitle!: string;
 
-  @Prop({ type: String, default: '' })
+  @Prop({ type: 'UUID', default: null })
   reportTo!: string;
 
   @Prop({ type: Date, default: null })

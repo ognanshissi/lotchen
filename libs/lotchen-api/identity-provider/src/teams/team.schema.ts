@@ -2,6 +2,7 @@ import { ActivityUser, AggregateRoot } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User } from '../users';
+import { Territory } from '../territories/territory.schema';
 
 @Schema({ collection: 'identity_teams', timestamps: true })
 export class Team extends AggregateRoot {
@@ -16,6 +17,14 @@ export class Team extends AggregateRoot {
     default: [],
   })
   members!: User[];
+
+  // Reference
+  @Prop({ type: mongoose.Schema.Types.UUID, ref: 'Territory' })
+  territoryId!: Territory;
+
+  // Useful for quick territory information
+  @Prop({ type: Object, default: null })
+  territoryInfo!: { name: string; id: string };
 
   @Prop({
     type: mongoose.Schema.Types.UUID,

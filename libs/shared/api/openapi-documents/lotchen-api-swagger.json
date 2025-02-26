@@ -840,9 +840,9 @@
         "operationId": "TeamsController_createTeam_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -878,9 +878,9 @@
         "operationId": "TeamsController_findAllTeams_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -1679,7 +1679,12 @@
             "description": "Name of the team"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Team description"
+          },
+          "territoryId": {
+            "type": "string",
+            "description": "The territory on  which the team is linked"
           },
           "managerId": {
             "type": "string"
@@ -1712,24 +1717,22 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "User Id"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "User email"
           },
           "firstName": {
-            "type": "string"
+            "type": "string",
+            "description": "FirstName"
           },
           "lastName": {
-            "type": "string"
+            "type": "string",
+            "description": "LastName"
           }
-        },
-        "required": [
-          "id",
-          "email",
-          "firstName",
-          "lastName"
-        ]
+        }
       },
       "FindAllTeamsQueryAuthorAuditDto": {
         "type": "object",
@@ -1762,7 +1765,7 @@
             "description": "Date of creation"
           },
           "createdBy": {
-            "description": "Created by user informations",
+            "description": "Created by user information",
             "allOf": [
               {
                 "$ref": "#/components/schemas/FindAllTeamsQueryAuthorAuditDto"

@@ -76,7 +76,7 @@ export class User extends AggregateRoot {
     type: mongoose.Schema.Types.UUID,
     ref: 'User',
   })
-  reportedTo!: User; // Superior, person to refer to
+  reportedTo!: User; // Superior, person to report to
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

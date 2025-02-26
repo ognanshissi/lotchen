@@ -6,13 +6,13 @@ import { TeamsProvider } from '../teams.provider';
 export class FindAllTeamsQuery {}
 
 export class FindAllTeamsQueryUserDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'User Id', type: String, required: false })
   id!: string;
-  @ApiProperty()
+  @ApiProperty({ description: 'User email', type: String, required: false })
   email!: string;
-  @ApiProperty()
+  @ApiProperty({ description: 'FirstName', type: String, required: false })
   firstName!: string;
-  @ApiProperty()
+  @ApiProperty({ description: 'LastName', type: String, required: false })
   lastName!: string;
 }
 
@@ -42,7 +42,7 @@ export class FindAllTeamsQueryResponse {
 
   @ApiProperty({
     type: () => FindAllTeamsQueryAuthorAuditDto,
-    description: 'Created by user informations',
+    description: 'Created by user information',
   })
   createdBy!: FindAllTeamsQueryAuthorAuditDto | null;
 
@@ -58,13 +58,17 @@ export class FindAllTeamsQueryHandler
 
   public async handlerAsync(): Promise<FindAllTeamsQueryResponse[]> {
     const teams = await this._teamsProvider.TeamModel.find(
-      { isDeleted: false },
-      'id name description memberInfo createdAt updatedAt createdByInfo'
+      {},
+      'id name description managerInfo createdAt updatedAt createdByInfo manager members'
     )
       .populate({
         path: 'members',
         select: 'id email',
         match: { isDeleted: false },
+      })
+      .populate({
+        path: 'manager',
+        select: 'id email',
       })
       .exec();
 
@@ -73,7 +77,14 @@ export class FindAllTeamsQueryHandler
         id: team.id,
         name: team.name,
         description: team.description,
-        members: [],
+        members: [
+          ...team.members.map((member) => ({
+            id: member.id,
+            email: member.email,
+            firstName: '',
+            lastName: '',
+          })),
+        ],
         manager: team.managerInfo?.userId
           ? {
               id: team.managerInfo?.userId || '',

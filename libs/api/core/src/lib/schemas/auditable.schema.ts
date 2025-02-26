@@ -1,6 +1,6 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { randomUUID } from 'crypto';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 @Schema({ id: false, _id: false, versionKey: false, timestamps: false })
 export class ActivityUser {
@@ -35,11 +35,19 @@ export abstract class AuditableSchema extends Document {
 }
 
 export abstract class AggregateRoot extends AuditableSchema {
-  @Prop({ default: () => randomUUID(), required: true, type: 'UUID' })
+  @Prop({
+    default: () => randomUUID(),
+    required: true,
+    type: mongoose.Schema.Types.UUID,
+  })
   override _id!: string;
 }
 
 export abstract class SchemaIdentifier extends Document {
-  @Prop({ default: () => randomUUID(), required: true, type: 'UUID' })
+  @Prop({
+    default: () => randomUUID(),
+    required: true,
+    type: mongoose.Schema.Types.UUID,
+  })
   override _id!: string;
 }

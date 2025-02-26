@@ -1,20 +1,32 @@
-import { CommandHandler, RequestExtendedWithUser } from '@lotchen/api/core';
+import {
+  ActivityUser,
+  CommandHandler,
+  RequestExtendedWithUser,
+} from '@lotchen/api/core';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { TeamsProvider } from '../teams.provider';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { Model } from 'mongoose';
-import { UserDocument } from '../../users';
-import { ProfileDocument } from '../../profile';
+import { Profile } from '../../profile';
 import { REQUEST } from '@nestjs/core';
+import { TerritoriesProvider } from '../../territories/territories.provider';
+import { UserDocument } from '../../users';
 
 export class CreateTeamCommand {
   @ApiProperty({ type: String, description: 'Name of the team' })
-  @IsNotEmpty({ message: "Le nom de l'équipe est obligatoire." })
+  @IsNotEmpty({ message: 'The name is required' })
   name!: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, description: 'Team description' })
   description!: string;
+
+  @ApiProperty({
+    type: String,
+    required: false,
+    description: 'The territory on  which the team is linked',
+  })
+  territoryId!: string;
 
   @ApiProperty({ required: false })
   managerId!: string;
@@ -39,9 +51,10 @@ export class CreateTeamCommandHandler
 {
   constructor(
     private readonly _teamsProvider: TeamsProvider,
-    @Inject('USER_MODEL') private readonly UserModel: Model<UserDocument>,
     @Inject('PROFILE_MODEL')
-    private readonly ProfileModel: Model<ProfileDocument>,
+    private readonly ProfileModel: Model<Profile>,
+    @Inject('USER_MODEL') private readonly UserModel: Model<UserDocument>,
+    private readonly territoriesProvider: TerritoriesProvider,
     @Inject(REQUEST) private readonly request: RequestExtendedWithUser
   ) {}
 
@@ -62,63 +75,80 @@ export class CreateTeamCommandHandler
         );
       }
 
-      // Check manager information
-      let managerId: string | null = null;
-      let managerInfo: {
-        firstName: string;
-        lastName: string;
-        userId: string;
-        email: string;
-      } | null = null;
-      if (command.managerId) {
-        const manager = await this.ProfileModel.findOne(
-          {
-            user: command.managerId,
-          },
-          'id firstName lastName contactInfo'
-        )
-          .lean()
-          .exec();
-
-        if (!manager) {
-          throw new BadRequestException('ManagerId is not a valid userId');
-        }
-
-        managerId = manager._id;
-        managerInfo = {
-          firstName: manager.firstName,
-          lastName: manager.lastName,
-          email: manager.contactInfo.email,
-          userId: manager._id,
-        };
-      }
-
-      // Members
-      const membersIds: string[] = [];
-      if (command.memberIds.length) {
-        for (const memberId of command.memberIds) {
-          const user = await this.UserModel.findOne(
-            {
-              _id: memberId,
-              isDeleted: false,
-            },
-            '_id'
+      let territory: { name: string; id: string } | null = null;
+      if (command.territoryId) {
+        const territoryExist =
+          await this.territoriesProvider.TerritoryModel.findOne(
+            { _id: command.territoryId },
+            'id name'
           )
             .lean()
             .exec();
 
-          if (user) {
-            membersIds.push(user._id);
-          }
+        territory = {
+          name: territoryExist?.name ?? '',
+          id: territoryExist?._id.toString() ?? '',
+        };
+      }
+
+      // Check manager information
+      let managerInfo: ActivityUser | null = null;
+      if (command.managerId) {
+        // Get user information
+        const userManagerInfo = await this.UserModel.findOne(
+          { _id: command.managerId },
+          'id email'
+        )
+          .lean()
+          .exec();
+
+        if (!userManagerInfo) {
+          throw new BadRequestException('ManagerId is not a valid userId');
         }
+
+        // Load user profile information
+        const managerProfile = await this.ProfileModel.findOne(
+          {
+            user: userManagerInfo?._id,
+          },
+          'id _id firstName lastName contactInfo user'
+        ).exec();
+
+        if (!managerProfile) {
+          throw new BadRequestException('ManagerId is not a valid userId');
+        }
+
+        managerInfo = {
+          firstName: managerProfile.firstName,
+          lastName: managerProfile.lastName,
+          email: managerProfile.contactInfo.email,
+          userId: command.managerId, // userId
+        };
+      }
+
+      // Members
+      let membersIds: string[] = [];
+      if (command.memberIds.length) {
+        const teamMembers = await this.UserModel.find(
+          {
+            _id: { $in: command.memberIds },
+          },
+          'id'
+        )
+          .lean()
+          .exec();
+
+        membersIds = (teamMembers ?? [])?.map((member) => member._id);
       }
 
       const createdTeam = new this._teamsProvider.TeamModel({
         name: command.name,
         description: command.description,
-        manager: managerId,
+        manager: managerInfo?.userId,
         managerInfo: managerInfo,
-        members: membersIds,
+        members: membersIds, // users
+        territory: territory ? territory.id : null,
+        territoryInfo: territory ? territory : null,
         createdBy: this.request.user.sub,
         createdByInfo: {
           userId: this.request.user.sub,
