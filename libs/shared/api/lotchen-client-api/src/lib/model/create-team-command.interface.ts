@@ -16,7 +16,14 @@ export interface CreateTeamCommand {
      * Name of the team
      */
     name: string;
+    /**
+     * Team description
+     */
     description?: string;
+    /**
+     * The territory on  which the team is linked
+     */
+    territoryId?: string;
     managerId?: string;
     /**
      * User Ids to link into the team

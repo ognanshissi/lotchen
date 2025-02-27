@@ -72,8 +72,6 @@ export class LoginCommandHandler
       throw new UnauthorizedException(AuthErrors.userLocked);
     }
 
-    console.log(userExist);
-
     // Get user profile
     const profile = await this.profileModel
       .findOne({ user: userExist.id }, 'firstName lastName id')

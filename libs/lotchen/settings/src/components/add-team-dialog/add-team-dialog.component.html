@@ -1,6 +1,6 @@
 <tas-side-drawer>
   <tas-drawer-title>
-    <tas-title>Ajouter un territoire</tas-title>
+    <tas-title>Ajouter une équipe</tas-title>
   </tas-drawer-title>
   <tas-drawer-content>
     <Text>
@@ -8,47 +8,67 @@
       excepturi fuga fugit harum ipsum minus molestiae nobis possimus!
     </Text>
 
-    <div class="flex flex-col gap-3">
+    <br />
+    <tas-alert type="error" *ngIf="errorMessage">{{ errorMessage }}</tas-alert>
+
+    <form class="flex flex-col gap-3" [formGroup]="form">
       <div class="flex flex-col space-y-3">
         <tas-form-field>
-          <tas-label>Nom</tas-label>
-          <input type="text" tasInput placeholder="Nom" />
+          <tas-label>Nom de l'équipe</tas-label>
+          <input
+            type="text"
+            formControlName="name"
+            tasInput
+            placeholder="Nom de l'équipe"
+          />
         </tas-form-field>
 
         <tas-form-field>
           <tas-label>Description</tas-label>
-          <textarea tasInput placeholder="Description"></textarea>
+          <textarea
+            tasInput
+            formControlName="description"
+            placeholder="Description"
+          ></textarea>
         </tas-form-field>
 
         <tas-form-field>
           <tas-label>Responsable</tas-label>
           <tas-select
+            formControlName="managerId"
             [options]="users()"
             [optionLabel]="'email'"
             [optionValue]="'userId'"
-            placeholder="Selectionner le responsable de l'èquipe"
+            placeholder="Sélectionner le responsable de l'équipe"
           ></tas-select>
         </tas-form-field>
 
         <tas-form-field>
-          <tas-label>Utilisateurs</tas-label>
+          <tas-label>Les membres de l'équipe</tas-label>
           <tas-select
+            formControlName="memberIds"
             [options]="users()"
             [optionLabel]="'email'"
             [optionValue]="'userId'"
-            placeholder="Selectionner le utilisateurs"
+            placeholder="Veuillez choisir les membres de l'équipe"
           ></tas-select>
         </tas-form-field>
       </div>
-    </div>
+    </form>
   </tas-drawer-content>
 
   <tas-drawer-action>
-    <button tas-outlined-button closable-drawer>
+    <button [disabled]="isLoading" tas-outlined-button closable-drawer>
       <tas-icon [iconName]="'close'"></tas-icon>
       Fermer
     </button>
-    <button tas-raised-button color="primary">
+    <button
+      [isLoading]="isLoading"
+      [disabled]="!form.valid"
+      tas-raised-button
+      color="primary"
+      (click)="submit()"
+    >
       <tas-icon iconName="check"></tas-icon>
       sauvegarder
     </button>

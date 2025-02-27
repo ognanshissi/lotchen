@@ -12,9 +12,21 @@
 
 
 export interface FindAllTeamsQueryUserDto { 
-    id: string;
-    email: string;
-    firstName: string;
-    lastName: string;
+    /**
+     * User Id
+     */
+    id?: string;
+    /**
+     * User email
+     */
+    email?: string;
+    /**
+     * FirstName
+     */
+    firstName?: string;
+    /**
+     * LastName
+     */
+    lastName?: string;
 }
 

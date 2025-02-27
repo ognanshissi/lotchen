@@ -1734,10 +1734,6 @@
           }
         }
       },
-      "FindAllTeamsQueryAuthorAuditDto": {
-        "type": "object",
-        "properties": {}
-      },
       "FindAllTeamsQueryResponse": {
         "type": "object",
         "properties": {
@@ -1768,7 +1764,7 @@
             "description": "Created by user information",
             "allOf": [
               {
-                "$ref": "#/components/schemas/FindAllTeamsQueryAuthorAuditDto"
+                "$ref": "#/components/schemas/FindAllTeamsQueryUserDto"
               }
             ]
           },

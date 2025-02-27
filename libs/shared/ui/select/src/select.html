@@ -74,7 +74,7 @@
     {
     <li id="listbox-option-{{ index }}">
       <button
-        class="relative border-b w-full border-b-gray-300 cursor-default hover:cursor-pointer hover:bg-gray-300 transition-all select-none py-4 pl-3 pr-9"
+        class="relative border-t w-full border-b-gray-300 cursor-default hover:cursor-pointer hover:bg-gray-300 transition-all select-none py-4 pl-3 pr-9"
         [ngClass]="{'bg-primary text-white': selectionModel.isSelected(item[optionValue()]) }"
         (click)="toggleSelection(item[optionValue()])"
       >

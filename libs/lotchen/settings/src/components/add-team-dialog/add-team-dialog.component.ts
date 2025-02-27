@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import {
   TasClosableDrawer,
@@ -10,11 +10,24 @@ import {
 import { TasTitle } from '@talisoft/ui/title';
 import { TasText } from '@talisoft/ui/text';
 import { TasSelect } from '@talisoft/ui/select';
-import { UsersApiService } from '@talisoft/api/lotchen-client-api';
+import {
+  TeamsApiService,
+  UsersApiService,
+} from '@talisoft/api/lotchen-client-api';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasInput } from '@talisoft/ui/input';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { finalize } from 'rxjs';
+import { TasAlert } from '@talisoft/ui/alert';
+import { NgIf } from '@angular/common';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'settings-add-team-dialog',
@@ -34,12 +47,55 @@ import { TasInput } from '@talisoft/ui/input';
     TasIcon,
     TasInput,
     TasClosableDrawer,
+    ReactiveFormsModule,
+    TasAlert,
+    NgIf,
   ],
 })
-export class AddTeamDialogComponent {
+export class AddTeamDialogComponent implements OnInit {
   private readonly _userService = inject(UsersApiService);
+  private readonly _teamsApiService = inject(TeamsApiService);
+  private readonly _dialogRef = inject(DialogRef);
+
+  public isLoading = false;
+  public errorMessage: string | null = null;
+
+  public form!: FormGroup;
 
   public users = toSignal(this._userService.usersControllerAllUsersV1(), {
     initialValue: [],
   });
+
+  public ngOnInit() {
+    this.form = new FormGroup({
+      name: new FormControl(null, [Validators.required]),
+      description: new FormControl(null),
+      managerId: new FormControl(null, [Validators.required]),
+      memberIds: new FormControl(null, [Validators.required]),
+    });
+  }
+
+  /**
+   * Submit team creation payload
+   */
+  public submit(): void {
+    console.log(this.form.getRawValue());
+    this.errorMessage = null;
+    this.isLoading = true;
+    this._teamsApiService
+      .teamsControllerCreateTeamV1({
+        ...this.form.getRawValue(),
+        memberIds: [this.form.getRawValue().memberIds],
+      })
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (res) => {
+          console.log({ res });
+          this._dialogRef.close(res);
+        },
+        error: (error) => {
+          this.errorMessage = error.error.message;
+        },
+      });
+  }
 }

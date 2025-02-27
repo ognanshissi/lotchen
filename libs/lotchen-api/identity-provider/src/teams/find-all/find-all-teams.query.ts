@@ -41,10 +41,10 @@ export class FindAllTeamsQueryResponse {
   createdAt!: Date;
 
   @ApiProperty({
-    type: () => FindAllTeamsQueryAuthorAuditDto,
+    type: () => FindAllTeamsQueryUserDto,
     description: 'Created by user information',
   })
-  createdBy!: FindAllTeamsQueryAuthorAuditDto | null;
+  createdBy!: FindAllTeamsQueryUserDto | null;
 
   @ApiProperty({ type: Date, description: 'Date of last update' })
   updatedAt!: Date;
@@ -58,8 +58,11 @@ export class FindAllTeamsQueryHandler
 
   public async handlerAsync(): Promise<FindAllTeamsQueryResponse[]> {
     const teams = await this._teamsProvider.TeamModel.find(
-      {},
-      'id name description managerInfo createdAt updatedAt createdByInfo manager members'
+      { isDeleted: null },
+      'id name description managerInfo createdAt updatedAt createdByInfo manager members',
+      {
+        sort: { createdAt: -1 },
+      }
     )
       .populate({
         path: 'members',

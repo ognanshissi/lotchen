@@ -18,5 +18,17 @@ export interface FindAllTeamsQueryResponse {
     description: string;
     manager: FindAllTeamsQueryUserDto;
     members: Array<FindAllTeamsQueryUserDto>;
+    /**
+     * Date of creation
+     */
+    createdAt: string;
+    /**
+     * Created by user information
+     */
+    createdBy: FindAllTeamsQueryUserDto;
+    /**
+     * Date of last update
+     */
+    updatedAt: string;
 }
 
