@@ -12,6 +12,7 @@ import { TasText } from '@talisoft/ui/text';
 import { TasSelect } from '@talisoft/ui/select';
 import {
   TeamsApiService,
+  TerritoriesApiService,
   UsersApiService,
 } from '@talisoft/api/lotchen-client-api';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -56,6 +57,7 @@ export class AddTeamDialogComponent implements OnInit {
   private readonly _userService = inject(UsersApiService);
   private readonly _teamsApiService = inject(TeamsApiService);
   private readonly _dialogRef = inject(DialogRef);
+  private readonly _territoriesApiService = inject(TerritoriesApiService);
 
   public isLoading = false;
   public errorMessage: string | null = null;
@@ -66,12 +68,18 @@ export class AddTeamDialogComponent implements OnInit {
     initialValue: [],
   });
 
+  public territories = toSignal(
+    this._territoriesApiService.territoriesControllerAllTerritoriesV1(),
+    { initialValue: [] }
+  );
+
   public ngOnInit() {
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required]),
       description: new FormControl(null),
       managerId: new FormControl(null, [Validators.required]),
       memberIds: new FormControl(null, [Validators.required]),
+      territoryId: new FormControl(null),
     });
   }
 
@@ -79,7 +87,6 @@ export class AddTeamDialogComponent implements OnInit {
    * Submit team creation payload
    */
   public submit(): void {
-    console.log(this.form.getRawValue());
     this.errorMessage = null;
     this.isLoading = true;
     this._teamsApiService

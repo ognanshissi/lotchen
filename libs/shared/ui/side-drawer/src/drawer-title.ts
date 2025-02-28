@@ -19,8 +19,8 @@ import { ButtonModule } from '@talisoft/ui/button';
     @if (closable()) {
     <button
       closable-drawer
-      rounded
-      tas-outlined-button
+      iconButton
+      tas-button
       type="button"
       title="close side drawer"
     >

@@ -33,6 +33,17 @@
         </tas-form-field>
 
         <tas-form-field>
+          <tas-label>Territoire</tas-label>
+          <tas-select
+            [options]="territories()"
+            formControlName="territoryId"
+            optionLabel="name"
+            placeholder="Choisissez le territoire"
+            optionValue="id"
+          ></tas-select>
+        </tas-form-field>
+
+        <tas-form-field>
           <tas-label>Responsable</tas-label>
           <tas-select
             formControlName="managerId"

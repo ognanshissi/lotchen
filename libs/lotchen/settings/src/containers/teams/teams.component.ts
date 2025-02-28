@@ -13,6 +13,7 @@ import { TasCard, TasCardHeader } from '@talisoft/ui/card';
 import { TasInput } from '@talisoft/ui/input';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import { TimeagoPipe } from '@talisoft/ui/timeago';
+import { ConfirmDialogService } from '@talisoft/ui/confirm-dialog';
 
 @Component({
   selector: 'settings-teams',
@@ -37,6 +38,7 @@ import { TimeagoPipe } from '@talisoft/ui/timeago';
 export class TeamsComponent {
   private readonly _sideDrawerService = inject(SideDrawerService);
   private readonly _teamsApiService = inject(TeamsApiService);
+  private readonly _confirmDialog = inject(ConfirmDialogService);
 
   public teams = toSignal(
     this._teamsApiService.teamsControllerFindAllTeamsV1(),
