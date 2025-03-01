@@ -29,6 +29,7 @@ import { finalize } from 'rxjs';
 import { TasAlert } from '@talisoft/ui/alert';
 import { NgIf } from '@angular/common';
 import { DialogRef } from '@angular/cdk/dialog';
+import { TasMultiSelect } from '@talisoft/ui/multi-select';
 
 @Component({
   selector: 'settings-add-team-dialog',
@@ -51,6 +52,7 @@ import { DialogRef } from '@angular/cdk/dialog';
     ReactiveFormsModule,
     TasAlert,
     NgIf,
+    TasMultiSelect,
   ],
 })
 export class AddTeamDialogComponent implements OnInit {

@@ -9,8 +9,8 @@ import { TasInputEmail } from '@talisoft/ui/input-email';
 @Component({
   selector: 'auth-forgot-password',
   template: `
-    <div class="flex flex-col space-y-4">
-      <tas-title> Mot de passe oublié </tas-title>
+    <div class="flex flex-col space-y-4 bg-white">
+      <tas-title> Mot de passe oublié</tas-title>
 
       <Text>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
@@ -21,8 +21,8 @@ import { TasInputEmail } from '@talisoft/ui/input-email';
         <tas-input-email
           [formControl]="emailControl"
           placeholder="Votre adresse électronique"
-          >Adresse électronique</tas-input-email
-        >
+          >Adresse électronique
+        </tas-input-email>
 
         <button
           tas-outlined-button

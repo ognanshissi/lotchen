@@ -6,9 +6,12 @@
   @apply text-gray-300;
 }
 
+@mixin bgVariant($color) {
+  background-color: rgba($color, 0.06);
+}
+
 // Text button
 .tas__text__button__container {
-
   &:not(:disabled) {
     @apply hover:underline;
   }
@@ -21,6 +24,10 @@
     &:disabled {
       @include textDisabled;
     }
+
+    &:hover:not(:disabled) {
+      @include bgVariant(var(--tas-color-primary));
+    }
   }
 
   // Accent variant
@@ -30,6 +37,10 @@
     // Modifier
     &:disabled {
       @include textDisabled;
+    }
+
+    &:hover:not(:disabled) {
+      @include bgVariant(var(--tas-color-accent));
     }
   }
 
@@ -41,6 +52,10 @@
     &:disabled {
       @include textDisabled;
     }
+
+    &:hover:not(:disabled) {
+      @include bgVariant(var(--tas-color-warn));
+    }
   }
 
   // Neutral variant
@@ -50,7 +65,9 @@
     &:disabled {
       @include textDisabled;
     }
+
+    &:hover:not(:disabled) {
+      @include bgVariant(var(--tas-color-neutral));
+    }
   }
 }
-
-

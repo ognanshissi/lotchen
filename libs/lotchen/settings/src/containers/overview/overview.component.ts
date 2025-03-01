@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TasTitle } from '@talisoft/ui/title';
 import { TasText } from '@talisoft/ui/text';
 import { NgClass, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SnackbarService } from '@talisoft/ui/snackbar';
 
 export interface MenuItem {
   title: string;
@@ -113,6 +114,8 @@ export class OverviewComponent {
     },
   ];
 
+  private readonly _snackbarService = inject(SnackbarService);
+
   public menus = signal<MenuItem[]>(this.menuData);
 
   public selectedMenu = signal<MenuItem>(this.menuData[0]);
@@ -121,7 +124,12 @@ export class OverviewComponent {
     this.selectedMenu.set(item);
   }
 
-  protected readonly screenLeft = screenLeft;
+  constructor() {
+    this._snackbarService.error(
+      'Congratulations !',
+      'The lead is successfully created.'
+    );
+  }
 }
 
 export default OverviewComponent;

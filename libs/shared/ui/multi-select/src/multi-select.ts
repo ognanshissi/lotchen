@@ -110,7 +110,7 @@ export class TasMultiSelect<T>
    * Update the writeValue method when the field has default value
    * @param obj
    */
-  override writeValue(obj: string) {
+  override writeValue(obj: string[]) {
     if (obj) {
       this.value = obj;
     }
@@ -129,7 +129,7 @@ export class TasMultiSelect<T>
     this.searchKey.set(($event.target as HTMLInputElement).value);
   }
 
-  public toggleSelection(item: string) {
+  public toggleSelection(item: any) {
     this.selectionModel.toggle(item);
   }
 

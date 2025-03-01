@@ -56,13 +56,13 @@
 
         <tas-form-field>
           <tas-label>Les membres de l'équipe</tas-label>
-          <tas-select
+          <tas-multi-select
             formControlName="memberIds"
             [options]="users()"
             [optionLabel]="'email'"
             [optionValue]="'userId'"
             placeholder="Veuillez choisir les membres de l'équipe"
-          ></tas-select>
+          ></tas-multi-select>
         </tas-form-field>
       </div>
     </form>

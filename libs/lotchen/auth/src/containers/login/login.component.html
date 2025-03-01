@@ -1,4 +1,4 @@
-<Container>
+<Container class="bg-white">
   <form
     [formGroup]="loginForm"
     class="flex flex-col space-y-5"
@@ -30,7 +30,7 @@
         <tas-input-password formControlName="password">
           <span class="sr-only">Mot de passe</span>
         </tas-input-password>
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center mt-2">
           <tas-checkbox formControlName="rememberMe"
             >Se souvenir de moi
           </tas-checkbox>
