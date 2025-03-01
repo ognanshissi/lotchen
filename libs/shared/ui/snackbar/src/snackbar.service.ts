@@ -16,24 +16,17 @@ export interface SnackbarPrimitiveData {
 export class SnackbarService {
   private readonly _snackbar = inject(MatSnackBar);
 
-  private open<D extends SnackbarPrimitiveData>(
-    type: SnackbarNotificationType,
-    config?: MatSnackBarConfig<D>
-  ) {
+  private open<D extends SnackbarPrimitiveData>(config?: MatSnackBarConfig<D>) {
     return this._snackbar.openFromComponent(TasSnackbar, {
       ...config,
       duration: config?.duration ?? 5000,
       horizontalPosition: config?.horizontalPosition ?? 'right',
-      panelClass: `tas-snackbar--${type}`,
-      data: {
-        ...config?.data,
-        type: type,
-      },
+      panelClass: `tas-snackbar--${config?.data?.type}`,
     });
   }
 
   public success(header: string, message: string) {
-    return this.open('success', {
+    return this.open({
       data: {
         type: 'success',
         header,
@@ -43,7 +36,7 @@ export class SnackbarService {
   }
 
   public error(header: string, message: string) {
-    return this.open('error', {
+    return this.open({
       data: {
         type: 'error',
         header,
@@ -53,7 +46,7 @@ export class SnackbarService {
   }
 
   public info(header: string, message: string) {
-    return this.open('info', {
+    return this.open({
       data: {
         type: 'info',
         header,

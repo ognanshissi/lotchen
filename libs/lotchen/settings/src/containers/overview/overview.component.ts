@@ -124,12 +124,7 @@ export class OverviewComponent {
     this.selectedMenu.set(item);
   }
 
-  constructor() {
-    this._snackbarService.error(
-      'Congratulations !',
-      'The lead is successfully created.'
-    );
-  }
+  constructor() {}
 }
 
 export default OverviewComponent;
