@@ -22,7 +22,7 @@ import { SnackbarPrimitiveData } from './snackbar.service';
       </div>
       <div class="ml-6 w-full">
         <div class="flex justify-between items-center">
-          <div class="font-semibold text-lg">{{ data?.header }}</div>
+          <div class="font-semibold text-lg">{{ data.header }}</div>
 
           <button tas-button iconButton (click)="dismiss()">
             <tas-icon iconName="close" [iconClass]="textColor"></tas-icon>
@@ -40,7 +40,7 @@ import { SnackbarPrimitiveData } from './snackbar.service';
       .tas-snackbar--success,
       .tas-snackbar--error,
       .tas-snackbar--info {
-        @apply border border-gray-200 border-l-4;
+        @apply border border-gray-200 border-l-4 bg-white;
       }
 
       .tas-snackbar--success {
@@ -61,10 +61,6 @@ export class TasSnackbar {
   public readonly data: SnackbarPrimitiveData = inject(MAT_SNACK_BAR_DATA);
   private readonly _snackbarRef = inject(MatSnackBarRef);
 
-  constructor() {
-    console.log(this.data);
-  }
-
   public get textColor(): string {
     return `text-functional-${this.data.type}`;
   }
@@ -72,13 +68,13 @@ export class TasSnackbar {
   public get iconName(): string {
     switch (this.data.type) {
       case 'success':
-        return 'done_all';
+        return 'feather:check-circle';
       case 'error':
-        return 'warning';
+        return 'feather:alert-triangle';
       case 'info':
-        return 'info';
+        return 'feather:info';
       default:
-        return 'info';
+        return 'feather:info';
     }
   }
 

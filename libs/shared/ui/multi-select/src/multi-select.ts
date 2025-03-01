@@ -97,10 +97,13 @@ export class TasMultiSelect<T>
   }
 
   public ngOnInit(): void {
+    console.log(this.placeholder());
     this._closeDropdownOnOutsideClick();
 
     this.selectionModel.changed.subscribe((res) => {
-      this.value = this.selectionModel.selected;
+      this.value = this.selectionModel.selected.map(
+        (selected) => selected[this.optionValue()]
+      );
     });
   }
 

@@ -30,6 +30,7 @@ import { TasAlert } from '@talisoft/ui/alert';
 import { NgIf } from '@angular/common';
 import { DialogRef } from '@angular/cdk/dialog';
 import { TasMultiSelect } from '@talisoft/ui/multi-select';
+import { SnackbarService } from '@talisoft/ui/snackbar';
 
 @Component({
   selector: 'settings-add-team-dialog',
@@ -60,6 +61,7 @@ export class AddTeamDialogComponent implements OnInit {
   private readonly _teamsApiService = inject(TeamsApiService);
   private readonly _dialogRef = inject(DialogRef);
   private readonly _territoriesApiService = inject(TerritoriesApiService);
+  private readonly _snackbarService = inject(SnackbarService);
 
   public isLoading = false;
   public errorMessage: string | null = null;
@@ -80,9 +82,11 @@ export class AddTeamDialogComponent implements OnInit {
       name: new FormControl(null, [Validators.required]),
       description: new FormControl(null),
       managerId: new FormControl(null, [Validators.required]),
-      memberIds: new FormControl(null, [Validators.required]),
+      memberIds: new FormControl(null),
       territoryId: new FormControl(null),
     });
+
+    this.form.valueChanges.subscribe((res) => console.log({ res }));
   }
 
   /**
@@ -99,11 +103,20 @@ export class AddTeamDialogComponent implements OnInit {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (res) => {
-          console.log({ res });
+          this._snackbarService.success(
+            'Félicitations !',
+            `L'équipe ${
+              this.form.getRawValue().name
+            } a été enregistré avec succès.`
+          );
           this._dialogRef.close(res);
         },
         error: (error) => {
           this.errorMessage = error.error.message;
+          this._snackbarService.error(
+            'Attention !',
+            'Une erreur est survenue pendant la création.'
+          );
         },
       });
   }

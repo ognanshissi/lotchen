@@ -81,11 +81,9 @@ export class TasSelect<T>
 
   public ngOnChanges(changes: SimpleChanges) {
     if (changes['options']?.currentValue) {
-      console.log(changes['options'].currentValue);
-
-      // if (changes['options'].currentValue.length > 10) {
-      //   this.searchable();
-      // }
+      if (changes['options'].currentValue.length > 10) {
+        // enable search
+      }
     }
   }
 

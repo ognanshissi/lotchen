@@ -6,16 +6,28 @@
     (click)="toggleDropdown()"
     aria-labelledby="listbox-label"
   >
-    <span [ngClass]="{'text-gray-400':!selectionModel.selected.length}">
-      @if (selectionModel.selected.length) {
+    <div [ngClass]="{'text-gray-400':!selectionModel.selected.length}">
+      @if (selectionModel.selected.length) { @if (selectionModel.selected.length
+      > 1) {
       <span
-        class="bg-gray-200 rounded-full px-2 py-1"
+        class="bg-gray-200 rounded-full px-2 mr-1 inline-block"
+        *ngFor="let selectedOption of [selectionModel.selected[0]]"
+      >
+        {{ selectedOption[this.optionLabel()] }}
+      </span>
+      <!-- more selected-->
+      <span class="bg-gray-200 rounded-full px-2 mr-1 inline-block">
+        + {{ selectionModel.selected.length - 1 }} more</span
+      >
+      } @else {
+      <span
+        class="bg-gray-200 rounded-full px-2 mr-1 inline-block"
         *ngFor="let selectedOption of selectionModel.selected"
       >
         {{ selectedOption[this.optionLabel()] }}
       </span>
-      } @else { {{ placeholder() }} }
-    </span>
+      } } @else { {{ placeholder() }} }
+    </div>
     <span
       class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
     >
@@ -79,9 +91,9 @@
     {
     <li id="listbox-option-{{ index }}">
       <button
-        class="relative border-t w-full border-b-gray-300 cursor-default hover:cursor-pointer hover:bg-gray-300 transition-all select-none py-4 pl-3 pr-9"
-        [ngClass]="{'bg-primary text-white': selectionModel.isSelected(item[optionValue()]) }"
-        (click)="toggleSelection(item)"
+        class="relative w-full cursor-default hover:cursor-pointer hover:bg-gray-200 transition-all select-none py-4 pl-3 pr-9"
+        [ngClass]="{'bg-gray-200 text-primary': selectionModel.isSelected(item) }"
+        (click)="toggleSelection($any(item))"
       >
         @if (labelTemplate) {
         <ng-container

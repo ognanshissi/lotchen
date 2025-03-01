@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { TasSnackbar } from './snackbar';
 
-export type SnackbarNotificationType = 'success' | 'error' | 'warn' | 'info';
+export type SnackbarNotificationType = 'success' | 'error' | 'info';
 
 export interface SnackbarPrimitiveData {
   type?: SnackbarNotificationType;
@@ -21,6 +21,7 @@ export class SnackbarService {
       ...config,
       duration: config?.duration ?? 5000,
       horizontalPosition: config?.horizontalPosition ?? 'right',
+      verticalPosition: config?.verticalPosition ?? 'bottom',
       panelClass: `tas-snackbar--${config?.data?.type}`,
     });
   }
