@@ -727,6 +727,24 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "isDeleted",
+            "required": false,
+            "in": "query",
+            "description": "Get deleted territories or not",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "fields",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1594,6 +1612,28 @@
           "name"
         ]
       },
+      "TerritoriesQueryUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User Id"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "User Full name, FirstName and LastName combined"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "fullName"
+        ]
+      },
       "FindAllTerritoriesQueryResponse": {
         "type": "object",
         "properties": {
@@ -1615,8 +1655,12 @@
             "description": "Latest updated At"
           },
           "createdBy": {
-            "type": "string",
-            "description": "Person who created the entry"
+            "description": "Person who created the entry",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TerritoriesQueryUserDto"
+              }
+            ]
           },
           "parentInfo": {
             "description": "Name of the territory parent if so",

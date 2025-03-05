@@ -1,7 +1,4 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
-import { QueryHandler } from '@lotchen/api/core';
-import { Injectable } from '@nestjs/common';
-import { TerritoriesProvider } from '../territories.provider';
 
 export class FindAllTerritoriesQuery {
   @ApiProperty({
@@ -10,6 +7,17 @@ export class FindAllTerritoriesQuery {
     required: false,
   })
   name!: string;
+
+  @ApiProperty({
+    description: 'Get deleted territories or not',
+    type: Boolean,
+    default: false,
+    required: false,
+  })
+  isDeleted!: boolean;
+
+  @ApiProperty()
+  fields!: string;
 }
 
 export class TerritoryLightDto {
@@ -32,7 +40,7 @@ export class TerritoriesQueryUserDto {
   fullName!: string;
 }
 
-@ApiExtraModels(TerritoryLightDto)
+@ApiExtraModels(TerritoryLightDto, TerritoriesQueryUserDto)
 export class FindAllTerritoriesQueryResponse {
   @ApiProperty({ required: true })
   id!: string;
@@ -48,10 +56,10 @@ export class FindAllTerritoriesQueryResponse {
 
   @ApiProperty({
     description: 'Person who created the entry',
-    type: String,
+    type: () => TerritoriesQueryUserDto,
     required: false,
   })
-  createdBy!: string;
+  createdBy!: TerritoriesQueryUserDto;
 
   @ApiProperty({
     type: () => TerritoryLightDto,
@@ -66,56 +74,4 @@ export class FindAllTerritoriesQueryResponse {
     required: false,
   })
   children!: TerritoryLightDto[];
-}
-
-@Injectable()
-export class FindAllTerritoriesQueryHandler
-  implements
-    QueryHandler<FindAllTerritoriesQuery, FindAllTerritoriesQueryResponse[]>
-{
-  constructor(private readonly territoryProvider: TerritoriesProvider) {}
-
-  public async handlerAsync(
-    query: FindAllTerritoriesQuery
-  ): Promise<FindAllTerritoriesQueryResponse[]> {
-    let queryFilter = {};
-
-    if (query.name) {
-      queryFilter = {
-        name: name,
-      };
-    }
-
-    const territories = await this.territoryProvider.TerritoryModel.find(
-      queryFilter,
-      '_id name createdAt parent updatedAt updatedBy parent createdByInfo',
-      {
-        sort: {
-          createdBy: 1,
-        },
-      }
-    )
-      .populate({
-        path: 'parent',
-        select: 'id name',
-      })
-      .lean()
-      .exec();
-
-    return territories.map((territory) => {
-      return {
-        id: territory._id,
-        name: territory.name,
-        parentInfo: territory.parent
-          ? {
-              id: territory?.parent?._id,
-              name: territory?.parent?.name,
-            }
-          : null,
-        createdAt: territory.createdAt,
-        updatedAt: territory.updatedAt,
-        createdBy: `${territory.createdByInfo.firstName} ${territory.createdByInfo.lastName}`,
-      } as FindAllTerritoriesQueryResponse;
-    });
-  }
 }

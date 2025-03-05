@@ -71,7 +71,7 @@ export class PaginateAllTerritoriesCommandHandler
     command: PaginateAllTerritoriesCommand
   ): Promise<PaginateAllTerritoriesCommandResponse> {
     const queryFilter = {
-      name: / /i,
+      name: new RegExp(command.filters.name, 'i'),
     };
 
     const totalDocuments =
