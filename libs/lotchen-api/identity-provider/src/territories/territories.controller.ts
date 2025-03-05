@@ -1,12 +1,22 @@
-import { Body, Controller, Get, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Query } from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateTerritoryCommand,
   CreateTerritoryCommandHandler,
+  FindAllTerritoriesQuery,
   FindAllTerritoriesQueryHandler,
   FindAllTerritoriesQueryResponse,
 } from './index';
-import { Permissions, PermissionsAction } from '@lotchen/api/core';
+import {
+  ApiPaginationResponse,
+  Permissions,
+  PermissionsAction,
+} from '@lotchen/api/core';
+import {
+  PaginateAllTerritoriesCommand,
+  PaginateAllTerritoriesCommandHandler,
+  PaginateAllTerritoriesCommandResponse,
+} from './paginate-all/paginate-all-territories.command';
 
 @Controller({
   version: '1',
@@ -20,7 +30,8 @@ import { Permissions, PermissionsAction } from '@lotchen/api/core';
 export class TerritoriesController {
   constructor(
     private readonly _createTerritoryCommandHandler: CreateTerritoryCommandHandler,
-    private readonly _findAllTerritoriesQueryHandler: FindAllTerritoriesQueryHandler
+    private readonly _findAllTerritoriesQueryHandler: FindAllTerritoriesQueryHandler,
+    private readonly _paginateAllTerritoriesCommandHandler: PaginateAllTerritoriesCommandHandler
   ) {}
 
   @ApiResponse({
@@ -42,8 +53,20 @@ export class TerritoriesController {
     status: HttpStatus.OK,
     type: [FindAllTerritoriesQueryResponse],
   })
-  async allTerritories(): Promise<FindAllTerritoriesQueryResponse[]> {
-    return await this._findAllTerritoriesQueryHandler.handlerAsync();
+  async allTerritories(
+    @Query() query: FindAllTerritoriesQuery
+  ): Promise<FindAllTerritoriesQueryResponse[]> {
+    return await this._findAllTerritoriesQueryHandler.handlerAsync(query);
+  }
+
+  @Post('/search')
+  @ApiPaginationResponse(PaginateAllTerritoriesCommand)
+  async paginateAllTerritories(
+    @Body() command: PaginateAllTerritoriesCommand
+  ): Promise<PaginateAllTerritoriesCommandResponse> {
+    return await this._paginateAllTerritoriesCommandHandler.handlerAsync(
+      command
+    );
   }
 
   // @Get('/:id/teams')

@@ -1,20 +1,25 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { merge, Observable, of as observableOf } from 'rxjs';
+import { BehaviorSubject, merge, Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TableColumn } from './table-types';
 
 /**
  * Data source for the DataTable view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class TableDataSource<TEntity> extends DataSource<TEntity> {
-  paginator: MatPaginator | undefined;
-  sort: MatSort | undefined;
+export class TableDataSource<TEntity, TFilter> extends DataSource<TEntity> {
+  public paginator: BehaviorSubject<MatPaginator | undefined> =
+    new BehaviorSubject<MatPaginator | undefined>(undefined);
+  public sort: MatSort | undefined;
+  public filter: BehaviorSubject<TFilter | undefined> = new BehaviorSubject<
+    TFilter | undefined
+  >(undefined);
 
-  constructor(public data: TEntity[], public columns: TableColumn[]) {
+  private _data!: TEntity[];
+
+  constructor(public dataSource: Observable<any>) {
     super();
   }
 
@@ -28,12 +33,12 @@ export class TableDataSource<TEntity> extends DataSource<TEntity> {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
       return merge(
-        observableOf(this.data),
+        observableOf(this._data),
         this.paginator.page,
         this.sort.sortChange
       ).pipe(
         map(() => {
-          return this.getPagedData(this.getSortedData([...this.data]));
+          return this.getPagedData(this.getSortedData([...this._data]));
         })
       );
     } else {
@@ -47,19 +52,23 @@ export class TableDataSource<TEntity> extends DataSource<TEntity> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {}
+  disconnect(): void {
+    this._data = [];
+  }
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
   private getPagedData(data: TEntity[]): TEntity[] {
-    if (this.paginator) {
-      const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-      return data.splice(startIndex, this.paginator.pageSize);
-    } else {
-      return data;
-    }
+    this.paginator.subscribe((paginator) => {
+      if (paginator) {
+        const startIndex = paginator.pageIndex * paginator.pageSize;
+        return data.splice(startIndex, paginator.pageSize);
+      } else {
+        return data;
+      }
+    });
   }
 
   /**

@@ -191,16 +191,13 @@
           </td>
           <td>
             <span class="bg-gray-200 rounded-full px-4 py-1">{{
-              item.parentName ?? 'N/A'
+              item.parentInfo ? item.parentInfo.name : 'N/A'
             }}</span>
           </td>
           <td>
             <div class="flex space-x-2">
               <span class="bg-gray-200 rounded-full px-4 py-1"
                 >Territoire 1</span
-              >
-              <span class="bg-gray-200 rounded-full px-4 py-1"
-                >Territoire 2</span
               >
             </div>
           </td>

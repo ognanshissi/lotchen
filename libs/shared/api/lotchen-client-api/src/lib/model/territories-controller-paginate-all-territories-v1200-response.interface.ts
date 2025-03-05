@@ -9,14 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PaginateAllTerritoriesCommand } from './paginate-all-territories-command.interface';
 
 
-export interface PaginateAllUsersCommand { 
-    sort?: object;
+export interface TerritoriesControllerPaginateAllTerritoriesV1200Response { 
     /**
-     * Page Index
+     * 
      */
+    totalElements: number;
     pageIndex: number;
     pageSize: number;
+    totalPages: number;
+    data: Array<PaginateAllTerritoriesCommand>;
 }
 

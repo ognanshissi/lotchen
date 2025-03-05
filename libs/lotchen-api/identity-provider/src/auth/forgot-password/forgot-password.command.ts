@@ -7,7 +7,7 @@ import { Inject, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
   ForgotPasswordEvent,
-  UserForgotPassword,
+  USER_FORGOT_PASSWORD_EVENT,
 } from './forgot-password.event';
 import { JwtService } from '@nestjs/jwt';
 
@@ -72,7 +72,7 @@ export class ForgotPasswordCommandHandler
     // Token is valid for one hour
 
     this._eventEmitter.emit(
-      UserForgotPassword,
+      USER_FORGOT_PASSWORD_EVENT,
       new ForgotPasswordEvent(user.email, token)
     );
 

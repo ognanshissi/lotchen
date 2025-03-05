@@ -718,6 +718,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Name of the territory",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -730,6 +739,61 @@
                   "items": {
                     "$ref": "#/components/schemas/FindAllTerritoriesQueryResponse"
                   }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Territories"
+        ]
+      }
+    },
+    "/api/v1/territories/search": {
+      "post": {
+        "operationId": "TerritoriesController_paginateAllTerritories_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaginateAllTerritoriesCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "title": "PaginationResponseOfPaginateAllTerritoriesCommand",
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PaginateAllTerritoriesCommand"
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -1233,24 +1297,9 @@
           "updatedAt"
         ]
       },
-      "FilterBase": {
-        "type": "object",
-        "properties": {
-          "globalText": {
-            "type": "string",
-            "description": "Global Text search"
-          }
-        },
-        "required": [
-          "globalText"
-        ]
-      },
       "PaginateAllUsersCommand": {
         "type": "object",
         "properties": {
-          "filters": {
-            "$ref": "#/components/schemas/FilterBase"
-          },
           "sort": {
             "type": "object"
           },
@@ -1268,7 +1317,6 @@
           }
         },
         "required": [
-          "filters",
           "pageIndex",
           "pageSize"
         ]
@@ -1529,6 +1577,23 @@
           "description"
         ]
       },
+      "TerritoryLightDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the territory"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the territory"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
       "FindAllTerritoriesQueryResponse": {
         "type": "object",
         "properties": {
@@ -1536,7 +1601,8 @@
             "type": "string"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the territory"
           },
           "createdAt": {
             "format": "date-time",
@@ -1552,18 +1618,70 @@
             "type": "string",
             "description": "Person who created the entry"
           },
-          "parentName": {
-            "type": "string",
-            "description": "Name of the territory parent if so"
+          "parentInfo": {
+            "description": "Name of the territory parent if so",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TerritoryLightDto"
+              }
+            ]
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TerritoryLightDto"
+            }
           }
         },
         "required": [
           "id",
           "name",
           "createdAt",
-          "updatedAt",
-          "createdBy",
-          "parentName"
+          "updatedAt"
+        ]
+      },
+      "FilterAllTerritoriesCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "PaginateAllTerritoriesCommand": {
+        "type": "object",
+        "properties": {
+          "sort": {
+            "type": "object"
+          },
+          "pageIndex": {
+            "type": "number",
+            "description": "Page Index",
+            "example": 0,
+            "minimum": 0
+          },
+          "pageSize": {
+            "type": "number",
+            "maximum": 30,
+            "minimum": 5,
+            "example": 5
+          },
+          "filters": {
+            "description": "",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterAllTerritoriesCommand"
+              }
+            ]
+          }
+        },
+        "required": [
+          "pageIndex",
+          "pageSize",
+          "filters"
         ]
       },
       "CreateAgencyAddressDto": {

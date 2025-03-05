@@ -9,14 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FilterAllTerritoriesCommand } from './filter-all-territories-command.interface';
 
 
-export interface PaginateAllUsersCommand { 
+export interface PaginateAllTerritoriesCommand { 
     sort?: object;
     /**
      * Page Index
      */
     pageIndex: number;
     pageSize: number;
+    /**
+     * 
+     */
+    filters: FilterAllTerritoriesCommand;
 }
 

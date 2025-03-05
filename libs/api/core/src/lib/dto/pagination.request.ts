@@ -1,18 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, Max, Min } from 'class-validator';
 
-export class FilterBase<T> {
-  @ApiProperty({ description: 'Global Text search', type: String })
-  globalText!: string;
-  filters!: T;
-}
-
-export class PaginationRequest<TFilter> {
-  @ApiProperty({ type: () => FilterBase<TFilter> })
-  public filters!: FilterBase<TFilter>;
-
+export class PaginationRequest {
   @ApiProperty({ required: false })
-  public sort?: Record<string, unknown>;
+  public sort?: Record<string, 'asc' | 'desc'>;
 
   @ApiProperty({
     description: 'Page Index',
@@ -20,7 +11,7 @@ export class PaginationRequest<TFilter> {
     minimum: 0,
   })
   @IsNumber()
-  @Min(1)
+  @Min(0)
   public pageIndex!: number;
 
   @ApiProperty({ type: Number, maximum: 30, minimum: 5, example: 5 })

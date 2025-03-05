@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TerritoryLightDto } from './territory-light-dto.interface';
 
 
 export interface FindAllTerritoriesQueryResponse { 
@@ -29,6 +30,7 @@ export interface FindAllTerritoriesQueryResponse {
     /**
      * Name of the territory parent if so
      */
-    parentName: string;
+    parentInfo: TerritoryLightDto;
+    children: Array<TerritoryLightDto>;
 }
 

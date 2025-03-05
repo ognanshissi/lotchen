@@ -2,6 +2,7 @@ import { CreateTerritoryCommandHandler } from './create/create-territory.command
 import { FindAllTerritoriesQueryHandler } from './find-all/find-all-territories.query';
 import { TerritoriesProvider } from './territories.provider';
 import { FindTerritoryAgenciesQueryHandler } from './find-territory-agencies/find-territory-agencies.query';
+import { PaginateAllTerritoriesCommandHandler } from './paginate-all/paginate-all-territories.command';
 
 export * from './create/create-territory.command';
 export * from './find-all/find-all-territories.query';
@@ -11,4 +12,5 @@ export const territoriesHandlers = [
   FindAllTerritoriesQueryHandler,
   TerritoriesProvider,
   FindTerritoryAgenciesQueryHandler,
+  PaginateAllTerritoriesCommandHandler,
 ];

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TasTitle } from '@talisoft/ui/title';
 import { TasText } from '@talisoft/ui/text';
 import { TasCard, TasCardHeader } from '@talisoft/ui/card';
@@ -35,7 +35,7 @@ import { TimeagoPipe } from '@talisoft/ui/timeago';
     TimeagoPipe,
   ],
 })
-export class TerritoriesComponent {
+export class TerritoriesComponent implements OnInit {
   private readonly _territoriesApiService = inject(TerritoriesApiService);
   private readonly _sideDrawerService = inject(SideDrawerService);
 
@@ -49,6 +49,17 @@ export class TerritoriesComponent {
     this._sideDrawerService.open(AddTerritoryDialogComponent, {
       width: '700px',
     });
+  }
+
+  public ngOnInit() {
+    this._territoriesApiService
+      .territoriesControllerPaginateAllTerritoriesV1({
+        pageIndex: 0,
+        pageSize: 31,
+        sort: ['name:asc'],
+        filters: { name: 'Region 3' },
+      })
+      .subscribe((res) => console.log(res));
   }
 }
 

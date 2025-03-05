@@ -9,7 +9,7 @@ import { User } from '../user.schema';
 import { Model } from 'mongoose';
 import { Team } from '../../teams';
 
-export class PaginateAllUsersCommand extends PaginationRequest<any> {}
+export class PaginateAllUsersCommand extends PaginationRequest {}
 
 export class PaginateAllUsersTeamDto {
   @ApiProperty()
@@ -68,14 +68,6 @@ export class PaginateAllUsersCommandHandler
     command: PaginateAllUsersCommand
   ): Promise<PaginateAllUsersCommandResponse> {
     const queryFilter = {};
-
-    const { createHmac } = await import('node:crypto');
-
-    const hash = createHmac('sha256', process.env['SECRET'] ?? '')
-      .update('I love my wife 2')
-      .digest('hex');
-
-    console.log(hash);
 
     const totalDocuments = await this.UserModel.countDocuments(queryFilter)
       .lean()

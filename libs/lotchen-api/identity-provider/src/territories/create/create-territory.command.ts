@@ -58,21 +58,9 @@ export class CreateTerritoryCommandHandler
       // territory parent
       const parent = await this.territoriesProvider.TerritoryModel.findOne(
         {
-          name: command.parentId,
+          _id: command.parentId,
         },
         '_id name'
-      )
-        .lean()
-        .exec();
-
-      // Get children
-      const children = await this.territoriesProvider.TerritoryModel.find(
-        {
-          _id: {
-            $in: [...(command.childrenIds ?? [])],
-          },
-        },
-        '_id'
       )
         .lean()
         .exec();
@@ -82,7 +70,6 @@ export class CreateTerritoryCommandHandler
       const territory = new this.territoriesProvider.TerritoryModel({
         name: command.name,
         description: command.description,
-        children: children?.map((item) => item._id),
         parent: parent?._id ?? null,
         parentName: parent?.name ?? null,
         createdBy: sub,
@@ -93,8 +80,18 @@ export class CreateTerritoryCommandHandler
           email: username,
         },
       });
+      // Update all children territory parent property
+      if (command.childrenIds.length) {
+        for (const territoryId of command.childrenIds) {
+          await this.territoriesProvider.TerritoryModel.findOneAndUpdate(
+            { _id: territoryId },
+            { parent: territory._id }
+          );
+        }
+      }
       await territory.save();
     } catch (error: any) {
+      console.log(error);
       if (error?.errorResponse?.code === 11000) {
         throw new BadRequestException(
           `There is a territory with name '${command.name}'`

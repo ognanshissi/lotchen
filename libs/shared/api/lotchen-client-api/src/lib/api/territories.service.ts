@@ -22,6 +22,10 @@ import { Observable }                                        from 'rxjs';
 import { CreateTerritoryCommand } from '../model/create-territory-command.interface';
 // @ts-ignore
 import { FindAllTerritoriesQueryResponse } from '../model/find-all-territories-query-response.interface';
+// @ts-ignore
+import { PaginateAllTerritoriesCommand } from '../model/paginate-all-territories-command.interface';
+// @ts-ignore
+import { TerritoriesControllerPaginateAllTerritoriesV1200Response } from '../model/territories-controller-paginate-all-territories-v1200-response.interface';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -223,6 +227,83 @@ export class TerritoriesApiService {
             {
                 context: localVarHttpContext,
                 body: createTerritoryCommand,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param paginateAllTerritoriesCommand 
+     * @param xTenantFqdn The Tenant Fqdn
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public territoriesControllerPaginateAllTerritoriesV1(paginateAllTerritoriesCommand: PaginateAllTerritoriesCommand, xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<TerritoriesControllerPaginateAllTerritoriesV1200Response>;
+    public territoriesControllerPaginateAllTerritoriesV1(paginateAllTerritoriesCommand: PaginateAllTerritoriesCommand, xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TerritoriesControllerPaginateAllTerritoriesV1200Response>>;
+    public territoriesControllerPaginateAllTerritoriesV1(paginateAllTerritoriesCommand: PaginateAllTerritoriesCommand, xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TerritoriesControllerPaginateAllTerritoriesV1200Response>>;
+    public territoriesControllerPaginateAllTerritoriesV1(paginateAllTerritoriesCommand: PaginateAllTerritoriesCommand, xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (paginateAllTerritoriesCommand === null || paginateAllTerritoriesCommand === undefined) {
+            throw new Error('Required parameter paginateAllTerritoriesCommand was null or undefined when calling territoriesControllerPaginateAllTerritoriesV1.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+        if (xTenantFqdn !== undefined && xTenantFqdn !== null) {
+            localVarHeaders = localVarHeaders.set('x-tenant-fqdn', String(xTenantFqdn));
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+        let localVarTransferCache: boolean | undefined = options && options.transferCache;
+        if (localVarTransferCache === undefined) {
+            localVarTransferCache = true;
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/territories/search`;
+        return this.httpClient.request<TerritoriesControllerPaginateAllTerritoriesV1200Response>('post', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: paginateAllTerritoriesCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

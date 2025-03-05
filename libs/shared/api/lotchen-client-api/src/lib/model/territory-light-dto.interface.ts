@@ -11,12 +11,14 @@
  */
 
 
-export interface PaginateAllUsersCommand { 
-    sort?: object;
+export interface TerritoryLightDto { 
     /**
-     * Page Index
+     * Id of the territory
      */
-    pageIndex: number;
-    pageSize: number;
+    id: string;
+    /**
+     * Name of the territory
+     */
+    name: string;
 }
 

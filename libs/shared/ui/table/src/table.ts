@@ -34,7 +34,7 @@ import { RowSelectionItem } from './row-selection-item';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TasTable<T extends TableEntity>
+export class TasTable<T extends TableEntity, F>
   implements OnInit, OnChanges, AfterViewInit
 {
   public data = input.required<T[]>();
@@ -73,7 +73,7 @@ export class TasTable<T extends TableEntity>
   @ContentChild('header') header!: TemplateRef<any>;
   @ContentChild('body') body!: TemplateRef<any>;
 
-  public dataSource!: TableDataSource<T>;
+  public dataSource = input<TableDataSource<T, F>>();
 
   public ngAfterViewInit() {
     // Whenever the selection change emit selectionItems event
@@ -118,7 +118,9 @@ export class TasTable<T extends TableEntity>
   }
 
   public ngOnInit(): void {
-    this.dataSource = new TableDataSource<T>(this.data() ?? [], this.columns());
+    this.dataSource()
+      ?.connect()
+      .subscribe((res) => console.log(res));
   }
 
   public ngOnChanges(changes: SimpleChanges) {

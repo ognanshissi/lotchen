@@ -11,12 +11,7 @@
  */
 
 
-export interface PaginateAllUsersCommand { 
-    sort?: object;
-    /**
-     * Page Index
-     */
-    pageIndex: number;
-    pageSize: number;
+export interface FilterAllTerritoriesCommand { 
+    name: string;
 }
 
