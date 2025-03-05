@@ -18,8 +18,6 @@ export class FindAllTerritoriesQueryHandler
   ): Promise<FindAllTerritoriesQueryResponse[]> {
     // Create a query filter object
     let queryFilter = {};
-    let projection =
-      '_id name createdAt parent updatedAt updatedBy parent createdByInfo';
 
     if (query.name) {
       queryFilter = { ...queryFilter, name: new RegExp(query.name, 'i') };
@@ -28,6 +26,10 @@ export class FindAllTerritoriesQueryHandler
     if (query.isDeleted) {
       queryFilter = { ...queryFilter, isDeletedAt: null };
     }
+
+    // projection
+    let projection =
+      '_id name createdAt parent updatedAt updatedBy parent createdByInfo';
 
     if (query.fields) {
       projection = query.fields.split(',').join(' ');
@@ -54,12 +56,12 @@ export class FindAllTerritoriesQueryHandler
         id: territory._id,
         name: territory.name,
         parentInfo:
-          territory?.parent && query.fields?.includes('parent')
+          territory?.parent && projection?.includes('parent')
             ? {
                 id: territory?.parent?._id,
                 name: territory?.parent?.name,
               }
-            : null,
+            : undefined,
         createdAt: territory?.createdAt,
         updatedAt: territory?.updatedAt,
         createdBy: territory?.createdByInfo
@@ -68,7 +70,7 @@ export class FindAllTerritoriesQueryHandler
               email: territory?.createdByInfo?.email,
               fullName: `${territory?.createdByInfo?.firstName} ${territory?.createdByInfo?.lastName}`,
             }
-          : null,
+          : undefined,
       } as FindAllTerritoriesQueryResponse;
     });
   }
