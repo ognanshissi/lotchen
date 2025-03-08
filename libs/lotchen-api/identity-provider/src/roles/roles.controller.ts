@@ -15,6 +15,10 @@ import {
   UpdateRolePermissionsCommandHandler,
   UpdateRolePermissionsCommandResponse,
 } from './update-role-permissions/update-role-permissions.command';
+import {
+  FindRoleByIdQueryHandler,
+  FindRoleByIdQueryResponse,
+} from './find-id/find-role-by-id.query';
 
 @ApiHeader({
   name: 'x-tenant-fqdn',
@@ -29,7 +33,8 @@ export class RolesController {
   constructor(
     @Inject('ROLE_MODEL') private readonly roleModel: Model<Role>,
     private readonly _createRoleCommandHandler: CreateRoleCommandHandler,
-    private readonly _updateRolePermissionsCommandHandler: UpdateRolePermissionsCommandHandler
+    private readonly _updateRolePermissionsCommandHandler: UpdateRolePermissionsCommandHandler,
+    private readonly _findRoleByIdQueryHandler: FindRoleByIdQueryHandler
   ) {}
 
   @Post()
@@ -62,6 +67,20 @@ export class RolesController {
       role,
       permissions,
     });
+  }
+
+  @Get(':id')
+  @Permissions(PermissionsAction.roleRead)
+  @ApiResponse({
+    status: 200,
+    description: 'Role found',
+    type: FindRoleByIdQueryResponse,
+  })
+  @ApiResponse({ status: 404, description: 'Role not found' })
+  async findRoleById(
+    @Param('id') id: string
+  ): Promise<FindRoleByIdQueryResponse> {
+    return await this._findRoleByIdQueryHandler.handlerAsync({ id });
   }
 
   @Post('generate-predefined-roles')

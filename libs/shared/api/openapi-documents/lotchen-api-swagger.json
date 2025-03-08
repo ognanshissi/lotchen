@@ -748,6 +748,47 @@
         ]
       }
     },
+    "/api/v1/roles/{id}": {
+      "get": {
+        "operationId": "RolesController_findRoleById_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindRoleByIdQueryResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Role not found"
+          }
+        },
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
     "/api/v1/roles/generate-predefined-roles": {
       "post": {
         "operationId": "RolesController_generatePredefinedRoles_v1",
@@ -1719,6 +1760,31 @@
         ]
       },
       "UpdateRolePermissionsCommandResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the role"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the role"
+          },
+          "permissions": {
+            "description": "Permissions of the role",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "permissions"
+        ]
+      },
+      "FindRoleByIdQueryResponse": {
         "type": "object",
         "properties": {
           "id": {

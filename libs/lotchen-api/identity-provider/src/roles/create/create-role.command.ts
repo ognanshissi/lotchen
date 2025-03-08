@@ -36,7 +36,7 @@ export class CreateRoleCommandHandler
     req?: Request
   ): Promise<CreateRoleCommandResponse> {
     const existingRole = await this.roleModel
-      .findOne({ name: command.name })
+      .findOne({ name: command.name }, 'id')
       .lean()
       .exec();
     if (existingRole) {

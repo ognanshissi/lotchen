@@ -57,7 +57,7 @@ export class UpdateRolePermissionsCommandHandler
     command: UpdateRolePermissionsCommand
   ): Promise<UpdateRolePermissionsCommandResponse> {
     const role = await this.roleModel
-      .findOne({ name: command.role })
+      .findOne({ name: command.role }, 'id builtIn')
       .lean()
       .exec();
     if (!role) {
