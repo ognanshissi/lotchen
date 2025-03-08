@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from './role.schema';
 import { Model } from 'mongoose';
@@ -19,6 +27,10 @@ import {
   FindRoleByIdQueryHandler,
   FindRoleByIdQueryResponse,
 } from './find-id/find-role-by-id.query';
+import {
+  FindAllRolesQuery,
+  FindAllRolesQueryHandler,
+} from './find-all/find-all-roles.query';
 
 @ApiHeader({
   name: 'x-tenant-fqdn',
@@ -34,7 +46,8 @@ export class RolesController {
     @Inject('ROLE_MODEL') private readonly roleModel: Model<Role>,
     private readonly _createRoleCommandHandler: CreateRoleCommandHandler,
     private readonly _updateRolePermissionsCommandHandler: UpdateRolePermissionsCommandHandler,
-    private readonly _findRoleByIdQueryHandler: FindRoleByIdQueryHandler
+    private readonly _findRoleByIdQueryHandler: FindRoleByIdQueryHandler,
+    private readonly _findAllRolesQueryHandler: FindAllRolesQueryHandler
   ) {}
 
   @Post()
@@ -109,9 +122,17 @@ export class RolesController {
     return predefinedRoles;
   }
 
-  @Permissions(PermissionsAction.roleList)
   @Get()
-  async allRoles(): Promise<any> {
-    return this.roleModel.find({}, 'id name permissions builtIn').lean().exec();
+  @Permissions(PermissionsAction.roleList)
+  @ApiResponse({
+    status: 200,
+    description: 'Roles found',
+    type: FindRoleByIdQueryResponse,
+    isArray: true,
+  })
+  async allRoles(
+    @Query() query: FindAllRolesQuery
+  ): Promise<FindRoleByIdQueryResponse[]> {
+    return await this._findAllRolesQueryHandler.handlerAsync(query);
   }
 }

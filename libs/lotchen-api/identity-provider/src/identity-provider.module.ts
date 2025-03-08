@@ -2,7 +2,11 @@ import { Module } from '@nestjs/common';
 import { UsersController, usersHandlers } from './users';
 import { AuthController, authHandlers } from './auth';
 import { ProfileController, profileHandlers } from './profile';
-import { CreateRoleCommandHandler, RolesController } from './roles';
+import {
+  CreateRoleCommandHandler,
+  FindAllRolesQueryHandler,
+  RolesController,
+} from './roles';
 import { identityModelsProvider } from './models.provider';
 import { TerritoriesController } from './territories/territories.controller';
 import { territoriesHandlers } from './territories';
@@ -39,6 +43,7 @@ import { FindRoleByIdQueryHandler } from './roles/find-id/find-role-by-id.query'
     CreateRoleCommandHandler,
     UpdateRolePermissionsCommandHandler,
     FindRoleByIdQueryHandler,
+    FindAllRolesQueryHandler,
   ],
   exports: [],
 })
