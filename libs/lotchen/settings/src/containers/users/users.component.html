@@ -38,7 +38,6 @@
           <th>Email</th>
           <th>Manageur</th>
           <th>Role</th>
-          <th>Territoires</th>
           <th>Equipes</th>
           <th>Créé par</th>
           <th>Date de création</th>
@@ -57,13 +56,22 @@
           <td>
             {{ item.email }}
           </td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>
+            <button tas-text-button color="primary">
+              + Ajouter un responsable
+            </button>
+          </td>
+          <td>
+            <button tas-text-button color="primary">+ Ajouter un role</button>
+          </td>
+          <td>
+            <button tas-text-button color="primary">
+              + Ajouter une équipe
+            </button>
+          </td>
           <td>
             {{ item.createdByInfo ? item.createdByInfo.fullName : 'N/A' }}
           </td>
-          <td>{{ item.createdBy }}</td>
           <td>{{ item.createdAt | dateTimeAgo }}</td>
           <td>{{ item.createdAt | dateTimeAgo }}</td>
           <td tasTableItemAction>
