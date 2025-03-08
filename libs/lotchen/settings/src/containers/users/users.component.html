@@ -26,7 +26,11 @@
   </card-header>
 
   <div>
-    <tas-table [data]="users() ?? []" identifierField="id">
+    <tas-table
+      [data]="users()?.value ?? []"
+      [isLoading]="users()?.isLoading ?? true"
+      identifierField="id"
+    >
       <ng-template #header>
         <tr>
           <th rowSelectionMaster></th>
@@ -56,7 +60,9 @@
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
+          <td>
+            {{ item.createdByInfo ? item.createdByInfo.fullName : 'N/A' }}
+          </td>
           <td>{{ item.createdBy }}</td>
           <td>{{ item.createdAt | dateTimeAgo }}</td>
           <td>{{ item.createdAt | dateTimeAgo }}</td>

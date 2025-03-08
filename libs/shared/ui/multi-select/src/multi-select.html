@@ -3,6 +3,7 @@
     class="relative block justify-between items-center py-2 px-2 text-left bg-transparent w-full"
     aria-haspopup="listbox"
     aria-expanded="true"
+    type="button"
     (click)="toggleDropdown()"
     aria-labelledby="listbox-label"
   >
@@ -91,6 +92,7 @@
     {
     <li id="listbox-option-{{ index }}">
       <button
+        type="button"
         class="relative w-full cursor-default hover:cursor-pointer hover:bg-gray-200 transition-all select-none py-4 pl-3 pr-9"
         [ngClass]="{'bg-gray-200 text-primary': selectionModel.isSelected(item) }"
         (click)="toggleSelection($any(item))"

@@ -365,7 +365,7 @@
           }
         },
         "responses": {
-          "default": {
+          "2XX": {
             "description": ""
           }
         },
@@ -742,7 +742,10 @@
             "name": "fields",
             "required": true,
             "in": "query",
+            "description": "This is a comma separated list, define the properties the api should return",
             "schema": {
+              "default": "id,name,createdByInfo",
+              "example": "id,name,createdByInfo",
               "type": "string"
             }
           }
@@ -1094,6 +1097,28 @@
           "confirmPassword"
         ]
       },
+      "CreatedByInfoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User Id"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "User Full name, FirstName and LastName combined"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "fullName"
+        ]
+      },
       "GetAllUserQuery": {
         "type": "object",
         "properties": {
@@ -1117,6 +1142,14 @@
           "updatedAt": {
             "format": "date-time",
             "type": "string"
+          },
+          "createdByInfo": {
+            "description": "Information of the owner of the record",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreatedByInfoDto"
+              }
+            ]
           }
         },
         "required": [
@@ -1125,7 +1158,8 @@
           "firstName",
           "lastName",
           "createdAt",
-          "updatedAt"
+          "updatedAt",
+          "createdByInfo"
         ]
       },
       "SchemaObjectId": {
@@ -1368,30 +1402,26 @@
           },
           "reportTo": {
             "type": "string",
-            "description": "The user will report to this person"
+            "description": "The user will report to this person, aka the user manager"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "User date of birth"
           },
           "role": {
             "type": "string",
             "description": "The user role id"
           },
           "teams": {
-            "description": "List of teams the user is linked",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string",
+            "description": "List of teams ids the user belongs to"
           }
         },
         "required": [
           "email",
           "firstName",
           "lastName",
-          "jobTitle",
-          "workNumber",
-          "mobileNumber",
-          "reportTo",
-          "role",
-          "teams"
+          "jobTitle"
         ]
       },
       "LoginCommand": {

@@ -24,17 +24,18 @@ import { TableEntity } from './table-entity';
 import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { RowSelectionMaster } from './row-selection-master';
 import { RowSelectionItem } from './row-selection-item';
+import { TasSpinner } from '@talisoft/ui/spinner';
 
 @Component({
   selector: 'tas-table',
   standalone: true,
   templateUrl: `./table.html`,
   styleUrl: './table.scss',
-  imports: [NgIf, NgTemplateOutlet],
+  imports: [NgIf, NgTemplateOutlet, TasSpinner],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TasTable<T extends TableEntity, F>
+export class TasTable<T extends TableEntity>
   implements OnInit, OnChanges, AfterViewInit
 {
   public data = input.required<T[]>();
@@ -73,7 +74,7 @@ export class TasTable<T extends TableEntity, F>
   @ContentChild('header') header!: TemplateRef<any>;
   @ContentChild('body') body!: TemplateRef<any>;
 
-  public dataSource = input<TableDataSource<T, F>>();
+  public dataSource!: TableDataSource<T>;
 
   public ngAfterViewInit() {
     // Whenever the selection change emit selectionItems event
@@ -118,9 +119,7 @@ export class TasTable<T extends TableEntity, F>
   }
 
   public ngOnInit(): void {
-    this.dataSource()
-      ?.connect()
-      .subscribe((res) => console.log(res));
+    this.dataSource = new TableDataSource<T>(this.data() ?? [], this.columns());
   }
 
   public ngOnChanges(changes: SimpleChanges) {

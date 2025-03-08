@@ -16,7 +16,12 @@ export class FindAllTerritoriesQuery {
   })
   isDeleted!: boolean;
 
-  @ApiProperty()
+  @ApiProperty({
+    description:
+      'This is a comma separated list, define the properties the api should return',
+    example: 'id,name,createdByInfo',
+    default: 'id,name,createdByInfo',
+  })
   fields!: string;
 }
 

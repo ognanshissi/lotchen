@@ -1,5 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
+import { CreatedByInfoDto } from '@lotchen/api/core';
 
+@ApiExtraModels(CreatedByInfoDto)
 export class GetAllUserQuery {
   @ApiProperty()
   userId!: string;
@@ -18,4 +20,10 @@ export class GetAllUserQuery {
 
   @ApiProperty({ type: Date })
   updatedAt!: Date;
+
+  @ApiProperty({
+    type: () => CreatedByInfoDto,
+    description: 'Information of the owner of the record',
+  })
+  createdByInfo!: CreatedByInfoDto;
 }

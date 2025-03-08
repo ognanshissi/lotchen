@@ -5,6 +5,7 @@ import { Connection, Model } from 'mongoose';
 import { Profile } from '../../profile/profile.schema';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
+import { UsersErrors } from '../users-errors';
 
 @Injectable()
 export class CreateUserCommandHandler
@@ -23,6 +24,14 @@ export class CreateUserCommandHandler
     }
 
     // check unique email
+    const userExist = await this.userModel
+      .findOne({ email: request.email })
+      .lean()
+      .exec();
+
+    if (userExist) {
+      throw new BadRequestException(UsersErrors.UserAlreadyExist());
+    }
 
     const { salt, encryptedPassword } =
       await UserExtension.generatePasswordHash(request.password);

@@ -11,9 +11,9 @@ import {
   TableItemActionDirective,
   TasTable,
 } from '@talisoft/ui/table';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TimeagoPipe } from '@talisoft/ui/timeago';
+import { apiResources } from '@talisoft/ui/api-resources';
 
 @Component({
   selector: 'settings-users',
@@ -37,7 +37,7 @@ import { TimeagoPipe } from '@talisoft/ui/timeago';
 export class UsersComponent {
   private readonly _usersService = inject(UsersApiService);
 
-  public users = toSignal(this._usersService.usersControllerAllUsersV1());
+  public users = apiResources(this._usersService.usersControllerAllUsersV1());
 
   public addUserDialog(): void {
     this._usersService.usersControllerAllUsersV1().subscribe((res) => {

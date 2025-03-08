@@ -30,7 +30,7 @@ export class User extends AggregateRoot {
   })
   permissions!: string[];
 
-  @Prop()
+  @Prop({ default: true, type: Boolean })
   isActive!: boolean;
 
   @Prop({ default: false })
@@ -69,7 +69,7 @@ export class User extends AggregateRoot {
   @Prop()
   salt!: string;
 
-  @Prop({ type: TeamSchema })
+  @Prop({ type: [TeamSchema] })
   teams!: Team[];
 
   @Prop({

@@ -67,7 +67,7 @@ export class UsersController {
   ) {}
 
   @Post()
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.CREATED)
   @ApiResponse({
     status: '2XX',
   })
@@ -156,8 +156,11 @@ export class UsersController {
   }
 
   @Post('/invite-user')
-  @ApiResponse({})
-  public async inviteUser(@Body() request: InviteUserCommand): Promise<any> {
-    return this._inviteUserCommandHandler.handlerAsync(request);
+  @ApiResponse({
+    status: '2XX',
+  })
+  @HttpCode(HttpStatus.CREATED)
+  public async inviteUser(@Body() request: InviteUserCommand) {
+    return await this._inviteUserCommandHandler.handlerAsync(request);
   }
 }

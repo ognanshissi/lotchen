@@ -27,9 +27,6 @@ export class Profile extends AggregateRoot {
   @Prop({ type: String, default: null })
   jobTitle!: string;
 
-  @Prop({ type: 'UUID', default: null })
-  reportTo!: string;
-
   @Prop({ type: Date, default: null })
   dateOfBirth!: Date;
 
