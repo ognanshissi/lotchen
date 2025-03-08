@@ -7,7 +7,7 @@ import {
 } from '@lotchen/api/core';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Injectable } from '@nestjs/common';
-import { TerritoryLightDto } from '../find-all/find-all-territories.query';
+import { TerritoryLiteDto } from '../find-all/find-all-territories.query';
 import { TerritoriesProvider } from '../territories.provider';
 
 @ApiExtraModels(FilterDto)
@@ -25,7 +25,7 @@ export class PaginateAllTerritoriesCommand extends PaginationRequest {
   filters!: FilterAllTerritoriesCommand;
 }
 
-@ApiExtraModels(TerritoryLightDto)
+@ApiExtraModels(TerritoryLiteDto)
 export class PaginateAllTerritoriesCommandDto {
   @ApiProperty()
   id!: string;
@@ -46,16 +46,16 @@ export class PaginateAllTerritoriesCommandDto {
   createdBy!: string;
 
   @ApiProperty({
-    type: () => TerritoryLightDto,
+    type: () => TerritoryLiteDto,
     description: 'Name of the territory parent if so',
   })
-  parentInfo!: TerritoryLightDto | null;
+  parentInfo!: TerritoryLiteDto | null;
 
   @ApiProperty({
     type: 'array',
-    items: { $ref: getSchemaPath(TerritoryLightDto) },
+    items: { $ref: getSchemaPath(TerritoryLiteDto) },
   })
-  children!: TerritoryLightDto[];
+  children!: TerritoryLiteDto[];
 }
 
 export class PaginateAllTerritoriesCommandResponse extends Pagination<PaginateAllTerritoriesCommandDto> {}

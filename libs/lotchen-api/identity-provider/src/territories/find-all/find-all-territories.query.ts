@@ -25,7 +25,7 @@ export class FindAllTerritoriesQuery {
   fields!: string;
 }
 
-export class TerritoryLightDto {
+export class TerritoryLiteDto {
   @ApiProperty({ description: 'Id of the territory', type: String })
   id!: string;
   @ApiProperty({ description: 'Name of the territory', type: String })
@@ -45,7 +45,7 @@ export class TerritoriesQueryUserDto {
   fullName!: string;
 }
 
-@ApiExtraModels(TerritoryLightDto, TerritoriesQueryUserDto)
+@ApiExtraModels(TerritoryLiteDto, TerritoriesQueryUserDto)
 export class FindAllTerritoriesQueryResponse {
   @ApiProperty({ required: true })
   id!: string;
@@ -67,16 +67,16 @@ export class FindAllTerritoriesQueryResponse {
   createdBy!: TerritoriesQueryUserDto;
 
   @ApiProperty({
-    type: () => TerritoryLightDto,
+    type: () => TerritoryLiteDto,
     description: 'Name of the territory parent if so',
     required: false,
   })
-  parentInfo!: TerritoryLightDto;
+  parentInfo!: TerritoryLiteDto;
 
   @ApiProperty({
     type: 'array',
-    items: { $ref: getSchemaPath(TerritoryLightDto) },
+    items: { $ref: getSchemaPath(TerritoryLiteDto) },
     required: false,
   })
-  children!: TerritoryLightDto[];
+  children!: TerritoryLiteDto[];
 }

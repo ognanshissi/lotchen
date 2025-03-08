@@ -630,6 +630,124 @@
         ]
       }
     },
+    "/api/v1/roles": {
+      "post": {
+        "operationId": "RolesController_createRole_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoleCommandResponse"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Role created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateRoleCommandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Role already exists"
+          }
+        },
+        "tags": [
+          "Roles"
+        ]
+      },
+      "get": {
+        "operationId": "RolesController_allRoles_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
+    "/api/v1/roles/{role}/permissions": {
+      "post": {
+        "operationId": "RolesController_updateRolePermissions_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "role",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role permissions updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateRolePermissionsCommandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Role not found"
+          }
+        },
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
     "/api/v1/roles/generate-predefined-roles": {
       "post": {
         "operationId": "RolesController_generatePredefinedRoles_v1",
@@ -645,29 +763,6 @@
         ],
         "responses": {
           "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Roles"
-        ]
-      }
-    },
-    "/api/v1/roles": {
-      "get": {
-        "operationId": "RolesController_allRoles_v1",
-        "parameters": [
-          {
-            "name": "x-tenant-fqdn",
-            "in": "header",
-            "description": "The Tenant Fqdn",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
             "description": ""
           }
         },
@@ -1598,6 +1693,56 @@
           "code"
         ]
       },
+      "CreateRoleCommandResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the role"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the role"
+          },
+          "permissions": {
+            "description": "Permissions of the role",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "permissions"
+        ]
+      },
+      "UpdateRolePermissionsCommandResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the role"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the role"
+          },
+          "permissions": {
+            "description": "Permissions of the role",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "permissions"
+        ]
+      },
       "CreateTerritoryCommand": {
         "type": "object",
         "properties": {
@@ -1625,7 +1770,7 @@
           "description"
         ]
       },
-      "TerritoryLightDto": {
+      "TerritoryLiteDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -1696,14 +1841,14 @@
             "description": "Name of the territory parent if so",
             "allOf": [
               {
-                "$ref": "#/components/schemas/TerritoryLightDto"
+                "$ref": "#/components/schemas/TerritoryLiteDto"
               }
             ]
           },
           "children": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TerritoryLightDto"
+              "$ref": "#/components/schemas/TerritoryLiteDto"
             }
           }
         },
