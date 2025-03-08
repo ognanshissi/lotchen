@@ -73,7 +73,9 @@ export class AddTeamDialogComponent implements OnInit {
   });
 
   public territories = toSignal(
-    this._territoriesApiService.territoriesControllerAllTerritoriesV1(),
+    this._territoriesApiService.territoriesControllerAllTerritoriesV1(
+      'id,name'
+    ),
     { initialValue: [] }
   );
 

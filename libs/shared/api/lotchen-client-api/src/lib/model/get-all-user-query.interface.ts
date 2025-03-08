@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CreatedByInfoDto } from './created-by-info-dto.interface';
 
 
 export interface GetAllUserQuery { 
@@ -21,5 +22,9 @@ export interface GetAllUserQuery {
     lastName: string;
     createdAt: string;
     updatedAt: string;
+    /**
+     * Information of the owner of the record
+     */
+    createdByInfo: CreatedByInfoDto;
 }
 

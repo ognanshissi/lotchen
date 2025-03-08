@@ -1,5 +1,7 @@
 import {
   CommandHandler,
+  FilterDto,
+  filterQueryGenerator,
   Pagination,
   PaginationRequest,
 } from '@lotchen/api/core';
@@ -8,9 +10,10 @@ import { Injectable } from '@nestjs/common';
 import { TerritoryLightDto } from '../find-all/find-all-territories.query';
 import { TerritoriesProvider } from '../territories.provider';
 
+@ApiExtraModels(FilterDto)
 export class FilterAllTerritoriesCommand {
-  @ApiProperty()
-  name!: string;
+  @ApiProperty({ type: () => FilterDto<string> })
+  name!: FilterDto<string>;
 }
 
 @ApiExtraModels(FilterAllTerritoriesCommand)
@@ -71,7 +74,7 @@ export class PaginateAllTerritoriesCommandHandler
     command: PaginateAllTerritoriesCommand
   ): Promise<PaginateAllTerritoriesCommandResponse> {
     const queryFilter = {
-      name: new RegExp(command.filters.name, 'i'),
+      name: filterQueryGenerator(command.filters.name),
     };
 
     const totalDocuments =

@@ -25,13 +25,30 @@ import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { RowSelectionMaster } from './row-selection-master';
 import { RowSelectionItem } from './row-selection-item';
 import { TasSpinner } from '@talisoft/ui/spinner';
+import { ButtonModule } from '@talisoft/ui/button';
+import { FormField, TasLabel } from '@talisoft/ui/form-field';
+import { TasIcon } from '@talisoft/ui/icon';
+import { TasInput } from '@talisoft/ui/input';
+import { TasTitle } from '@talisoft/ui/title';
+import { TasText } from '@talisoft/ui/text';
 
 @Component({
   selector: 'tas-table',
   standalone: true,
   templateUrl: `./table.html`,
   styleUrl: './table.scss',
-  imports: [NgIf, NgTemplateOutlet, TasSpinner],
+  imports: [
+    NgIf,
+    NgTemplateOutlet,
+    TasSpinner,
+    ButtonModule,
+    FormField,
+    TasIcon,
+    TasInput,
+    TasTitle,
+    TasText,
+    TasLabel,
+  ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -43,6 +60,8 @@ export class TasTable<T extends TableEntity>
   public config = input<TableConfig>();
   public columns = input<TableColumn[]>([]);
   public isLoading = input<boolean>(false);
+
+  public title = input<string>();
 
   public selectionItems = output<T[]>();
 
@@ -59,6 +78,8 @@ export class TasTable<T extends TableEntity>
     (o1, o2) => o1[this.identifierField()] === o2[this.identifierField()]
   );
 
+  public refresh = output();
+
   public rowSelectionMaster = contentChild<RowSelectionMaster>(
     RowSelectionMaster,
     {
@@ -73,6 +94,7 @@ export class TasTable<T extends TableEntity>
   // ContentChild
   @ContentChild('header') header!: TemplateRef<any>;
   @ContentChild('body') body!: TemplateRef<any>;
+  @ContentChild('caption') caption!: TemplateRef<any>;
 
   public dataSource!: TableDataSource<T>;
 
@@ -123,7 +145,7 @@ export class TasTable<T extends TableEntity>
   }
 
   public ngOnChanges(changes: SimpleChanges) {
-    this._updateDatasource();
+    // this._updateDatasource();
   }
 
   public isMasterSelected(): boolean {
@@ -131,23 +153,23 @@ export class TasTable<T extends TableEntity>
     return this.data()?.length === this.selection.selected.length;
   }
 
-  private _updateDatasource() {
-    // if (this.config().pagination?.serverSide) {
-    //   this.table().dataSource = [...this.data()];
-    //   this.paginator().length =
-    //     this.config().pagination.totalElements ?? this.data.length;
-    // }
-    //
-    // this.paginator().pageIndex = this.config()?.pagination.pageIndex;
-    // this.paginator().pageSizeOptions =
-    //   this.config()?.pagination.pageSizeOptions;
-    // this.paginator().pageSize = this.config()?.pagination.pageSize;
-    //
-    // this.dataSource.sort = this.sort();
-    // if (!this.config()?.pagination.serverSide) {
-    //   this.paginator().length = this.data.length;
-    //   this.table().dataSource = this.dataSource;
-    // }
-    // this.dataSource.paginator = this.paginator();
-  }
+  // private _updateDatasource() {
+  //   if (this.config()?.pagination?.serverSide) {
+  //     this.table()?.dataSource = [...this.data()];
+  //     this.paginator().length =
+  //       this.config().pagination.totalElements ?? this.data.length;
+  //   }
+  //
+  //   this.paginator().pageIndex = this.config()?.pagination.pageIndex;
+  //   this.paginator().pageSizeOptions =
+  //     this.config()?.pagination.pageSizeOptions;
+  //   this.paginator().pageSize = this.config()?.pagination.pageSize;
+  //
+  //   this.dataSource.sort = this.sort();
+  //   if (!this.config()?.pagination.serverSide) {
+  //     this.paginator().length = this.data.length;
+  //     this.table().dataSource = this.dataSource;
+  //   }
+  //   this.dataSource.paginator = this.paginator();
+  // }
 }

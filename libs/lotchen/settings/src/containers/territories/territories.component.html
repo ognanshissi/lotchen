@@ -20,195 +20,80 @@
   </div>
 </div>
 
-<!--Stats widgets -->
-<!-- Key Metrics -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4 mb-8">
-  <tas-card class="p-6">
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center">
-        <div class="bg-blue-50 p-3 rounded-lg">
-          <tas-icon
-            iconName="payments"
-            class="w-6 h-6 text-blue-600"
-          ></tas-icon>
-        </div>
-        <div class="ml-4">
-          <h3 class="text-sm text-gray-500">Portefeuille total</h3>
-          <div class="flex items-baseline">
-            <p class="text-2xl font-semibold text-gray-900">2.5M FCFA</p>
-            <span class="ml-2 text-sm text-green-500">+15%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4">
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-500">Objectif mensuel</span>
-        <span class="text-gray-900">3M FCFA</span>
-      </div>
-      <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-        <div class="bg-blue-600 h-2 rounded-full" style="width: 83%"></div>
-      </div>
-    </div>
-  </tas-card>
-
-  <tas-card class="p-6">
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center">
-        <div class="bg-green-50 p-3 rounded-lg">
-          <tas-icon
-            iconName="groups"
-            iconClass="w-6 h-6 text-green-600"
-          ></tas-icon>
-        </div>
-        <div class="ml-4">
-          <h3 class="text-sm text-gray-500">Clients actifs</h3>
-          <div class="flex items-baseline">
-            <p class="text-2xl font-semibold text-gray-900">1,234</p>
-            <span class="ml-2 text-sm text-green-500">+8%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4">
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-500">Nouveaux ce mois</span>
-        <span class="text-gray-900">45 clients</span>
-      </div>
-      <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-        <div class="bg-green-600 h-2 rounded-full" style="width: 75%"></div>
-      </div>
-    </div>
-  </tas-card>
-
-  <tas-card class="p-6">
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center">
-        <div class="bg-yellow-50 p-3 rounded-lg">
-          <tas-icon
-            iconName="warning"
-            class="w-6 h-6 text-yellow-600"
-          ></tas-icon>
-        </div>
-        <div class="ml-4">
-          <h3 class="text-sm text-gray-500">PAR 30</h3>
-          <div class="flex items-baseline">
-            <p class="text-2xl font-semibold text-gray-900">3.2%</p>
-            <span class="ml-2 text-sm text-red-500">+0.5%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4">
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-500">Montant à risque</span>
-        <span class="text-gray-900">4.2M FCFA</span>
-      </div>
-      <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-        <div class="bg-yellow-600 h-2 rounded-full" style="width: 32%"></div>
-      </div>
-    </div>
-  </tas-card>
-
-  <tas-card class="p-6">
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center">
-        <div class="bg-purple-50 p-3 rounded-lg">
-          <tas-icon
-            iconName="trending_up"
-            class="w-6 h-6 text-purple-600"
-          ></tas-icon>
-        </div>
-        <div class="ml-4">
-          <h3 class="text-sm text-gray-500">Taux de remboursement</h3>
-          <div class="flex items-baseline">
-            <p class="text-2xl font-semibold text-gray-900">98.5%</p>
-            <span class="ml-2 text-sm text-green-500">+2%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4">
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-500">Objectif</span>
-        <span class="text-gray-900">99%</span>
-      </div>
-      <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-        <div class="bg-purple-600 h-2 rounded-full" style="width: 98.5%"></div>
-      </div>
-    </div>
-  </tas-card>
-</div>
-
 <!-- Table -->
 <tas-card class="mt-4">
-  <card-header>
-    <div class="flex justify-between">
-      <div>
-        <tas-title>Liste des territoires</tas-title>
-        <tas-text class="text-sm text-gray-400">2 territoires</tas-text>
-      </div>
-      <div class="flex space-x-2 items-center justify-center">
-        <div>
-          <tas-form-field>
-            <tas-label class="sr-only">Recherche</tas-label>
-            <input
-              type="search"
-              tasInput
-              size="small"
-              class="w-[400px]"
-              placeholder="Rechercher un territoire..."
-            />
-          </tas-form-field>
-        </div>
+  <!--  <card-header>-->
+  <!--    <div class="flex justify-between">-->
+  <!--      <div>-->
+  <!--        <tas-title>Liste des territoires</tas-title>-->
+  <!--        <tas-text class="text-sm text-gray-400">{{ territories()?.value?.length || 0 }} territoire(s)</tas-text>-->
+  <!--      </div>-->
+  <!--      <div class="flex space-x-2 items-center justify-center">-->
+  <!--        <div>-->
+  <!--          <tas-form-field class="w-[500px]">-->
+  <!--            <tas-label class="sr-only">Recherche</tas-label>-->
+  <!--            <input-->
+  <!--              type="search"-->
+  <!--              tasInput-->
+  <!--              size="small"-->
+  <!--              placeholder="Rechercher un territoire..."-->
+  <!--            />-->
+  <!--          </tas-form-field>-->
+  <!--        </div>-->
 
-        <button tas-text-button>
-          <tas-icon iconName="feather:filter" [iconSize]="'lg'"></tas-icon>
-        </button>
-      </div>
-    </div>
-  </card-header>
+  <!--        <button tas-button iconButton>-->
+  <!--          <tas-icon iconName="refresh" class="text-gray-500"></tas-icon>-->
+  <!--        </button>-->
 
-  <div>
-    <tas-table [data]="territories() ?? []" identifierField="id">
-      <ng-template #header>
-        <tr>
-          <th>Nom</th>
-          <th>Territoire parent</th>
-          <th>Territoires descendants</th>
-          <th>Créé par</th>
-          <th>Date de création</th>
-          <th>Dernière modification</th>
-          <th></th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-item>
-        <tr>
-          <td>
-            <a [routerLink]="[item.id]" class="font-semibold underline">{{
-              item.name
-            }}</a>
-          </td>
-          <td>
-            <span class="bg-gray-200 rounded-full px-4 py-1">{{
-              item.parentInfo ? item.parentInfo.name : 'N/A'
-            }}</span>
-          </td>
-          <td>
-            <div class="flex space-x-2">
-              <span class="bg-gray-200 rounded-full px-4 py-1"
-                >Territoire 1</span
-              >
-            </div>
-          </td>
-          <td>{{ item.createdBy }}</td>
-          <td>{{ item.createdAt | dateTimeAgo }}</td>
-          <td>{{ item.createdAt | dateTimeAgo }}</td>
-          <td tasTableItemAction>
-            <button tas-outlined-button color="primary">Consulter</button>
-          </td>
-        </tr>
-      </ng-template>
-    </tas-table>
-  </div>
+  <!--        <button tas-button iconButton color="primary">-->
+  <!--          <tas-icon iconName="feather:filter" class="text-gray-500"></tas-icon>-->
+  <!--        </button>-->
+
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </card-header>-->
+
+  <tas-table
+    [title]="'Liste des territoires'"
+    [data]="territories().value ?? []"
+    identifierField="id"
+    [isLoading]="territories().isLoading ?? false"
+  >
+    <ng-template #header>
+      <tr>
+        <th rowSelectionMaster></th>
+        <th>Nom</th>
+        <th>Territoire parent</th>
+        <th>Territoires descendants</th>
+        <th>Créé par</th>
+        <th>Date de création</th>
+        <th>Dernière modification</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item>
+      <tr>
+        <td rowSelectionItem></td>
+        <td>
+          <a tas-text-button [routerLink]="[item.id]" color="primary"
+            >{{ item.name }}
+          </a>
+        </td>
+        <td>
+          <span class="bg-gray-200 rounded-full px-2 py-1">{{
+            item.parentInfo ? item.parentInfo.name : 'N/A'
+          }}</span>
+        </td>
+        <td></td>
+        <td>
+          {{ item.createdBy ? item.createdBy.fullName : 'N/A' }}
+        </td>
+        <td>{{ item.createdAt | dateTimeAgo }}</td>
+        <td>{{ item.createdAt | dateTimeAgo }}</td>
+        <td tasTableItemAction>
+          <button tas-outlined-button color="primary">Consulter</button>
+        </td>
+      </tr>
+    </ng-template>
+  </tas-table>
 </tas-card>

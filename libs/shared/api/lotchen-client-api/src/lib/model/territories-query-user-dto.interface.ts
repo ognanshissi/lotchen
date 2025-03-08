@@ -9,10 +9,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FilterDto } from './filter-dto.interface';
 
 
-export interface FilterAllTerritoriesCommand { 
-    name: FilterDto;
+export interface TerritoriesQueryUserDto { 
+    /**
+     * User Id
+     */
+    id: string;
+    /**
+     * Email
+     */
+    email: string;
+    /**
+     * User Full name, FirstName and LastName combined
+     */
+    fullName: string;
 }
 

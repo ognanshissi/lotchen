@@ -10,7 +10,7 @@ tas-form-field {
   }
 
   .input__container {
-    @apply w-full text-left items-center border px-1 py-1 m-0 border-gray-300 focus-within:border-primary focus-within:shadow bg-white;
+    @apply w-full text-left items-center border px-1 py-0.5 m-0 border-gray-300 focus-within:border-primary focus-within:shadow bg-white;
     border-radius: var(--tas-field-border-radius) !important;
 
     &:has([tasInput].ng-touched.ng-dirty.ng-invalid),

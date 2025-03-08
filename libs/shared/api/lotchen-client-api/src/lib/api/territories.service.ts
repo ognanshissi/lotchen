@@ -99,14 +99,34 @@ export class TerritoriesApiService {
     }
 
     /**
+     * @param fields This is a comma separated list, define the properties the api should return
      * @param xTenantFqdn The Tenant Fqdn
+     * @param name Name of the territory
+     * @param isDeleted Get deleted territories or not
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public territoriesControllerAllTerritoriesV1(xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllTerritoriesQueryResponse>>;
-    public territoriesControllerAllTerritoriesV1(xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllTerritoriesQueryResponse>>>;
-    public territoriesControllerAllTerritoriesV1(xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllTerritoriesQueryResponse>>>;
-    public territoriesControllerAllTerritoriesV1(xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public territoriesControllerAllTerritoriesV1(fields: string, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllTerritoriesQueryResponse>>;
+    public territoriesControllerAllTerritoriesV1(fields: string, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllTerritoriesQueryResponse>>>;
+    public territoriesControllerAllTerritoriesV1(fields: string, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllTerritoriesQueryResponse>>>;
+    public territoriesControllerAllTerritoriesV1(fields: string, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (fields === null || fields === undefined) {
+            throw new Error('Required parameter fields was null or undefined when calling territoriesControllerAllTerritoriesV1.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (name !== undefined && name !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>name, 'name');
+        }
+        if (isDeleted !== undefined && isDeleted !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>isDeleted, 'isDeleted');
+        }
+        if (fields !== undefined && fields !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>fields, 'fields');
+        }
 
         let localVarHeaders = this.defaultHeaders;
         if (xTenantFqdn !== undefined && xTenantFqdn !== null) {
@@ -151,6 +171,7 @@ export class TerritoriesApiService {
         return this.httpClient.request<Array<FindAllTerritoriesQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

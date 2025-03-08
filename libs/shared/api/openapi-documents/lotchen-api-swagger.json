@@ -1714,11 +1714,39 @@
           "updatedAt"
         ]
       },
+      "FilterDto": {
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "default": "eq",
+            "enum": [
+              "eq",
+              "lt",
+              "gte",
+              "lte",
+              "gt",
+              "in",
+              "nin",
+              "ne",
+              "contain"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "description": "Value"
+          }
+        },
+        "required": [
+          "operator",
+          "value"
+        ]
+      },
       "FilterAllTerritoriesCommand": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "$ref": "#/components/schemas/FilterDto"
           }
         },
         "required": [

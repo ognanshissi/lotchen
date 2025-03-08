@@ -31,22 +31,26 @@ export interface InviteUserCommand {
     /**
      * Work number
      */
-    workNumber: string;
+    workNumber?: string;
     /**
      * Mobile number
      */
-    mobileNumber: string;
+    mobileNumber?: string;
     /**
-     * The user will report to this person
+     * The user will report to this person, aka the user manager
      */
-    reportTo: string;
+    reportTo?: string;
+    /**
+     * User date of birth
+     */
+    dateOfBirth?: string;
     /**
      * The user role id
      */
-    role: string;
+    role?: string;
     /**
-     * List of teams the user is linked
+     * List of teams ids the user belongs to
      */
-    teams: Array<string>;
+    teams?: string;
 }
 

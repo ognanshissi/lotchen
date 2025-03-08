@@ -27,8 +27,8 @@
 
   <div>
     <tas-table
-      [data]="users()?.value ?? []"
-      [isLoading]="users()?.isLoading ?? true"
+      [data]="users().value ?? []"
+      [isLoading]="users().isLoading ?? true"
       identifierField="id"
     >
       <ng-template #header>

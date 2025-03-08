@@ -40,7 +40,7 @@ export class FindAllTerritoriesQueryHandler
       projection,
       {
         sort: {
-          createdBy: 1,
+          createdBy: -1,
         },
       }
     )

@@ -1,6 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, Max, Min } from 'class-validator';
 
+export enum Operator {
+  eq = 'eq',
+  lt = 'lt',
+  gte = 'gte',
+  lte = 'lte',
+  gt = 'gt',
+  in = 'in',
+  nin = 'nin',
+  ne = 'ne',
+  Contain = 'contain',
+}
+
 export class PaginationRequest {
   @ApiProperty({ required: false })
   public sort?: Record<string, 'asc' | 'desc'>;
@@ -21,10 +33,14 @@ export class PaginationRequest {
   public pageSize!: number;
 }
 
-export interface PagingFilter {
-  fieldName: string;
-  operator: 'eq' | 'lt' | 'gte' | 'lte' | 'gt' | 'in' | 'nin' | 'ne';
-  value: string | string[] | boolean;
+export class FilterDto<TValue> {
+  @ApiProperty({
+    default: Operator.eq,
+    enum: ['eq', 'lt', 'gte', 'lte', 'gt', 'in', 'nin', 'ne', 'contain'],
+  })
+  public operator!: Operator;
+  @ApiProperty({ description: 'Value', type: String })
+  public value!: TValue;
 }
 
 export type logicalOperator = 'and' | 'or' | 'not' | 'nor';

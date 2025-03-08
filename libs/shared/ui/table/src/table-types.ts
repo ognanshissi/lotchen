@@ -5,10 +5,6 @@ export interface TableColumn {
 
 export interface TableConfig {
   property: string;
-  uniqueIdentifier: string;
-  selection?: boolean;
-  hasActions?: boolean;
-  rowClickable?: boolean;
   pagination: TablePagingConfig;
 }
 

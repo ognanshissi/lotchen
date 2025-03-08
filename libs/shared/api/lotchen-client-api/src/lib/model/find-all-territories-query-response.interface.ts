@@ -10,10 +10,14 @@
  * Do not edit the class manually.
  */
 import { TerritoryLightDto } from './territory-light-dto.interface';
+import { TerritoriesQueryUserDto } from './territories-query-user-dto.interface';
 
 
 export interface FindAllTerritoriesQueryResponse { 
     id: string;
+    /**
+     * Name of the territory
+     */
     name: string;
     /**
      * Date of creation
@@ -26,11 +30,11 @@ export interface FindAllTerritoriesQueryResponse {
     /**
      * Person who created the entry
      */
-    createdBy: string;
+    createdBy?: TerritoriesQueryUserDto;
     /**
      * Name of the territory parent if so
      */
-    parentInfo: TerritoryLightDto;
-    children: Array<TerritoryLightDto>;
+    parentInfo?: TerritoryLightDto;
+    children?: Array<TerritoryLightDto>;
 }
 
