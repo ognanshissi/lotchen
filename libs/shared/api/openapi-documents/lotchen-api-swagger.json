@@ -43,6 +43,42 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "Fields to return",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "required": false,
+            "in": "query",
+            "description": "Filter by email",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fullName",
+            "required": false,
+            "in": "query",
+            "description": "Filter by fullName, FirstName or LastName",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isDeleted",
+            "required": false,
+            "in": "query",
+            "description": "Filter by deleted records",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -53,7 +89,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/GetAllUserQuery"
+                    "$ref": "#/components/schemas/FindAllUserQueryResponse"
                   }
                 }
               }
@@ -648,7 +684,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateRoleCommandResponse"
+                "$ref": "#/components/schemas/CreateRoleCommand"
               }
             }
           }
@@ -722,8 +758,8 @@
         ]
       }
     },
-    "/api/v1/roles/{role}/permissions": {
-      "post": {
+    "/api/v1/roles/{role}": {
+      "put": {
         "operationId": "RolesController_updateRolePermissions_v1",
         "parameters": [
           {
@@ -1133,6 +1169,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "Fields to return",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Filter by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isDeleted",
+            "required": false,
+            "in": "query",
+            "description": "Filter by deleted",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -1261,7 +1324,7 @@
           "confirmPassword"
         ]
       },
-      "CreatedByInfoDto": {
+      "AuditUserInfoDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -1272,26 +1335,30 @@
             "type": "string",
             "description": "Email"
           },
-          "fullName": {
+          "firstName": {
             "type": "string",
-            "description": "User Full name, FirstName and LastName combined"
+            "description": "FirstName"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "LastName"
           }
         },
         "required": [
           "id",
-          "email",
-          "fullName"
+          "email"
         ]
       },
-      "GetAllUserQuery": {
+      "FindAllUserQueryResponse": {
         "type": "object",
         "properties": {
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "User id, use `id` for dynamic field querying"
           },
           "email": {
             "type": "string",
-            "description": "User email "
+            "description": "User email, use `contactInfo` for dynamic field querying if you want email in response"
           },
           "firstName": {
             "type": "string"
@@ -1311,7 +1378,7 @@
             "description": "Information of the owner of the record",
             "allOf": [
               {
-                "$ref": "#/components/schemas/CreatedByInfoDto"
+                "$ref": "#/components/schemas/AuditUserInfoDto"
               }
             ]
           }
@@ -1762,13 +1829,9 @@
           "code"
         ]
       },
-      "CreateRoleCommandResponse": {
+      "CreateRoleCommand": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "Id of the role"
-          },
           "name": {
             "type": "string",
             "description": "Name of the role"
@@ -1782,9 +1845,20 @@
           }
         },
         "required": [
-          "id",
           "name",
           "permissions"
+        ]
+      },
+      "CreateRoleCommandResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the role"
+          }
+        },
+        "required": [
+          "id"
         ]
       },
       "UpdateRolePermissionsCommandResponse": {
@@ -2197,13 +2271,16 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Team Id"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Team name"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Team description"
           },
           "manager": {
             "$ref": "#/components/schemas/FindAllTeamsQueryUserDto"
@@ -2219,11 +2296,11 @@
             "type": "string",
             "description": "Date of creation"
           },
-          "createdBy": {
+          "createdByInfo": {
             "description": "Created by user information",
             "allOf": [
               {
-                "$ref": "#/components/schemas/FindAllTeamsQueryUserDto"
+                "$ref": "#/components/schemas/AuditUserInfoDto"
               }
             ]
           },
@@ -2236,11 +2313,8 @@
         "required": [
           "id",
           "name",
-          "description",
-          "manager",
-          "members",
           "createdAt",
-          "createdBy",
+          "createdByInfo",
           "updatedAt"
         ]
       },

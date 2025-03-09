@@ -8,13 +8,17 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserCommandHandler } from './create/create-user-command-handler';
 import { CreateUserCommand } from './create/create-user-command';
-import { GetAllUserQueryHandler } from './get-all/get-all-user-query-handler';
-import { GetAllUserQuery } from './get-all/get-all-user-query';
+import { FindAllUserQueryHandler } from './find-all/find-all-user-query-handler';
+import {
+  FindAllUserQuery,
+  FindAllUserQueryResponse,
+} from './find-all/find-all-user-query';
 import {
   DeleteUserCommand,
   DeleteUserCommandHandler,
@@ -56,7 +60,7 @@ import {
 export class UsersController {
   constructor(
     private readonly _createUserHandler: CreateUserCommandHandler,
-    private readonly _getAllUserQueryHandler: GetAllUserQueryHandler,
+    private readonly _findAllUserQueryHandler: FindAllUserQueryHandler,
     private readonly _deleteUserCommandHandler: DeleteUserCommandHandler,
     private readonly _findUserByIdQueryHandler: FindUserByIdQueryHandler,
     private readonly _assignPermissionsCommandHandler: AssignPermissionsCommandHandler,
@@ -78,10 +82,12 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Get()
   @ApiResponse({
-    type: [GetAllUserQuery],
+    type: [FindAllUserQueryResponse],
   })
-  public async allUsers(): Promise<GetAllUserQuery[]> {
-    return await this._getAllUserQueryHandler.handlerAsync();
+  public async allUsers(
+    @Query() filterQuery: FindAllUserQuery
+  ): Promise<FindAllUserQueryResponse[]> {
+    return await this._findAllUserQueryHandler.handlerAsync(filterQuery);
   }
 
   // @UseGuards(AuthGuard)

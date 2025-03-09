@@ -1,14 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreatedByInfoDto {
+export class AuditUserInfoDto {
   @ApiProperty({ description: 'User Id', type: String })
   id!: string;
   @ApiProperty({ description: 'Email', type: 'string' })
   email!: string;
-
-  @ApiProperty({
-    description: 'User Full name, FirstName and LastName combined',
-    type: String,
-  })
-  fullName!: string;
+  @ApiProperty({ description: 'FirstName', type: String, required: false })
+  firstName!: string;
+  @ApiProperty({ description: 'LastName', type: String, required: false })
+  lastName!: string;
 }

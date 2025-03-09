@@ -24,6 +24,9 @@ export abstract class AuditableSchema extends Document {
   @Prop({ required: false, type: String, default: null })
   updatedBy!: string;
 
+  @Prop({ required: false, type: ActivityUser, default: null })
+  updatedByInfo!: ActivityUser;
+
   @Prop({ required: false, type: Date, default: null })
   deletedAt!: Date;
 

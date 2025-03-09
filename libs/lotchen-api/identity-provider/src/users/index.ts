@@ -5,7 +5,7 @@ import { CreateUserCommandHandler } from './create/create-user-command-handler';
 import { DeleteUserCommandHandler } from './delete/delete-user.command';
 import { FindUserByIdQueryHandler } from './findby-id/find-user-by-id.query';
 import { GetUserPermissionsQueryHandler } from './get-permissions/get-user-permissions.query';
-import { GetAllUserQueryHandler } from './get-all/get-all-user-query-handler';
+import { FindAllUserQueryHandler } from './find-all/find-all-user-query-handler';
 import { InviteUserCommandHandler } from './invite-user/invite-user.command';
 
 export * from './user.schema';
@@ -17,8 +17,8 @@ export * from './delete/delete-user.command';
 export * from './assign-permissions/assign-permissions.command';
 export * from './assign-roles/assign-roles.command';
 export * from './findby-id/find-user-by-id.query';
-export * from './get-all/get-all-user-query-handler';
-export * from './get-all/get-all-user-query';
+export * from './find-all/find-all-user-query-handler';
+export * from './find-all/find-all-user-query';
 export * from './get-permissions/get-user-permissions.query';
 
 export const usersHandlers = [
@@ -28,7 +28,7 @@ export const usersHandlers = [
   DeleteUserCommandHandler,
   FindUserByIdQueryHandler,
   GetUserPermissionsQueryHandler,
-  GetAllUserQueryHandler,
+  FindAllUserQueryHandler,
   PaginateAllUsersCommandHandler,
   InviteUserCommandHandler,
 ];

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateTeamCommand,
@@ -6,6 +6,7 @@ import {
   CreateTeamCommandResponse,
 } from './create/create-team.command';
 import {
+  FindAllTeamsQuery,
   FindAllTeamsQueryHandler,
   FindAllTeamsQueryResponse,
 } from './find-all/find-all-teams.query';
@@ -39,7 +40,9 @@ export class TeamsController {
   @ApiResponse({
     type: [FindAllTeamsQueryResponse],
   })
-  public async findAllTeams(): Promise<FindAllTeamsQueryResponse[]> {
-    return await this._findAllTeamsQueryHandler.handlerAsync();
+  public async findAllTeams(
+    @Query() query: FindAllTeamsQuery
+  ): Promise<FindAllTeamsQueryResponse[]> {
+    return await this._findAllTeamsQueryHandler.handlerAsync(query);
   }
 }

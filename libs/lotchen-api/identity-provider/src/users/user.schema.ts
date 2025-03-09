@@ -12,7 +12,7 @@ export class User extends AggregateRoot {
   @Prop()
   password!: string;
 
-  @Prop({ unique: true })
+  @Prop({ unique: true, index: true })
   email!: string;
 
   @Prop({

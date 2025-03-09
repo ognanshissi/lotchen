@@ -3,7 +3,6 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Model } from 'mongoose';
 import { Role } from '../role.schema';
-import { Request } from 'express';
 import { RoleErrors } from '../role.errors';
 
 export class CreateRoleCommand {
@@ -17,12 +16,6 @@ export class CreateRoleCommand {
 export class CreateRoleCommandResponse {
   @ApiProperty({ description: 'Id of the role', type: String })
   id!: string;
-
-  @ApiProperty({ description: 'Name of the role', type: String })
-  name!: string;
-
-  @ApiProperty({ description: 'Permissions of the role', type: [String] })
-  permissions!: string[];
 }
 
 @Injectable()
@@ -32,8 +25,7 @@ export class CreateRoleCommandHandler
   constructor(@Inject('ROLE_MODEL') private readonly roleModel: Model<Role>) {}
 
   public async handlerAsync(
-    command: CreateRoleCommand,
-    req?: Request
+    command: CreateRoleCommand
   ): Promise<CreateRoleCommandResponse> {
     const existingRole = await this.roleModel
       .findOne({ name: command.name }, 'id')
@@ -60,8 +52,6 @@ export class CreateRoleCommandHandler
 
     return {
       id: savedRole._id.toString(),
-      name: savedRole.name,
-      permissions: savedRole.permissions,
     };
   }
 }

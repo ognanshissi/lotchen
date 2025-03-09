@@ -15,10 +15,10 @@ export class Profile extends AggregateRoot {
   @Prop({ type: Types.UUID, ref: 'User', required: true })
   user!: User;
 
-  @Prop({ type: String, default: '' })
+  @Prop({ type: String, default: '', index: true })
   firstName!: string;
 
-  @Prop({ type: String, default: '' })
+  @Prop({ type: String, default: '', index: true })
   lastName!: string;
 
   @Prop({ type: mongoose.Schema.Types.Mixed, required: true })

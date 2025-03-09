@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Inject,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -16,6 +18,7 @@ import {
   predefinedRoles,
 } from '@lotchen/api/core';
 import {
+  CreateRoleCommand,
   CreateRoleCommandHandler,
   CreateRoleCommandResponse,
 } from './create/create-role.command';
@@ -53,18 +56,21 @@ export class RolesController {
   @Post()
   @Permissions(PermissionsAction.roleCreate)
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Role created',
     type: CreateRoleCommandResponse,
   })
-  @ApiResponse({ status: 400, description: 'Role already exists' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Role already exists',
+  })
   async createRole(
-    @Body() command: CreateRoleCommandResponse
+    @Body() command: CreateRoleCommand
   ): Promise<CreateRoleCommandResponse> {
     return this._createRoleCommandHandler.handlerAsync(command);
   }
 
-  @Post(':role/permissions')
+  @Put(':role')
   @Permissions(PermissionsAction.roleUpdate)
   @ApiResponse({
     status: 200,
