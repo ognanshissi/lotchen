@@ -7,7 +7,7 @@ export class PhoneNumber {
   @Prop({ type: String })
   contact!: string;
   @Prop({ type: Boolean })
-  isPrimary!: boolean;
+  isPrimary!: boolean; // default phoneNumber, sms, call, WhatsApp
 }
 
 export const PhoneNumberSchema = SchemaFactory.createForClass(PhoneNumber);

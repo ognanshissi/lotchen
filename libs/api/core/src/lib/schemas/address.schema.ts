@@ -21,6 +21,9 @@ export class Address extends SchemaIdentifier {
 
   @Prop({ type: PointSchema, required: false })
   public location!: Point;
+
+  @Prop({ type: Boolean, default: false })
+  public isDefaultAddress!: boolean;
 }
 
 export const AddressSchema = SchemaFactory.createForClass(Address);

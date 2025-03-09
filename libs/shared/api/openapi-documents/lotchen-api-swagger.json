@@ -2282,7 +2282,7 @@
             "type": "string",
             "description": "Team description"
           },
-          "manager": {
+          "managerInfo": {
             "$ref": "#/components/schemas/FindAllTeamsQueryUserDto"
           },
           "members": {
