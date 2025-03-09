@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateTeamCommand,
@@ -10,6 +20,12 @@ import {
   FindAllTeamsQueryHandler,
   FindAllTeamsQueryResponse,
 } from './find-all/find-all-teams.query';
+import { DeleteTeamCommandHandler } from './delete/delete-team.command';
+import {
+  UpdateTeamCommand,
+  UpdateTeamCommandHandler,
+  UpdateTeamCommandRequest,
+} from './update/update-team.command';
 
 @Controller({
   version: '1',
@@ -23,7 +39,9 @@ import {
 export class TeamsController {
   constructor(
     private readonly _createTeamCommandHandler: CreateTeamCommandHandler,
-    private readonly _findAllTeamsQueryHandler: FindAllTeamsQueryHandler
+    private readonly _findAllTeamsQueryHandler: FindAllTeamsQueryHandler,
+    private readonly _deleteTeamCommandHandler: DeleteTeamCommandHandler,
+    private readonly _updateTeamCommandHandler: UpdateTeamCommandHandler
   ) {}
 
   @Post()
@@ -44,5 +62,27 @@ export class TeamsController {
     @Query() query: FindAllTeamsQuery
   ): Promise<FindAllTeamsQueryResponse[]> {
     return await this._findAllTeamsQueryHandler.handlerAsync(query);
+  }
+
+  @Delete(':id')
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
+  public async deleteTeam(@Param('id') teamId: string): Promise<void> {
+    await this._deleteTeamCommandHandler.handlerAsync({ id: teamId });
+  }
+
+  @Put(':id')
+  @ApiResponse({
+    description: 'Update team',
+    status: HttpStatus.NO_CONTENT,
+  })
+  public async updateTeam(
+    @Param('id') id: string,
+    @Body() requestBody: UpdateTeamCommandRequest
+  ) {
+    const command: UpdateTeamCommand = {
+      id,
+      ...requestBody,
+    };
+    return await this._updateTeamCommandHandler.handlerAsync(command);
   }
 }

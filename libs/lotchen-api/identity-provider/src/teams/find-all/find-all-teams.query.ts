@@ -2,6 +2,7 @@ import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { AuditUserInfoDto, QueryHandler } from '@lotchen/api/core';
 import { Injectable } from '@nestjs/common';
 import { TeamsProvider } from '../teams.provider';
+import { isBoolean } from 'class-validator';
 
 export class FindAllTeamsQuery {
   @ApiProperty({
@@ -18,6 +19,7 @@ export class FindAllTeamsQuery {
     description: 'Filter by deleted',
     required: false,
     type: Boolean,
+    default: false,
   })
   isDeleted!: boolean;
 }
@@ -81,33 +83,39 @@ export class FindAllTeamsQueryHandler
   ): Promise<FindAllTeamsQueryResponse[]> {
     // dynamic projection
     let projection =
-      'id name description managerInfo createdAt updatedAt createdByInfo manager members';
+      'id name description managerInfo createdAt updatedAt createdByInfo members';
 
     if (query.fields) projection = query.fields.split(',').join(' ');
 
     // Filter
-    let queryFilter: { [key: string]: any } = { isDeleted: null };
+    let queryFilter: { [key: string]: any } = { deletedAt: null };
     if (query.name) {
       queryFilter = { ...queryFilter, name: new RegExp(query.name, 'i') };
     }
 
-    const teams = await this._teamsProvider.TeamModel.find(
+    if (isBoolean(query.isDeleted)) {
+      queryFilter = { ...queryFilter, deletedAt: { $ne: null } };
+    }
+
+    // Teams QueryBuilder
+    const teamsQueryBuilder = this._teamsProvider.TeamModel.find(
       queryFilter,
       projection,
       {
         sort: { createdAt: -1 },
       }
-    )
-      .populate({
+    );
+
+    // Populate members relation
+    if (query.fields.includes('members')) {
+      teamsQueryBuilder.populate({
         path: 'members',
         select: 'id email',
-        match: { isDeleted: null },
-      })
-      .populate({
-        path: 'manager',
-        select: 'id email',
-      })
-      .exec();
+        match: { deletedAt: null },
+      });
+    }
+
+    const teams = await teamsQueryBuilder.exec();
 
     return teams.map((team) => {
       return {
@@ -125,7 +133,7 @@ export class FindAllTeamsQueryHandler
             ]
           : undefined,
         managerInfo:
-          team.managerInfo?.userId && query.fields.includes('manager')
+          team.managerInfo?.userId && query.fields.includes('managerInfo')
             ? {
                 id: team.managerInfo?.userId || '',
                 email: team.managerInfo?.email || '',

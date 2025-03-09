@@ -1194,6 +1194,7 @@
             "in": "query",
             "description": "Filter by deleted",
             "schema": {
+              "default": false,
               "type": "boolean"
             }
           }
@@ -1211,6 +1212,76 @@
                 }
               }
             }
+          }
+        },
+        "tags": [
+          "Teams"
+        ]
+      }
+    },
+    "/api/v1/teams/{id}": {
+      "delete": {
+        "operationId": "TeamsController_deleteTeam_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Teams"
+        ]
+      },
+      "put": {
+        "operationId": "TeamsController_updateTeam_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeamCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Update team"
           }
         },
         "tags": [
@@ -2337,6 +2408,19 @@
           "createdByInfo",
           "updatedAt"
         ]
+      },
+      "UpdateTeamCommandRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Team new name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Team description"
+          }
+        }
       },
       "FindAllOrganizationQueryResponse": {
         "type": "object",
