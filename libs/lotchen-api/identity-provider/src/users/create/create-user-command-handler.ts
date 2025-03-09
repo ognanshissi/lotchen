@@ -40,31 +40,43 @@ export class CreateUserCommandHandler
 
     session.startTransaction();
 
+    // current user info
+    const { firstName, lastName, username, sub } = this.request.user;
+
     const user = new this.userModel({
       email: request.email,
       password: encryptedPassword,
       salt: salt,
+      createdBy: sub,
+      createdByInfo: {
+        userId: sub,
+        firstName,
+        lastName,
+        email: username,
+      },
     });
 
     const profile = new this.profileModel({
       user: user._id,
-      firstName: '',
-      lastName: '',
-      dateOfBirth: new Date('1992-11-21'),
+      firstName: request.firstName,
+      lastName: request.lastName,
+      dateOfBirth: request.dateOfBirth,
       contactInfo: {
         email: user.email,
         phoneNumbers: {
           mobileNumber: {
             isConfirmed: false,
-            contact: '07877446734',
+            contact: request.mobileNumber,
             isPrimary: true,
           },
-          workNumber: {
-            isConfirmed: false,
-            contact: '0777132974',
-            isPrimary: false,
-          },
         },
+      },
+      createdBy: sub,
+      createdByInfo: {
+        userId: sub,
+        firstName,
+        lastName,
+        email: username,
       },
     });
 

@@ -1316,12 +1316,32 @@
           },
           "confirmPassword": {
             "type": "string"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "firstName"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "LastName"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "description": "Mobile number"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of birth"
           }
         },
         "required": [
           "email",
           "password",
-          "confirmPassword"
+          "confirmPassword",
+          "firstName",
+          "lastName",
+          "mobileNumber"
         ]
       },
       "AuditUserInfoDto": {
