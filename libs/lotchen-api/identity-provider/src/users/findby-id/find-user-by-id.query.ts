@@ -12,33 +12,36 @@ export class FindUserByIdQuery {
 }
 
 export class FindUserByIdQueryRoleDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'Role Id', type: String })
   id!: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Role Name', type: String })
   name!: string;
 }
 
 export class FindUserByIdQueryResponse {
-  @ApiProperty()
-  id!: ObjectId;
+  @ApiProperty({ description: 'User Id', type: String })
+  id!: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'User Email', type: String })
   email!: string;
 
-  @ApiProperty({ type: Boolean })
+  @ApiProperty({ type: Boolean, description: 'Is user verified' })
   isVerified!: boolean;
 
-  @ApiProperty({ type: Boolean })
+  @ApiProperty({ type: Boolean, description: 'Is user locked' })
   isLocked!: boolean;
 
-  @ApiProperty({ type: Boolean })
+  @ApiProperty({ type: Boolean, description: 'Is user super admin' })
   isSuperAdmin!: boolean;
 
-  @ApiProperty({ type: [String] })
+  @ApiProperty({ type: [String], description: 'User permissions' })
   permissions!: string[];
 
-  @ApiProperty({ type: () => FindUserByIdQueryRoleDto })
+  @ApiProperty({
+    type: () => FindUserByIdQueryRoleDto,
+    description: 'User roles',
+  })
   roles!: FindUserByIdQueryRoleDto[];
 }
 
@@ -54,7 +57,7 @@ export class FindUserByIdQueryHandler
     const user = await this.userModel
       .findById(query.id)
       .where({
-        isDeleted: false,
+        deleteAt: null,
         isSystemAdmin: false,
       })
       .populate('roles')

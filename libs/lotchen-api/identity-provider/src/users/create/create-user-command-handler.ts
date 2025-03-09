@@ -1,10 +1,9 @@
-import { RequestExtendedWithUser, RequestHandler } from '@lotchen/api/core';
+import { RequestHandler } from '@lotchen/api/core';
 import { CreateUserCommand } from './create-user-command';
 import { User, UserExtension } from '../user.schema';
 import { Connection, Model } from 'mongoose';
 import { Profile } from '../../profile/profile.schema';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
 import { UsersErrors } from '../users-errors';
 
 @Injectable()
@@ -14,11 +13,26 @@ export class CreateUserCommandHandler
   constructor(
     @Inject('USER_MODEL') private readonly userModel: Model<User>,
     @Inject('PROFILE_MODEL') private readonly profileModel: Model<Profile>,
-    @Inject('TENANT_CONNECTION') private readonly connection: Connection,
-    @Inject(REQUEST) private readonly request: RequestExtendedWithUser
+    @Inject('TENANT_CONNECTION') private readonly connection: Connection
   ) {}
 
+  /**
+   * Create only one superAdmin
+   * @param request
+   * @returns
+   */
   public async handlerAsync(request: CreateUserCommand): Promise<null> {
+    // check if superAdmin already exist - only one superAdmin is allowed
+    const superAdmin = await this.userModel
+      .countDocuments({ isSuperAdmin: true })
+      .lean()
+      .exec();
+
+    if (superAdmin) {
+      throw new BadRequestException(UsersErrors.SuperAdminAlreadyExist());
+    }
+
+    // check if password and confirmPassword match
     if (request?.confirmPassword !== request?.password) {
       throw new BadRequestException("Passwords doesn't match");
     }
@@ -37,23 +51,13 @@ export class CreateUserCommandHandler
       await UserExtension.generatePasswordHash(request.password);
 
     const session = await this.connection.startSession();
-
     session.startTransaction();
-
-    // current user info
-    const { firstName, lastName, username, sub } = this.request.user;
 
     const user = new this.userModel({
       email: request.email,
       password: encryptedPassword,
       salt: salt,
-      createdBy: sub,
-      createdByInfo: {
-        userId: sub,
-        firstName,
-        lastName,
-        email: username,
-      },
+      isSuperAdmin: true,
     });
 
     const profile = new this.profileModel({
@@ -70,13 +74,6 @@ export class CreateUserCommandHandler
             isPrimary: true,
           },
         },
-      },
-      createdBy: sub,
-      createdByInfo: {
-        userId: sub,
-        firstName,
-        lastName,
-        email: username,
       },
     });
 

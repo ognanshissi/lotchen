@@ -9,6 +9,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Request } from 'express';
 import { TeamsProvider } from '../teams.provider';
 import { REQUEST } from '@nestjs/core';
+import { TerritoriesProvider } from '../../territories/territories.provider';
+import { TerritoryInfo } from '../team.schema';
 
 export class UpdateTeamCommandRequest {
   @ApiProperty({ description: 'Team new name', required: false, type: String })
@@ -20,6 +22,9 @@ export class UpdateTeamCommandRequest {
     type: String,
   })
   description!: string;
+
+  @ApiProperty({ description: 'Territory Id', type: String, required: false })
+  territoryId!: string;
 }
 
 export class UpdateTeamCommand extends UpdateTeamCommandRequest {
@@ -33,7 +38,8 @@ export class UpdateTeamCommandHandler
 {
   constructor(
     private readonly _teamsProvider: TeamsProvider,
-    @Inject(REQUEST) private readonly _request: RequestExtendedWithUser
+    @Inject(REQUEST) private readonly _request: RequestExtendedWithUser,
+    private readonly _territoriesProvider: TerritoriesProvider
   ) {}
 
   public async handlerAsync(
@@ -68,6 +74,27 @@ export class UpdateTeamCommandHandler
       }
 
       updateSet = { ...updateSet, name: command.name };
+    }
+
+    // territory update
+    if (command.territoryId) {
+      const territory = await this._territoriesProvider.TerritoryModel.findOne(
+        { _id: command.territoryId },
+        'id name'
+      )
+        .lean()
+        .exec();
+      if (!territory) {
+        throw new BadRequestException('Territory not found!');
+      }
+      updateSet = {
+        ...updateSet,
+        territoryId: command.territoryId,
+        territoryInfo: {
+          id: territory._id,
+          name: territory.name,
+        } as TerritoryInfo,
+      };
     }
 
     // update description

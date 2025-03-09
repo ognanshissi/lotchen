@@ -6,9 +6,9 @@
         "operationId": "UsersController_createUser_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -37,9 +37,9 @@
         "operationId": "UsersController_allUsers_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -106,9 +106,9 @@
         "operationId": "UsersController_findUserById_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -142,9 +142,9 @@
         "operationId": "UsersController_deleteUser_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -173,9 +173,9 @@
         "operationId": "UsersController_assignPermissionsToUser_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -214,9 +214,9 @@
         "operationId": "UsersController_assignRolesToUser_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -255,9 +255,9 @@
         "operationId": "UsersController_updateUserRoles_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -286,9 +286,9 @@
         "operationId": "UsersController_petUserPermissions_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -327,9 +327,9 @@
         "operationId": "UsersController_searchUserPaginate_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -382,9 +382,9 @@
         "operationId": "UsersController_inviteUser_v1",
         "parameters": [
           {
-            "name": "x-tenant-fqn",
+            "name": "x-tenant-fqdn",
             "in": "header",
-            "description": "The Tenant Fqn",
+            "description": "The Tenant Fqdn",
             "schema": {
               "type": "string"
             }
@@ -1484,18 +1484,16 @@
           "createdByInfo"
         ]
       },
-      "SchemaObjectId": {
-        "type": "object",
-        "properties": {}
-      },
       "FindUserByIdQueryRoleDto": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Role Id"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Role Name"
           }
         },
         "required": [
@@ -1507,28 +1505,39 @@
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/SchemaObjectId"
+            "type": "string",
+            "description": "User Id"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "User Email"
           },
           "isVerified": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Is user verified"
           },
           "isLocked": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Is user locked"
           },
           "isSuperAdmin": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Is user super admin"
           },
           "permissions": {
+            "description": "User permissions",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "roles": {
-            "$ref": "#/components/schemas/FindUserByIdQueryRoleDto"
+            "description": "User roles",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FindUserByIdQueryRoleDto"
+              }
+            ]
           }
         },
         "required": [
@@ -2419,6 +2428,10 @@
           "description": {
             "type": "string",
             "description": "Team description"
+          },
+          "territoryId": {
+            "type": "string",
+            "description": "Territory Id"
           }
         }
       },

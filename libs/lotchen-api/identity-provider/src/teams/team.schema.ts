@@ -4,6 +4,14 @@ import * as mongoose from 'mongoose';
 import { User } from '../users';
 import { Territory } from '../territories/territory.schema';
 
+@Schema({ timestamps: false, id: false, _id: false })
+export class TerritoryInfo {
+  @Prop({ type: String })
+  name!: string;
+  @Prop({ type: 'UUID' })
+  id!: string;
+}
+
 @Schema({ collection: 'identity_teams', timestamps: true })
 export class Team extends AggregateRoot {
   @Prop({ unique: true, type: String })
@@ -18,13 +26,13 @@ export class Team extends AggregateRoot {
   })
   members!: User[];
 
-  // Reference
+  // Reference - suitable to populate the entire territory information
   @Prop({ type: mongoose.Schema.Types.UUID, ref: 'Territory' })
   territoryId!: Territory;
 
   // Useful for quick territory information
-  @Prop({ type: Object, default: null })
-  territoryInfo!: { name: string; id: string };
+  @Prop({ type: TerritoryInfo, default: null })
+  territoryInfo!: TerritoryInfo;
 
   @Prop({
     type: mongoose.Schema.Types.UUID,

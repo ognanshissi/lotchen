@@ -60,7 +60,7 @@ export class InviteUserCommand {
 
 @Injectable()
 export class InviteUserCommandHandler
-  implements CommandHandler<InviteUserCommand, any>
+  implements CommandHandler<InviteUserCommand, void>
 {
   constructor(
     @Inject('USER_MODEL') private readonly userModel: Model<UserDocument>,
@@ -72,7 +72,7 @@ export class InviteUserCommandHandler
     private readonly request: RequestExtendedWithUser
   ) {}
 
-  public async handlerAsync(command: InviteUserCommand): Promise<string> {
+  public async handlerAsync(command: InviteUserCommand): Promise<void> {
     const existingUser = await this.userModel
       .findOne({ email: command.email })
       .lean()
@@ -107,7 +107,6 @@ export class InviteUserCommandHandler
       .exec();
 
     // Need user team assignment history
-
     const { firstName, lastName, username, sub } = this.request.user;
 
     const user = new this.userModel({
@@ -159,8 +158,7 @@ export class InviteUserCommandHandler
     await user.save();
     await profile.save();
 
-    return user._id;
-
+    // return user._id;
     // this.eventEmitter.emit(USER_INVITED_EVENT, new InvitedUserEvent(user._id));
   }
 }
