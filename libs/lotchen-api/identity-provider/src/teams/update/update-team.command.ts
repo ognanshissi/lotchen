@@ -10,7 +10,10 @@ import { Request } from 'express';
 import { TeamsProvider } from '../teams.provider';
 import { REQUEST } from '@nestjs/core';
 import { TerritoriesProvider } from '../../territories/territories.provider';
-import { TerritoryInfo } from '../team.schema';
+import { Team, TerritoryInfo } from '../team.schema';
+import { UserDocument } from '../../users';
+import { Model } from 'mongoose';
+import { Profile } from '../../profile';
 
 export class UpdateTeamCommandRequest {
   @ApiProperty({ description: 'Team new name', required: false, type: String })
@@ -25,6 +28,9 @@ export class UpdateTeamCommandRequest {
 
   @ApiProperty({ description: 'Territory Id', type: String, required: false })
   territoryId!: string;
+
+  @ApiProperty({ description: 'Manager Id', type: String, required: false })
+  managerId!: string;
 }
 
 export class UpdateTeamCommand extends UpdateTeamCommandRequest {
@@ -39,7 +45,8 @@ export class UpdateTeamCommandHandler
   constructor(
     private readonly _teamsProvider: TeamsProvider,
     @Inject(REQUEST) private readonly _request: RequestExtendedWithUser,
-    private readonly _territoriesProvider: TerritoriesProvider
+    private readonly _territoriesProvider: TerritoriesProvider,
+    @Inject('PROFILE_MODEL') private readonly _profileModel: Model<Profile>
   ) {}
 
   public async handlerAsync(
@@ -57,7 +64,7 @@ export class UpdateTeamCommandHandler
       throw new NotFoundException('Team to delete not found!');
     }
 
-    let updateSet: { [key: string]: any } = {};
+    let updateSet: Partial<Team> = {};
 
     // Make sure the new name is unique
     if (command.name) {
@@ -97,6 +104,32 @@ export class UpdateTeamCommandHandler
       };
     }
 
+    // manager update
+    if (command.managerId) {
+      const manager = await this._profileModel
+        .findOne(
+          { user: command.managerId },
+          'id contactInfo firstName lastName'
+        )
+        .populate('user', 'email id')
+        .lean()
+        .exec();
+
+      if (!manager) {
+        throw new BadRequestException('Manager not found!');
+      }
+      updateSet = {
+        ...updateSet,
+        manager: manager.user._id,
+        managerInfo: {
+          userId: manager.user._id,
+          email: manager.contactInfo.email,
+          firstName: manager.firstName,
+          lastName: manager.lastName,
+        },
+      };
+    }
+
     // update description
     if (command.description)
       updateSet = { ...updateSet, description: command.description };
@@ -113,6 +146,5 @@ export class UpdateTeamCommandHandler
       command.id,
       updateSet
     );
-    console.log(update);
   }
 }

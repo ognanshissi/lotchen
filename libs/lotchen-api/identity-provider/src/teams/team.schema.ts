@@ -28,7 +28,7 @@ export class Team extends AggregateRoot {
 
   // Reference - suitable to populate the entire territory information
   @Prop({ type: mongoose.Schema.Types.UUID, ref: 'Territory' })
-  territoryId!: Territory;
+  territoryId!: Territory | string;
 
   // Useful for quick territory information
   @Prop({ type: TerritoryInfo, default: null })
@@ -39,7 +39,7 @@ export class Team extends AggregateRoot {
     ref: 'User',
     required: false,
   })
-  manager!: User;
+  manager!: User | string;
 
   @Prop({ type: ActivityUser, required: true })
   managerInfo!: ActivityUser;

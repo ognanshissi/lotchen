@@ -2432,6 +2432,10 @@
           "territoryId": {
             "type": "string",
             "description": "Territory Id"
+          },
+          "managerId": {
+            "type": "string",
+            "description": "Manager Id"
           }
         }
       },
