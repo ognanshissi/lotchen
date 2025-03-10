@@ -1,4 +1,4 @@
-import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { AuditUserInfoDto } from '@lotchen/api/core';
 
 export class FindAllUserQuery {
@@ -34,7 +34,6 @@ export class FindAllUserQuery {
   isDeleted!: boolean;
 }
 
-@ApiExtraModels(AuditUserInfoDto)
 export class FindAllUserQueryResponse {
   @ApiProperty({ description: 'User id, use `id` for dynamic field querying' })
   userId!: string;

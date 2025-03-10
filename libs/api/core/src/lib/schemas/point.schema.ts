@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-@Schema({ timestamps: false, versionKey: false })
+@Schema({ timestamps: false, versionKey: false, _id: false, id: false })
 export class Point {
   @Prop({ type: String, enum: ['Point'], required: true })
   type!: string;

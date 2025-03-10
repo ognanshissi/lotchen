@@ -1,0 +1,76 @@
+import { AddressDto, QueryHandler } from '@lotchen/api/core';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
+import { ContactProvider } from '../contact.provider';
+
+export class FindContactByIdQuery {
+  @ApiProperty({
+    required: true,
+    description: 'Id',
+    type: String,
+  })
+  id!: string;
+}
+
+export class FindContactByIdQueryResponse {
+  @ApiProperty({ required: true, description: 'Id', type: String })
+  id!: string;
+
+  @ApiProperty({ required: false, description: 'Email', type: String })
+  email!: string;
+
+  @ApiProperty({ required: false, description: 'First name', type: String })
+  firstName!: string;
+
+  @ApiProperty({ required: false, description: 'Last name', type: String })
+  lastName!: string;
+
+  @ApiProperty({ required: false, description: 'Mobile number', type: String })
+  mobileNumber!: string;
+
+  @ApiProperty({ required: false, description: 'Date of birth', type: Date })
+  dateOfBirth!: Date;
+
+  @ApiProperty({ required: false, description: 'Date of creation', type: Date })
+  createdAt!: Date;
+
+  @ApiProperty({
+    required: false,
+    description: 'Address',
+    type: () => AddressDto,
+  })
+  address!: AddressDto | null;
+}
+
+@Injectable()
+export class FindContactByQueryHandler
+  implements QueryHandler<FindContactByIdQuery, FindContactByIdQueryResponse>
+{
+  constructor(private readonly contactProvider: ContactProvider) {}
+
+  async handlerAsync(
+    query: FindContactByIdQuery
+  ): Promise<FindContactByIdQueryResponse> {
+    const contact = await this.contactProvider.ContactModel.findById(
+      query.id,
+      'id email firstName lastName mobileNumber dateOfBirth address createdAt'
+    )
+      .lean()
+      .exec();
+
+    if (!contact) {
+      throw new NotFoundException('Contact not found');
+    }
+
+    return {
+      id: contact.id,
+      email: contact.email,
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      mobileNumber: contact.mobileNumber,
+      dateOfBirth: contact.dateOfBirth,
+      createdAt: contact.createdAt,
+      address: null,
+    };
+  }
+}

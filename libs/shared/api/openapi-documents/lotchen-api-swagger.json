@@ -1359,6 +1359,159 @@
           "Organizations"
         ]
       }
+    },
+    "/api/v1/contacts": {
+      "post": {
+        "operationId": "ContactsController_createContact_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContactCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Contact created"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      },
+      "get": {
+        "operationId": "ContactsController_findAllContacts_v1",
+        "parameters": [
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "Fields to return",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "required": false,
+            "in": "query",
+            "description": "Filter by email",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mobileNumber",
+            "required": false,
+            "in": "query",
+            "description": "Filter by mobile number",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "firstName",
+            "required": false,
+            "in": "query",
+            "description": "Filter by first name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lastName",
+            "required": false,
+            "in": "query",
+            "description": "Filter by last name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contacts found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllContactsQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
+    },
+    "/api/v1/contacts/{id}": {
+      "get": {
+        "operationId": "ContactsController_findContactById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindContactByIdQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      },
+      "put": {
+        "operationId": "ContactsController_updateContact_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateContactCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Contact updated"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
     }
   },
   "info": {
@@ -1380,13 +1533,16 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "Email"
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "description": "Password"
           },
           "confirmPassword": {
-            "type": "string"
+            "type": "string",
+            "description": "Confirm password"
           },
           "firstName": {
             "type": "string",
@@ -1436,8 +1592,7 @@
           }
         },
         "required": [
-          "id",
-          "email"
+          "id"
         ]
       },
       "FindAllUserQueryResponse": {
@@ -2484,6 +2639,211 @@
           "name",
           "description"
         ]
+      },
+      "CreateContactCommand": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "firstName"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "LastName"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "description": "Mobile number"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of birth"
+          }
+        },
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "mobileNumber"
+        ]
+      },
+      "FindAllContactsQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "First name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "description": "Mobile number"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of birth"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of creation"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of update"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "LocationDto": {
+        "type": "object",
+        "properties": {
+          "point": {
+            "type": "string",
+            "description": "Type",
+            "default": "Point"
+          },
+          "coordinates": {
+            "description": "Coordinates [longitude, latitude]",
+            "example": "[7.5455112, -5.547545]",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "AddressDto": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "Street"
+          },
+          "city": {
+            "type": "string",
+            "description": "City"
+          },
+          "state": {
+            "type": "string",
+            "description": "State"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Zip code"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country"
+          },
+          "isDefaultAddress": {
+            "type": "boolean",
+            "description": "Is default address"
+          },
+          "location": {
+            "description": "Location",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationDto"
+              }
+            ]
+          }
+        }
+      },
+      "FindContactByIdQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "First name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "description": "Mobile number"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of birth"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of creation"
+          },
+          "address": {
+            "description": "Address",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "UpdateContactCommandRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "Contact firstName"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Contact lastName"
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact Email"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "description": "Contact mobileNumber"
+          },
+          "address": {
+            "description": "Contact Address",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressDto"
+              }
+            ]
+          }
+        }
       }
     }
   }

@@ -11,7 +11,6 @@ import { TeamsProvider } from '../teams.provider';
 import { REQUEST } from '@nestjs/core';
 import { TerritoriesProvider } from '../../territories/territories.provider';
 import { Team, TerritoryInfo } from '../team.schema';
-import { UserDocument } from '../../users';
 import { Model } from 'mongoose';
 import { Profile } from '../../profile';
 

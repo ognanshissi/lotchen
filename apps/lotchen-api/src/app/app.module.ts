@@ -7,6 +7,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { mongooseModuleAsyncOptions } from './mongoose-module-options';
 import { CoreModule, TenantMiddleware } from '@lotchen/api/core';
 import { IdentityProviderModule } from '@lotchen/lotchen-api/identity-provider';
+import { ContactModule } from '@lotchen/lotchen-api/contact';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { IdentityProviderModule } from '@lotchen/lotchen-api/identity-provider';
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env', cache: true }),
     EventEmitterModule.forRoot(),
     IdentityProviderModule,
+    ContactModule,
     CoreModule,
   ],
   controllers: [],

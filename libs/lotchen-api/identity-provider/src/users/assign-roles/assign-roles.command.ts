@@ -20,14 +20,14 @@ export class AssignRolesCommandRequest {
 
 @Injectable()
 export class AssignRolesCommandHandler
-  implements CommandHandler<AssignRolesCommand, any>
+  implements CommandHandler<AssignRolesCommand, void>
 {
   constructor(
     @Inject('USER_MODEL') private readonly userModel: Model<UserDocument>,
     @Inject('ROLE_MODEL') private readonly roleModel: Model<RoleDocument>
   ) {}
 
-  public async handlerAsync(command: AssignRolesCommand): Promise<any> {
+  public async handlerAsync(command: AssignRolesCommand): Promise<void> {
     const user = await this.userModel.findOne({ _id: command.userId }).exec();
 
     if (!user) {

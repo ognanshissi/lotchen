@@ -46,7 +46,7 @@ export class CreateRoleCommandHandler
     const errors = createdRole.validateSync();
 
     if (errors) {
-      throw new Error(errors.toString());
+      throw new BadRequestException(errors.toString());
     }
     const savedRole = await createdRole.save();
 
