@@ -10,7 +10,6 @@ import { Injectable } from '@nestjs/common';
 import { TerritoryLiteDto } from '../find-all/find-all-territories.query';
 import { TerritoriesProvider } from '../territories.provider';
 
-@ApiExtraModels(FilterDto)
 export class FilterAllTerritoriesCommand {
   @ApiProperty({ type: () => FilterDto<string> })
   name!: FilterDto<string>;

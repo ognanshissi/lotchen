@@ -28,6 +28,13 @@ import {
   UpdateContactCommandHandler,
   UpdateContactCommandRequest,
 } from './update/update-contact.command';
+import { ApiPaginationResponse } from '@lotchen/api/core';
+import {
+  PaginateAllContactsCommand,
+  PaginateAllContactsCommandDto,
+  PaginateAllContactsCommandHandler,
+  PaginateAllContactsCommandResponse,
+} from './paginate-all/paginate-all-contacts.command';
 
 @ApiTags('Contacts')
 @Controller({
@@ -39,7 +46,8 @@ export class ContactsController {
     private readonly _createContactCommandHandler: CreateContactCommandHandler,
     private readonly _findAllContactsQueryHandler: FindAllContactsQueryHandler,
     private readonly _findContactByIdQueryHandler: FindContactByQueryHandler,
-    private readonly _updateContactCommandHandler: UpdateContactCommandHandler
+    private readonly _updateContactCommandHandler: UpdateContactCommandHandler,
+    private readonly _paginateAllContactsCommandHandler: PaginateAllContactsCommandHandler
   ) {}
 
   @Post()
@@ -89,5 +97,13 @@ export class ContactsController {
     @Body() request: UpdateContactCommandRequest
   ): Promise<void> {
     await this._updateContactCommandHandler.handlerAsync({ id, ...request });
+  }
+
+  @Post('/search')
+  @ApiPaginationResponse(PaginateAllContactsCommandDto)
+  async paginateAllTerritories(
+    @Body() command: PaginateAllContactsCommand
+  ): Promise<PaginateAllContactsCommandResponse> {
+    return await this._paginateAllContactsCommandHandler.handlerAsync(command);
   }
 }

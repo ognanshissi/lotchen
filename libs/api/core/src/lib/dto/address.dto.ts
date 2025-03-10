@@ -7,7 +7,7 @@ export class LocationDto {
     default: 'Point',
     type: String,
   })
-  point!: string;
+  type!: string;
   @ApiProperty({
     required: false,
     description: 'Coordinates [longitude, latitude]',

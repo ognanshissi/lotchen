@@ -65,50 +65,35 @@ export class UpdateContactCommandHandler
   async handlerAsync(command: UpdateContactCommand): Promise<void> {
     const contact = await this.contactProvider.ContactModel.findById(
       command.id
-    );
+    ).exec();
     if (!contact) {
       throw new NotFoundException('Contact not found');
     }
 
-    if (command.firstName) {
-      contact.firstName = command.firstName;
-    }
+    // validate new fields - email must be unique
 
-    if (command.lastName) {
-      contact.lastName = command.lastName;
-    }
-
-    if (command.email) {
-      contact.email = command.email;
-    }
-
-    if (command.mobileNumber) {
-      contact.mobileNumber = command.mobileNumber;
-    }
-
-    if (command.address) {
-      contact.address.street = command.address.street;
-      contact.address.city = command.address.city;
-      contact.address.postalCode = command.address.postalCode;
-      contact.address.country = command.address.country;
-      contact.address.state = command.address.state;
-      contact.address.isDefaultAddress = command.address.isDefaultAddress;
-      contact.address.location = {
-        type: 'Point',
-        coordinates: command.address.location.coordinates,
-      };
-    }
-
+    // Update audit fields
     const { firstName, lastName, sub, username } = this._request.user;
 
-    contact.updatedBy = this._request.user.sub;
-    contact.updatedByInfo = {
+    const updatedByInfo = {
       userId: sub,
       email: username,
       firstName,
       lastName,
     };
 
-    await contact.save();
+    await this.contactProvider.ContactModel.findByIdAndUpdate(contact._id, {
+      $set: {
+        address: command.address,
+        email: command.email,
+        firstName: command.firstName,
+        lastName: command.lastName,
+        mobileNumber: command.mobileNumber,
+        updatedBy: sub,
+        updatedByInfo,
+      },
+      new: true,
+    });
+    // await contact.save();
   }
 }

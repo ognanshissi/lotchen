@@ -5,6 +5,7 @@ import { CreateContactCommandHandler } from './create/create-contact.command';
 import { FindAllContactsQueryHandler } from './find-all/find-all-contacts.query';
 import { FindContactByQueryHandler } from './find-by-id/find-contact-by-id.query';
 import { UpdateContactCommandHandler } from './update/update-contact.command';
+import { PaginateAllContactsCommandHandler } from './paginate-all/paginate-all-contacts.command';
 
 @Module({
   imports: [],
@@ -15,6 +16,7 @@ import { UpdateContactCommandHandler } from './update/update-contact.command';
     FindAllContactsQueryHandler,
     FindContactByQueryHandler,
     UpdateContactCommandHandler,
+    PaginateAllContactsCommandHandler,
   ],
   exports: [],
 })

@@ -53,7 +53,7 @@ export class FindContactByQueryHandler
   ): Promise<FindContactByIdQueryResponse> {
     const contact = await this.contactProvider.ContactModel.findById(
       query.id,
-      'id email firstName lastName mobileNumber dateOfBirth address createdAt'
+      'id email firstName lastName mobileNumber dateOfBirth address createdAt updatedAt'
     )
       .lean()
       .exec();
@@ -63,14 +63,25 @@ export class FindContactByQueryHandler
     }
 
     return {
-      id: contact.id,
+      id: contact._id,
       email: contact.email,
       firstName: contact.firstName,
       lastName: contact.lastName,
       mobileNumber: contact.mobileNumber,
       dateOfBirth: contact.dateOfBirth,
       createdAt: contact.createdAt,
-      address: null,
+      address: {
+        street: contact.address.street,
+        city: contact.address.city,
+        postalCode: contact.address.postalCode,
+        state: contact.address.state,
+        isDefaultAddress: contact.address.isDefaultAddress,
+        country: contact.address.country,
+        location: {
+          type: contact.address.location.type,
+          coordinates: contact.address.location.coordinates,
+        },
+      },
     };
   }
 }

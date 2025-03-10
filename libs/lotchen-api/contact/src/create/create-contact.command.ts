@@ -49,16 +49,30 @@ export class CreateContactCommandHandler
     }
   }
 
+  /**
+   *
+   * @param contactModel
+   * @param command
+   */
   private async createContactAsync(
     contactModel: Model<ContactDocument>,
     command: CreateContactCommand
   ): Promise<void> {
+    const { firstName, lastName, username, sub } = this._request.user;
+
     const contact = new contactModel({
       email: command.email,
       firstName: command.firstName,
       lastName: command.lastName,
       mobileNumber: command.mobileNumber,
       dateOfBirth: command.dateOfBirth,
+      createdBy: sub,
+      createdByInfo: {
+        userId: sub,
+        email: username,
+        firstName,
+        lastName,
+      },
     });
     contact.validateSync();
     await contact.save(); // save the contact

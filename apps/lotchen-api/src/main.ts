@@ -4,7 +4,12 @@ import fs from 'node:fs';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import helmet from 'helmet';
-import { AddressDto, AuditUserInfoDto, LocationDto } from '@lotchen/api/core';
+import {
+  AddressDto,
+  AuditUserInfoDto,
+  FilterDto,
+  LocationDto,
+} from '@lotchen/api/core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,7 +32,7 @@ async function bootstrap() {
     // .addServer(`http://localhost:${port}`, 'Local server http')
     .build();
   const document = SwaggerModule.createDocument(app, config, {
-    extraModels: [AddressDto, LocationDto, AuditUserInfoDto],
+    extraModels: [AddressDto, LocationDto, AuditUserInfoDto, FilterDto],
   });
   fs.writeFileSync(
     './libs/shared/api/openapi-documents/lotchen-api-swagger.json',
