@@ -1513,16 +1513,25 @@
         ]
       }
     },
-    "/api/v1/contacts/search": {
+    "/api/v1/contacts/paginate": {
       "post": {
         "operationId": "ContactsController_paginateAllTerritories_v1",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "fields",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PaginateAllContactsCommand"
+                "$ref": "#/components/schemas/PaginateAllContactsCommandRequest"
               }
             }
           }
@@ -2923,6 +2932,11 @@
           "updatedAt": {
             "format": "date-time",
             "type": "string"
+          },
+          "score": {
+            "type": "number",
+            "description": "record score",
+            "default": 0
           }
         },
         "required": [
@@ -2933,25 +2947,45 @@
           "mobileNumber",
           "createdByInfo",
           "createdAt",
-          "updatedAt"
+          "updatedAt",
+          "score"
         ]
       },
       "FilterAllContactsCommand": {
         "type": "object",
         "properties": {
           "fullName": {
-            "$ref": "#/components/schemas/FilterDto"
+            "description": "Filter by fullName",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
           },
           "email": {
-            "$ref": "#/components/schemas/FilterDto"
+            "description": "Filter by email",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "mobileNumber": {
+            "description": "Filter by mobileNumber",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
           }
         },
         "required": [
           "fullName",
-          "email"
+          "email",
+          "mobileNumber"
         ]
       },
-      "PaginateAllContactsCommand": {
+      "PaginateAllContactsCommandRequest": {
         "type": "object",
         "properties": {
           "sort": {
@@ -2976,12 +3010,17 @@
                 "$ref": "#/components/schemas/FilterAllContactsCommand"
               }
             ]
+          },
+          "fullTextSearch": {
+            "type": "string",
+            "description": "Full-Text search on following fields: firstName, lastname, email, mobileNumber"
           }
         },
         "required": [
           "pageIndex",
           "pageSize",
-          "filters"
+          "filters",
+          "fullTextSearch"
         ]
       }
     }

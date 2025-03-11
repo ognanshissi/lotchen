@@ -8,22 +8,50 @@ import {
 } from '@lotchen/api/core';
 import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
 import { ContactProvider } from '../contact.provider';
+import { Injectable } from '@nestjs/common';
 
 export class FilterAllContactsCommand {
-  @ApiProperty({ type: () => FilterDto<string> })
+  @ApiProperty({
+    type: () => FilterDto<string>,
+    description: 'Filter by fullName',
+  })
   fullName!: FilterDto<string>;
 
-  @ApiProperty({ type: () => FilterDto<string> })
+  @ApiProperty({
+    type: () => FilterDto<string>,
+    description: 'Filter by email',
+  })
   email!: FilterDto<string>;
+
+  @ApiProperty({
+    type: () => FilterDto<string>,
+    description: 'Filter by mobileNumber',
+  })
+  mobileNumber!: FilterDto<string>;
 }
 
 @ApiExtraModels(FilterAllContactsCommand)
-export class PaginateAllContactsCommand extends PaginationRequest {
+export class PaginateAllContactsCommandRequest extends PaginationRequest {
   @ApiProperty({
     type: () => FilterAllContactsCommand,
     description: 'Filters for the query',
   })
   filters!: FilterAllContactsCommand;
+
+  @ApiProperty({
+    description:
+      'Full-Text search on following fields: firstName, lastname, email, mobileNumber',
+  })
+  fullTextSearch!: string;
+}
+
+export class PaginateAllContactsCommand extends PaginateAllContactsCommandRequest {
+  @ApiProperty({
+    description: 'Fields to return',
+    type: String,
+    required: false,
+  })
+  fields!: string;
 }
 
 export class PaginateAllContactsCommandDto {
@@ -50,10 +78,14 @@ export class PaginateAllContactsCommandDto {
 
   @ApiProperty({ type: Date })
   updatedAt!: Date;
+
+  @ApiProperty({ description: 'record score', type: Number, default: 0 })
+  score!: number;
 }
 
 export class PaginateAllContactsCommandResponse extends Pagination<PaginateAllContactsCommandDto> {}
 
+@Injectable()
 export class PaginateAllContactsCommandHandler
   implements
     CommandHandler<
@@ -65,9 +97,44 @@ export class PaginateAllContactsCommandHandler
   public async handlerAsync(
     command: PaginateAllContactsCommand
   ): Promise<PaginateAllContactsCommandResponse> {
-    const queryFilter = {
-      email: filterQueryGenerator(command.filters.email),
-      firstName: filterQueryGenerator(command.filters.fullName),
+    // Dynamic filter query builder
+    let queryFilter: { [key: string]: any } = { deletedAt: null };
+
+    if (command.filters?.email) {
+      queryFilter = {
+        ...queryFilter,
+        email: filterQueryGenerator(command.filters.email),
+      };
+    }
+
+    if (command.filters?.mobileNumber) {
+      queryFilter = {
+        ...queryFilter,
+        mobileNumber: filterQueryGenerator(command.filters.mobileNumber),
+      };
+    }
+    let addFields = {};
+
+    if (command.fullTextSearch) {
+      queryFilter = {
+        ...queryFilter,
+        $text: { $search: command.fullTextSearch },
+      };
+
+      addFields = { score: { $meta: 'textScore' } };
+    }
+    // Projection
+    const projection: { [key: string]: number } = {
+      _id: 1,
+      firstName: 1,
+      lastName: 1,
+      email: 1,
+      mobileNumber: 1,
+      createdAt: 1,
+      updatedAt: 1,
+      updatedBy: 1,
+      createdByInfo: 1,
+      score: 1,
     };
 
     const totalDocuments =
@@ -80,21 +147,10 @@ export class PaginateAllContactsCommandHandler
     const results = await this.contactProvider.ContactModel.aggregate([
       { $match: queryFilter },
       { $skip: Math.max(command.pageIndex * command.pageSize, 0) },
+      { $addFields: addFields },
       { $limit: command.pageSize },
-      { $sort: { name: 1 } },
-      {
-        $project: {
-          _id: 1,
-          firstName: 1,
-          lastName: 1,
-          email: 1,
-          mobileNumber: 1,
-          createdAt: 1,
-          updatedAt: 1,
-          updatedBy: 1,
-          createdByInfo: 1,
-        },
-      },
+      { $sort: { score: -1 } },
+      { $project: projection },
     ]).exec();
 
     return {
@@ -105,13 +161,14 @@ export class PaginateAllContactsCommandHandler
         ...results.map((item) => {
           return {
             id: item._id,
-            firstName: item.firstName,
             email: item.email,
             mobileNumber: item.mobileNumber,
+            firstName: item.firstName,
             lastName: item.lastName,
             createdAt: item.createdAt,
             updatedAt: item.updatedAt,
             createdByInfo: item.createdBy,
+            score: item.score,
           } satisfies PaginateAllContactsCommandDto;
         }),
       ],

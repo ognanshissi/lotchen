@@ -66,3 +66,11 @@ export class Contact extends AggregateRoot {
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);
+
+// Create indexe for full-text search
+ContactSchema.index({
+  firstName: 'text',
+  lastName: 'text',
+  email: 'text',
+  mobileNumber: 'text',
+});

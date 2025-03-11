@@ -33,6 +33,7 @@ import {
   PaginateAllContactsCommand,
   PaginateAllContactsCommandDto,
   PaginateAllContactsCommandHandler,
+  PaginateAllContactsCommandRequest,
   PaginateAllContactsCommandResponse,
 } from './paginate-all/paginate-all-contacts.command';
 
@@ -99,11 +100,16 @@ export class ContactsController {
     await this._updateContactCommandHandler.handlerAsync({ id, ...request });
   }
 
-  @Post('/search')
+  @Post('/paginate')
   @ApiPaginationResponse(PaginateAllContactsCommandDto)
+  @HttpCode(HttpStatus.OK)
   async paginateAllTerritories(
-    @Body() command: PaginateAllContactsCommand
+    @Body() command: PaginateAllContactsCommandRequest,
+    @Query('fields') fields: string
   ): Promise<PaginateAllContactsCommandResponse> {
-    return await this._paginateAllContactsCommandHandler.handlerAsync(command);
+    return await this._paginateAllContactsCommandHandler.handlerAsync({
+      ...command,
+      fields,
+    });
   }
 }
