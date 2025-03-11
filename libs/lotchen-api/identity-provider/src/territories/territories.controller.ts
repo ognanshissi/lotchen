@@ -59,7 +59,7 @@ export class TerritoriesController {
     return await this._findAllTerritoriesQueryHandler.handlerAsync(query);
   }
 
-  @Post('/search')
+  @Post('/paginate')
   @ApiPaginationResponse(PaginateAllTerritoriesCommand)
   async paginateAllTerritories(
     @Body() command: PaginateAllTerritoriesCommand

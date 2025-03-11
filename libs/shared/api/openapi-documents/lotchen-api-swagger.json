@@ -944,9 +944,22 @@
             "in": "query",
             "description": "This is a comma separated list, define the properties the api should return",
             "schema": {
-              "default": "id,name,createdByInfo",
-              "example": "id,name,createdByInfo",
+              "default": "id,name,timestamp,createdByInfo,parent,children",
+              "example": "id,name,timestamp,createdByInfo,parent,children",
               "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Length of records to return",
+            "schema": {
+              "minimum": 5,
+              "maximum": 30,
+              "default": 5,
+              "example": 5,
+              "type": "number"
             }
           }
         ],
@@ -970,7 +983,7 @@
         ]
       }
     },
-    "/api/v1/territories/search": {
+    "/api/v1/territories/paginate": {
       "post": {
         "operationId": "TerritoriesController_paginateAllTerritories_v1",
         "parameters": [
@@ -2307,7 +2320,7 @@
             "type": "string",
             "description": "Latest updated At"
           },
-          "createdBy": {
+          "createdByInfo": {
             "description": "Person who created the entry",
             "allOf": [
               {
@@ -2904,7 +2917,8 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Contact Id"
           },
           "email": {
             "type": "string",
@@ -2923,24 +2937,30 @@
             "description": "Contact mobile number"
           },
           "createdByInfo": {
-            "$ref": "#/components/schemas/AuditUserInfoDto"
+            "description": "User information who created the record",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AuditUserInfoDto"
+              }
+            ]
           },
           "createdAt": {
             "format": "date-time",
-            "type": "string"
+            "type": "string",
+            "description": "Date of creation"
           },
           "updatedAt": {
             "format": "date-time",
-            "type": "string"
+            "type": "string",
+            "description": "Date of update"
           },
           "score": {
             "type": "number",
-            "description": "record score",
+            "description": "Record score",
             "default": 0
           }
         },
         "required": [
-          "id",
           "email",
           "firstName",
           "lastName",

@@ -1,4 +1,6 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { IsInt, Max, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class FindAllTerritoriesQuery {
   @ApiProperty({
@@ -19,10 +21,24 @@ export class FindAllTerritoriesQuery {
   @ApiProperty({
     description:
       'This is a comma separated list, define the properties the api should return',
-    example: 'id,name,createdByInfo',
-    default: 'id,name,createdByInfo',
+    example: 'id,name,timestamp,createdByInfo,parent,children',
+    default: 'id,name,timestamp,createdByInfo,parent,children',
   })
   fields!: string;
+
+  @ApiProperty({
+    maximum: 30,
+    minimum: 5,
+    example: 5,
+    default: 5,
+    description: 'Length of records to return',
+    type: Number,
+  })
+  @IsInt()
+  @Type(() => Number)
+  @Max(30)
+  @Min(5)
+  public limit!: number;
 }
 
 export class TerritoryLiteDto {
@@ -35,7 +51,7 @@ export class TerritoryLiteDto {
 export class TerritoriesQueryUserDto {
   @ApiProperty({ description: 'User Id', type: String })
   id!: string;
-  @ApiProperty({ description: 'Email', type: 'string' })
+  @ApiProperty({ description: 'Email', type: String })
   email!: string;
 
   @ApiProperty({
@@ -64,7 +80,7 @@ export class FindAllTerritoriesQueryResponse {
     type: () => TerritoriesQueryUserDto,
     required: false,
   })
-  createdBy!: TerritoriesQueryUserDto;
+  createdByInfo!: TerritoriesQueryUserDto;
 
   @ApiProperty({
     type: () => TerritoryLiteDto,

@@ -29,10 +29,13 @@ export class FindAllTerritoriesQueryHandler
 
     // projection
     let projection =
-      '_id name createdAt parent updatedAt updatedBy parent createdByInfo';
+      '_id name createdAt parent updatedAt updatedBy createdByInfo';
 
     if (query.fields) {
-      projection = query.fields.split(',').join(' ');
+      projection = query.fields
+        .replace('timestamp', 'createdAt,updatedAt')
+        .split(',')
+        .join(' ');
     }
 
     const territories = await this.territoryProvider.TerritoryModel.find(
@@ -42,6 +45,7 @@ export class FindAllTerritoriesQueryHandler
         sort: {
           createdBy: -1,
         },
+        limit: query.limit,
       }
     )
       .populate({
@@ -64,7 +68,7 @@ export class FindAllTerritoriesQueryHandler
             : undefined,
         createdAt: territory?.createdAt,
         updatedAt: territory?.updatedAt,
-        createdBy: territory?.createdByInfo
+        createdByInfo: territory?.createdByInfo
           ? {
               id: territory?.createdByInfo?.userId,
               email: territory?.createdByInfo?.email,

@@ -55,7 +55,7 @@ export class PaginateAllContactsCommand extends PaginateAllContactsCommandReques
 }
 
 export class PaginateAllContactsCommandDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'Contact Id', type: String, required: false })
   id!: string;
 
   @ApiProperty({ description: 'Contact email', type: String })
@@ -70,16 +70,19 @@ export class PaginateAllContactsCommandDto {
   @ApiProperty({ description: 'Contact mobile number', type: String })
   mobileNumber!: string;
 
-  @ApiProperty({ type: () => AuditUserInfoDto })
+  @ApiProperty({
+    type: () => AuditUserInfoDto,
+    description: 'User information who created the record',
+  })
   createdByInfo!: AuditUserInfoDto | undefined;
 
-  @ApiProperty({ type: Date })
+  @ApiProperty({ type: Date, description: 'Date of creation' })
   createdAt!: Date;
 
-  @ApiProperty({ type: Date })
+  @ApiProperty({ type: Date, description: 'Date of update' })
   updatedAt!: Date;
 
-  @ApiProperty({ description: 'record score', type: Number, default: 0 })
+  @ApiProperty({ description: 'Record score', type: Number, default: 0 })
   score!: number;
 }
 
@@ -120,7 +123,6 @@ export class PaginateAllContactsCommandHandler
         ...queryFilter,
         $text: { $search: command.fullTextSearch },
       };
-
       addFields = { score: { $meta: 'textScore' } };
     }
     // Projection
@@ -138,9 +140,9 @@ export class PaginateAllContactsCommandHandler
     };
 
     const totalDocuments =
-      await this.contactProvider.ContactModel.countDocuments(
-        queryFilter
-      ).exec();
+      await this.contactProvider.ContactModel.countDocuments(queryFilter)
+        .lean()
+        .exec();
 
     const totalPages = Math.ceil(totalDocuments / command.pageSize);
 
