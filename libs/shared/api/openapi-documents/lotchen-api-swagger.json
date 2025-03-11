@@ -1580,6 +1580,20 @@
           "Contacts"
         ]
       }
+    },
+    "/api/v1/contacts/import-contacts-excel": {
+      "post": {
+        "operationId": "ContactsController_importContactsExcel_v1",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
     }
   },
   "info": {

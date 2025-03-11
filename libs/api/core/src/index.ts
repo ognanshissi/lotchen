@@ -6,3 +6,4 @@ export * from './lib/utils';
 export * from './lib/core.module';
 export * from './lib/tenant/tenant.middleware';
 export * from './lib/guards/auth.guard';
+export * from './lib/file-upload-configs/upload.config';

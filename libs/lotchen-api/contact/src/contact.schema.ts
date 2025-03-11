@@ -48,6 +48,9 @@ export class Contact extends AggregateRoot {
   @Prop({ type: Date }) // Stores date of birth
   dateOfBirth!: Date;
 
+  @Prop({ type: String, default: null })
+  jobTitle!: string;
+
   @Prop({ type: AddressSchema, required: false }) // Stores address
   address!: Address;
 

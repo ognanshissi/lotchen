@@ -6,6 +6,7 @@ import { FindAllContactsQueryHandler } from './find-all/find-all-contacts.query'
 import { FindContactByQueryHandler } from './find-by-id/find-contact-by-id.query';
 import { UpdateContactCommandHandler } from './update/update-contact.command';
 import { PaginateAllContactsCommandHandler } from './paginate-all/paginate-all-contacts.command';
+import { ImportContactsExcelCommandHandler } from './import-contacts-excel/import-contacts-excel.command';
 
 @Module({
   imports: [],
@@ -17,6 +18,7 @@ import { PaginateAllContactsCommandHandler } from './paginate-all/paginate-all-c
     FindContactByQueryHandler,
     UpdateContactCommandHandler,
     PaginateAllContactsCommandHandler,
+    ImportContactsExcelCommandHandler,
   ],
   exports: [],
 })

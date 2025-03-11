@@ -9,8 +9,11 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   CreateContactCommand,
   CreateContactCommandHandler,
@@ -28,14 +31,17 @@ import {
   UpdateContactCommandHandler,
   UpdateContactCommandRequest,
 } from './update/update-contact.command';
-import { ApiPaginationResponse } from '@lotchen/api/core';
+import { ApiPaginationResponse, uploadConfig } from '@lotchen/api/core';
 import {
-  PaginateAllContactsCommand,
   PaginateAllContactsCommandDto,
   PaginateAllContactsCommandHandler,
   PaginateAllContactsCommandRequest,
   PaginateAllContactsCommandResponse,
 } from './paginate-all/paginate-all-contacts.command';
+import {
+  ImportContactsExcelCommand,
+  ImportContactsExcelCommandHandler,
+} from './import-contacts-excel/import-contacts-excel.command';
 
 @ApiTags('Contacts')
 @Controller({
@@ -48,7 +54,8 @@ export class ContactsController {
     private readonly _findAllContactsQueryHandler: FindAllContactsQueryHandler,
     private readonly _findContactByIdQueryHandler: FindContactByQueryHandler,
     private readonly _updateContactCommandHandler: UpdateContactCommandHandler,
-    private readonly _paginateAllContactsCommandHandler: PaginateAllContactsCommandHandler
+    private readonly _paginateAllContactsCommandHandler: PaginateAllContactsCommandHandler,
+    private readonly _importContactsExcelCommandHandler: ImportContactsExcelCommandHandler
   ) {}
 
   @Post()
@@ -110,6 +117,16 @@ export class ContactsController {
     return await this._paginateAllContactsCommandHandler.handlerAsync({
       ...command,
       fields,
+    });
+  }
+
+  @Post('import-contacts-excel')
+  @UseInterceptors(FileInterceptor('file', uploadConfig))
+  async importContactsExcel(
+    @UploadedFile() file: Express.Multer.File
+  ): Promise<any> {
+    return this._importContactsExcelCommandHandler.handlerAsync({
+      excelFile: file?.path,
     });
   }
 }
