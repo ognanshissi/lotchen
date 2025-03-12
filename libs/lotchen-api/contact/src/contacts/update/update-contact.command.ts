@@ -5,7 +5,7 @@ import {
 } from '@lotchen/api/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { ContactProvider } from '../contact.provider';
-import { Inject, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 
 export class UpdateContactCommandRequest {
@@ -39,6 +39,13 @@ export class UpdateContactCommandRequest {
 
   @ApiProperty({
     required: false,
+    description: 'Contact job title',
+    type: String,
+  })
+  jobTitle!: string;
+
+  @ApiProperty({
+    required: false,
     description: 'Contact Address',
     type: () => AddressDto,
   })
@@ -57,10 +64,7 @@ export class UpdateContactCommand extends UpdateContactCommandRequest {
 export class UpdateContactCommandHandler
   implements CommandHandler<UpdateContactCommand, void>
 {
-  constructor(
-    private readonly contactProvider: ContactProvider,
-    @Inject(REQUEST) private readonly _request: RequestExtendedWithUser
-  ) {}
+  constructor(private readonly contactProvider: ContactProvider) {}
 
   async handlerAsync(command: UpdateContactCommand): Promise<void> {
     const contact = await this.contactProvider.ContactModel.findById(
@@ -71,16 +75,27 @@ export class UpdateContactCommandHandler
     }
 
     // validate new fields - email must be unique
+    const isDuplicated = await this.contactProvider.ContactModel.findOne(
+      {
+        $or: [
+          {
+            mobileNumber: command.mobileNumber,
+          },
+          {
+            email: command.email,
+          },
+        ],
+      },
+      'id'
+    )
+      .lean()
+      .exec();
 
-    // Update audit fields
-    const { firstName, lastName, sub, username } = this._request.user;
-
-    const updatedByInfo = {
-      userId: sub,
-      email: username,
-      firstName,
-      lastName,
-    };
+    if (isDuplicated?.id !== contact.id) {
+      throw new BadRequestException(
+        'There is a contact with `email` or `mobile number`'
+      );
+    }
 
     await this.contactProvider.ContactModel.findByIdAndUpdate(contact._id, {
       $set: {
@@ -89,8 +104,8 @@ export class UpdateContactCommandHandler
         firstName: command.firstName,
         lastName: command.lastName,
         mobileNumber: command.mobileNumber,
-        updatedBy: sub,
-        updatedByInfo,
+        updatedBy: this.contactProvider.currentUserInfo().userId,
+        updatedByInfo: this.contactProvider.currentUserInfo(),
       },
       new: true,
     });

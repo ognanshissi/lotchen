@@ -1581,7 +1581,7 @@
         ]
       }
     },
-    "/api/v1/contacts/import-contacts-excel": {
+    "/api/v1/contacts/import-excel": {
       "post": {
         "operationId": "ContactsController_importContactsExcel_v1",
         "parameters": [],
@@ -2916,6 +2916,10 @@
           "mobileNumber": {
             "type": "string",
             "description": "Contact mobileNumber"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Contact job title"
           },
           "address": {
             "description": "Contact Address",

@@ -120,7 +120,7 @@ export class ContactsController {
     });
   }
 
-  @Post('import-contacts-excel')
+  @Post('import-excel')
   @UseInterceptors(FileInterceptor('file', uploadConfig))
   async importContactsExcel(
     @UploadedFile() file: Express.Multer.File
