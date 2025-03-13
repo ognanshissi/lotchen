@@ -38,10 +38,7 @@ import {
   PaginateAllContactsCommandRequest,
   PaginateAllContactsCommandResponse,
 } from './paginate-all/paginate-all-contacts.command';
-import {
-  ImportContactsExcelCommand,
-  ImportContactsExcelCommandHandler,
-} from './import-contacts-excel/import-contacts-excel.command';
+import { ImportContactsExcelCommandHandler } from './import-contacts-excel/import-contacts-excel.command';
 
 @ApiTags('Contacts')
 @Controller({

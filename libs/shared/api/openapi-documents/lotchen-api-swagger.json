@@ -1,6 +1,20 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/api/v1/caller/make-call": {
+      "get": {
+        "operationId": "CallerController_connectClient_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Caller"
+        ]
+      }
+    },
     "/api/v1/users": {
       "post": {
         "operationId": "UsersController_createUser_v1",

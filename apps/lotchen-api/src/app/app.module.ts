@@ -8,6 +8,7 @@ import { mongooseModuleAsyncOptions } from './mongoose-module-options';
 import { CoreModule, TenantMiddleware } from '@lotchen/api/core';
 import { IdentityProviderModule } from '@lotchen/lotchen-api/identity-provider';
 import { ContactModule } from '@lotchen/lotchen-api/contact';
+import { CallerController } from './caller.controller';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { ContactModule } from '@lotchen/lotchen-api/contact';
     ContactModule,
     CoreModule,
   ],
-  controllers: [],
+  controllers: [CallerController],
   providers: [
     {
       provide: APP_GUARD,
