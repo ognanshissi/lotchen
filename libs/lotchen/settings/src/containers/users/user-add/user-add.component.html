@@ -69,7 +69,7 @@
           <tas-label>Choisissez son équipe</tas-label>
           <tas-multi-select
             formControlName="teams"
-            [options]="teams()?.value ?? []"
+            [options]="teams().value ?? []"
             [optionValue]="'id'"
             optionLabel="name"
             placeholder="Choisissez l'équipe de l'utilisateur"
@@ -81,7 +81,7 @@
           <tas-label>Choisissez un responsable</tas-label>
           <tas-select
             formControlName="reportTo"
-            [options]="users()?.value ?? []"
+            [options]="users().value ?? []"
             [optionValue]="'id'"
             [optionLabel]="'fullName'"
             placeholder="Choisissez un responsable"
@@ -96,7 +96,7 @@
           <tas-label>Choisissez un rôle</tas-label>
           <tas-select
             formControlName="role"
-            [options]="roles()?.value ?? []"
+            [options]="roles().value ?? []"
             [optionValue]="'_id'"
             optionLabel="name"
             placeholder="Choisissez le role de l'utilisateur"

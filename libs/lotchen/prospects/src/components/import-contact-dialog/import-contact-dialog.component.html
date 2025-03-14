@@ -1,0 +1,29 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title>Importer les contacts</tas-title>
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <div class="mb-4">
+      <p class="font-semibold">Instructions</p>
+      <ol>
+        <li>1. Téléchargez le modèle Excel pour l'importation des clients</li>
+        <li>2. Remplissez les informations des clients dans le fichier</li>
+        <li>3. Importez le fichier rempli ci-dessous</li>
+      </ol>
+    </div>
+
+    <button tas-outlined-button>
+      <tas-icon iconName="feather:download"></tas-icon> Télécharger le modèle
+    </button>
+  </tas-drawer-content>
+  <tas-drawer-action>
+    <button tas-outlined-button closable-drawer>
+      <tas-icon [iconName]="'close'"></tas-icon>
+      Fermer
+    </button>
+    <button tas-raised-button color="primary">
+      <tas-icon iconName="feather:download"></tas-icon>
+      Importer
+    </button>
+  </tas-drawer-action>
+</tas-side-drawer>

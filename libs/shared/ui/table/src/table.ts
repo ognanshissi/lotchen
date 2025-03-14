@@ -70,6 +70,7 @@ export class TasTable<T extends TableEntity>
 
   public table = viewChild<MatTable<T>>(MatTable<T>);
   public pageEvent = output<PageEvent>();
+  public searchInputChange = output<string>();
 
   public selection: SelectionModel<T> = new SelectionModel<T>(
     true,

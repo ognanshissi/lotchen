@@ -1,31 +1,47 @@
-<div class="flex justify-between">
-  <div>
-    <tas-title>Leads</tas-title>
-    <tas-text
-      >Listing of all prospects Lorem ipsum dolor sit amet, consectetur
-      adipisicing deserunt eos facere fugit veritatis!
-    </tas-text>
-  </div>
-
-  <div>
-    <button tas-raised-button color="primary" (click)="openQuickAdd()">
-      <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
-      Ajouter un lead
-    </button>
-  </div>
-</div>
+<tas-card>
+  <card-header>
+    <div class="flex">
+      <div class="w-2/3">
+        <tas-title>Contacts</tas-title>
+        <tas-text
+          >Cette page regroupe les contacts, leads et prospects vous allez
+          pouvoir consulter, modifier et interagir avec les différents éléments
+          présent.
+        </tas-text>
+      </div>
+      <div class="flex justify-end space-x-2 w-1/3">
+        <div>
+          <button tas-raised-button color="primary" (click)="openQuickAdd()">
+            <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
+            Ajouter un contact
+          </button>
+        </div>
+        <div>
+          <button
+            tas-outlined-button
+            color="accent"
+            (click)="openImportContactDialog()"
+          >
+            <tas-icon iconName="feather:download"></tas-icon>
+            Importer des contacts
+          </button>
+        </div>
+      </div>
+    </div>
+  </card-header>
+</tas-card>
 
 <tas-card class="mt-4">
-  <card-header>
-    <tas-title>Liste des leads / prospects</tas-title>
-  </card-header>
-
-  <tas-table [data]="data" (selectionItems)="handleSelectionItems($event)">
+  <tas-table
+    [title]="'Liste des contacts'"
+    [data]="contacts().value ?? []"
+    [isLoading]="contacts().isLoading"
+    (selectionItems)="handleSelectionItems($event)"
+  >
     <ng-template #header>
       <tr>
         <th rowSelectionMaster></th>
-        <th>Nom</th>
-        <th>Contact</th>
+        <th class="w-[550px]">Nom Complet</th>
         <th>Source</th>
         <th>Statut</th>
         <th>date de création</th>
@@ -34,11 +50,49 @@
     <ng-template #body let-item>
       <tr>
         <td rowSelectionItem></td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.contact }}</td>
+        <td>
+          <div class="flex space-x-2">
+            <span
+              class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center"
+            >
+              <tas-icon
+                iconName="feather:user"
+                iconClass="text-gray-500"
+              ></tas-icon>
+            </span>
+
+            <div>
+              <a
+                [routerLink]="[item.id]"
+                class="font-semibold text-primary inline-block"
+                >{{ item.firstName }} {{ item.lastName }}</a
+              >
+              <div class="text-gray-500">
+                {{ item.mobileNumber }} - {{ item.email }}
+              </div>
+            </div>
+          </div>
+
+          <div class="flex space-x-2">
+            <button tas-button iconButton color="primary">
+              <tas-icon iconName="phone" iconClass="text-gray-500"></tas-icon>
+            </button>
+
+            <button tas-button iconButton>
+              <tas-icon iconName="mail" iconClass="text-gray-500"></tas-icon>
+            </button>
+
+            <a tas-button iconButton [routerLink]="[item.id]">
+              <tas-icon
+                iconName="visibility"
+                iconClass="text-gray-500"
+              ></tas-icon>
+            </a>
+          </div>
+        </td>
         <td>{{ item.source }}</td>
         <td>{{ item.status }}</td>
-        <td>{{ item.createdAt | date }}</td>
+        <td>{{ item.createdAt | dateTimeAgo }}</td>
       </tr>
     </ng-template>
   </tas-table>

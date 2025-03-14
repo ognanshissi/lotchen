@@ -3,7 +3,7 @@
   <div>
     <tas-title>{{ title() }}</tas-title>
     <tas-text class="text-sm text-gray-400"
-      >{{ data()?.length || 0 }} territoire(s)</tas-text
+      >{{ data().length || 0 }} éléments trouvés</tas-text
     >
   </div>
   <div class="flex space-x-2 items-center justify-center">
@@ -13,8 +13,9 @@
         <input
           type="search"
           tasInput
+          (input)="searchInputChange.emit($any($event).target.value)"
           size="small"
-          placeholder="Rechercher un territoire..."
+          placeholder="Rechercher"
         />
       </tas-form-field>
     </div>
@@ -61,6 +62,6 @@
     class="text-center p-4 text-gray-500"
     *ngIf="!isLoading() && !data().length"
   >
-    Aucun élement trouvé
+    Aucun élément trouvé
   </div>
 </div>

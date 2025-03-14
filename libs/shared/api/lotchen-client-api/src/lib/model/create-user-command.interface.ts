@@ -12,8 +12,33 @@
 
 
 export interface CreateUserCommand { 
+    /**
+     * Email
+     */
     email: string;
+    /**
+     * Password
+     */
     password: string;
+    /**
+     * Confirm password
+     */
     confirmPassword: string;
+    /**
+     * firstName
+     */
+    firstName: string;
+    /**
+     * LastName
+     */
+    lastName: string;
+    /**
+     * Mobile number
+     */
+    mobileNumber: string;
+    /**
+     * Date of birth
+     */
+    dateOfBirth?: string;
 }
 

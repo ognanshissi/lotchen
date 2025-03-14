@@ -5,3 +5,4 @@ export * from './language-enum';
 export * from './date-format.enum';
 export * from './filter-query-generator';
 export * from './schema-middleware';
+export * from './schema.plugin';

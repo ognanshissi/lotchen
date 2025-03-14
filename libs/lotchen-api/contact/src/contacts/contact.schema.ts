@@ -1,9 +1,19 @@
-import { Address, AddressSchema, AggregateRoot } from '@lotchen/api/core';
+import {
+  AddEncryptionPlugin,
+  Address,
+  AddressSchema,
+  AggregateRoot,
+} from '@lotchen/api/core';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Schema } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export type ContactDocument = HydratedDocument<Contact>;
+
+export enum contactEnum {
+  Lead = 'Lead',
+  Prospect = 'Prospect',
+}
 
 export type contactSource =
   | 'Website'
@@ -12,7 +22,7 @@ export type contactSource =
   | 'Event'
   | 'Cold Call'
   | 'Email'
-  | 'Application'
+  | 'Back Office'
   | 'LinkedIn'
   | 'Facebook'
   | 'Twitter'
@@ -30,6 +40,9 @@ export type contactSource =
 
 @Schema({ timestamps: true, collection: 'contact_contacts' }) // Stores contact information
 export class Contact extends AggregateRoot {
+  @Prop({ type: String, enum: ['Male', 'Female'], default: null })
+  gender!: string;
+
   @Prop({ required: true }) // Stores first name
   firstName!: string;
 
@@ -54,15 +67,50 @@ export class Contact extends AggregateRoot {
   @Prop({ type: AddressSchema, required: false }) // Stores address
   address!: Address;
 
-  @Prop({ required: true, type: String, default: 'Application' }) // Stores origin
+  @Prop({ required: true, type: String, default: 'Back Office' }) // Stores origin
   source!: contactSource;
+
+  @Prop({
+    type: String,
+    enum: [contactEnum.Lead, contactEnum.Prospect],
+    default: contactEnum.Lead,
+  })
+  status!: contactEnum;
+
+  // Prospect
+  @Prop({ type: Number })
+  creditScore?: number;
+
+  @Prop({ type: Number })
+  monthlyIncome?: number;
+
+  @Prop()
+  employmentStatus?: 'Employed' | 'Self-Employed' | 'Unemployed';
+
+  @Prop({ type: Number })
+  requestedLoanAmount?: number;
+
+  @Prop()
+  loanPurpose?: string;
+
+  @Prop({ type: Number })
+  repaymentPeriod?: number;
+
+  @Prop({ default: null, type: Date }) // Indicates if they have been converted to a client
+  isConvertedToClientAt!: Date;
+
+  @Prop({ type: String }) // Reference to the new client ID
+  clientId?: string;
 
   // Assigned Team/User
   @Prop({ type: 'UUID', default: null, required: false })
-  assignedToUserId!: string; // Sales representative
+  assignedToUserId?: string; // Sales representative
 
   @Prop({ type: 'UUID', default: null, required: false })
-  assignedToTeamId!: string;
+  assignedToTeamId?: string;
+
+  @Prop({ type: 'UUID', default: null, required: false })
+  territoryId?: string;
 
   @Prop({ type: Map, of: String }) // Stores custom fields
   customFields!: Record<string, string>;

@@ -59,7 +59,10 @@
     aria-labelledby="listbox-label"
     *ngIf="isDropdownOpened()"
   >
-    <li class="px-2 pb-1 sticky top-0 bg-white z-10" *ngIf="searchable()">
+    <li
+      class="px-2 pb-2 sticky bg-white top-1 bg-white z-10"
+      *ngIf="searchable()"
+    >
       <tas-form-field>
         <input
           type="search"

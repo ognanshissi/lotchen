@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TerritoryLightDto } from './territory-light-dto.interface';
+import { TerritoryLiteDto } from './territory-lite-dto.interface';
 import { TerritoriesQueryUserDto } from './territories-query-user-dto.interface';
 
 
@@ -30,11 +30,11 @@ export interface FindAllTerritoriesQueryResponse {
     /**
      * Person who created the entry
      */
-    createdBy?: TerritoriesQueryUserDto;
+    createdByInfo?: TerritoriesQueryUserDto;
     /**
      * Name of the territory parent if so
      */
-    parentInfo?: TerritoryLightDto;
-    children?: Array<TerritoryLightDto>;
+    parentInfo?: TerritoryLiteDto;
+    children?: Array<TerritoryLiteDto>;
 }
 

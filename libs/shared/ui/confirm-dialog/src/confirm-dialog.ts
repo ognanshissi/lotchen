@@ -1,4 +1,9 @@
-import { Component, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  ViewEncapsulation,
+} from '@angular/core';
 import { ConfirmationDialogProps } from './confirm-dialog.service';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
@@ -9,7 +14,7 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'tas-confirmation-dialog',
   template: `
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center py-2">
       <tas-title>{{ config.title }}</tas-title>
       <button
         tas-button
@@ -21,7 +26,7 @@ import { NgIf } from '@angular/common';
       </button>
     </div>
 
-    <div class="py-8 flex space-x-2 h-[1200px]">
+    <div class="py-8 flex space-x-2 ">
       <div>
         <tas-icon iconName="exclamation" iconClass="text-red-600"></tas-icon>
       </div>
@@ -30,6 +35,7 @@ import { NgIf } from '@angular/common';
 
     <div class="flex space-x-3 justify-end">
       <button
+        *ngIf="config.showCancelButton"
         tas-outlined-button
         color="neutral"
         (click)="close(); reject.emit()"
@@ -49,6 +55,7 @@ import { NgIf } from '@angular/common';
   `,
   standalone: true,
   imports: [ButtonModule, TasIcon, TasTitle, NgIf],
+  encapsulation: ViewEncapsulation.Emulated,
   styles: [
     `
       :host {

@@ -46,7 +46,8 @@ export class TerritoriesComponent implements OnInit {
   public territories = apiResources(
     this._territoriesApiService
       .territoriesControllerAllTerritoriesV1(
-        'id,name,createdByInfo,parentInfo,createdAt,updatedAt'
+        'id,name,createdByInfo,parentInfo,createdAt,updatedAt',
+        30
       )
       .pipe(catchError(() => of([])))
   );

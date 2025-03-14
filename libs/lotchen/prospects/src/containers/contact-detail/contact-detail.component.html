@@ -1,0 +1,73 @@
+<div class="">
+  <div class="flex justify-end space-x-2">
+    <button tas-outlined-button color="primary">
+      <tas-icon iconName="mail"></tas-icon> Envoyer un e-mail
+    </button>
+    <button tas-outlined-button color="primary">
+      <tas-icon iconName="feather:phone"></tas-icon> Appeler
+    </button>
+    <button tas-outlined-button color="primary">
+      <tas-icon iconName="mail"></tas-icon> SMS
+    </button>
+    <button tas-outlined-button color="primary">
+      <tas-icon iconName="task"></tas-icon> Tâche
+    </button>
+    <button tas-outlined-button color="primary">
+      <tas-icon iconName="feather:calendar"></tas-icon> Reunion
+    </button>
+    <button tas-outlined-button color="primary">
+      <tas-icon iconName="feather:user-plus"></tas-icon> Convertir en client
+    </button>
+    <button tas-outlined-button color="primary">
+      <tas-icon iconName="feather:more-vertical"></tas-icon>
+    </button>
+  </div>
+
+  <div class="grid grid-cols-4 gap-4 mt-4">
+    <div class="col-span-1">
+      <tas-card class="">
+        <div
+          class="p-4 flex flex-col border-b border-b-gray-200 bg-gray-50 rounded-t-lg"
+        >
+          <div class="font-semibold text-center text-2xl">
+            {{ contact()?.firstName }} {{ contact()?.lastName }}
+          </div>
+          <p class="text-gray-500 text-center">
+            @if (contact()?.jobTitle) {
+            {{ contact()?.jobTitle }}
+            } @else {
+            <button tas-text-button>+ Ajouter une occupation</button>
+            }
+          </p>
+
+          <br />
+          <p class="text-center">
+            <span class="flex"
+              ><tas-icon iconName="mail"></tas-icon>
+              {{ contact()?.email }}</span
+            >
+          </p>
+          <p class="text-center">
+            <span class="flex"
+              ><tas-icon iconName="phone"></tas-icon>
+              {{ contact()?.mobileNumber }}</span
+            >
+          </p>
+        </div>
+
+        <div class="px-4 py-3 hover:bg-gray-200">Apperçu</div>
+        <div class="px-4 py-3 hover:bg-gray-200">Conversations</div>
+        <div class="px-4 py-3 hover:bg-gray-200">Activitées</div>
+        <div class="px-4 py-3 hover:bg-gray-200">Documents</div>
+      </tas-card>
+    </div>
+
+    <div class="col-span-3 h-[calc(100vh_-_118px)] overflow-y-scroll">
+      <tas-card class="p-4">
+        <h2 class="text-2xl font-semibold">Apperçu</h2>
+
+        <div class="h-[500px]"></div>
+      </tas-card>
+    </div>
+  </div>
+</div>

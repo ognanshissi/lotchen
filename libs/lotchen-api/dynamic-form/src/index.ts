@@ -1,1 +1,1 @@
-export * from './lib/dynamic-form.module';
+export * from './dynamic-form.module';

@@ -12,7 +12,13 @@
 
 
 export interface FindUserByIdQueryRoleDto { 
+    /**
+     * Role Id
+     */
     id: string;
+    /**
+     * Role Name
+     */
     name: string;
 }
 

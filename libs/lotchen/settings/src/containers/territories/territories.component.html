@@ -57,7 +57,7 @@
     [title]="'Liste des territoires'"
     [data]="territories().value ?? []"
     identifierField="id"
-    [isLoading]="territories().isLoading ?? false"
+    [isLoading]="territories().isLoading"
   >
     <ng-template #header>
       <tr>

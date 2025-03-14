@@ -100,18 +100,22 @@ export class TerritoriesApiService {
 
     /**
      * @param fields This is a comma separated list, define the properties the api should return
+     * @param limit Length of records to return
      * @param xTenantFqdn The Tenant Fqdn
      * @param name Name of the territory
      * @param isDeleted Get deleted territories or not
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public territoriesControllerAllTerritoriesV1(fields: string, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllTerritoriesQueryResponse>>;
-    public territoriesControllerAllTerritoriesV1(fields: string, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllTerritoriesQueryResponse>>>;
-    public territoriesControllerAllTerritoriesV1(fields: string, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllTerritoriesQueryResponse>>>;
-    public territoriesControllerAllTerritoriesV1(fields: string, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public territoriesControllerAllTerritoriesV1(fields: string, limit: number, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllTerritoriesQueryResponse>>;
+    public territoriesControllerAllTerritoriesV1(fields: string, limit: number, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllTerritoriesQueryResponse>>>;
+    public territoriesControllerAllTerritoriesV1(fields: string, limit: number, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllTerritoriesQueryResponse>>>;
+    public territoriesControllerAllTerritoriesV1(fields: string, limit: number, xTenantFqdn?: string, name?: string, isDeleted?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (fields === null || fields === undefined) {
             throw new Error('Required parameter fields was null or undefined when calling territoriesControllerAllTerritoriesV1.');
+        }
+        if (limit === null || limit === undefined) {
+            throw new Error('Required parameter limit was null or undefined when calling territoriesControllerAllTerritoriesV1.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -126,6 +130,10 @@ export class TerritoriesApiService {
         if (fields !== undefined && fields !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>fields, 'fields');
+        }
+        if (limit !== undefined && limit !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>limit, 'limit');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -320,7 +328,7 @@ export class TerritoriesApiService {
             }
         }
 
-        let localVarPath = `/api/v1/territories/search`;
+        let localVarPath = `/api/v1/territories/paginate`;
         return this.httpClient.request<TerritoriesControllerPaginateAllTerritoriesV1200Response>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

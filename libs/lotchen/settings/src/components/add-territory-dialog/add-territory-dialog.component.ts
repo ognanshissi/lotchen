@@ -66,7 +66,8 @@ export class AddTerritoryDialogComponent implements OnInit {
 
   public territories = toSignal(
     this._territoriesApiService.territoriesControllerAllTerritoriesV1(
-      'id,name'
+      'id,name',
+      30
     ),
     { initialValue: [] }
   );

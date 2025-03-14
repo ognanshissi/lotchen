@@ -18,7 +18,7 @@ import { TasIcon } from '@talisoft/ui/icon';
   template: `
     <tas-side-drawer>
       <tas-drawer-title>
-        <tas-title>Ajouter un prospect</tas-title>
+        <tas-title>Ajouter un contact</tas-title>
       </tas-drawer-title>
       <tas-drawer-content>
         <Text>
@@ -59,18 +59,17 @@ import { TasIcon } from '@talisoft/ui/icon';
             </tas-form-field>
           </div>
         </div>
-
-        <tas-drawer-action>
-          <button tas-outlined-button closable-drawer>
-            <tas-icon [iconName]="'close'"></tas-icon>
-            Fermer
-          </button>
-          <button tas-raised-button color="primary">
-            <tas-icon iconName="check"></tas-icon>
-            sauvegarder
-          </button>
-        </tas-drawer-action>
       </tas-drawer-content>
+      <tas-drawer-action>
+        <button tas-outlined-button closable-drawer>
+          <tas-icon [iconName]="'close'"></tas-icon>
+          Fermer
+        </button>
+        <button tas-raised-button color="primary">
+          <tas-icon iconName="check"></tas-icon>
+          sauvegarder
+        </button>
+      </tas-drawer-action>
     </tas-side-drawer>
   `,
   imports: [

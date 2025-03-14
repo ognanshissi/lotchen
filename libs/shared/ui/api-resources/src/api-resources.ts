@@ -1,11 +1,29 @@
 import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { signal, Signal } from '@angular/core';
+import { signal, Signal, WritableSignal } from '@angular/core';
 
 export interface ApiResourcesResponse<TResponse> {
   isLoading: boolean;
   value: TResponse | null;
   error: HttpErrorResponse | null;
+}
+
+export interface RxResourcesResponse<TResponse> {
+  isLoading: WritableSignal<boolean>;
+  value: WritableSignal<TResponse | null>;
+  error: WritableSignal<string | null>;
+}
+
+export function rxResources<TResponse>(
+  obs$: Observable<TResponse>
+): RxResourcesResponse<TResponse> {
+  const response: RxResourcesResponse<TResponse> = {
+    isLoading: signal(true),
+    value: signal(null),
+    error: signal(null),
+  };
+
+  return response;
 }
 
 export function apiResources<TResponse>(

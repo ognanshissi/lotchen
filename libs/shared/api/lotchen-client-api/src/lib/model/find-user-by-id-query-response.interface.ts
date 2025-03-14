@@ -13,12 +13,33 @@ import { FindUserByIdQueryRoleDto } from './find-user-by-id-query-role-dto.inter
 
 
 export interface FindUserByIdQueryResponse { 
-    id: object;
+    /**
+     * User Id
+     */
+    id: string;
+    /**
+     * User Email
+     */
     email: string;
+    /**
+     * Is user verified
+     */
     isVerified: boolean;
+    /**
+     * Is user locked
+     */
     isLocked: boolean;
+    /**
+     * Is user super admin
+     */
     isSuperAdmin: boolean;
+    /**
+     * User permissions
+     */
     permissions: Array<string>;
+    /**
+     * User roles
+     */
     roles: FindUserByIdQueryRoleDto;
 }
 

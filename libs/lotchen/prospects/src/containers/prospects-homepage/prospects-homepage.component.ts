@@ -11,7 +11,11 @@ import {
   RowSelectionMaster,
   TasTable,
 } from '@talisoft/ui/table';
-import { DatePipe } from '@angular/common';
+import { ContactsApiService } from '@talisoft/api/lotchen-client-api';
+import { apiResources } from '@talisoft/ui/api-resources';
+import { TimeagoPipe } from '@talisoft/ui/timeago';
+import { RouterLink } from '@angular/router';
+import { ImportContactDialogComponent } from '../../components/import-contact-dialog/import-contact-dialog.component';
 
 @Component({
   selector: 'prospects-homepage',
@@ -26,31 +30,33 @@ import { DatePipe } from '@angular/common';
     TasCardHeader,
     TasTable,
     RowSelectionMaster,
-    DatePipe,
     RowSelectionItem,
+    TimeagoPipe,
+    RouterLink,
   ],
 })
 export class ProspectsHomepageComponent {
   private readonly _sideDrawerService = inject(SideDrawerService);
+  private readonly _contactsApiService = inject(ContactsApiService);
 
-  public data = [
-    {
-      name: 'James Gordon',
-      contact: '002250756789890',
-      source: 'Site internet',
-      status: 'Nouveau',
-      createdAt: new Date(),
-    },
-  ];
+  public contacts = apiResources(
+    this._contactsApiService.contactsControllerFindAllContactsV1()
+  );
 
   public handleSelectionItems(event: unknown[]) {
     console.log(event);
   }
 
-  openQuickAdd() {
+  public openQuickAdd(): void {
     this._sideDrawerService.open(QuickAddComponent).closed.subscribe((res) => {
       console.log(res);
     });
+  }
+
+  public openImportContactDialog(): void {
+    this._sideDrawerService
+      .open(ImportContactDialogComponent, { width: '700px' })
+      .closed.subscribe();
   }
 }
 

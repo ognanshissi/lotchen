@@ -7,6 +7,7 @@ export interface ConfirmationDialogProps {
   message: string;
   closable: boolean;
   closeOnEscape?: boolean;
+  showCancelButton?: boolean;
 
   width?: string;
 
@@ -22,8 +23,8 @@ export interface ConfirmationDialogProps {
     icon?: string;
   };
 
-  accept: () => void;
-  reject: () => void;
+  accept?: () => void;
+  reject?: () => void;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -38,14 +39,16 @@ export class ConfirmDialogService {
 
     if (confirmationDialog?.componentInstance) {
       confirmationDialog.componentInstance.config = config;
-      confirmationDialog.componentInstance.accept.subscribe(() =>
-        config?.accept()
-      );
-      confirmationDialog.componentInstance.reject.subscribe(() =>
-        config.reject()
-      );
+      confirmationDialog.componentInstance.accept.subscribe(() => {
+        if (config.accept) {
+          config?.accept();
+        }
+      });
+      confirmationDialog.componentInstance.reject.subscribe(() => {
+        if (config.reject) {
+          config.reject();
+        }
+      });
     }
-
-    confirmationDialog.closed.subscribe();
   }
 }

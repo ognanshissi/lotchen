@@ -40,19 +40,31 @@ import { SnackbarPrimitiveData } from './snackbar.service';
       .tas-snackbar--success,
       .tas-snackbar--error,
       .tas-snackbar--info {
-        @apply border border-gray-200 border-l-4 bg-white;
+        @apply rounded border border-gray-200 border-t-4 bg-white;
       }
 
       .tas-snackbar--success {
-        @apply border-l-functional-success;
+        @apply border-t-functional-success;
+
+        tas-icon {
+          @apply text-functional-success;
+        }
       }
 
       .tas-snackbar--error {
-        @apply border-l-functional-error;
+        @apply border-t-functional-error;
+
+        tas-icon {
+          @apply text-functional-error;
+        }
       }
 
       .tas-snackbar--info {
-        @apply border-l-functional-info;
+        @apply border-t-functional-info;
+
+        tas-icon {
+          @apply text-functional-info;
+        }
       }
     `,
   ],

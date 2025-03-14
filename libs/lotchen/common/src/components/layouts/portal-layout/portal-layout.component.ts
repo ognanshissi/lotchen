@@ -39,11 +39,11 @@ export class PortalLayoutComponent implements OnInit {
         link: '/portal/dashboard',
       },
       {
-        id: 'prospects',
+        id: 'contacts',
         icon: 'feather:users',
-        title: 'Leads & Prospects',
+        title: 'Contacts',
         type: 'basic',
-        link: '/portal/prospects',
+        link: '/portal/contacts',
       },
       {
         id: 'clients',

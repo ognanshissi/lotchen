@@ -9,15 +9,25 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AuditUserInfoDto } from './audit-user-info-dto.interface';
 import { FindAllTeamsQueryUserDto } from './find-all-teams-query-user-dto.interface';
 
 
 export interface FindAllTeamsQueryResponse { 
+    /**
+     * Team Id
+     */
     id: string;
+    /**
+     * Team name
+     */
     name: string;
-    description: string;
-    manager: FindAllTeamsQueryUserDto;
-    members: Array<FindAllTeamsQueryUserDto>;
+    /**
+     * Team description
+     */
+    description?: string;
+    managerInfo?: FindAllTeamsQueryUserDto;
+    members?: Array<FindAllTeamsQueryUserDto>;
     /**
      * Date of creation
      */
@@ -25,7 +35,7 @@ export interface FindAllTeamsQueryResponse {
     /**
      * Created by user information
      */
-    createdBy: FindAllTeamsQueryUserDto;
+    createdByInfo: AuditUserInfoDto;
     /**
      * Date of last update
      */

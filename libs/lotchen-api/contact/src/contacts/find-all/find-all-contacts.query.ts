@@ -58,6 +58,13 @@ export class FindAllContactsQueryResponse {
   @ApiProperty({ required: false, description: 'Mobile number', type: String })
   mobileNumber!: string;
 
+  @ApiProperty({
+    required: false,
+    description: 'Source of the lead',
+    type: String,
+  })
+  source!: string;
+
   @ApiProperty({ required: false, description: 'Date of birth', type: Date })
   dateOfBirth!: Date;
 
@@ -92,7 +99,7 @@ export class FindAllContactsQueryHandler
   ): Promise<FindAllContactsQueryResponse[]> {
     // projection
     let projection =
-      'id email firstName lastName mobileNumber dateOfBirth address createdAt updatedAt';
+      'id email firstName lastName source mobileNumber dateOfBirth address createdAt updatedAt';
 
     if (query.fields) {
       projection = query.fields
@@ -126,8 +133,7 @@ export class FindAllContactsQueryHandler
     }
 
     const contacts = await contactModel
-      .find(queryFilter, projection)
-      .lean()
+      .find(queryFilter, projection, { sort: { createdAt: -1 } })
       .exec();
     return contacts.map((contact) => {
       return {
@@ -135,6 +141,7 @@ export class FindAllContactsQueryHandler
         email: contact.email,
         firstName: contact.firstName,
         lastName: contact.lastName,
+        source: contact.source,
         mobileNumber: contact.mobileNumber,
         dateOfBirth: contact.dateOfBirth,
         address: contact.address,
