@@ -1,12 +1,26 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/v1/caller/make-call": {
-      "get": {
-        "operationId": "CallerController_connectClient_v1",
+    "/api/v1/caller/voice": {
+      "post": {
+        "operationId": "CallerController_voiceCall_v1",
         "parameters": [],
         "responses": {
-          "200": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Caller"
+        ]
+      }
+    },
+    "/api/v1/caller/token": {
+      "post": {
+        "operationId": "CallerController_token_v1",
+        "parameters": [],
+        "responses": {
+          "201": {
             "description": ""
           }
         },

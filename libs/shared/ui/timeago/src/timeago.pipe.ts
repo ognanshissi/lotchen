@@ -1,15 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { formatDistance } from 'date-fns';
+import { formatRelative } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 @Pipe({
   name: 'dateTimeAgo',
   standalone: true,
 })
 export class TimeagoPipe implements PipeTransform {
-  transform(value: any) {
-    return formatDistance(value, new Date(), {
-      addSuffix: true,
-      includeSeconds: true,
+  transform(value: string | Date) {
+    return formatRelative(value, new Date(), {
+      locale: fr,
     });
   }
 }

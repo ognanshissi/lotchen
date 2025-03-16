@@ -19,6 +19,11 @@ export class ContactDetailComponent {
   public contact = toSignal<FindContactByIdQueryResponse>(
     this._activatedRoute.data.pipe(map((data) => data['contact']))
   );
+
+  /**
+   * Open caller dialog
+   */
+  public openCallerDialog(): void {}
 }
 
 export default ContactDetailComponent;

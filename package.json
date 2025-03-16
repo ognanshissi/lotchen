@@ -41,6 +41,7 @@
     "@nestjs/platform-express": "^10.4.15",
     "@nestjs/swagger": "^8.1.1",
     "@nestjs/throttler": "^6.3.0",
+    "@twilio/voice-sdk": "^2.12.4",
     "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.7",
@@ -60,6 +61,26 @@
     "xlsx": "^0.18.5",
     "zone.js": "~0.14.3"
   },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": {
+    "email": "bazieambroise@gmail.com",
+    "name": "Ambroise BAZIE"
+  },
+  "keywords": [
+    "crm",
+    "call",
+    "customer services",
+    "saas",
+    "lead",
+    "microfinance",
+    "banking",
+    "chat",
+    "voip",
+    "real-time"
+  ],
   "devDependencies": {
     "@angular-devkit/build-angular": "~18.2.0",
     "@angular-devkit/core": "~18.2.0",

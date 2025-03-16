@@ -107,7 +107,7 @@ export class FindAllTeamsQueryHandler
     );
 
     // Populate members relation
-    if (query.fields.includes('members')) {
+    if (query.fields?.includes('members')) {
       teamsQueryBuilder.populate({
         path: 'members',
         select: 'id email',
@@ -122,7 +122,7 @@ export class FindAllTeamsQueryHandler
         id: team.id,
         name: team.name,
         description: team.description,
-        members: query.fields.includes('members')
+        members: query.fields?.includes('members')
           ? [
               ...team.members.map((member) => ({
                 id: member.id,
@@ -133,7 +133,7 @@ export class FindAllTeamsQueryHandler
             ]
           : undefined,
         managerInfo:
-          team.managerInfo?.userId && query.fields.includes('managerInfo')
+          team.managerInfo?.userId && query.fields?.includes('managerInfo')
             ? {
                 id: team.managerInfo?.userId || '',
                 email: team.managerInfo?.email || '',
@@ -143,7 +143,7 @@ export class FindAllTeamsQueryHandler
             : undefined,
         createdAt: team.createdAt,
         createdByInfo:
-          team.createdByInfo?.userId && query.fields.includes('createdByInfo')
+          team.createdByInfo && query.fields?.includes('createdByInfo')
             ? {
                 id: team.createdByInfo?.userId ?? '',
                 email: team.createdByInfo?.email ?? '',

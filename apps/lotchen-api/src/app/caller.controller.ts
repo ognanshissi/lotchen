@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-const twilio = require('twilio');
+import { tokenGenerator, voiceResponse } from './handler';
+import { Public, RequestExtendedWithUser } from '@lotchen/api/core';
 
 @Controller({
   path: 'caller',
@@ -8,17 +9,25 @@ const twilio = require('twilio');
 })
 @ApiTags('Caller')
 export class CallerController {
-  @Get('make-call')
-  async connectClient() {
-    const accountSid = process.env.TWILIO_ACCOUNT_SID;
-    const authToken = process.env.TWILIO_AUTH_TOKEN;
-    const client = twilio(accountSid, authToken);
-    const call = await client.calls.create({
-      from: process.env.TWILIO_TEST_PHONE_NUMBER,
-      to: '+2250777132974',
-      url: 'http://demo.twilio.com/docs/voice.xml',
-    });
+  /**
+   *
+   * Twilio voice webhook endpoint
+   *
+   * @param res
+   * @param body
+   * @returns
+   */
+  @Post('voice')
+  @Public()
+  async voiceCall(@Res() res: Response, @Body() body: any) {
+    res.headers.set('Content-Type', 'text/xml');
+    return voiceResponse(body);
+  }
 
-    console.log(call);
+  @Post('token')
+  async token(@Req() request: RequestExtendedWithUser) {
+    return tokenGenerator(
+      `${request.user.firstName} ${request.user.lastName} / ${request.user.username}`
+    );
   }
 }

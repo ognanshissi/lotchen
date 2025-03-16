@@ -8,11 +8,9 @@ import { SideDrawerService } from '@talisoft/ui/side-drawer';
 import { AddTeamDialogComponent } from '../../components/add-team-dialog/add-team-dialog.component';
 import { TeamsApiService } from '@talisoft/api/lotchen-client-api';
 import { TableItemActionDirective, TasTable } from '@talisoft/ui/table';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { TasCard, TasCardHeader } from '@talisoft/ui/card';
-import { TasInput } from '@talisoft/ui/input';
-import { FormField, TasLabel } from '@talisoft/ui/form-field';
+import { TasCard } from '@talisoft/ui/card';
 import { TimeagoPipe } from '@talisoft/ui/timeago';
+import { apiResources } from '@talisoft/ui/api-resources';
 
 @Component({
   selector: 'settings-teams',
@@ -26,10 +24,6 @@ import { TimeagoPipe } from '@talisoft/ui/timeago';
     RouterLink,
     TasTable,
     TasCard,
-    TasCardHeader,
-    TasInput,
-    FormField,
-    TasLabel,
     TableItemActionDirective,
     TimeagoPipe,
   ],
@@ -38,11 +32,8 @@ export class TeamsComponent {
   private readonly _sideDrawerService = inject(SideDrawerService);
   private readonly _teamsApiService = inject(TeamsApiService);
 
-  public teams = toSignal(
-    this._teamsApiService.teamsControllerFindAllTeamsV1(),
-    {
-      initialValue: [],
-    }
+  public teams = apiResources(
+    this._teamsApiService.teamsControllerFindAllTeamsV1()
   );
 
   public openAddDialog(): void {

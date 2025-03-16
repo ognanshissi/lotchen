@@ -33,7 +33,7 @@ export class FindAllTerritoriesQueryHandler
 
     if (query.fields) {
       projection = query.fields
-        .replace('timestamp', 'createdAt,updatedAt')
+        .replace('timestamps', 'createdAt,updatedAt')
         .split(',')
         .join(' ');
     }
