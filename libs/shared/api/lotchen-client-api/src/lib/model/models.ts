@@ -50,6 +50,7 @@ export * from './reset-password-command-response.interface';
 export * from './territories-controller-paginate-all-territories-v1200-response.interface';
 export * from './territories-query-user-dto.interface';
 export * from './territory-lite-dto.interface';
+export * from './twilio-access-token-response.interface';
 export * from './update-contact-command-request.interface';
 export * from './update-role-permissions-command-response.interface';
 export * from './update-team-command-request.interface';

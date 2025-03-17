@@ -13,7 +13,8 @@
     "doc": "npx @compodoc/compodoc -p libs/lotchen-api/identity-provider/tsconfig.json -s",
     "openapi-generator": "npx @openapitools/openapi-generator-cli generate  --generator-key lotchen --verbose",
     "prepare": "husky",
-    "api": "pm2 start dist/apps/lotchen-api/main.js"
+    "api": "pm2 start dist/apps/lotchen-api/main.js",
+    "heroku-postbuild": "nx build $PROJECT_NAME --prod"
   },
   "lint-staged": {
     "**/*": "eslint --quiet --fix"

@@ -6,12 +6,13 @@ import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { FindContactByIdQueryResponse } from '@talisoft/api/lotchen-client-api';
+import { CallerComponent } from '@lotchen/lotchen/common';
 
 @Component({
   selector: 'prospects-contact-detail',
   templateUrl: './contact-detail.component.html',
   standalone: true,
-  imports: [TasIcon, ButtonModule, TasCard],
+  imports: [TasIcon, ButtonModule, TasCard, CallerComponent],
 })
 export class ContactDetailComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);

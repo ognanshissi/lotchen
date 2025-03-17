@@ -70,6 +70,7 @@ model/reset-password-command.interface.ts
 model/territories-controller-paginate-all-territories-v1200-response.interface.ts
 model/territories-query-user-dto.interface.ts
 model/territory-lite-dto.interface.ts
+model/twilio-access-token-response.interface.ts
 model/update-contact-command-request.interface.ts
 model/update-role-permissions-command-response.interface.ts
 model/update-team-command-request.interface.ts

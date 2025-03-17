@@ -1,0 +1,144 @@
+@if (!minimized()) {
+<div
+  class="h-[450px] w-[300px] bg-gray-700 rounded-2xl p-4 border border-gray-700 absolute bottom-10 right-5 shadow-2xl"
+>
+  <div class="flex flex-col justify-between h-full">
+    <!-- Header - minimize caller zone -->
+
+    <!-- Header  -->
+    <div class="flex flex-col items-center">
+      <!-- top actions -->
+      <div class="flex justify-between w-full items-center">
+        <button tas-text-button iconButton (click)="toggleMinimize()">
+          <tas-icon
+            iconName="feather:minimize-2"
+            iconClass="text-gray-400"
+          ></tas-icon>
+        </button>
+
+        <!-- Manage the calling status: Appeler, Appel en cours ..., Connecté-->
+        <div class="text-xl font-bold text-gray-400 text-center">
+          {{ callingStatus() }}
+        </div>
+
+        <button tas-text-button iconButton (click)="closeCaller()">
+          <tas-icon iconName="feather:x" iconClass="text-gray-400"></tas-icon>
+        </button>
+      </div>
+
+      <!-- Contact Name -->
+      <div class="text-center font-semibold text-2xl pt-4 text-gray-50">
+        Ambroise BAZIE
+      </div>
+
+      <!-- contact Number -->
+      <div class="text-sm text-center font-bold text-gray-400 text-italic">
+        +2250777132974
+      </div>
+
+      <div
+        class="h-[80px] w-[80px] rounded-full bg-gray-600 flex items-center justify-center mt-4"
+        [ngClass]="{ 'animate-pulse': isCalling() }"
+      >
+        <tas-icon
+          iconName="feather:user"
+          iconClass="text-gray-50"
+          iconSize="xl"
+        ></tas-icon>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="flex flex-col space-y-4 items-center">
+      <!-- Call control -->
+      <div class="flex space-x-12">
+        <button
+          tas-outlined-button
+          iconButton
+          title="Haut parleur"
+          [disabled]="true"
+        >
+          <tas-icon
+            iconName="feather:volume-2"
+            iconClass="text-gray-50"
+          ></tas-icon>
+        </button>
+        <button tas-outlined-button iconButton [disabled]="true" title="Muté">
+          <tas-icon
+            iconName="feather:mic-off"
+            iconClass="text-gray-50"
+          ></tas-icon>
+        </button>
+      </div>
+      <!-- Call / Hangup  button -->
+      <div class="pt-4">
+        @if (isCalling()) {
+        <button
+          tas-raised-button
+          iconButton
+          color="warn"
+          (click)="outgoingCallHangupButton()"
+        >
+          <tas-icon iconName="feather:phone-off"></tas-icon>
+        </button>
+        } @else {
+        <button
+          (click)="makeOutgoingCall()"
+          class="font-normal flex space-x-2 rounded-full bg-functional-success-100 text-white px-10 py-3"
+        >
+          <tas-icon iconName="feather:phone"></tas-icon>
+          <span>Appeler</span>
+        </button>
+        }
+
+        <!-- Hangup button -->
+      </div>
+    </div>
+
+    <!-- Setting -->
+    <div class="flex justify-end">
+      <button tas-text-button iconButton (click)="toggleSettingOpen()">
+        <tas-icon iconName="settings" iconClass="text-gray-50"></tas-icon>
+      </button>
+    </div>
+
+    <!-- Setting zone -->
+    @if ( isSettingOpened() ) {
+    <div
+      class="w-full h-[300px] bg-gray-900 border border-gray-700 absolute bottom-0 left-0 rounded-2xl p-4"
+    >
+      <div class="flex justify-between">
+        <div class="text-gray-400 text-center flex space-x-2 items-center">
+          <tas-icon iconName="settings" iconClass="text-gray-400"></tas-icon>
+          <span>Paramétrage audio</span>
+        </div>
+
+        <button tas-text-button iconButton (click)="toggleSettingOpen()">
+          <tas-icon iconName="feather:x" iconClass="text-gray-400"></tas-icon>
+        </button>
+      </div>
+
+      <div>
+        @for (audio of audioSpeakerList(); track $index) {
+        <span class="text-gray-400">{{ audio.label }}</span>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
+} @else {
+<!-- minimized mode -->
+<div
+  class="h-[40px] w-[300px] bg-gray-900 rounded-full p-.5 border border-gray-700 absolute top-1 right-40 shadow-2xl"
+>
+  <div class="flex space-x-2">
+    <button tas-text-button iconButton (click)="toggleMinimize()">
+      <tas-icon
+        iconName="feather:maximize-2"
+        iconClass="text-gray-400"
+      ></tas-icon>
+    </button>
+  </div>
+</div>
+}

@@ -20,8 +20,15 @@
         "operationId": "CallerController_token_v1",
         "parameters": [],
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwilioAccessTokenResponse"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -1639,6 +1646,23 @@
   "servers": [],
   "components": {
     "schemas": {
+      "TwilioAccessTokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Toke"
+          },
+          "identity": {
+            "type": "string",
+            "description": "The connected Agent name"
+          }
+        },
+        "required": [
+          "token",
+          "identity"
+        ]
+      },
       "CreateUserCommand": {
         "type": "object",
         "properties": {

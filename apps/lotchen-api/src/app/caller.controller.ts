@@ -1,7 +1,15 @@
 import { Body, Controller, Post, Req, Res } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { tokenGenerator, voiceResponse } from './handler';
 import { Public, RequestExtendedWithUser } from '@lotchen/api/core';
+
+export class TwilioAccessTokenResponse {
+  @ApiProperty({ description: 'Toke' })
+  token: string;
+
+  @ApiProperty({ description: 'The connected Agent name', type: String })
+  identity: string;
+}
 
 @Controller({
   path: 'caller',
@@ -25,9 +33,12 @@ export class CallerController {
   }
 
   @Post('token')
-  async token(@Req() request: RequestExtendedWithUser) {
-    return tokenGenerator(
-      `${request.user.firstName} ${request.user.lastName} / ${request.user.username}`
-    );
+  @ApiResponse({
+    type: TwilioAccessTokenResponse,
+  })
+  async token(
+    @Req() request: RequestExtendedWithUser
+  ): Promise<TwilioAccessTokenResponse> {
+    return tokenGenerator(`${request.user.firstName}${request.user.lastName} `);
   }
 }
