@@ -14,7 +14,7 @@
     "openapi-generator": "npx @openapitools/openapi-generator-cli generate  --generator-key lotchen --verbose",
     "prepare": "husky",
     "api": "pm2 start dist/apps/lotchen-api/main.js",
-    "heroku-postbuild": "nx build $PROJECT_NAME --prod"
+    "heroku-postbuild": "npx nx build $PROJECT_NAME --prod"
   },
   "lint-staged": {
     "**/*": "eslint --quiet --fix"
