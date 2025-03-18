@@ -6,7 +6,7 @@ const VoiceGrant = AccessToken.VoiceGrant;
 let identity;
 
 export const tokenGenerator = (fullName: string) => {
-  identity = fullName; // FullName of  the agent making the call
+  identity = fullName.trim(); // FullName of  the agent making the call
 
   const accessToken = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID,

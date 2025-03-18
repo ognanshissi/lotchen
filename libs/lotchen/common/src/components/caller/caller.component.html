@@ -5,6 +5,17 @@
   <div class="flex flex-col justify-between h-full">
     <!-- Header - minimize caller zone -->
 
+    <!-- Show loading while getting the device ready  -->
+    @if (isGettingDeviceReadyLoading()) {
+    <div class="h-full flex space-y-4 flex-col justify-center items-center">
+      <tas-spinner class="text-2xl text-white"></tas-spinner>
+      <p class="text-gray-50">Chargement de l'application</p>
+    </div>
+    }
+
+    <!-- Twilio.Device is ready to make and receive calls -->
+    @if (!isGettingDeviceReadyLoading() && twilioDeviceReady()) {
+
     <!-- Header  -->
     <div class="flex flex-col items-center">
       <!-- top actions -->
@@ -95,6 +106,8 @@
       </div>
     </div>
 
+    }
+
     <!-- Setting -->
     <div class="flex justify-end">
       <button tas-text-button iconButton (click)="toggleSettingOpen()">
@@ -110,7 +123,7 @@
       <div class="flex justify-between">
         <div class="text-gray-400 text-center flex space-x-2 items-center">
           <tas-icon iconName="settings" iconClass="text-gray-400"></tas-icon>
-          <span>Paramétrage audio</span>
+          <span>Paramétrage</span>
         </div>
 
         <button tas-text-button iconButton (click)="toggleSettingOpen()">
@@ -118,10 +131,30 @@
         </button>
       </div>
 
+      <!-- speaker devices -->
       <div>
-        @for (audio of audioSpeakerList(); track $index) {
-        <span class="text-gray-400">{{ audio.label }}</span>
-        }
+        <span class="text-gray-200">Appareils haut-parleur</span>
+        <select
+          class="bg-gray-600 rounded-lg text-gray-400"
+          [formControl]="outputDeviceFormControl"
+        >
+          @for (audio of audioSpeakerList(); track $index) {
+          <option [value]="audio.id">{{ audio.label }}</option>
+          }
+        </select>
+      </div>
+      <br />
+      <!-- Ringtone devices -->
+      <div>
+        <span class="text-gray-200">Appareils sonnerie</span>
+        <select
+          class="bg-gray-600 rounded-lg text-gray-400"
+          [formControl]="ringtoneDeviceFormControl"
+        >
+          @for (audio of audioSpeakerList(); track $index) {
+          <option [value]="audio.id">{{ audio.label }}</option>
+          }
+        </select>
       </div>
     </div>
     }

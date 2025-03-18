@@ -39,6 +39,8 @@ export class CallerController {
   async token(
     @Req() request: RequestExtendedWithUser
   ): Promise<TwilioAccessTokenResponse> {
+    // Update with a fully command handler,
+    // the identity should be composed of `tenantId userId`
     return tokenGenerator(`${request.user.firstName}${request.user.lastName} `);
   }
 }

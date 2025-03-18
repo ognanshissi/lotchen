@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { CallerApiService } from '@talisoft/api/lotchen-client-api';
-import { Device } from '@twilio/voice-sdk';
+import { Call, Device } from '@twilio/voice-sdk';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class TwilioVoiceService {
 
         this.device = new Device(response.token, {
           logLevel: 1,
-          codecPreferences: ['opus', 'pcmu'],
+          codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
         });
 
         this.device.on('ready', () => console.log('Twilio Device Ready'));
