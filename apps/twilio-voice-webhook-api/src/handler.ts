@@ -6,6 +6,7 @@ export const voiceResponse = function voiceResponse(requestBody: any) {
   const toNumberOrClientName = requestBody.To;
   const callerId = process.env.TWILIO_CALLER_ID;
   const twiml = new VoiceResponse();
+  console.log(callerId);
 
   // If the request to the /voice endpoint is TO your Twilio Number,
   // then it is an incoming call towards your Twilio.Device.
