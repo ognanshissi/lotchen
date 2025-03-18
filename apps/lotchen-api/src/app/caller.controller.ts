@@ -1,7 +1,7 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import { Controller, Post, Req } from '@nestjs/common';
 import { ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { tokenGenerator, voiceResponse } from './handler';
-import { Public, RequestExtendedWithUser } from '@lotchen/api/core';
+import { tokenGenerator } from './handler';
+import { RequestExtendedWithUser } from '@lotchen/api/core';
 
 export class TwilioAccessTokenResponse {
   @ApiProperty({ description: 'Toke' })
@@ -17,21 +17,6 @@ export class TwilioAccessTokenResponse {
 })
 @ApiTags('Caller')
 export class CallerController {
-  /**
-   *
-   * Twilio voice webhook endpoint
-   *
-   * @param res
-   * @param body
-   * @returns
-   */
-  @Post('voice')
-  @Public()
-  async voiceCall(@Res() res: Response, @Body() body: any) {
-    res.headers.set('Content-Type', 'text/xml');
-    return voiceResponse(body);
-  }
-
   @Post('token')
   @ApiResponse({
     type: TwilioAccessTokenResponse,
