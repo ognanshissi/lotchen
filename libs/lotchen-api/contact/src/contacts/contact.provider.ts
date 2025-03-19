@@ -3,14 +3,17 @@ import { Contact, ContactDocument, ContactSchema } from './contact.schema';
 import { Inject, Injectable, Provider } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { RequestExtendedWithUser } from '@lotchen/api/core';
+import { CallLog } from './call-log.schema';
 
 export const CONTACT_MODEL = 'CONTACT_MODEL';
+export const CALL_LOG_MODEL = 'CALL_LOG_MODEL';
 
 @Injectable()
 export class ContactProvider {
   constructor(
     @Inject(CONTACT_MODEL)
     public readonly ContactModel: Model<ContactDocument>,
+    @Inject(CALL_LOG_MODEL) public readonly CallLogModel: Model<CallLog>,
     @Inject(REQUEST) public readonly request: RequestExtendedWithUser
   ) {}
 

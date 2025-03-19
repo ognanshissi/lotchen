@@ -1,12 +1,5 @@
-import { NgClass, NgIf } from '@angular/common';
-import {
-  Component,
-  computed,
-  inject,
-  OnInit,
-  signal,
-  ViewContainerRef,
-} from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CallerApiService } from '@talisoft/api/lotchen-client-api';
 import { ButtonModule } from '@talisoft/ui/button';
@@ -26,23 +19,19 @@ export enum CallingStatusEnum {
   selector: 'common-caller',
   templateUrl: './caller.component.html',
   standalone: true,
-  imports: [
-    TasIcon,
-    ButtonModule,
-    NgClass,
-    TasSpinner,
-    ReactiveFormsModule,
-    NgIf,
-  ],
+  imports: [TasIcon, ButtonModule, NgClass, TasSpinner, ReactiveFormsModule],
 })
 export class CallerComponent implements OnInit {
   private _callerApiService = inject(CallerApiService);
-  public viewContainer = inject(ViewContainerRef);
 
   public callingStatus = signal<CallingStatusEnum>(CallingStatusEnum.Call);
 
+  public callingStatusEnum = CallingStatusEnum;
+
   public isCalling = computed(() => {
-    return this.callingStatus() === CallingStatusEnum.Calling;
+    return [CallingStatusEnum.Calling, CallingStatusEnum.Online].includes(
+      this.callingStatus()
+    );
   });
 
   public isSettingOpened = signal(false);
@@ -50,11 +39,23 @@ export class CallerComponent implements OnInit {
   public minimized = signal(false);
 
   // Call timer
-  public timer = 0;
+  public timer = signal(0);
+  private timerInterval: any;
+  public startDate: Date | number | undefined = undefined;
+  public callDuration = computed(() => {
+    let seconds = this.timer();
+    let minutes = seconds / 60;
+    let hours = minutes / 60;
+
+    minutes %= 60;
+    hours %= 24;
+    seconds %= 60;
+
+    return `${Math.floor(hours)}:${Math.floor(minutes)}:${Math.floor(seconds)}`;
+  });
 
   // FormControls
   public outputDeviceFormControl = new FormControl('default');
-
   public ringtoneDeviceFormControl = new FormControl('default');
 
   public isGettingDeviceReadyLoading = signal(false);
@@ -180,32 +181,51 @@ export class CallerComponent implements OnInit {
 
       // add listeners to the Call
       // "accepted" means the call has finished connecting and the state is now "open"
-      this.call.on('accept', this.updateUIAcceptedOutgoingCall);
+      this.call.on('accept', () => {
+        this.callingStatus.set(CallingStatusEnum.Online);
+        this.startDate = new Date();
+        this.timerInterval = setInterval(() => {
+          this.timer.set(this.timer() + 1);
+        }, 1000);
+        // Set call started time
+        console.log('Calling in progress...');
+        this.call?.on('volume', (inputVolume, outputVolume) => {
+          console.log({ inputVolume, outputVolume });
+        });
+      });
+      //   Disconnected event
       this.call.on('disconnect', () => {
         console.log('Disconnected =>', this.callingStatus());
+        console.log({
+          start_time: this.startDate,
+          end_time: new Date(),
+          call_duration: this.timer(),
+          call_instance: this.call,
+          call_sid: this.call?.parameters?.['CallSid'],
+        });
         this.callingStatus.set(CallingStatusEnum.End);
+        clearInterval(this.timerInterval);
+        this.timer.set(0);
+        this.startDate = undefined;
         setTimeout(() => {
           this.callingStatus.set(CallingStatusEnum.Call);
         }, 1000);
       });
+      //   Canceled
       this.call.on('cancel', this.updateUIDisconnectedOutgoingCall);
     } else {
       console.log('Unable to make call.');
     }
   }
 
-  public updateUIAcceptedOutgoingCall(call: Call) {
-    // Set call started time
-    console.log('Calling in progress...');
-    this.callingStatus.set(CallingStatusEnum.Online);
-    call.on('volume', (inputVolume, outputVolume) => {
-      console.log({ inputVolume, outputVolume });
-    });
-  }
+  public updateUIAcceptedOutgoingCall(call: Call) {}
 
   public updateUIDisconnectedOutgoingCall() {
     // console.log('Disconnected =>', call);
     // Set call ended time => update contact call logs
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
     this.callingStatus.set(CallingStatusEnum.End);
     setTimeout(() => {
       this.callingStatus.set(CallingStatusEnum.Call);

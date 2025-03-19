@@ -28,8 +28,12 @@
         </button>
 
         <!-- Manage the calling status: Appeler, Appel en cours ..., Connecté-->
-        <div class="text-xl font-bold text-gray-400 text-center">
+        <div class="text-lg font-bold text-gray-400 text-center">
+          @if (callingStatus() === callingStatusEnum.Online) {
+          {{ callDuration() }}
+          } @else {
           {{ callingStatus() }}
+          }
         </div>
 
         <button tas-text-button iconButton (click)="closeCaller()">
