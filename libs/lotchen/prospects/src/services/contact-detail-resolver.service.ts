@@ -22,7 +22,7 @@ export const contactDetailResover: ResolveFn<FindContactByIdQueryResponse> = (
     .contactsControllerFindContactByIdV1(route.paramMap.get('id') ?? '')
     .pipe(
       catchError(() => {
-        snackbar.success(
+        snackbar.error(
           'Attention!',
           'Le contact est inaccessible présentement, reéssayer plutard'
         );
