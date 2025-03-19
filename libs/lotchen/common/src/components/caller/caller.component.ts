@@ -1,11 +1,23 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CallerApiService } from '@talisoft/api/lotchen-client-api';
+import {
+  CallerApiService,
+  ContactsApiService,
+  CreateCallLogCommandEntityTypeEnum,
+} from '@talisoft/api/lotchen-client-api';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasSpinner } from '@talisoft/ui/spinner';
 import { Device, Call } from '@twilio/voice-sdk';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 export enum CallingStatusEnum {
   Waiting = 'Chargement...',
@@ -22,7 +34,15 @@ export enum CallingStatusEnum {
   imports: [TasIcon, ButtonModule, NgClass, TasSpinner, ReactiveFormsModule],
 })
 export class CallerComponent implements OnInit {
-  private _callerApiService = inject(CallerApiService);
+  private readonly _dialogRef = inject(DialogRef);
+  private readonly _callerApiService = inject(CallerApiService);
+  private readonly _dialogData = inject(DIALOG_DATA);
+  private readonly _contactApiService = inject(ContactsApiService);
+
+  // Inputs
+  public entityId: string = this._dialogData['id'];
+  public clientName: string = this._dialogData['clientName'];
+  public contactNumber: string = this._dialogData['mobileNumber'];
 
   public callingStatus = signal<CallingStatusEnum>(CallingStatusEnum.Call);
 
@@ -41,7 +61,7 @@ export class CallerComponent implements OnInit {
   // Call timer
   public timer = signal(0);
   private timerInterval: any;
-  public startDate: Date | number | undefined = undefined;
+  public startDate: Date | undefined;
   public callDuration = computed(() => {
     let seconds = this.timer();
     let minutes = seconds / 60;
@@ -109,7 +129,7 @@ export class CallerComponent implements OnInit {
 
   private intitializeDevice(token: string) {
     this.device = new Device(token, {
-      logLevel: 1,
+      logLevel: 4, // 1 for developpment
       codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
     });
 
@@ -122,7 +142,6 @@ export class CallerComponent implements OnInit {
   }
 
   private addDeviceListeners(device: Device) {
-    console.log('AddDeviceListener', device);
     device.on('registered', () => {
       console.log('Twilio.Device Ready to make and receive calls!');
       this.twilioDeviceReady.set(true);
@@ -177,8 +196,6 @@ export class CallerComponent implements OnInit {
       // Twilio.Device.connect() returns a Call object
       this.call = await this.device.connect({ params });
 
-      console.log({ call: this.call });
-
       // add listeners to the Call
       // "accepted" means the call has finished connecting and the state is now "open"
       this.call.on('accept', () => {
@@ -203,6 +220,29 @@ export class CallerComponent implements OnInit {
           call_instance: this.call,
           call_sid: this.call?.parameters?.['CallSid'],
         });
+
+        // save to call logs;
+        this._contactApiService
+          .contactsControllerCreateCallLogV1({
+            startDate: this.startDate?.toISOString() ?? '',
+            endDate: new Date().toISOString(),
+            callSid: this.call?.parameters?.['CallSid'] ?? '',
+            duration: this.timer(),
+            fromId: '',
+            toId: this.entityId,
+            entityType: CreateCallLogCommandEntityTypeEnum.Contact,
+            toContact: params.To,
+            status: 'replied',
+          })
+          .subscribe({
+            next: () => {
+              // Wait 2 seconds and close the caller dialog
+              setTimeout(() => {
+                this.closeCaller();
+              }, 2000);
+            },
+          });
+
         this.callingStatus.set(CallingStatusEnum.End);
         clearInterval(this.timerInterval);
         this.timer.set(0);
@@ -242,6 +282,6 @@ export class CallerComponent implements OnInit {
    * Close the caller box
    */
   public closeCaller() {
-    console.log('Close the caller drawer');
+    this._dialogRef.close();
   }
 }

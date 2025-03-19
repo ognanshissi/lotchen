@@ -36,19 +36,24 @@
           }
         </div>
 
-        <button tas-text-button iconButton (click)="closeCaller()">
+        <button
+          tas-text-button
+          iconButton
+          [disabled]="isCalling()"
+          (click)="closeCaller()"
+        >
           <tas-icon iconName="feather:x" iconClass="text-gray-400"></tas-icon>
         </button>
       </div>
 
       <!-- Contact Name -->
       <div class="text-center font-semibold text-2xl pt-4 text-gray-50">
-        Ambroise BAZIE
+        {{ clientName }}
       </div>
 
       <!-- contact Number -->
       <div class="text-sm text-center font-bold text-gray-400 text-italic">
-        +2250777132974
+        {{ contactNumber }}
       </div>
 
       <div

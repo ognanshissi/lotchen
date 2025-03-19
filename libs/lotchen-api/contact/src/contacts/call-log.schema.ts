@@ -1,18 +1,21 @@
-import { AggregateRoot } from '@lotchen/api/core';
+import { SchemaIdentifier } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export type CallLogDocument = HydratedDocument<CallLog>;
 
 @Schema({ timestamps: true, collection: 'contact_call_logs' })
-export class CallLog extends AggregateRoot {
+export class CallLog extends SchemaIdentifier {
   @Prop({ type: String, enum: ['Contact', 'Client'], default: 'Contact' })
   entityType!: string;
 
   @Prop({ type: 'UUID' })
   toId!: string;
 
-  @Prop({ type: 'UUID' })
+  @Prop({ type: String })
+  toContact!: string;
+
+  @Prop({ type: String })
   callSid!: string;
 
   @Prop({ type: 'UUID', required: true })

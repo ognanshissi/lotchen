@@ -7,6 +7,7 @@ export * from './contact-info-dto.interface';
 export * from './contacts-controller-paginate-all-territories-v1200-response.interface';
 export * from './create-agency-address-dto.interface';
 export * from './create-agency-command.interface';
+export * from './create-call-log-command.interface';
 export * from './create-contact-command.interface';
 export * from './create-organization-command.interface';
 export * from './create-role-command.interface';

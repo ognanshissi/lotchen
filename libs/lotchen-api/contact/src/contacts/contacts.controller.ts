@@ -39,6 +39,10 @@ import {
   PaginateAllContactsCommandResponse,
 } from './paginate-all/paginate-all-contacts.command';
 import { ImportContactsExcelCommandHandler } from './import-contacts-excel/import-contacts-excel.command';
+import {
+  CreateCallLogCommand,
+  CreateCallLogCommandHandler,
+} from './create-call-log/create-call-log.command';
 
 @ApiTags('Contacts')
 @Controller({
@@ -52,7 +56,8 @@ export class ContactsController {
     private readonly _findContactByIdQueryHandler: FindContactByQueryHandler,
     private readonly _updateContactCommandHandler: UpdateContactCommandHandler,
     private readonly _paginateAllContactsCommandHandler: PaginateAllContactsCommandHandler,
-    private readonly _importContactsExcelCommandHandler: ImportContactsExcelCommandHandler
+    private readonly _importContactsExcelCommandHandler: ImportContactsExcelCommandHandler,
+    private readonly _createCallLogCommandhandler: CreateCallLogCommandHandler
   ) {}
 
   @Post()
@@ -125,5 +130,17 @@ export class ContactsController {
     return this._importContactsExcelCommandHandler.handlerAsync({
       excelFile: file?.path,
     });
+  }
+
+  @HttpCode(HttpStatus.CREATED)
+  @ApiResponse({
+    status: 201,
+    description: 'Contact created',
+  })
+  @Post('call-logs')
+  public async createCallLog(
+    @Body() request: CreateCallLogCommand
+  ): Promise<void> {
+    await this._createCallLogCommandhandler.handlerAsync(request);
   }
 }

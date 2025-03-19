@@ -1,13 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt } from 'class-validator';
+import { IsInt, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CommandHandler } from '@lotchen/api/core';
-import { Request } from 'express';
 import { ContactProvider } from '../contact.provider';
+import { Injectable } from '@nestjs/common';
 
 export class CreateCallLogCommand {
   @ApiProperty({ description: 'Entity Id, ContactId / ClientId' })
-  entityId!: string;
+  @IsNotEmpty()
+  toId!: string;
+
+  @ApiProperty({ description: 'Contact number', type: String, required: true })
+  toContact!: string;
+
+  @ApiProperty({ description: 'Twilio Call SID', required: true, type: String })
+  @IsNotEmpty()
+  callSid!: string;
 
   @ApiProperty({
     description: 'Entity type',
@@ -15,32 +23,45 @@ export class CreateCallLogCommand {
     enum: ['Contact', 'Client'],
     default: 'Contact',
   })
+  @IsNotEmpty()
   entityType!: ['Contact', 'Client'];
 
   @ApiProperty({ description: 'Call duration in seconds', type: Number })
   @IsInt()
   @Type(() => Number)
+  @IsNotEmpty()
   duration!: number;
 
   @ApiProperty({ description: 'Call started date', type: Date })
+  @IsNotEmpty()
   startDate!: Date;
 
   @ApiProperty({ description: 'Call ended dated', type: Date })
+  @IsNotEmpty()
   endDate!: Date;
 
   @ApiProperty({ description: 'Call Status' })
   status!: string;
 }
 
+@Injectable()
 export class CreateCallLogCommandHandler
   implements CommandHandler<CreateCallLogCommand, any>
 {
   public constructor(private readonly _contactProvider: ContactProvider) {}
 
-  public async handlerAsync(
-    command: CreateCallLogCommand,
-    req?: Request
-  ): Promise<any> {
-    console.log(command);
+  public async handlerAsync(command: CreateCallLogCommand): Promise<any> {
+    const callLog = new this._contactProvider.CallLogModel({
+      startDate: command.startDate,
+      endDate: command.endDate,
+      callSid: command.callSid,
+      duration: command.duration,
+      entityType: 'Contact',
+      fromId: this._contactProvider.currentUserInfo().userId, // User
+      toId: command.toId, // contact, client
+      toContact: command.toContact,
+    });
+
+    await callLog.save();
   }
 }

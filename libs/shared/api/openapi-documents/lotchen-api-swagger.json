@@ -1,20 +1,6 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/v1/caller/voice": {
-      "post": {
-        "operationId": "CallerController_voiceCall_v1",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Caller"
-        ]
-      }
-    },
     "/api/v1/caller/token": {
       "post": {
         "operationId": "CallerController_token_v1",
@@ -1629,6 +1615,30 @@
           "Contacts"
         ]
       }
+    },
+    "/api/v1/contacts/call-logs": {
+      "post": {
+        "operationId": "ContactsController_createCallLog_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCallLogCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Contact created"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
     }
   },
   "info": {
@@ -3125,6 +3135,61 @@
           "pageSize",
           "filters",
           "fullTextSearch"
+        ]
+      },
+      "CreateCallLogCommand": {
+        "type": "object",
+        "properties": {
+          "toId": {
+            "type": "string",
+            "description": "Entity Id, ContactId / ClientId"
+          },
+          "toContact": {
+            "type": "string",
+            "description": "Contact number"
+          },
+          "callSid": {
+            "type": "string",
+            "description": "Twilio Call SID"
+          },
+          "entityType": {
+            "type": "string",
+            "description": "Entity type",
+            "example": "Contact, Client",
+            "enum": [
+              "Contact",
+              "Client"
+            ],
+            "default": "Contact"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Call duration in seconds"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Call started date"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Call ended dated"
+          },
+          "status": {
+            "type": "string",
+            "description": "Call Status"
+          }
+        },
+        "required": [
+          "toId",
+          "toContact",
+          "callSid",
+          "entityType",
+          "duration",
+          "startDate",
+          "endDate",
+          "status"
         ]
       }
     }

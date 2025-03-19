@@ -26,6 +26,7 @@ model/contact-info-dto.interface.ts
 model/contacts-controller-paginate-all-territories-v1200-response.interface.ts
 model/create-agency-address-dto.interface.ts
 model/create-agency-command.interface.ts
+model/create-call-log-command.interface.ts
 model/create-contact-command.interface.ts
 model/create-organization-command.interface.ts
 model/create-role-command-response.interface.ts
