@@ -4,7 +4,12 @@
       <tas-icon iconName="mail"></tas-icon>
       Envoyer un e-mail
     </button>
-    <button tas-outlined-button color="primary" (click)="triggerCaller()">
+    <button
+      tas-outlined-button
+      color="primary"
+      [disabled]="callerIsOpened()"
+      (click)="triggerCaller()"
+    >
       <tas-icon iconName="feather:phone"></tas-icon>
       Appeler
     </button>

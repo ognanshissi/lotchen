@@ -3,7 +3,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TableColumn } from './table-types';
 
 /**
  * Data source for the DataTable view. This class should
@@ -14,7 +13,7 @@ export class TableDataSource<TEntity> extends DataSource<TEntity> {
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  constructor(public data: TEntity[], public columns: TableColumn[]) {
+  constructor(public data: TEntity[]) {
     super();
   }
 

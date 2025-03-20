@@ -4,6 +4,11 @@
 @use 'styles/raised-button';
 @use 'styles/text-button';
 
+// Hide button text on loading state
+button .hide {
+  display: none;
+}
+
 .tas__button__base {
   @apply font-sans  disabled:cursor-not-allowed;
   outline: none;
@@ -20,7 +25,7 @@
 
 .tas__button__icon {
   padding: 8px;
-  @apply hover:bg-gray-300;
+  @apply hover:bg-gray-400;
 }
 
 // Button sizing

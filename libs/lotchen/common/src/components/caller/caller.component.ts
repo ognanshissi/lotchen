@@ -1,12 +1,5 @@
 import { NgClass } from '@angular/common';
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   CallerApiService,
@@ -16,7 +9,7 @@ import {
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasSpinner } from '@talisoft/ui/spinner';
-import { Device, Call } from '@twilio/voice-sdk';
+import { Call, Device } from '@twilio/voice-sdk';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 export enum CallingStatusEnum {
@@ -212,15 +205,6 @@ export class CallerComponent implements OnInit {
       });
       //   Disconnected event
       this.call.on('disconnect', () => {
-        console.log('Disconnected =>', this.callingStatus());
-        console.log({
-          start_time: this.startDate,
-          end_time: new Date(),
-          call_duration: this.timer(),
-          call_instance: this.call,
-          call_sid: this.call?.parameters?.['CallSid'],
-        });
-
         // save to call logs;
         this._contactApiService
           .contactsControllerCreateCallLogV1({

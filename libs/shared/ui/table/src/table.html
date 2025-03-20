@@ -3,8 +3,8 @@
   <div>
     <tas-title>{{ title() }}</tas-title>
     <tas-text class="text-sm text-gray-400"
-      >{{ data().length || 0 }} éléments trouvés</tas-text
-    >
+      >{{ data().length || 0 }} éléments trouvés
+    </tas-text>
   </div>
   <div class="flex space-x-2 items-center justify-center">
     <div>
@@ -64,4 +64,7 @@
   >
     Aucun élément trouvé
   </div>
+
+  <!--  <mat-paginator #paginator (page)="pageEvent($event)" aria-label="Select page">-->
+  <!--  </mat-paginator>-->
 </div>

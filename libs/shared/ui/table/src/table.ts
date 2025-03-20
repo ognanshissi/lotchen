@@ -1,17 +1,19 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   contentChild,
   ContentChild,
   contentChildren,
+  inject,
   input,
   OnChanges,
   OnInit,
   output,
   SimpleChanges,
   TemplateRef,
-  viewChild,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -32,6 +34,16 @@ import { TasInput } from '@talisoft/ui/input';
 import { TasTitle } from '@talisoft/ui/title';
 import { TasText } from '@talisoft/ui/text';
 
+export const DEFAULT_TABLE_CONFIG: TableConfig = {
+  property: 'entity',
+  pagination: {
+    pageSize: 5,
+    pageSizeOptions: [5, 10, 30],
+    pageIndex: 0,
+    serverSide: false,
+  },
+};
+
 @Component({
   selector: 'tas-table',
   standalone: true,
@@ -48,6 +60,8 @@ import { TasText } from '@talisoft/ui/text';
     TasTitle,
     TasText,
     TasLabel,
+    MatPaginator,
+    MatSort,
   ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,19 +71,20 @@ export class TasTable<T extends TableEntity>
 {
   public data = input.required<T[]>();
   public identifierField = input<string>('id');
-  public config = input<TableConfig>();
+  public config = input<TableConfig>(DEFAULT_TABLE_CONFIG);
   public columns = input<TableColumn[]>([]);
   public isLoading = input<boolean>(false);
+  private readonly _changeDetector = inject(ChangeDetectorRef);
 
   public title = input<string>();
 
   public selectionItems = output<T[]>();
 
-  public paginator = viewChild<MatPaginator>(MatPaginator);
-  public sort = viewChild<MatSort>(MatSort);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
+  @ViewChild(MatTable) table!: MatTable<T>;
 
-  public table = viewChild<MatTable<T>>(MatTable<T>);
-  public pageEvent = output<PageEvent>();
+  public pageEventChange = output<PageEvent>();
   public searchInputChange = output<string>();
 
   public selection: SelectionModel<T> = new SelectionModel<T>(
@@ -78,6 +93,11 @@ export class TasTable<T extends TableEntity>
     true,
     (o1, o2) => o1[this.identifierField()] === o2[this.identifierField()]
   );
+
+  public pageChangeDetector(): ChangeDetectorRef {
+    this._changeDetector.detectChanges();
+    return this._changeDetector;
+  }
 
   public refresh = output();
 
@@ -110,6 +130,8 @@ export class TasTable<T extends TableEntity>
       this._handleMasterSelection();
       this._handleItemSelection();
     }
+
+    this._updateDatasource();
   }
 
   private _handleMasterSelection(): void {
@@ -142,11 +164,24 @@ export class TasTable<T extends TableEntity>
   }
 
   public ngOnInit(): void {
-    this.dataSource = new TableDataSource<T>(this.data() ?? [], this.columns());
+    this._updateDatasource();
+    // this.dataSource = new TableDataSource<T>(this.data() ?? []);
+    // console.log(this.dataSource);
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
+  }
+
+  public pageEvent(event: PageEvent) {
+    if (this.config()?.pagination.serverSide) {
+      this.pageEventChange.emit(event);
+    }
   }
 
   public ngOnChanges(changes: SimpleChanges) {
-    // this._updateDatasource();
+    if (!changes['data']) {
+      // this.dataSource = new TableDataSource<T>(changes['data']?.currentValue);
+      this._updateDatasource();
+    }
   }
 
   public isMasterSelected(): boolean {
@@ -154,23 +189,27 @@ export class TasTable<T extends TableEntity>
     return this.data()?.length === this.selection.selected.length;
   }
 
-  // private _updateDatasource() {
-  //   if (this.config()?.pagination?.serverSide) {
-  //     this.table()?.dataSource = [...this.data()];
-  //     this.paginator().length =
-  //       this.config().pagination.totalElements ?? this.data.length;
-  //   }
-  //
-  //   this.paginator().pageIndex = this.config()?.pagination.pageIndex;
-  //   this.paginator().pageSizeOptions =
-  //     this.config()?.pagination.pageSizeOptions;
-  //   this.paginator().pageSize = this.config()?.pagination.pageSize;
-  //
-  //   this.dataSource.sort = this.sort();
-  //   if (!this.config()?.pagination.serverSide) {
-  //     this.paginator().length = this.data.length;
-  //     this.table().dataSource = this.dataSource;
-  //   }
-  //   this.dataSource.paginator = this.paginator();
-  // }
+  private _updateDatasource() {
+    if (this.config()?.pagination?.serverSide) {
+      this.table.dataSource = [...this.data()];
+      this.paginator.length =
+        this.config()?.pagination.totalElements ?? this.data.length;
+    }
+
+    this.paginator.pageIndex = this.config()?.pagination?.pageIndex;
+    this.paginator.pageSizeOptions = this.config()?.pagination.pageSizeOptions;
+    this.paginator.pageSize = this.config()?.pagination.pageSize;
+
+    this.dataSource.sort = this.sort;
+    if (!this.config()?.pagination.serverSide) {
+      this.paginator.length = this.data.length;
+      this.table.dataSource = this.dataSource;
+    }
+    this.dataSource.paginator = this.paginator;
+
+    console.log('UpdateDatasource');
+    this.dataSource.connect().subscribe((res) => {
+      console.log(res);
+    });
+  }
 }
