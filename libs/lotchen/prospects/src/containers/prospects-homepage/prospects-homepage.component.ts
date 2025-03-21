@@ -55,7 +55,7 @@ export class ProspectsHomepageComponent {
   public openCaller(item: FindAllContactsQueryResponse) {
     this._callerService.openCaller({
       id: item.id,
-      clientName: `${item.lastName} ${item.firstName?.toUpperCase()}`,
+      clientName: `${item.firstName} ${item.lastName?.toUpperCase()}`,
       mobileNumber: item.mobileNumber ?? '',
     });
   }

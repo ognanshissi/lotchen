@@ -1,9 +1,9 @@
 <!--table caption-->
-<div class="p-4 flex justify-between">
+<div class="p-4 flex justify-between items-center">
   <div>
-    <tas-title>{{ title() }}</tas-title>
+    <tas-title *ngIf="title()">{{ title() }}</tas-title>
     <tas-text class="text-sm text-gray-400"
-      >{{ data().length || 0 }} éléments trouvés
+      >{{ data()?.length || 0 }} éléments trouvés
     </tas-text>
   </div>
   <div class="flex space-x-2 items-center justify-center">
@@ -30,7 +30,7 @@
   </div>
 </div>
 <div class="overflow-x-hidden">
-  <div class="w-full overflow-x-auto max-h-[332px] overflow-y-auto">
+  <div class="w-full overflow-x-auto h-[332px] overflow-y-auto">
     <table class="w-full">
       <ng-container *ngIf="header">
         <thead class="sticky top-0 left-0 bg-white z-10">

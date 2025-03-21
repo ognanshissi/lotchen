@@ -21,64 +21,57 @@
 </tas-card>
 
 <tas-card class="mt-4">
-  <card-header>
-    <tas-title>Liste des utilisateurs</tas-title>
-  </card-header>
-
-  <div>
-    <tas-table
-      [data]="users().value ?? []"
-      [isLoading]="users().isLoading"
-      identifierField="id"
-    >
-      <ng-template #header>
-        <tr>
-          <th rowSelectionMaster></th>
-          <th>Nom Prénom</th>
-          <th>Email</th>
-          <th>Manageur</th>
-          <th>Role</th>
-          <th>Equipes</th>
-          <th>Créé par</th>
-          <th>Date de création</th>
-          <th>Dernière modification</th>
-          <th></th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-item>
-        <tr>
-          <td rowSelectionItem></td>
-          <td>
-            <a [routerLink]="[item.userId]" class="font-semibold underline"
-              >{{ item.firstName }} {{ item.lastName }}</a
-            >
-          </td>
-          <td>
-            {{ item.email }}
-          </td>
-          <td>
-            <button tas-text-button color="primary">
-              + Ajouter un responsable
-            </button>
-          </td>
-          <td>
-            <button tas-text-button color="primary">+ Ajouter un role</button>
-          </td>
-          <td>
-            <button tas-text-button color="primary">
-              + Ajouter une équipe
-            </button>
-          </td>
-          <td>
-            {{ item.createdByInfo ? item.createdByInfo.fullName : 'N/A' }}
-          </td>
-          <td>{{ item.createdAt | dateTimeAgo }}</td>
-          <td>{{ item.createdAt | dateTimeAgo }}</td>
-          <td tasTableItemAction>
-            <button tas-button color="primary">Consulter</button>
-          </td>
-        </tr>
-      </ng-template>
-    </tas-table>
-  </div>
+  <tas-table
+    [title]="'Liste des utilisateurs'"
+    [data]="users().value ?? []"
+    [isLoading]="users().isLoading"
+    identifierField="id"
+  >
+    <ng-template #header>
+      <tr>
+        <th rowSelectionMaster></th>
+        <th>Nom Prénom</th>
+        <th>Email</th>
+        <th>Manageur</th>
+        <th>Role</th>
+        <th>Equipes</th>
+        <th>Créé par</th>
+        <th>Date de création</th>
+        <th>Dernière modification</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item>
+      <tr>
+        <td rowSelectionItem></td>
+        <td>
+          <a [routerLink]="[item.userId]" class="font-semibold underline"
+            >{{ item.firstName }} {{ item.lastName }}</a
+          >
+        </td>
+        <td>
+          {{ item.email }}
+        </td>
+        <td>
+          <button tas-text-button color="primary">
+            + Ajouter un responsable
+          </button>
+        </td>
+        <td>
+          <button tas-text-button color="primary">+ Ajouter un role</button>
+        </td>
+        <td>
+          <button tas-text-button color="primary">+ Ajouter une équipe</button>
+        </td>
+        <td>
+          {{ item.createdByInfo ? item.createdByInfo.firstName : 'N/A' }}
+        </td>
+        <td>{{ item.createdAt | dateTimeAgo }}</td>
+        <td>{{ item.createdAt | dateTimeAgo }}</td>
+        <td tasTableItemAction>
+          <button tas-button color="primary">Consulter</button>
+        </td>
+      </tr>
+    </ng-template>
+  </tas-table>
 </tas-card>
