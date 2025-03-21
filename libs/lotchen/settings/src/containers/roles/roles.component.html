@@ -1,11 +1,55 @@
-<tas-title>Rôles</tas-title>
-<tas-text>Gestion des rôles, création attribution a un équipe</tas-text>
+<button tas-button [routerLink]="['/settings']">
+  <tas-icon iconName="arrow_back"></tas-icon>
+  Retour
+</button>
+<div class="flex justify-between">
+  <div>
+    <tas-title>Rôles</tas-title>
+    <tas-text class="text-gray-500">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias,
+    </tas-text>
+  </div>
 
-<tas-card>
-  <card-header>
-    <button tas-raised-button color="primary">
+  <div class="flex space-x-3">
+    <button tas-raised-button color="primary" (click)="openAddDialog()">
       <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
-      Créer un role
+      Ajouter un rôle
     </button>
-  </card-header>
+
+    <button tas-outlined-button color="accent">
+      <tas-icon iconName="feather:download"></tas-icon>
+      Importer des rôles
+    </button>
+  </div>
+</div>
+
+<tas-card class="mt-4">
+  <div>
+    <tas-table
+      [data]="roles().value ?? []"
+      identifierField="id"
+      [title]="'Liste des rôles'"
+    >
+      <ng-template #header>
+        <tr>
+          <th>Nom</th>
+          <th>Créé par</th>
+          <th>Date de création</th>
+          <th>Dernière modification</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-item>
+        <tr>
+          <td>
+            <a tas-button color="primary" [routerLink]="[item.id]">
+              {{ item.name }}
+            </a>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </tas-table>
+  </div>
 </tas-card>

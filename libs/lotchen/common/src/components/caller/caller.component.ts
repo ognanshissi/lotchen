@@ -179,7 +179,7 @@ export class CallerComponent implements OnInit {
   public async makeOutgoingCall() {
     const params = {
       // get the phone number to call from the DOM
-      To: '+2250777132974',
+      To: this.contactNumber,
     };
 
     if (this.device) {
