@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   TasClosableDrawer,
   TasDrawerAction,
@@ -10,8 +10,18 @@ import { TasTitle } from '@talisoft/ui/title';
 import { ButtonModule } from '@talisoft/ui/button';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import { TasText } from '@talisoft/ui/text';
-import { TasInput, TasNativeSelect } from '@talisoft/ui/input';
+import { TasInput } from '@talisoft/ui/input';
 import { TasIcon } from '@talisoft/ui/icon';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ContactsApiService } from '@talisoft/api/lotchen-client-api';
+import { SnackbarService } from '@talisoft/ui/snackbar';
+import { finalize } from 'rxjs';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'prospects-quick-add',
@@ -26,46 +36,79 @@ import { TasIcon } from '@talisoft/ui/icon';
           excepturi fuga fugit harum ipsum minus molestiae nobis possimus!
         </Text>
 
-        <div class="flex flex-col gap-3">
-          <div class="flex space-x-2">
-            <tas-form-field>
-              <tas-label>Nom</tas-label>
-              <input type="text" tasInput placeholder="Nom" />
-            </tas-form-field>
+        <form [formGroup]="form" class="flex flex-col gap-3">
+          <tas-form-field>
+            <tas-label>Email</tas-label>
+            <input
+              tasInput
+              formControlName="email"
+              type="email"
+              placeholder="Adresse électronique"
+            />
+          </tas-form-field>
+          <tas-form-field>
+            <tas-label>Nom</tas-label>
+            <input
+              type="text"
+              formControlName="lastName"
+              tasInput
+              placeholder="Nom"
+            />
+          </tas-form-field>
 
-            <tas-form-field>
-              <tas-label>Prenom</tas-label>
-              <input type="text" tasInput placeholder="Prénom" />
-            </tas-form-field>
-          </div>
+          <tas-form-field>
+            <tas-label>Prénom</tas-label>
+            <input
+              type="text"
+              formControlName="firstName"
+              tasInput
+              placeholder="Prénom"
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Numéro de téléphone</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="mobileNumber"
+              placeholder="Numéro de téléphone"
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Occupation</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="jobTitle"
+              placeholder="Occupation / Profession"
+            />
+          </tas-form-field>
 
           <tas-form-field>
             <tas-label>Date de naissance</tas-label>
-            <input type="date" tasInput placeholder="Date de naissaince" />
+            <input
+              type="date"
+              formControlName="dateOfBirth"
+              tasInput
+              placeholder="Date de naissaince"
+            />
           </tas-form-field>
-
-          <div class="flex space-x-2">
-            <tas-form-field>
-              <tas-label>Genre</tas-label>
-              <select tasNativeSelect>
-                <option>Homme</option>
-                <option>Femme</option>
-              </select>
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Etat civil</tas-label>
-              <input type="text" tasInput placeholder="Etat civil" />
-            </tas-form-field>
-          </div>
-        </div>
+        </form>
       </tas-drawer-content>
       <tas-drawer-action>
-        <button tas-outlined-button closable-drawer>
+        <button tas-outlined-button closable-drawer [disabled]="form.disabled">
           <tas-icon [iconName]="'close'"></tas-icon>
           Fermer
         </button>
-        <button tas-raised-button color="primary">
+        <button
+          tas-raised-button
+          color="primary"
+          [disabled]="!form.valid"
+          (click)="submit()"
+          [isLoading]="form.disabled"
+        >
           <tas-icon iconName="check"></tas-icon>
           sauvegarder
         </button>
@@ -84,9 +127,49 @@ import { TasIcon } from '@talisoft/ui/icon';
     TasLabel,
     TasText,
     TasInput,
-    TasNativeSelect,
     TasIcon,
+    ReactiveFormsModule,
   ],
   standalone: true,
 })
-export class QuickAddComponent {}
+export class QuickAddComponent implements OnInit {
+  private readonly _contactApiService = inject(ContactsApiService);
+  private readonly _snackbarService = inject(SnackbarService);
+  private readonly _dialogRef = inject(DialogRef);
+  public form!: FormGroup;
+
+  public ngOnInit() {
+    this.form = new FormGroup({
+      email: new FormControl(null, [Validators.required]),
+      mobileNumber: new FormControl(null, [Validators.required]),
+      firstName: new FormControl(null, [Validators.required]),
+      lastName: new FormControl(null, [Validators.required]),
+      jobTitle: new FormControl(null),
+      dateOfBirth: new FormControl(null),
+    });
+  }
+
+  public submit() {
+    this.form.disable();
+    const formValue = this.form.getRawValue();
+
+    this._contactApiService
+      .contactsControllerCreateContactV1(formValue)
+      .pipe(finalize(() => this.form.enable()))
+      .subscribe({
+        next: () => {
+          this._snackbarService.success(
+            'Féliciations!',
+            'Le contact a été bien ajouté.'
+          );
+          this._dialogRef.close();
+        },
+        error: (err) => {
+          this._snackbarService.error(
+            'Attention!',
+            "Une erreur est survenue, impossible d'ajouter le contact."
+          );
+        },
+      });
+  }
+}

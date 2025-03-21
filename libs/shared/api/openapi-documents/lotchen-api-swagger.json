@@ -2807,6 +2807,10 @@
             "format": "date-time",
             "type": "string",
             "description": "Date of birth"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Job title"
           }
         },
         "required": [
@@ -2863,6 +2867,61 @@
           "id"
         ]
       },
+      "FindContactByIdQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "First name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "description": "Mobile number"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of birth"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of creation"
+          },
+          "addresses": {
+            "type": "array",
+            "description": "Address",
+            "items": {
+              "$ref": "#/components/schemas/AddressDto"
+            }
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Job title"
+          },
+          "source": {
+            "type": "string",
+            "description": "Contact source"
+          }
+        },
+        "required": [
+          "id",
+          "jobTitle",
+          "source"
+        ]
+      },
       "LocationDto": {
         "type": "object",
         "properties": {
@@ -2917,62 +2976,6 @@
             ]
           }
         }
-      },
-      "FindContactByIdQueryResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Id"
-          },
-          "email": {
-            "type": "string",
-            "description": "Email"
-          },
-          "firstName": {
-            "type": "string",
-            "description": "First name"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "Last name"
-          },
-          "mobileNumber": {
-            "type": "string",
-            "description": "Mobile number"
-          },
-          "dateOfBirth": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Date of birth"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Date of creation"
-          },
-          "address": {
-            "description": "Address",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AddressDto"
-              }
-            ]
-          },
-          "jobTitle": {
-            "type": "string",
-            "description": "Job title"
-          },
-          "source": {
-            "type": "string",
-            "description": "Contact source"
-          }
-        },
-        "required": [
-          "id",
-          "jobTitle",
-          "source"
-        ]
       },
       "UpdateContactCommandRequest": {
         "type": "object",

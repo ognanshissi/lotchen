@@ -1,6 +1,6 @@
-import { AddressDto, QueryHandler } from '@lotchen/api/core';
+import { Address, AddressDto, QueryHandler } from '@lotchen/api/core';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { ContactProvider } from '../contact.provider';
 
 export class FindContactByIdQuery {
@@ -37,9 +37,10 @@ export class FindContactByIdQueryResponse {
   @ApiProperty({
     required: false,
     description: 'Address',
-    type: () => AddressDto,
+    items: { $ref: getSchemaPath(AddressDto) },
+    type: 'array',
   })
-  address!: AddressDto | null;
+  addresses!: AddressDto[] | [];
 
   @ApiProperty({ type: String, description: 'Job title' })
   jobTitle!: string;
@@ -78,18 +79,18 @@ export class FindContactByQueryHandler
       mobileNumber: contact.mobileNumber,
       dateOfBirth: contact.dateOfBirth,
       createdAt: contact.createdAt,
-      address: {
-        street: contact.address?.street,
-        city: contact.address?.city,
-        postalCode: contact.address?.postalCode,
-        state: contact.address?.state,
-        isDefaultAddress: contact.address?.isDefaultAddress,
-        country: contact.address?.country,
+      addresses: (contact.addresses ?? []).map((address: Address) => ({
+        street: address.street,
+        city: address.city,
+        postalCode: address.postalCode,
+        state: address.state,
+        isDefaultAddress: address.isDefaultAddress,
+        country: address.country,
         location: {
-          type: contact.address?.location?.type,
-          coordinates: contact.address?.location?.coordinates,
+          type: address.location?.type,
+          coordinates: address.location?.coordinates,
         },
-      },
+      })),
     };
   }
 }

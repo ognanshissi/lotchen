@@ -1,11 +1,5 @@
-import {
-  AddEncryptionPlugin,
-  Address,
-  AddressSchema,
-  AggregateRoot,
-} from '@lotchen/api/core';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Schema } from '@nestjs/mongoose';
+import { Address, AddressSchema, AggregateRoot } from '@lotchen/api/core';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export type ContactDocument = HydratedDocument<Contact>;
@@ -64,8 +58,8 @@ export class Contact extends AggregateRoot {
   @Prop({ type: String, default: null })
   jobTitle!: string;
 
-  @Prop({ type: AddressSchema, required: false }) // Stores address
-  address!: Address;
+  @Prop({ type: [AddressSchema], required: false }) // Stores address
+  addresses!: [Address];
 
   @Prop({ required: true, type: String, default: 'Back Office' }) // Stores origin
   source!: contactSource;

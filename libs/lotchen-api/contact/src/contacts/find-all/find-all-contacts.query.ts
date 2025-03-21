@@ -80,6 +80,7 @@ export class FindAllContactsQueryHandler
   implements QueryHandler<FindAllContactsQuery, FindAllContactsQueryResponse[]>
 {
   constructor(private readonly contactProvider: ContactProvider) {}
+
   async handlerAsync(
     query: FindAllContactsQuery
   ): Promise<FindAllContactsQueryResponse[]> {
@@ -144,7 +145,6 @@ export class FindAllContactsQueryHandler
         source: contact.source,
         mobileNumber: contact.mobileNumber,
         dateOfBirth: contact.dateOfBirth,
-        address: contact.address,
         createdAt: contact.createdAt,
         updatedAt: contact.updatedAt,
       };

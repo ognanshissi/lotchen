@@ -1,12 +1,7 @@
-import {
-  AddressDto,
-  CommandHandler,
-  RequestExtendedWithUser,
-} from '@lotchen/api/core';
+import { AddressDto, CommandHandler } from '@lotchen/api/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { ContactProvider } from '../contact.provider';
-import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 export class UpdateContactCommandRequest {
   @ApiProperty({
@@ -107,7 +102,6 @@ export class UpdateContactCommandHandler
         updatedBy: this.contactProvider.currentUserInfo().userId,
         updatedByInfo: this.contactProvider.currentUserInfo(),
       },
-      new: true,
     });
     // await contact.save();
   }
