@@ -53,12 +53,22 @@
 
         <tas-form-field>
           <tas-label>Contact de travail</tas-label>
-          <input type="tel" tasInput formControlName="workNumber" />
+          <input
+            type="tel"
+            tasInput
+            formControlName="workNumber"
+            placeholder="Contact de bureau"
+          />
         </tas-form-field>
 
         <tas-form-field>
           <tas-label>Numéro de téléphone</tas-label>
-          <input type="tel" tasInput formControlName="mobileNumber" />
+          <input
+            type="tel"
+            tasInput
+            formControlName="mobileNumber"
+            placeholder="Numéro de téléphone"
+          />
         </tas-form-field>
       </div>
 
@@ -97,7 +107,7 @@
           <tas-select
             formControlName="role"
             [options]="roles().value ?? []"
-            [optionValue]="'_id'"
+            [optionValue]="'id'"
             optionLabel="name"
             placeholder="Choisissez le role de l'utilisateur"
           >

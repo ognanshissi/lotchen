@@ -23,16 +23,13 @@ export class TableDataSource<TEntity> extends DataSource<TEntity> {
    * @returns A stream of the items to be rendered.
    */
   connect(): Observable<TEntity[]> {
-    if (this.paginator && this.sort) {
+    if (this.paginator) {
+      console.log(this.paginator.length);
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(
-        observableOf(this.data),
-        this.paginator.page,
-        this.sort.sortChange
-      ).pipe(
+      return merge(observableOf(this.data), this.paginator.page).pipe(
         map(() => {
-          return this.getPagedData(this.getSortedData([...this.data]));
+          return this.getPagedData([...this.data]);
         })
       );
     } else {

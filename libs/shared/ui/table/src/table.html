@@ -30,10 +30,10 @@
   </div>
 </div>
 <div class="overflow-x-hidden">
-  <div class="w-full overflow-x-auto">
+  <div class="w-full overflow-x-auto max-h-[332px] overflow-y-auto">
     <table class="w-full">
       <ng-container *ngIf="header">
-        <thead>
+        <thead class="sticky top-0 left-0 bg-white z-10">
           <ng-container
             *ngTemplateOutlet="header; context: {$implicit: columns()}"
           ></ng-container>
@@ -42,7 +42,8 @@
 
       <ng-container *ngIf="body">
         <tbody class="divide-y divide-gray-200">
-          @for (item of data(); track item[identifierField()]) {
+          @for (item of dataSource.connect() | async; track
+          item[identifierField()]) {
           <ng-container
             *ngTemplateOutlet="body; context: { $implicit: item }"
           ></ng-container>
@@ -65,6 +66,11 @@
     Aucun élément trouvé
   </div>
 
-  <!--  <mat-paginator #paginator (page)="pageEvent($event)" aria-label="Select page">-->
-  <!--  </mat-paginator>-->
+  <mat-paginator
+    #paginator
+    [pageSize]="5"
+    (page)="pageEvent($event)"
+    aria-label="Select page"
+  >
+  </mat-paginator>
 </div>

@@ -2,7 +2,7 @@ import { CdkMenuTrigger } from '@angular/cdk/menu';
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[MenuTrigger]',
+  selector: '[TasMenuTrigger]',
   standalone: true,
   hostDirectives: [
     {

@@ -18,7 +18,7 @@ export class ContactDetailComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _callerService = inject(CallerService);
 
-  public callerIsOpened = toSignal(this._callerService.isCallerOpened);
+  public callerIsOpened = this._callerService.isCallerOpened;
 
   public contact = toSignal<FindContactByIdQueryResponse>(
     this._activatedRoute.data.pipe(map((data) => data['contact']))

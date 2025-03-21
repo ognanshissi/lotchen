@@ -59,7 +59,7 @@ export class UserAddComponent implements OnInit {
   );
 
   public roles = apiResources(
-    this._rolesApiService.rolesControllerAllRolesV1()
+    this._rolesApiService.rolesControllerAllRolesV1(undefined, 'id,name')
   );
 
   public users = apiResources(

@@ -1,12 +1,10 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   contentChild,
   ContentChild,
   contentChildren,
-  inject,
   input,
   OnChanges,
   OnInit,
@@ -17,13 +15,11 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TableColumn, TableConfig } from './table-types';
 import { TableDataSource } from './table-datasource';
 import { TableEntity } from './table-entity';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import { RowSelectionMaster } from './row-selection-master';
 import { RowSelectionItem } from './row-selection-item';
 import { TasSpinner } from '@talisoft/ui/spinner';
@@ -61,7 +57,7 @@ export const DEFAULT_TABLE_CONFIG: TableConfig = {
     TasText,
     TasLabel,
     MatPaginator,
-    MatSort,
+    AsyncPipe,
   ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -74,15 +70,12 @@ export class TasTable<T extends TableEntity>
   public config = input<TableConfig>(DEFAULT_TABLE_CONFIG);
   public columns = input<TableColumn[]>([]);
   public isLoading = input<boolean>(false);
-  private readonly _changeDetector = inject(ChangeDetectorRef);
 
   public title = input<string>();
 
   public selectionItems = output<T[]>();
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort = new MatSort();
-  @ViewChild(MatTable) table!: MatTable<T>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
   public pageEventChange = output<PageEvent>();
   public searchInputChange = output<string>();
@@ -93,11 +86,6 @@ export class TasTable<T extends TableEntity>
     true,
     (o1, o2) => o1[this.identifierField()] === o2[this.identifierField()]
   );
-
-  public pageChangeDetector(): ChangeDetectorRef {
-    this._changeDetector.detectChanges();
-    return this._changeDetector;
-  }
 
   public refresh = output();
 
@@ -131,7 +119,7 @@ export class TasTable<T extends TableEntity>
       this._handleItemSelection();
     }
 
-    this._updateDatasource();
+    this._updateDatasource(this.data());
   }
 
   private _handleMasterSelection(): void {
@@ -164,11 +152,7 @@ export class TasTable<T extends TableEntity>
   }
 
   public ngOnInit(): void {
-    this._updateDatasource();
-    // this.dataSource = new TableDataSource<T>(this.data() ?? []);
-    // console.log(this.dataSource);
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
+    this._updateDatasource(this.data());
   }
 
   public pageEvent(event: PageEvent) {
@@ -178,9 +162,8 @@ export class TasTable<T extends TableEntity>
   }
 
   public ngOnChanges(changes: SimpleChanges) {
-    if (!changes['data']) {
-      // this.dataSource = new TableDataSource<T>(changes['data']?.currentValue);
-      this._updateDatasource();
+    if (!changes['data'].firstChange) {
+      this._updateDatasource(changes['data'].currentValue);
     }
   }
 
@@ -189,27 +172,20 @@ export class TasTable<T extends TableEntity>
     return this.data()?.length === this.selection.selected.length;
   }
 
-  private _updateDatasource() {
-    if (this.config()?.pagination?.serverSide) {
-      this.table.dataSource = [...this.data()];
-      this.paginator.length =
-        this.config()?.pagination.totalElements ?? this.data.length;
-    }
+  private _updateDatasource(data: T[]) {
+    this.dataSource = new TableDataSource(data);
 
     this.paginator.pageIndex = this.config()?.pagination?.pageIndex;
     this.paginator.pageSizeOptions = this.config()?.pagination.pageSizeOptions;
     this.paginator.pageSize = this.config()?.pagination.pageSize;
 
-    this.dataSource.sort = this.sort;
-    if (!this.config()?.pagination.serverSide) {
-      this.paginator.length = this.data.length;
-      this.table.dataSource = this.dataSource;
+    if (this.config()?.pagination?.serverSide) {
+      this.paginator.length =
+        this.config()?.pagination.totalElements ?? this.data.length;
+    } else {
+      this.paginator.length = this.data().length;
     }
-    this.dataSource.paginator = this.paginator;
 
-    console.log('UpdateDatasource');
-    this.dataSource.connect().subscribe((res) => {
-      console.log(res);
-    });
+    this.dataSource.paginator = this.paginator;
   }
 }

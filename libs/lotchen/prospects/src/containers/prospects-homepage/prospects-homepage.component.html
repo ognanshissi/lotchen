@@ -48,9 +48,9 @@
       </tr>
     </ng-template>
     <ng-template #body let-item>
-      <tr>
+      <tr class="row-hover">
         <td rowSelectionItem></td>
-        <td>
+        <td class="flex justify-between">
           <div class="flex space-x-2">
             <span
               class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center"
@@ -74,7 +74,12 @@
           </div>
 
           <div class="flex space-x-2">
-            <button tas-button iconButton color="primary">
+            <button
+              tas-button
+              iconButton
+              color="primary"
+              (click)="openCaller(item)"
+            >
               <tas-icon iconName="phone" iconClass="text-gray-500"></tas-icon>
             </button>
 
@@ -88,6 +93,21 @@
                 iconClass="text-gray-500"
               ></tas-icon>
             </a>
+
+            <button tas-button iconButton TasMenuTrigger [panel]="menu">
+              <tas-icon iconName="feather:more-vertical"></tas-icon>
+            </button>
+
+            <ng-template #menu>
+              <tas-menu>
+                <tas-menu-item class="flex">
+                  <tas-icon iconName="feather:plus-circle"></tas-icon>
+                  Ajouter une tâche
+                </tas-menu-item>
+                <tas-menu-item>Plannifier une réunion</tas-menu-item>
+                <tas-menu-item>Supprimer le contact</tas-menu-item>
+              </tas-menu>
+            </ng-template>
           </div>
         </td>
         <td>{{ item.source }}</td>

@@ -1,6 +1,5 @@
-import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Dialog } from '@angular/cdk/dialog';
+import { inject, Injectable, signal } from '@angular/core';
+import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { CallerComponent } from './caller.component';
 
 export interface CallerData {
@@ -14,24 +13,39 @@ export interface CallerData {
 })
 export class CallerService {
   private readonly _dialog = inject(Dialog);
-  private readonly isCallerOpenedSubject$: BehaviorSubject<boolean> =
-    new BehaviorSubject(false);
+  private readonly _isCallerOpened$ = signal(false);
+  private callerDialogRef!: DialogRef<any, CallerComponent>;
+  private readonly _currentClientId = signal<string | null>(null);
 
-  public readonly isCallerOpened = this.isCallerOpenedSubject$.asObservable();
+  public readonly currentClientId = this._currentClientId.asReadonly();
+  public readonly isCallerOpened = this._isCallerOpened$.asReadonly();
 
   /**
    * Handle caller dialog state
    * @param data
    */
   public openCaller(data: CallerData) {
-    this.isCallerOpenedSubject$.next(true);
-    this._dialog
-      .open(CallerComponent, {
-        hasBackdrop: false,
-        data,
-      })
-      .closed.subscribe({
-        next: () => this.isCallerOpenedSubject$.next(false),
-      });
+    this._isCallerOpened$.set(true);
+
+    if (this._currentClientId() === data.id) {
+      return;
+    }
+
+    this._currentClientId.set(data.id);
+
+    if (this.callerDialogRef) {
+      this.callerDialogRef.close();
+    }
+
+    this.callerDialogRef = this._dialog.open(CallerComponent, {
+      hasBackdrop: false,
+      data,
+    });
+
+    this.callerDialogRef.closed.subscribe({
+      next: () => {
+        this._isCallerOpened$.set(false);
+      },
+    });
   }
 }

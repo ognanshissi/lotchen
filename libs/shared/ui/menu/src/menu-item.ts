@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector: 'MenuItem',
+  selector: 'tas-menu-item',
   standalone: true,
   imports: [CommonModule],
   template: ` <ng-content></ng-content>`,
