@@ -77,7 +77,45 @@
       <tas-card class="p-4">
         <h2 class="text-2xl font-semibold">Apperçu</h2>
 
-        <div class="h-[500px]"></div>
+        <div class="h-[500px]">
+          <div class="border-b border-gray-300 py-4">
+            <span>Niveau de progression du contact</span>
+
+            <div class="flex space-x-2 pt-2">
+              <span
+                class="px-4 py-1 bg-functional-success text-white rounded-full uppercase"
+                >Nouveau</span
+              >
+              <span
+                class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
+                >Contacter</span
+              >
+              <span
+                class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
+                >Interesser</span
+              >
+              <span
+                class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
+                >Qualifié</span
+              >
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-4 mt-4">
+            <tas-summary-field rawField="email" label="Email">{{
+              contact()?.email
+            }}</tas-summary-field>
+            <tas-summary-field rawField="lastName" label="Nom">{{
+              contact()?.lastName
+            }}</tas-summary-field>
+            <tas-summary-field rawField="firstName" label="Prenom">{{
+              contact()?.firstName
+            }}</tas-summary-field>
+            <tas-summary-field rawField="firstName" label="Agent responsable">
+              N/A
+            </tas-summary-field>
+          </div>
+        </div>
       </tas-card>
     </div>
   </div>

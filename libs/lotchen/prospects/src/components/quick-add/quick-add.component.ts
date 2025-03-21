@@ -159,12 +159,12 @@ export class QuickAddComponent implements OnInit {
       .subscribe({
         next: () => {
           this._snackbarService.success(
-            'Féliciations!',
+            'Félicitations!',
             'Le contact a été bien ajouté.'
           );
           this._dialogRef.close();
         },
-        error: (err) => {
+        error: () => {
           this._snackbarService.error(
             'Attention!',
             "Une erreur est survenue, impossible d'ajouter le contact."

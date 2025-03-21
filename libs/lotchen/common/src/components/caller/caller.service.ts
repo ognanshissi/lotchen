@@ -27,10 +27,6 @@ export class CallerService {
   public openCaller(data: CallerData) {
     this._isCallerOpened$.set(true);
 
-    if (this._currentClientId() === data.id) {
-      return;
-    }
-
     this._currentClientId.set(data.id);
 
     if (this.callerDialogRef) {

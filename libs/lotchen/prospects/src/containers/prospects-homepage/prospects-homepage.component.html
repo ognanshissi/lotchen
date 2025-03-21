@@ -100,12 +100,26 @@
 
             <ng-template #menu>
               <tas-menu>
-                <tas-menu-item class="flex">
+                <tas-menu-item class="flex space-x-2">
                   <tas-icon iconName="feather:plus-circle"></tas-icon>
-                  Ajouter une tâche
+                  <span>Ajouter une tâche</span>
                 </tas-menu-item>
-                <tas-menu-item>Plannifier une réunion</tas-menu-item>
-                <tas-menu-item>Supprimer le contact</tas-menu-item>
+                <tas-menu-item class="flex space-x-2">
+                  <tas-icon iconName="feather:calendar"></tas-icon>
+                  <span>Plannifier une réunion</span>
+                </tas-menu-item>
+                <tas-menu-item class="flex space-x-2">
+                  <tas-icon iconName="feather:mail"></tas-icon>
+                  <span>Envoyer un SMS</span>
+                </tas-menu-item>
+                <tas-menu-item class="flex space-x-2">
+                  <tas-icon iconName="feather:copy"></tas-icon>
+                  <span>Dupliquer</span>
+                </tas-menu-item>
+                <tas-menu-item class="flex space-x-2">
+                  <tas-icon iconName="feather:trash"></tas-icon>
+                  <span>Supprimer le contact</span>
+                </tas-menu-item>
               </tas-menu>
             </ng-template>
           </div>
