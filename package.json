@@ -6,6 +6,7 @@
     "start": "npx nx run Lotchen:serve:development",
     "api:start": "npx nx run lotchen-api:serve",
     "start:api": "node dist/apps/lotchen-api/main.js",
+    "start:lotchen-front": "node dist/apps/Lotchen/server/main.js",
     "start:voice-api": "node dist/apps/twilio-voice-webhook-api/main.js",
     "start:all": "npm run start && npm run api:start",
     "build": "npx nx run Lotchen:build:production",
