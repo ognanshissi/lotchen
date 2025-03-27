@@ -50,7 +50,8 @@ export class OverviewComponent {
           type: 'basic',
           id: 'teams_territories_workflows',
           link: '/settings/workflow-automations/templates',
-          description: 'Gestion des utilisateurs et groupes par territoires',
+          description:
+            'Gerer les automatismes dans le cycle de vie des contacts et clients',
         },
         {
           title: 'Utilisateurs',
@@ -109,8 +110,38 @@ export class OverviewComponent {
       type: 'group',
       id: 'account_settings',
       description:
-        'Parametrage global du compte, facturation, et souscription ',
-      children: [],
+        'Paramétrage global du compte, facturation, et souscription ',
+      children: [
+        {
+          title: 'Monnaie',
+          type: 'basic',
+          id: 'account_settings_currency',
+          link: '/settings/currency',
+          description: 'Gérer les differentes devises et monnaie',
+        },
+        {
+          title: 'Tags',
+          type: 'basic',
+          id: 'account_settings_tags',
+          link: '/settings/tags',
+          description: "Gérer l'ensemble des tags",
+        },
+        {
+          title: 'Webhooks',
+          type: 'basic',
+          id: 'account_settings_webhooks',
+          link: '/settings/webhooks',
+          description:
+            'Utiliser des webhooks pour faire parvenir vos données dans differents services',
+        },
+        {
+          title: 'Plan et Facturation',
+          type: 'basic',
+          id: 'account_settings_billing',
+          link: '/settings/plan-facturation',
+          description: 'Gerer vos plan et facturations',
+        },
+      ],
     },
   ];
 

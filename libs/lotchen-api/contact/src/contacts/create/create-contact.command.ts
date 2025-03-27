@@ -5,6 +5,9 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 import { ContactProvider } from '../contact.provider';
 import { Model } from 'mongoose';
 import { ContactDocument } from '../contact.schema';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CONTACT_CREATED, ContactCreatedEvent } from './contact-created.event';
+import { ContactStatus } from '../contact-status.enum';
 
 export class CreateContactCommand {
   @ApiProperty({ required: true, description: 'Email', type: String })
@@ -39,7 +42,10 @@ export class CreateContactCommandResponse {
 export class CreateContactCommandHandler
   implements CommandHandler<CreateContactCommand, void>
 {
-  constructor(private readonly contactProvider: ContactProvider) {}
+  constructor(
+    private readonly contactProvider: ContactProvider,
+    private readonly eventEmitter: EventEmitter2
+  ) {}
 
   async handlerAsync(command: CreateContactCommand): Promise<void> {
     const existingContact = await this.contactProvider.ContactModel.findOne(
@@ -89,8 +95,29 @@ export class CreateContactCommandHandler
       createdByInfo: this.contactProvider.currentUserInfo(),
       jobTitle: command.jobTitle,
       assignedToUserId: this.contactProvider.currentUserInfo()?.userId,
+      status: ContactStatus.New,
     });
     contact.validateSync();
+
+    // contact.statusHistory.push({
+    //   previousStatus: ContactStatus.New,
+    //   changedAt: new Date(),
+    //   changedBy: this.contactProvider.currentUserInfo()?.userId,
+    //   status: ContactStatus.New,
+    // });
     await contact.save(); // save the contact
+
+    // Event contact created event
+    this.eventEmitter.emit(
+      CONTACT_CREATED,
+      new ContactCreatedEvent(
+        this.contactProvider.request.tenant_fqdn,
+        contact.id,
+        this.contactProvider.currentUserInfo()?.userId ?? '',
+        contact.email,
+        contact.mobileNumber,
+        ContactStatus.New
+      )
+    );
   }
 }

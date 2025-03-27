@@ -1,10 +1,15 @@
 import { Address, AddressSchema, AggregateRoot } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { ContactStatus } from './contact-status.enum';
+import {
+  ContactStatusHistory,
+  ContactStatusHistorySchema,
+} from './contact-status-history.schema';
 
 export type ContactDocument = HydratedDocument<Contact>;
 
-export enum contactEnum {
+export enum ContactTypeEnum {
   Lead = 'Lead',
   Prospect = 'Prospect',
 }
@@ -66,10 +71,16 @@ export class Contact extends AggregateRoot {
 
   @Prop({
     type: String,
-    enum: [contactEnum.Lead, contactEnum.Prospect],
-    default: contactEnum.Lead,
+    enum: ContactTypeEnum,
+    default: ContactTypeEnum.Lead,
   })
-  status!: contactEnum;
+  type!: ContactTypeEnum;
+
+  @Prop({ type: String, enum: ContactStatus, default: ContactStatus.New })
+  status!: ContactStatus;
+
+  @Prop({ type: [ContactStatusHistorySchema], default: [] })
+  statusHistory!: ContactStatusHistory[];
 
   // Prospect
   @Prop({ type: Number })
@@ -78,7 +89,7 @@ export class Contact extends AggregateRoot {
   @Prop({ type: Number })
   monthlyIncome?: number;
 
-  @Prop()
+  @Prop({ type: String })
   employmentStatus?: 'Employed' | 'Self-Employed' | 'Unemployed';
 
   @Prop({ type: Number })
@@ -112,7 +123,7 @@ export class Contact extends AggregateRoot {
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);
 
-// Create indexe for full-text search
+// Create indexes for full-text search
 ContactSchema.index({
   firstName: 'text',
   lastName: 'text',

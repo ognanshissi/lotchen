@@ -18,7 +18,7 @@ export class CallLog extends SchemaIdentifier {
   @Prop({ type: String })
   callSid!: string;
 
-  @Prop({ type: 'UUID', required: true })
+  @Prop({ type: 'UUID', required: true, ref: 'User' })
   fromId!: string; // Agent making the call
 
   @Prop({ type: Number, default: 0 })
@@ -32,6 +32,18 @@ export class CallLog extends SchemaIdentifier {
 
   @Prop({ type: String, enum: ['completed', 'replied', 'no-reply'] })
   status!: string;
+
+  @Prop({ type: String, default: '' })
+  note!: string;
+
+  @Prop({ type: String, default: '' })
+  recordingUrl!: string;
+
+  @Prop({ type: String, default: '' })
+  recordingSid!: string;
+
+  @Prop({ type: String, default: '' })
+  callError!: string;
 }
 
 export const CallLogSchema = SchemaFactory.createForClass(CallLog);

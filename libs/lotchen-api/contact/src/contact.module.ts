@@ -8,6 +8,7 @@ import { UpdateContactCommandHandler } from './contacts/update/update-contact.co
 import { PaginateAllContactsCommandHandler } from './contacts/paginate-all/paginate-all-contacts.command';
 import { ImportContactsExcelCommandHandler } from './contacts/import-contacts-excel/import-contacts-excel.command';
 import { CreateCallLogCommandHandler } from './contacts/create-call-log/create-call-log.command';
+import { ContactCreatedListener } from './contacts/create/contact-created.listener';
 
 @Module({
   imports: [],
@@ -21,6 +22,7 @@ import { CreateCallLogCommandHandler } from './contacts/create-call-log/create-c
     PaginateAllContactsCommandHandler,
     ImportContactsExcelCommandHandler,
     CreateCallLogCommandHandler,
+    ContactCreatedListener,
   ],
   exports: [],
 })

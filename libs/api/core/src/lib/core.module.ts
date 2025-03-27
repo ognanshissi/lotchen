@@ -6,6 +6,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { currentOrganizationProvider } from './current-organization/current-organization.provider';
 import { PermissionsGuard } from './guards/permissions.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { TenantDatabaseService } from './tenant/tenant-database.service';
 
 @Global()
 @Module({
@@ -21,6 +22,7 @@ import { APP_GUARD } from '@nestjs/core';
   providers: [
     TenantConnectionProvider,
     currentOrganizationProvider,
+    TenantDatabaseService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
@@ -30,6 +32,10 @@ import { APP_GUARD } from '@nestjs/core';
       useClass: PermissionsGuard,
     },
   ],
-  exports: [TenantConnectionProvider, currentOrganizationProvider],
+  exports: [
+    TenantConnectionProvider,
+    currentOrganizationProvider,
+    TenantDatabaseService,
+  ],
 })
 export class CoreModule {}

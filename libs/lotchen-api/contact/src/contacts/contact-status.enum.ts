@@ -1,0 +1,17 @@
+export enum ContactStatus {
+  New = 'New',
+  Contacted = 'Contacted',
+  Interested = 'Interested',
+  Qualified = 'Qualified',
+  Unqualified = 'Unqualified',
+  FollowUpNeeded = 'FollowUpNeeded',
+  ProposalSent = 'ProposalSent',
+  Negotiation = 'Negotiation',
+  PendingApproval = 'PendingApproval',
+  ConvertedToProspect = 'ConvertedToProspect',
+  ConvertedToClient = 'ConvertedToClient',
+  Lost = 'Lost',
+  Disqualified = 'Disqualified',
+  NoResponse = 'NoResponse',
+  OnHold = 'OnHold',
+}

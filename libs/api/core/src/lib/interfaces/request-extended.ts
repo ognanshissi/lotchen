@@ -11,4 +11,5 @@ export interface CurrentUser {
 
 export interface RequestExtendedWithUser extends Request {
   user: CurrentUser;
+  tenant_fqdn: string;
 }

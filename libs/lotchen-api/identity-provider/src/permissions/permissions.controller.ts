@@ -38,7 +38,7 @@ export class PermissionsController {
     await this.connection.collection('identity_permissions').insertMany([
       ...permissionCodes.map((code: string) => {
         return {
-          code: code,
+          code,
         };
       }),
     ]);
