@@ -60,6 +60,7 @@ export class CreateCallLogCommandHandler
       fromId: this._contactProvider.currentUserInfo().userId, // User
       toId: command.toId, // contact, client
       toContact: command.toContact,
+      status: command.status,
     });
 
     await callLog.save();

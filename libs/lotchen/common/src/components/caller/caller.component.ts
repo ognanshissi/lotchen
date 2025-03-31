@@ -216,7 +216,7 @@ export class CallerComponent implements OnInit {
             toId: this.entityId,
             entityType: CreateCallLogCommandEntityTypeEnum.Contact,
             toContact: params.To,
-            status: 'replied',
+            status: 'completed',
           })
           .subscribe({
             next: () => {
@@ -236,24 +236,19 @@ export class CallerComponent implements OnInit {
         }, 1000);
       });
       //   Canceled
-      this.call.on('cancel', this.updateUIDisconnectedOutgoingCall);
+      this.call.on('cancel', () => {
+        console.log(this.call);
+        if (this.timerInterval) {
+          clearInterval(this.timerInterval);
+        }
+        this.callingStatus.set(CallingStatusEnum.End);
+        setTimeout(() => {
+          this.callingStatus.set(CallingStatusEnum.Call);
+        }, 2000);
+      });
     } else {
       console.log('Unable to make call.');
     }
-  }
-
-  public updateUIAcceptedOutgoingCall(call: Call) {}
-
-  public updateUIDisconnectedOutgoingCall() {
-    // console.log('Disconnected =>', call);
-    // Set call ended time => update contact call logs
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-    }
-    this.callingStatus.set(CallingStatusEnum.End);
-    setTimeout(() => {
-      this.callingStatus.set(CallingStatusEnum.Call);
-    }, 2000);
   }
 
   public outgoingCallHangupButton() {
