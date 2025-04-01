@@ -1,4 +1,10 @@
-import { Address, AddressSchema, AggregateRoot } from '@lotchen/api/core';
+import {
+  Address,
+  AddressSchema,
+  AggregateRoot,
+  Amount,
+  AmountSchema,
+} from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { ContactStatus } from './contact-status.enum';
@@ -52,7 +58,7 @@ export class Contact extends AggregateRoot {
   email!: string;
 
   @Prop({ required: false }) // Stores hashed contact on information
-  hash!: string;
+  hash!: string; // firstName + lastName + email + mobileNumber + dateOfBirth
 
   @Prop({ required: true }) // Stores phone number
   mobileNumber!: string;
@@ -86,14 +92,14 @@ export class Contact extends AggregateRoot {
   @Prop({ type: Number })
   creditScore?: number;
 
-  @Prop({ type: Number })
-  monthlyIncome?: number;
+  @Prop({ type: AmountSchema })
+  monthlyIncome?: Amount; // Amount of money earned each month
 
   @Prop({ type: String })
   employmentStatus?: 'Employed' | 'Self-Employed' | 'Unemployed';
 
-  @Prop({ type: Number })
-  requestedLoanAmount?: number;
+  @Prop({ type: AmountSchema })
+  requestedLoanAmount?: Amount;
 
   @Prop()
   loanPurpose?: string;
@@ -101,10 +107,10 @@ export class Contact extends AggregateRoot {
   @Prop({ type: Number })
   repaymentPeriod?: number;
 
-  @Prop({ default: null, type: Date }) // Indicates if they have been converted to a client
+  @Prop({ default: null, type: Date }) // Indicates if the contact have been converted to a client
   isConvertedToClientAt!: Date;
 
-  @Prop({ type: String }) // Reference to the new client ID
+  @Prop({ type: String }) // Reference to the new client ID => CL0000012
   clientId?: string;
 
   // Assigned Team/User

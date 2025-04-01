@@ -46,9 +46,9 @@ export class OverviewComponent {
       description: 'Gestion des utilisateurs et groupes par territoires',
       children: [
         {
-          title: 'Workflows',
+          title: 'Automatisations',
           type: 'basic',
-          id: 'teams_territories_workflows',
+          id: 'groups_workflows',
           link: '/settings/workflow-automations/templates',
           description:
             'Gerer les automatismes dans le cycle de vie des contacts et clients',
@@ -88,22 +88,61 @@ export class OverviewComponent {
       type: 'group',
       id: 'products_services',
       description: 'Gestion des produits et services',
-      children: [],
+      children: [
+        {
+          title: 'Produits',
+          type: 'basic',
+          id: 'products_services_products',
+          link: '/settings/products',
+          description: 'Gérer les produits et services des votre entreprise',
+        },
+      ],
     },
     {
       title: 'Données & Importation',
       type: 'group',
+      isActive: false,
       id: 'data_import',
       description: 'Gestion des importations des leads, contacts, utilisateurs',
-      children: [],
+      children: [
+        {
+          title: 'Importer les utilisateurs',
+          type: 'basic',
+          id: 'data_import_users',
+          link: '/settings/import-users',
+          description: 'Importer les utilisateurs depuis différentes sources',
+        },
+        {
+          title: 'Importer les contacts',
+          type: 'basic',
+          id: 'data_import_contacts',
+          link: '/settings/import-contacts',
+          description: 'Importer les contacts depuis différentes sources',
+        },
+        {
+          title: 'Importer les clients',
+          type: 'basic',
+          id: 'data_import_clients',
+          link: '/settings/import-clients',
+          description: 'Importer les clients depuis différentes sources',
+        },
+      ],
     },
     {
       title: 'Canaux de communication',
       type: 'group',
       id: 'channels',
       description:
-        'Gerer vos differents canaux de communication avec vos prospect, clients',
-      children: [],
+        'Gérer vos differents canaux de communication avec vos prospect, clients',
+      children: [
+        {
+          title: 'WhatsApp',
+          type: 'basic',
+          id: 'communication_channels_whatsapp',
+          link: '/settings/whatsapp-configuration',
+          description: 'Configurer votre compte whatsapp entreprise.',
+        },
+      ],
     },
     {
       title: 'Réglages de compte',
@@ -154,8 +193,6 @@ export class OverviewComponent {
   public toggleSelectedMenuGroup(item: MenuItem) {
     this.selectedMenu.set(item);
   }
-
-  constructor() {}
 }
 
 export default OverviewComponent;

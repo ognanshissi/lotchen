@@ -10,7 +10,7 @@ export class CallLog extends SchemaIdentifier {
   entityType!: string;
 
   @Prop({ type: 'UUID' })
-  toId!: string;
+  toId!: string; //
 
   @Prop({ type: String })
   toContact!: string;
@@ -47,3 +47,5 @@ export class CallLog extends SchemaIdentifier {
 }
 
 export const CallLogSchema = SchemaFactory.createForClass(CallLog);
+
+CallLogSchema.index({ toId: 1, fromId: 1, entityType: 1 });
