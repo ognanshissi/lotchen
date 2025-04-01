@@ -29,7 +29,7 @@
     </button>
   </div>
 </div>
-<div class="overflow-x-hidden">
+<div class="overflow-x-hidden relative">
   <div class="w-full overflow-x-auto h-[332px] overflow-y-auto">
     <table class="w-full">
       <ng-container *ngIf="header">
@@ -54,8 +54,11 @@
   </div>
 
   @if (isLoading()) {
-  <div class="p-4 flex justify-center items-center">
-    <tas-spinner></tas-spinner>
+  <div class="absolute top-0 left-0 w-full h-full bg-white z-20">
+    <div class="p-4 flex justify-center items-center flex-col space-y-4">
+      <tas-spinner></tas-spinner>
+      <span>Chargement en cours...</span>
+    </div>
   </div>
   }
 

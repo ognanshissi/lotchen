@@ -1,122 +1,42 @@
 <div class="">
-  <div class="flex justify-end space-x-2">
-    <button tas-outlined-button color="primary">
-      <tas-icon iconName="mail"></tas-icon>
-      Envoyer un e-mail
-    </button>
-    <button
-      tas-outlined-button
-      color="primary"
-      [disabled]="callerIsOpened()"
-      (click)="triggerCaller()"
-    >
-      <tas-icon iconName="feather:phone"></tas-icon>
-      Appeler
-    </button>
-    <button tas-outlined-button color="primary">
-      <tas-icon iconName="mail"></tas-icon>
-      SMS
-    </button>
-    <button tas-outlined-button color="primary">
-      <tas-icon iconName="task"></tas-icon>
-      Tâche
-    </button>
-    <button tas-outlined-button color="primary">
-      <tas-icon iconName="feather:calendar"></tas-icon>
-      Reunion
-    </button>
-    <button tas-outlined-button color="primary">
-      <tas-icon iconName="feather:user-plus"></tas-icon>
-      Convertir en client
-    </button>
-    <button tas-outlined-button color="primary">
-      <tas-icon iconName="feather:more-vertical"></tas-icon>
-    </button>
-  </div>
+  <tas-card class="p-4">
+    <h2 class="text-2xl font-semibold">Apperçu</h2>
 
-  <div class="grid grid-cols-4 gap-4 mt-4">
-    <div class="col-span-1">
-      <tas-card class="">
-        <div
-          class="p-4 flex flex-col border-b border-b-gray-200 bg-gray-50 rounded-t-lg"
-        >
-          <div class="font-semibold text-center text-2xl">
-            {{ contact()?.firstName }} {{ contact()?.lastName }}
-          </div>
-          <p class="text-gray-500 text-center">
-            @if (contact()?.jobTitle) {
-            {{ contact()?.jobTitle }}
-            } @else {
-            <button tas-text-button>+ Ajouter une occupation</button>
-            }
-          </p>
+    <div class="h-[500px]">
+      <div class="border-b border-gray-300 py-4">
+        <span>Niveau de progression du contact</span>
 
-          <br />
-          <p class="text-center">
-            <span class="flex"
-              ><tas-icon iconName="mail"></tas-icon>
-              {{ contact()?.email }}</span
-            >
-          </p>
-          <p class="text-center">
-            <span class="flex"
-              ><tas-icon iconName="phone"></tas-icon>
-              {{ contact()?.mobileNumber }}</span
-            >
-          </p>
+        <div class="flex space-x-2 pt-2">
+          <span
+            class="px-4 py-1 bg-functional-success text-white rounded-full uppercase"
+            >Nouveau</span
+          >
+          <span class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
+            >Contacté</span
+          >
+          <span class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
+            >Interessé</span
+          >
+          <span class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
+            >Qualifié</span
+          >
         </div>
+      </div>
 
-        <div class="px-4 py-3 hover:bg-gray-200">Apperçu</div>
-        <div class="px-4 py-3 hover:bg-gray-200">Conversations</div>
-        <div class="px-4 py-3 hover:bg-gray-200">Activitées</div>
-        <div class="px-4 py-3 hover:bg-gray-200">Documents</div>
-      </tas-card>
+      <div class="grid grid-cols-3 gap-4 mt-4">
+        <tas-summary-field rawField="email" label="Email">{{
+          contact()?.email
+        }}</tas-summary-field>
+        <tas-summary-field rawField="lastName" label="Nom">{{
+          contact()?.lastName
+        }}</tas-summary-field>
+        <tas-summary-field rawField="firstName" label="Prenom">{{
+          contact()?.firstName
+        }}</tas-summary-field>
+        <tas-summary-field rawField="firstName" label="Agent responsable">
+          N/A
+        </tas-summary-field>
+      </div>
     </div>
-
-    <div class="col-span-3 h-[calc(100vh_-_130px)] overflow-y-auto">
-      <tas-card class="p-4">
-        <h2 class="text-2xl font-semibold">Apperçu</h2>
-
-        <div class="h-[500px]">
-          <div class="border-b border-gray-300 py-4">
-            <span>Niveau de progression du contact</span>
-
-            <div class="flex space-x-2 pt-2">
-              <span
-                class="px-4 py-1 bg-functional-success text-white rounded-full uppercase"
-                >Nouveau</span
-              >
-              <span
-                class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
-                >Contacter</span
-              >
-              <span
-                class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
-                >Interesser</span
-              >
-              <span
-                class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
-                >Qualifié</span
-              >
-            </div>
-          </div>
-
-          <div class="grid grid-cols-3 gap-4 mt-4">
-            <tas-summary-field rawField="email" label="Email">{{
-              contact()?.email
-            }}</tas-summary-field>
-            <tas-summary-field rawField="lastName" label="Nom">{{
-              contact()?.lastName
-            }}</tas-summary-field>
-            <tas-summary-field rawField="firstName" label="Prenom">{{
-              contact()?.firstName
-            }}</tas-summary-field>
-            <tas-summary-field rawField="firstName" label="Agent responsable">
-              N/A
-            </tas-summary-field>
-          </div>
-        </div>
-      </tas-card>
-    </div>
-  </div>
+  </tas-card>
 </div>
