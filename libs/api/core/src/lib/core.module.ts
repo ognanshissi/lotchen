@@ -7,6 +7,7 @@ import { currentOrganizationProvider } from './current-organization/current-orga
 import { PermissionsGuard } from './guards/permissions.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { TenantDatabaseService } from './tenant/tenant-database.service';
+import { BaseSchemaProvider } from './providers/base-schema.provider';
 
 @Global()
 @Module({
@@ -22,6 +23,7 @@ import { TenantDatabaseService } from './tenant/tenant-database.service';
   providers: [
     TenantConnectionProvider,
     currentOrganizationProvider,
+    BaseSchemaProvider,
     TenantDatabaseService,
     {
       provide: APP_GUARD,
@@ -36,6 +38,7 @@ import { TenantDatabaseService } from './tenant/tenant-database.service';
     TenantConnectionProvider,
     currentOrganizationProvider,
     TenantDatabaseService,
+    BaseSchemaProvider,
   ],
 })
 export class CoreModule {}

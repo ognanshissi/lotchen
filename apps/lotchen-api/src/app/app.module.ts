@@ -9,6 +9,7 @@ import { CoreModule, TenantMiddleware } from '@lotchen/api/core';
 import { IdentityProviderModule } from '@lotchen/lotchen-api/identity-provider';
 import { ContactModule } from '@lotchen/lotchen-api/contact';
 import { CallerController } from './caller.controller';
+import { TasksModule } from '@lotchen/lotchen-api/tasks';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CallerController } from './caller.controller';
     IdentityProviderModule,
     ContactModule,
     CoreModule,
+    TasksModule,
   ],
   controllers: [CallerController],
   providers: [

@@ -1,39 +1,22 @@
 import { Connection, Model } from 'mongoose';
 import { Contact, ContactDocument, ContactSchema } from './contact.schema';
 import { Inject, Injectable, Provider } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { RequestExtendedWithUser } from '@lotchen/api/core';
+import { BaseSchemaProvider, RequestExtendedWithUser } from '@lotchen/api/core';
 import { CallLog, CallLogSchema } from './call-log.schema';
+import { REQUEST } from '@nestjs/core';
 
 export const CONTACT_MODEL = 'CONTACT_MODEL';
 export const CALL_LOG_MODEL = 'CALL_LOG_MODEL';
 
 @Injectable()
-export class ContactProvider {
+export class ContactProvider extends BaseSchemaProvider {
   constructor(
     @Inject(CONTACT_MODEL)
     public readonly ContactModel: Model<ContactDocument>,
     @Inject(CALL_LOG_MODEL) public readonly CallLogModel: Model<CallLog>,
-    @Inject(REQUEST) public readonly request: RequestExtendedWithUser
-  ) {}
-
-  public currentUserInfo(): {
-    userId: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  } {
-    // Update audit fields
-    const { firstName, lastName, sub, username } = this.request.user;
-
-    const userInfo = {
-      userId: sub,
-      email: username,
-      firstName,
-      lastName,
-    };
-
-    return { ...userInfo };
+    @Inject(REQUEST) public override readonly request: RequestExtendedWithUser
+  ) {
+    super(request);
   }
 }
 export const contactProviders: Provider[] = [

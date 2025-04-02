@@ -1639,6 +1639,30 @@
           "Contacts"
         ]
       }
+    },
+    "/api/v1/tasks": {
+      "post": {
+        "operationId": "TasksController_createTask_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tasks"
+        ]
+      }
     }
   },
   "info": {
@@ -3193,6 +3217,71 @@
           "startDate",
           "endDate",
           "status"
+        ]
+      },
+      "CreateTaskCommand": {
+        "type": "object",
+        "properties": {
+          "ownerId": {
+            "type": "string",
+            "description": "The user whom the task is assigned"
+          },
+          "relatedToId": {
+            "type": "string",
+            "description": "Entry related to entity"
+          },
+          "relatedToType": {
+            "type": "string",
+            "description": "Depending entry type"
+          },
+          "taskType": {
+            "type": "string",
+            "enum": [
+              "follow up",
+              "call reminder"
+            ],
+            "default": "follow up"
+          },
+          "title": {
+            "type": "string",
+            "description": "Task title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Task description"
+          },
+          "dueDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Due Date"
+          },
+          "dueDatetime": {
+            "type": "string",
+            "description": "Due Date"
+          },
+          "markedAsCompleted": {
+            "type": "boolean",
+            "description": "Mark task as completed"
+          },
+          "collaboratorIds": {
+            "description": "Associate collaborator",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ownerId",
+          "relatedToId",
+          "relatedToType",
+          "taskType",
+          "title",
+          "description",
+          "dueDate",
+          "dueDatetime",
+          "markedAsCompleted",
+          "collaboratorIds"
         ]
       }
     }
