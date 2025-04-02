@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { CallerComponent } from './caller.component';
+import { SnackbarService } from '@talisoft/ui/snackbar';
 
 export interface CallerData {
   id: string;
@@ -16,6 +17,7 @@ export class CallerService {
   private readonly _isCallerOpened$ = signal(false);
   private callerDialogRef!: DialogRef<any, CallerComponent>;
   private readonly _currentClientId = signal<string | null>(null);
+  private readonly _snackbar = inject(SnackbarService);
 
   public readonly currentClientId = this._currentClientId.asReadonly();
   public readonly isCallerOpened = this._isCallerOpened$.asReadonly();
@@ -25,6 +27,13 @@ export class CallerService {
    * @param data
    */
   public openCaller(data: CallerData) {
+    if (!data.mobileNumber) {
+      this._snackbar.error(
+        'Attention',
+        'Aucun numéro de téléphone trouvé pour ce contact'
+      );
+      return;
+    }
     this._isCallerOpened$.set(true);
 
     this._currentClientId.set(data.id);
