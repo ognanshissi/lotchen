@@ -64,10 +64,16 @@
           >
         </p>
       </div>
-      <div class="px-4 py-3 hover:bg-gray-200">Apperçu</div>
-      <div class="px-4 py-3 hover:bg-gray-200">Conversations</div>
-      <div class="px-4 py-3 hover:bg-gray-200">Activitées</div>
-      <div class="px-4 py-3 hover:bg-gray-200">Documents</div>
+      @for (item of menuItems; track $index) {
+      <a
+        class="px-4 py-3 hover:bg-gray-200 flex space-x-2"
+        [routerLink]="item.route"
+        [routerLinkActive]="'is-link-active'"
+      >
+        <tas-icon [iconName]="item.icon"></tas-icon>
+        <span>{{ item.label }}</span>
+      </a>
+      }
     </tas-card>
   </div>
   <!-- Page content -->

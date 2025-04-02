@@ -1,19 +1,18 @@
 import { Component, inject } from '@angular/core';
-import { ButtonModule } from '@talisoft/ui/button';
-import { TasCard } from '@talisoft/ui/card';
-import { ActivatedRoute, Data } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map, Observable } from 'rxjs';
+import { ActivatedRoute, Data } from '@angular/router';
 import { FindContactByIdQueryResponse } from '@talisoft/api/lotchen-client-api';
+import { TasCard } from '@talisoft/ui/card';
 import { TasSummaryField } from '@talisoft/ui/summary-field';
+import { map, Observable } from 'rxjs';
 
 @Component({
-  selector: 'prospects-contact-detail',
-  templateUrl: './contact-detail.component.html',
+  selector: 'prospects-contact-detail-overview',
+  templateUrl: './contact-detail-overview.component.html',
   standalone: true,
-  imports: [ButtonModule, TasCard, TasSummaryField],
+  imports: [TasSummaryField, TasCard],
 })
-export class ContactDetailComponent {
+export class ContactDetailOverviewComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
 
   public contact = toSignal<FindContactByIdQueryResponse>(
@@ -22,5 +21,3 @@ export class ContactDetailComponent {
     )
   );
 }
-
-export default ContactDetailComponent;
