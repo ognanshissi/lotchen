@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AggregateRoot } from '@lotchen/api/core';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { TaskTypeEnum } from './task-type.enum';
 
 export type TaskDocument = HydratedDocument<Task>;
 
@@ -11,8 +12,8 @@ export type TaskDocument = HydratedDocument<Task>;
 export class Task extends AggregateRoot {
   @Prop({
     required: true,
-    enum: ['follow up', 'call reminder'],
-    default: 'follow up',
+    enum: TaskTypeEnum,
+    default: TaskTypeEnum.FollowUp,
     type: String,
   })
   taskType!: string;
@@ -51,4 +52,10 @@ export class Task extends AggregateRoot {
 
 export const TaskSchema = SchemaFactory.createForClass(Task);
 
-TaskSchema.index({ ownerId: 1, relatedToId: 1, relatedToType: 1, id: 1 });
+TaskSchema.index({
+  ownerId: 1,
+  relatedToId: 1,
+  relatedToType: 1,
+  id: 1,
+  taskType: 1,
+});
