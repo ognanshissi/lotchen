@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { AggregateRoot } from '@lotchen/api/core';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { TaskTypeEnum } from './task-type.enum';
+import { ActivityBase } from '../common/activity-base.schema';
 
 export type TaskDocument = HydratedDocument<Task>;
 
@@ -9,7 +9,7 @@ export type TaskDocument = HydratedDocument<Task>;
   collection: 'activities_tasks',
   timestamps: true,
 })
-export class Task extends AggregateRoot {
+export class Task extends ActivityBase {
   @Prop({
     required: true,
     enum: TaskTypeEnum,
@@ -17,19 +17,6 @@ export class Task extends AggregateRoot {
     type: String,
   })
   taskType!: string;
-
-  @Prop({ type: 'UUID', required: true, ref: 'User' })
-  ownerId!: string;
-
-  @Prop({
-    required: false,
-    type: String,
-    enum: ['Contact', 'Client', 'Product'],
-  })
-  relatedToType!: string;
-
-  @Prop({ type: 'UUID', required: false })
-  relatedToId!: string;
 
   @Prop({ required: false, type: Date, default: null })
   markAsCompletedAt!: Date;

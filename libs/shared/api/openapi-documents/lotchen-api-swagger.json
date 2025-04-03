@@ -1727,6 +1727,80 @@
           "Tasks"
         ]
       }
+    },
+    "/api/v1/notes": {
+      "post": {
+        "operationId": "NotesController_createNote_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNoteCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notes"
+        ]
+      },
+      "get": {
+        "operationId": "NotesController_findAllNotes_v1",
+        "parameters": [
+          {
+            "name": "ownerId",
+            "required": true,
+            "in": "query",
+            "description": "The user whom the task is assigned",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "relatedToId",
+            "required": true,
+            "in": "query",
+            "description": "Entry related to entity, for example contactId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "deleted",
+            "required": true,
+            "in": "query",
+            "description": "Deleted notes",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllNotesQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Notes"
+        ]
+      }
     }
   },
   "info": {
@@ -3395,6 +3469,61 @@
           "dueDate",
           "dueDatetime",
           "markedAsCompletedAt"
+        ]
+      },
+      "CreateNoteCommand": {
+        "type": "object",
+        "properties": {
+          "relatedToId": {
+            "type": "string",
+            "description": "RelatedToId, ContactId, ClientId, DealId"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "Note owner Id"
+          },
+          "content": {
+            "type": "string",
+            "description": "Note content"
+          }
+        },
+        "required": [
+          "relatedToId",
+          "ownerId",
+          "content"
+        ]
+      },
+      "FindAllNotesQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Task ID"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "tasks onwer id"
+          },
+          "relatedToId": {
+            "type": "string",
+            "description": "Related to entity ID"
+          },
+          "content": {
+            "type": "string",
+            "description": "Note content"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Created date"
+          }
+        },
+        "required": [
+          "id",
+          "ownerId",
+          "relatedToId",
+          "content",
+          "createdAt"
         ]
       }
     }
