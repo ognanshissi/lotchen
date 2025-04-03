@@ -6,7 +6,7 @@ import { TaskTypeEnum } from './task-type.enum';
 export type TaskDocument = HydratedDocument<Task>;
 
 @Schema({
-  collection: 'task_tasks',
+  collection: 'activities_tasks',
   timestamps: true,
 })
 export class Task extends AggregateRoot {

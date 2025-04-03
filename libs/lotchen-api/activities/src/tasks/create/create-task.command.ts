@@ -2,8 +2,8 @@ import { CommandHandler } from '@lotchen/api/core';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsUUID } from 'class-validator';
-import { TaskProvider } from '../task.provider';
 import { TaskTypeEnum } from '../task-type.enum';
+import { ActivitiesProvider } from '../../activities.provider';
 
 export class CreateTaskCommand {
   @ApiProperty({ description: 'The user whom the task is assigned' })
@@ -46,11 +46,11 @@ export class CreateTaskCommandhandler
 {
   private readonly _logger = new Logger(CreateTaskCommand.name);
 
-  constructor(public readonly taskProvider: TaskProvider) {}
+  constructor(public readonly activitiesProvider: ActivitiesProvider) {}
 
   public async handlerAsync(command: CreateTaskCommand): Promise<void> {
     try {
-      const task = new this.taskProvider.TaskModel({
+      const task = new this.activitiesProvider.TaskModel({
         relatedToType: command.relatedToType,
         relatedToId: command.relatedToId,
         taskType: command.taskType,
@@ -63,8 +63,8 @@ export class CreateTaskCommandhandler
         ownerId: command.ownerId,
         collaboratorIds: command.collaboratorIds,
         markAsCompletedAt: command.markedAsCompleted ? new Date() : null,
-        createdByInfo: this.taskProvider.currentUserInfo(),
-        createdBy: this.taskProvider.currentUserInfo().userId,
+        createdByInfo: this.activitiesProvider.currentUserInfo(),
+        createdBy: this.activitiesProvider.currentUserInfo().userId,
       });
 
       const errors = task.validateSync();

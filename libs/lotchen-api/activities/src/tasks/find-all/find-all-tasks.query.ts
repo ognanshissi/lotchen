@@ -2,7 +2,7 @@ import { QueryHandler } from '@lotchen/api/core';
 import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { TaskTypeEnum } from '../task-type.enum';
-import { TaskProvider } from '../task.provider';
+import { ActivitiesProvider } from '../../activities.provider';
 
 export class FindAllTasksQuery {
   @ApiProperty({ description: 'The user whom the task is assigned' })
@@ -54,7 +54,9 @@ export class FindAllTasksQueryResponse {
 export class FindAllTasksQueryHandler
   implements QueryHandler<FindAllTasksQuery, Array<FindAllTasksQueryResponse>>
 {
-  public constructor(private readonly _taskProvider: TaskProvider) {}
+  public constructor(
+    private readonly _activitiesProvider: ActivitiesProvider
+  ) {}
 
   public async handlerAsync(
     query?: FindAllTasksQuery | undefined
@@ -82,7 +84,7 @@ export class FindAllTasksQueryHandler
     const projection =
       'id ownerId relatedToId collaborators taskType title description dueDate dueDatetime markAsCompletedAt';
 
-    const tasks = await this._taskProvider.TaskModel.find(
+    const tasks = await this._activitiesProvider.TaskModel.find(
       queryFilter,
       projection,
       { sort: { createdAt: -1 }, limit: 100 }

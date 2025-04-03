@@ -27,7 +27,6 @@
         "libs/lotchen-api/identity-provider/src/index.ts"
       ],
       "@lotchen/lotchen-api/leads": ["libs/lotchen-api/leads/src/index.ts"],
-      "@lotchen/lotchen-api/tasks": ["libs/lotchen-api/tasks/src/index.ts"],
       "@lotchen/lotchen/auth": ["libs/lotchen/auth/src/index.ts"],
       "@lotchen/lotchen/clients": ["libs/lotchen/clients/src/index.ts"],
       "@lotchen/lotchen/common": ["libs/lotchen/common/src/index.ts"],

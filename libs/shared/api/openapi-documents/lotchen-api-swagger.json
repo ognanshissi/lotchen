@@ -3380,7 +3380,7 @@
             "type": "string",
             "description": "Due Date time"
           },
-          "markedAsCompleted": {
+          "markedAsCompletedAt": {
             "format": "date-time",
             "type": "string",
             "description": "Marked task as completed"
@@ -3394,7 +3394,7 @@
           "description",
           "dueDate",
           "dueDatetime",
-          "markedAsCompleted"
+          "markedAsCompletedAt"
         ]
       }
     }
