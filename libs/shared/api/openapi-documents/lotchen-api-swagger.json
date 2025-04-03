@@ -1728,6 +1728,29 @@
         ]
       }
     },
+    "/api/v1/tasks/{id}/complete-task": {
+      "patch": {
+        "operationId": "TasksController_completeTask_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
     "/api/v1/notes": {
       "post": {
         "operationId": "NotesController_createNote_v1",
@@ -1778,7 +1801,7 @@
             "in": "query",
             "description": "Deleted notes",
             "schema": {
-              "type": "boolean"
+              "type": "string"
             }
           }
         ],

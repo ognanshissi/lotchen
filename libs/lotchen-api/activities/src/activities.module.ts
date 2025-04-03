@@ -7,6 +7,7 @@ import {
   FindAllNotesQueryHandler,
   NotesController,
 } from './notes';
+import { CompleteTaskCommandhandler } from './tasks/complete-task/complete-task.command';
 
 @Module({
   controllers: [TasksController, NotesController],
@@ -16,6 +17,7 @@ import {
     FindAllTasksQueryHandler,
     CreateNoteCommandHandler,
     FindAllNotesQueryHandler,
+    CompleteTaskCommandhandler,
   ],
   exports: [],
 })

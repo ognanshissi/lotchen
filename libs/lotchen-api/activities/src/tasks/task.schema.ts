@@ -40,9 +40,9 @@ export class Task extends ActivityBase {
 export const TaskSchema = SchemaFactory.createForClass(Task);
 
 TaskSchema.index({
-  ownerId: 1,
   relatedToId: 1,
+  ownerId: 1,
   relatedToType: 1,
-  id: 1,
   taskType: 1,
+  id: 1,
 });

@@ -12,8 +12,8 @@ export class FindAllNotesQuery {
   })
   relatedToId!: string;
 
-  @ApiProperty({ description: 'Deleted notes', type: Boolean })
-  deleted!: boolean;
+  @ApiProperty({ description: 'Deleted notes', type: String })
+  deleted: boolean | undefined;
 }
 
 export class FindAllNotesQueryResponse {
@@ -55,9 +55,15 @@ export class FindAllNotesQueryHandler
     }
 
     if (query?.deleted) {
-      console.log(query);
-      this._logger.log('Query filter', JSON.stringify(query));
+      console.log(query.deleted);
+      queryFilter = {
+        ...queryFilter,
+        deletedAt: query.deleted ? { $ne: null } : null,
+      };
     }
+
+    this._logger.log(`Query => ${JSON.stringify(query)}`);
+    this._logger.log(`QueryFilter => ${JSON.stringify(queryFilter)}`);
 
     // projection
     const projection = '_id ownerId relatedToId content createdAt';
@@ -66,9 +72,7 @@ export class FindAllNotesQueryHandler
       queryFilter,
       projection,
       { sort: { createdAt: -1 }, limit: 100 } // Sort by createdAt in descending order
-    )
-      .lean()
-      .exec();
+    ).exec();
 
     return notes.map((note) => {
       return {

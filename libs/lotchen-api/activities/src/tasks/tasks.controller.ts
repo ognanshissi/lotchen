@@ -1,4 +1,13 @@
-import { Body, Controller, Get, HttpStatus, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateTaskCommand,
@@ -9,6 +18,7 @@ import {
   FindAllTasksQueryHandler,
   FindAllTasksQueryResponse,
 } from './find-all/find-all-tasks.query';
+import { CompleteTaskCommandhandler } from './complete-task/complete-task.command';
 
 @Controller({
   path: 'tasks',
@@ -18,7 +28,8 @@ import {
 export class TasksController {
   constructor(
     private readonly _createTaskCommandHandler: CreateTaskCommandhandler,
-    private readonly _findAllTasksQueryHandler: FindAllTasksQueryHandler
+    private readonly _findAllTasksQueryHandler: FindAllTasksQueryHandler,
+    private readonly _completeTaskCommandHandler: CompleteTaskCommandhandler
   ) {}
 
   @Post()
@@ -39,5 +50,15 @@ export class TasksController {
     @Query() query: FindAllTasksQuery
   ): Promise<FindAllTasksQueryResponse[]> {
     return await this._findAllTasksQueryHandler.handlerAsync(query);
+  }
+
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+  })
+  @Patch(':id/complete-task')
+  public async completeTask(
+    @Query('id', new ParseUUIDPipe()) id: string
+  ): Promise<void> {
+    return await this._completeTaskCommandHandler.handlerAsync({ taskId: id });
   }
 }
