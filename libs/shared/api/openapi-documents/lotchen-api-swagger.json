@@ -1662,6 +1662,70 @@
         "tags": [
           "Tasks"
         ]
+      },
+      "get": {
+        "operationId": "TasksController_findAllTasks_v1",
+        "parameters": [
+          {
+            "name": "ownerId",
+            "required": true,
+            "in": "query",
+            "description": "The user whom the task is assigned",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "relatedToId",
+            "required": true,
+            "in": "query",
+            "description": "Entry related to entity, for example contactId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskType",
+            "required": true,
+            "in": "query",
+            "description": "Type of task",
+            "schema": {
+              "default": "follow up",
+              "enum": [
+                "follow up",
+                "call reminder"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "completed",
+            "required": true,
+            "in": "query",
+            "description": "Completed tasks",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllTasksQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Tasks"
+        ]
       }
     }
   },
@@ -3282,6 +3346,54 @@
           "dueDatetime",
           "markedAsCompleted",
           "collaboratorIds"
+        ]
+      },
+      "FindAllTasksQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Task ID"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "tasks onwer id"
+          },
+          "taskType": {
+            "type": "string",
+            "description": "Task type"
+          },
+          "title": {
+            "type": "string",
+            "description": "Task title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Task description"
+          },
+          "dueDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Due Date"
+          },
+          "dueDatetime": {
+            "type": "string",
+            "description": "Due Date time"
+          },
+          "markedAsCompleted": {
+            "type": "boolean",
+            "description": "Marked task as completed"
+          }
+        },
+        "required": [
+          "id",
+          "ownerId",
+          "taskType",
+          "title",
+          "description",
+          "dueDate",
+          "dueDatetime",
+          "markedAsCompleted"
         ]
       }
     }

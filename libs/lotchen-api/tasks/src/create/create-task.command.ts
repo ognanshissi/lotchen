@@ -2,13 +2,8 @@ import { CommandHandler } from '@lotchen/api/core';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsUUID } from 'class-validator';
-import { Request } from 'express';
 import { TaskProvider } from '../task.provider';
-
-export enum TaskTypeEnum {
-  FollowUp = 'follow up',
-  CallReminder = 'call reminder',
-}
+import { TaskTypeEnum } from '../task-type.enum';
 
 export class CreateTaskCommand {
   @ApiProperty({ description: 'The user whom the task is assigned' })
@@ -63,11 +58,14 @@ export class CreateTaskCommandhandler
         ownerId: command.ownerId,
         collaboratorIds: command.collaboratorIds,
         markAsCompletedAt: command.markedAsCompleted ? new Date() : null,
+        createdByInfo: this.taskProvider.currentUserInfo(),
+        createdBy: this.taskProvider.currentUserInfo().userId,
       });
 
       const errors = task.validateSync();
 
       if (errors) {
+        this._logger.log('Validation error', JSON.stringify(errors));
         throw new BadRequestException('');
       }
 
