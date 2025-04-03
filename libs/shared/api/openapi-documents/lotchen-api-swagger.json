@@ -3381,7 +3381,8 @@
             "description": "Due Date time"
           },
           "markedAsCompleted": {
-            "type": "boolean",
+            "format": "date-time",
+            "type": "string",
             "description": "Marked task as completed"
           }
         },

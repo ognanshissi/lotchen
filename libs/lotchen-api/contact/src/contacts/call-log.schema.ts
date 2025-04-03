@@ -10,7 +10,7 @@ export class CallLog extends SchemaIdentifier {
   entityType!: string;
 
   @Prop({ type: 'UUID' })
-  toId!: string; //
+  toId!: string; // call is relatedto this entry ()
 
   @Prop({ type: String })
   toContact!: string;

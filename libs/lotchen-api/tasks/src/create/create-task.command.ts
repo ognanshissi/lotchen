@@ -53,7 +53,12 @@ export class CreateTaskCommandhandler
       const task = new this.taskProvider.TaskModel({
         relatedToType: command.relatedToType,
         relatedToId: command.relatedToId,
+        taskType: command.taskType,
         title: command.title,
+        dueDate: {
+          date: command.dueDate,
+          time: command.dueDatetime,
+        },
         description: command.description,
         ownerId: command.ownerId,
         collaboratorIds: command.collaboratorIds,

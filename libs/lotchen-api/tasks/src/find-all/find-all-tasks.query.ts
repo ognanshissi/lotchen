@@ -3,11 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { TaskTypeEnum } from '../task-type.enum';
 import { TaskProvider } from '../task.provider';
-import { IsUUID } from 'class-validator';
 
 export class FindAllTasksQuery {
   @ApiProperty({ description: 'The user whom the task is assigned' })
-  @IsUUID()
   ownerId!: string;
 
   @ApiProperty({
@@ -48,8 +46,8 @@ export class FindAllTasksQueryResponse {
   @ApiProperty({ type: String, description: 'Due Date time' })
   dueDatetime!: string;
 
-  @ApiProperty({ type: Boolean, description: 'Marked task as completed' })
-  markedAsCompleted!: boolean;
+  @ApiProperty({ type: Date, description: 'Marked task as completed' })
+  markedAsCompletedAt!: Date | null;
 }
 
 @Injectable()
@@ -99,9 +97,9 @@ export class FindAllTasksQueryHandler
           taskType: task.taskType,
           title: task.title,
           description: task.description,
-          dueDate: task.dueDate.date,
-          dueDatetime: task.dueDate.time,
-          markedAsCompleted: task.markAsCompletedAt !== null,
+          dueDate: task.dueDate?.date,
+          dueDatetime: task.dueDate?.time,
+          markedAsCompletedAt: task.markAsCompletedAt ?? null,
         } as FindAllTasksQueryResponse)
     ) as FindAllTasksQueryResponse[];
   }
