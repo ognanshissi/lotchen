@@ -1,16 +1,20 @@
 import { Module } from '@nestjs/common';
 import { activitiesProviders } from './activities.provider';
-import { CreateTaskCommandhandler, FindAllTasksQueryHandler } from './tasks';
+import {
+  CreateTaskCommandhandler,
+  CompleteTaskCommandhandler,
+  FindAllTasksQueryHandler,
+} from './tasks';
 import { TasksController } from './tasks/tasks.controller';
 import {
   CreateNoteCommandHandler,
   FindAllNotesQueryHandler,
   NotesController,
 } from './notes';
-import { CompleteTaskCommandhandler } from './tasks/complete-task/complete-task.command';
+import { CreateMeetingCommandHandler, MeetingsController } from './meetings';
 
 @Module({
-  controllers: [TasksController, NotesController],
+  controllers: [TasksController, NotesController, MeetingsController],
   providers: [
     ...activitiesProviders,
     CreateTaskCommandhandler,
@@ -18,6 +22,7 @@ import { CompleteTaskCommandhandler } from './tasks/complete-task/complete-task.
     CreateNoteCommandHandler,
     FindAllNotesQueryHandler,
     CompleteTaskCommandhandler,
+    CreateMeetingCommandHandler,
   ],
   exports: [],
 })

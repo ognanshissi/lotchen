@@ -8,7 +8,7 @@ export class ActivityBase extends AggregateRoot {
   @Prop({
     required: false,
     type: String,
-    enum: ['Contact', 'Client', 'Product'],
+    enum: ['Contact', 'Client', 'Meeting', 'Deal'], // only notes can have related type as Meeting
   })
   relatedToType!: string;
 

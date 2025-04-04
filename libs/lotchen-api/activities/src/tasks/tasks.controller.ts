@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   ParseUUIDPipe,
@@ -19,6 +20,7 @@ import {
   FindAllTasksQueryResponse,
 } from './find-all/find-all-tasks.query';
 import { CompleteTaskCommandhandler } from './complete-task/complete-task.command';
+import { DeleteTaskCommandHandler } from './delete/delete-task.command';
 
 @Controller({
   path: 'tasks',
@@ -29,7 +31,8 @@ export class TasksController {
   constructor(
     private readonly _createTaskCommandHandler: CreateTaskCommandhandler,
     private readonly _findAllTasksQueryHandler: FindAllTasksQueryHandler,
-    private readonly _completeTaskCommandHandler: CompleteTaskCommandhandler
+    private readonly _completeTaskCommandHandler: CompleteTaskCommandhandler,
+    private readonly _deleteTaskCommandHandler: DeleteTaskCommandHandler
   ) {}
 
   @Post()
@@ -60,5 +63,15 @@ export class TasksController {
     @Query('id', new ParseUUIDPipe()) id: string
   ): Promise<void> {
     return await this._completeTaskCommandHandler.handlerAsync({ taskId: id });
+  }
+
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+  })
+  @Delete(':id')
+  public async deleteTask(
+    @Query('id', new ParseUUIDPipe()) id: string
+  ): Promise<void> {
+    return await this._deleteTaskCommandHandler.handlerAsync({ taskId: id });
   }
 }
