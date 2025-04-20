@@ -13,7 +13,7 @@ export class FindAllNotesQuery {
   relatedToId!: string;
 
   @ApiProperty({ description: 'Deleted notes', type: String })
-  deleted: boolean | undefined;
+  deleted: string | undefined;
 }
 
 export class FindAllNotesQueryResponse {
@@ -44,44 +44,49 @@ export class FindAllNotesQueryHandler
   public async handlerAsync(
     query?: FindAllNotesQuery | undefined
   ): Promise<FindAllNotesQueryResponse[]> {
-    // Query filter
-    let queryFilter: any = {};
-    if (query?.relatedToId) {
-      queryFilter = { ...queryFilter, relatedToId: query.relatedToId };
+    try {
+      // Query filter
+      let queryFilter: any = {};
+      if (query?.relatedToId) {
+        queryFilter = { ...queryFilter, relatedToId: query.relatedToId };
+      }
+
+      if (query?.ownerId) {
+        queryFilter = { ...queryFilter, ownerId: query.ownerId };
+      }
+
+      if (query?.hasOwnProperty('deleted')) {
+        queryFilter = {
+          ...queryFilter,
+          deletedAt: query.deleted === 'true' ? { $ne: null } : null,
+        };
+      }
+      // no need to defined deletedAt filter
+
+      // projection
+      const projection = '_id ownerId relatedToId content createdAt';
+
+      const notes = await this._activitiesProvider.NoteModel.find(
+        queryFilter,
+        projection,
+        { sort: { createdAt: -1 }, limit: 100 } // Sort by createdAt in descending order
+      ).exec();
+
+      return notes.map((note) => {
+        return {
+          id: note._id,
+          ownerId: note.ownerId,
+          relatedToId: note.relatedToId,
+          content: note.content,
+          createdAt: note.createdAt,
+        };
+      });
+    } catch (error) {
+      this._logger.error(
+        'Error in FindAllNotesQueryHandler',
+        JSON.stringify(error)
+      );
+      return [];
     }
-
-    if (query?.ownerId) {
-      queryFilter = { ...queryFilter, ownerId: query.ownerId };
-    }
-
-    if (query?.deleted) {
-      console.log(query.deleted);
-      queryFilter = {
-        ...queryFilter,
-        deletedAt: query.deleted ? { $ne: null } : null,
-      };
-    }
-
-    this._logger.log(`Query => ${JSON.stringify(query)}`);
-    this._logger.log(`QueryFilter => ${JSON.stringify(queryFilter)}`);
-
-    // projection
-    const projection = '_id ownerId relatedToId content createdAt';
-
-    const notes = await this._activitiesProvider.NoteModel.find(
-      queryFilter,
-      projection,
-      { sort: { createdAt: -1 }, limit: 100 } // Sort by createdAt in descending order
-    ).exec();
-
-    return notes.map((note) => {
-      return {
-        id: note._id,
-        ownerId: note.ownerId,
-        relatedToId: note.relatedToId,
-        content: note.content,
-        createdAt: note.createdAt,
-      };
-    });
   }
 }

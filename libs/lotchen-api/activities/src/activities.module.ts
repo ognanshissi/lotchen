@@ -12,6 +12,7 @@ import {
   NotesController,
 } from './notes';
 import { CreateMeetingCommandHandler, MeetingsController } from './meetings';
+import { DeleteTaskCommandHandler } from './tasks/delete/delete-task.command';
 
 @Module({
   controllers: [TasksController, NotesController, MeetingsController],
@@ -23,6 +24,7 @@ import { CreateMeetingCommandHandler, MeetingsController } from './meetings';
     FindAllNotesQueryHandler,
     CompleteTaskCommandhandler,
     CreateMeetingCommandHandler,
+    DeleteTaskCommandHandler,
   ],
   exports: [],
 })
