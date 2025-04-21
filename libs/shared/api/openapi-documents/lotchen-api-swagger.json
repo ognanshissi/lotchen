@@ -1848,6 +1848,20 @@
         ]
       }
     },
+    "/api/v1/notes/{id}": {
+      "delete": {
+        "operationId": "NotesController_deleteNote_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notes"
+        ]
+      }
+    },
     "/api/v1/meetings": {
       "post": {
         "operationId": "MeetingsController_createMeeting_v1",

@@ -8,6 +8,7 @@ import {
 import { TasksController } from './tasks/tasks.controller';
 import {
   CreateNoteCommandHandler,
+  DeleteNoteCommandHandler,
   FindAllNotesQueryHandler,
   NotesController,
 } from './notes';
@@ -25,6 +26,7 @@ import { DeleteTaskCommandHandler } from './tasks/delete/delete-task.command';
     CompleteTaskCommandhandler,
     CreateMeetingCommandHandler,
     DeleteTaskCommandHandler,
+    DeleteNoteCommandHandler,
   ],
   exports: [],
 })

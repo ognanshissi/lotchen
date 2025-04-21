@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpStatus, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateNoteCommand,
@@ -9,6 +17,10 @@ import {
   FindAllNotesQueryHandler,
   FindAllNotesQueryResponse,
 } from './find-all/find-all-notes.query';
+import {
+  DeleteNoteComamnd,
+  DeleteNoteCommandHandler,
+} from './delete/delete-note.command';
 
 @Controller({
   path: 'notes',
@@ -18,7 +30,8 @@ import {
 export class NotesController {
   constructor(
     private readonly _createNoteCommandHandler: CreateNoteCommandHandler,
-    private readonly _findAllNotesQueryHandler: FindAllNotesQueryHandler
+    private readonly _findAllNotesQueryHandler: FindAllNotesQueryHandler,
+    private readonly _deleteNoteCommandHandler: DeleteNoteCommandHandler
   ) {}
 
   @Post()
@@ -39,5 +52,13 @@ export class NotesController {
     @Query() request: FindAllNotesQuery
   ): Promise<FindAllNotesQueryResponse[]> {
     return await this._findAllNotesQueryHandler.handlerAsync(request);
+  }
+
+  @Delete(':id')
+  @ApiResponse({
+    status: HttpStatus.OK,
+  })
+  public async deleteNote(@Query() query: DeleteNoteComamnd): Promise<void> {
+    return await this._deleteNoteCommandHandler.handlerAsync(query);
   }
 }
