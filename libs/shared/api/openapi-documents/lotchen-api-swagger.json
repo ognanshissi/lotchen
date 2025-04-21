@@ -1851,9 +1851,18 @@
     "/api/v1/notes/{id}": {
       "delete": {
         "operationId": "NotesController_deleteNote_v1",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "200": {
+          "204": {
             "description": ""
           }
         },
@@ -1868,7 +1877,14 @@
         "parameters": [],
         "responses": {
           "201": {
-            "description": ""
+            "description": "Create a new meeting",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMeetingCommand"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -3604,6 +3620,84 @@
           "content",
           "createdAt",
           "deletedAt"
+        ]
+      },
+      "CreateMeetingCommand": {
+        "type": "object",
+        "properties": {
+          "ownerId": {
+            "type": "string",
+            "description": "Meeting owner id"
+          },
+          "relatedToId": {
+            "type": "string",
+            "description": "Entity id on which the meeting is related"
+          },
+          "title": {
+            "type": "string",
+            "description": "Meeting title"
+          },
+          "startAtDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Meeting starting date ",
+            "example": "2024-10-01"
+          },
+          "startAtTime": {
+            "type": "string",
+            "description": "Meeting starting time",
+            "example": "10:00"
+          },
+          "endAtDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Meeting end date ",
+            "example": "2024-10-02"
+          },
+          "endAtTime": {
+            "type": "string",
+            "description": "Meeting end time",
+            "example": "11:00"
+          },
+          "allDay": {
+            "type": "boolean",
+            "description": "Meeting is for the all day, 8h - 17h"
+          },
+          "location": {
+            "type": "string",
+            "description": "Meeting location"
+          },
+          "description": {
+            "type": "string",
+            "description": "Meeting description"
+          },
+          "attendees": {
+            "description": "List of meeting attendees",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "meetingTimeZone": {
+            "type": "string",
+            "description": "Meeting timezone",
+            "example": "Africa/Abidjan +00:00 GMT",
+            "default": "Europe/London +00:00 GMT"
+          }
+        },
+        "required": [
+          "ownerId",
+          "relatedToId",
+          "title",
+          "startAtDate",
+          "startAtTime",
+          "endAtDate",
+          "endAtTime",
+          "allDay",
+          "location",
+          "description",
+          "attendees",
+          "meetingTimeZone"
         ]
       }
     }

@@ -18,6 +18,8 @@ export class MeetingsController {
   @Post()
   @ApiResponse({
     status: HttpStatus.CREATED,
+    type: CreateMeetingCommand,
+    description: 'Create a new meeting',
   })
   public async createMeeting(request: CreateMeetingCommand): Promise<void> {
     return await this._createMeetingCommandHandler.handlerAsync(request);
