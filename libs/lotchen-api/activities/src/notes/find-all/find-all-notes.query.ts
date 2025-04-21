@@ -31,6 +31,9 @@ export class FindAllNotesQueryResponse {
 
   @ApiProperty({ type: Date, description: 'Created date' })
   createdAt!: Date;
+
+  @ApiProperty({ type: Date, description: 'Deleted date' })
+  deletedAt!: Date | null;
 }
 
 @Injectable()
@@ -61,7 +64,6 @@ export class FindAllNotesQueryHandler
           deletedAt: query.deleted === 'true' ? { $ne: null } : null,
         };
       }
-      // no need to defined deletedAt filter
 
       // projection
       const projection = '_id ownerId relatedToId content createdAt';
@@ -79,7 +81,8 @@ export class FindAllNotesQueryHandler
           relatedToId: note.relatedToId,
           content: note.content,
           createdAt: note.createdAt,
-        };
+          deletedAt: note.deletedAt ?? null,
+        } as FindAllNotesQueryResponse;
       });
     } catch (error) {
       this._logger.error(

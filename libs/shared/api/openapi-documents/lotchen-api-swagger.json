@@ -3576,6 +3576,11 @@
             "format": "date-time",
             "type": "string",
             "description": "Created date"
+          },
+          "deletedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Deleted date"
           }
         },
         "required": [
@@ -3583,7 +3588,8 @@
           "ownerId",
           "relatedToId",
           "content",
-          "createdAt"
+          "createdAt",
+          "deletedAt"
         ]
       }
     }
