@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpStatus,
+  ParseUUIDPipe,
   Post,
   Query,
 } from '@nestjs/common';
@@ -17,10 +18,7 @@ import {
   FindAllNotesQueryHandler,
   FindAllNotesQueryResponse,
 } from './find-all/find-all-notes.query';
-import {
-  DeleteNoteComamnd,
-  DeleteNoteCommandHandler,
-} from './delete/delete-note.command';
+import { DeleteNoteCommandHandler } from './delete/delete-note.command';
 
 @Controller({
   path: 'notes',
@@ -56,9 +54,11 @@ export class NotesController {
 
   @Delete(':id')
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
   })
-  public async deleteNote(@Query() query: DeleteNoteComamnd): Promise<void> {
-    return await this._deleteNoteCommandHandler.handlerAsync(query);
+  public async deleteNote(
+    @Query('id', new ParseUUIDPipe()) noteId: string
+  ): Promise<void> {
+    return await this._deleteNoteCommandHandler.handlerAsync({ noteId });
   }
 }
