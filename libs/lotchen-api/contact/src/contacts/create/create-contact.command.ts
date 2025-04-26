@@ -1,5 +1,5 @@
 import { CommandHandler } from '@lotchen/api/core';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { ContactProvider } from '../contact.provider';
@@ -42,6 +42,8 @@ export class CreateContactCommandResponse {
 export class CreateContactCommandHandler
   implements CommandHandler<CreateContactCommand, void>
 {
+  private readonly _logger = new Logger(CreateContactCommandHandler.name);
+
   constructor(
     private readonly contactProvider: ContactProvider,
     private readonly eventEmitter: EventEmitter2
@@ -71,7 +73,9 @@ export class CreateContactCommandHandler
     try {
       await this.createContactAsync(this.contactProvider.ContactModel, command);
     } catch (error) {
-      console.log(error);
+      this._logger.error(
+        `Error while creating contact: errors ${JSON.stringify(error)}`
+      );
       throw new BadRequestException('Error while creating contact');
     }
   }

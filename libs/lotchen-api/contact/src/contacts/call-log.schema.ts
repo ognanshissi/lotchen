@@ -1,6 +1,6 @@
 import { SchemaIdentifier } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 export type CallLogDocument = HydratedDocument<CallLog>;
 
@@ -10,16 +10,25 @@ export class CallLog extends SchemaIdentifier {
   entityType!: string;
 
   @Prop({ type: 'UUID' })
-  toId!: string; // call is relatedto this entry ()
+  relatedToId!: string; // call is relatedto this entry ()
 
   @Prop({ type: String })
-  toContact!: string;
+  recipientContact!: string;
 
   @Prop({ type: String })
   callSid!: string;
 
   @Prop({ type: 'UUID', required: true, ref: 'User' })
-  fromId!: string; // Agent making the call
+  fromAgentId!: string; // Agent who placed the call
+
+  // Quick access to the user who placed the call -> commonly the connected user
+  @Prop({ type: mongoose.Schema.Types.Mixed })
+  fromAgentLite!: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
 
   @Prop({ type: Number, default: 0 })
   duration!: number; // seconds

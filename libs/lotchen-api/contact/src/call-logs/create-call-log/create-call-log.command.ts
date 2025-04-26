@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CommandHandler } from '@lotchen/api/core';
-import { ContactProvider } from '../contact.provider';
+import { ContactProvider } from '../../contacts/contact.provider';
 import { Injectable } from '@nestjs/common';
 
 export class CreateCallLogCommand {
@@ -57,9 +57,15 @@ export class CreateCallLogCommandHandler
       callSid: command.callSid,
       duration: command.duration,
       entityType: 'Contact',
-      fromId: this._contactProvider.currentUserInfo().userId, // User
-      toId: command.toId, // contact, client
-      toContact: command.toContact,
+      fromAgentId: this._contactProvider.currentUserInfo().userId, // User
+      fromAgentLite: {
+        id: this._contactProvider.currentUserInfo().userId,
+        firstName: this._contactProvider.currentUserInfo().firstName,
+        lastName: this._contactProvider.currentUserInfo().lastName,
+        email: this._contactProvider.currentUserInfo().email,
+      },
+      relatedToId: command.toId, // contact, client
+      recipientContact: command.toContact,
       status: command.status,
     });
 

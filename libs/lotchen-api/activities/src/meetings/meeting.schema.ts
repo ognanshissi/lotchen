@@ -15,7 +15,7 @@ export class Meeting extends ActivityBase {
   @Prop({ type: mongoose.Schema.Types.Mixed, required: true })
   endAt!: { date: Date; time: string };
 
-  @Prop({ type: String })
+  @Prop({ type: String, default: 'Europe/London +00:00 GMT' })
   meetingTimeZone!: string;
 
   @Prop({ type: String, required: true })

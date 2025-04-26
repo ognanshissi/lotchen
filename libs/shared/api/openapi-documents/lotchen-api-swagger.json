@@ -1616,9 +1616,9 @@
         ]
       }
     },
-    "/api/v1/contacts/call-logs": {
+    "/api/v1/call-logs": {
       "post": {
-        "operationId": "ContactsController_createCallLog_v1",
+        "operationId": "CallLogsController_createCallLog_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1636,7 +1636,40 @@
           }
         },
         "tags": [
-          "Contacts"
+          "Call Logs"
+        ]
+      }
+    },
+    "/api/v1/call-logs/{relatedToId}": {
+      "get": {
+        "operationId": "CallLogsController_findAllCallLogs_v1",
+        "parameters": [
+          {
+            "name": "relatedToId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all call logs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllCallLogsQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Call Logs"
         ]
       }
     },
@@ -3444,6 +3477,43 @@
           "duration",
           "startDate",
           "endDate",
+          "status"
+        ]
+      },
+      "FindAllCallLogsQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Call log id"
+          },
+          "relatedToId": {
+            "type": "string",
+            "description": "Related entity id, e.g., ContactId / ClientId"
+          },
+          "callSid": {
+            "type": "string",
+            "description": "Twilio call SID"
+          },
+          "recipientContact": {
+            "type": "string",
+            "description": "Recipient's contact number"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Call duration in seconds"
+          },
+          "status": {
+            "type": "string",
+            "description": "Call status"
+          }
+        },
+        "required": [
+          "id",
+          "relatedToId",
+          "callSid",
+          "recipientContact",
+          "duration",
           "status"
         ]
       },

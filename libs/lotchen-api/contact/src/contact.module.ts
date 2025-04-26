@@ -7,12 +7,14 @@ import { FindContactByQueryHandler } from './contacts/find-by-id/find-contact-by
 import { UpdateContactCommandHandler } from './contacts/update/update-contact.command';
 import { PaginateAllContactsCommandHandler } from './contacts/paginate-all/paginate-all-contacts.command';
 import { ImportContactsExcelCommandHandler } from './contacts/import-contacts-excel/import-contacts-excel.command';
-import { CreateCallLogCommandHandler } from './contacts/create-call-log/create-call-log.command';
+import { CreateCallLogCommandHandler } from './call-logs/create-call-log/create-call-log.command';
 import { ContactCreatedListener } from './contacts/create/contact-created.listener';
+import { CallLogsController } from './call-logs/call-logs.controller';
+import { FindAllCallLogsQueryHandler } from './call-logs/find-call-logs/find-call-logs.query';
 
 @Module({
   imports: [],
-  controllers: [ContactsController],
+  controllers: [ContactsController, CallLogsController],
   providers: [
     ...contactProviders,
     CreateContactCommandHandler,
@@ -23,6 +25,7 @@ import { ContactCreatedListener } from './contacts/create/contact-created.listen
     ImportContactsExcelCommandHandler,
     CreateCallLogCommandHandler,
     ContactCreatedListener,
+    FindAllCallLogsQueryHandler,
   ],
   exports: [],
 })
