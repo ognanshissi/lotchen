@@ -73,7 +73,7 @@ export class TasTable<T extends TableEntity>
 
   public title = input<string>();
 
-  public selectionItems = output<T[]>();
+  public selectionItemsChange = output<T[]>();
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
@@ -110,7 +110,7 @@ export class TasTable<T extends TableEntity>
   public ngAfterViewInit() {
     // Whenever the selection change emit selectionItems event
     this.selection.changed.subscribe(() => {
-      this.selectionItems.emit(this.selection.selected);
+      this.selectionItemsChange.emit(this.selection.selected);
     });
 
     // Master selection

@@ -9,7 +9,7 @@ export class CompleteTaskCommand {
 }
 
 @Injectable()
-export class CompleteTaskCommandhandler
+export class CompleteTaskCommandHandler
   implements CommandHandler<CompleteTaskCommand, void>
 {
   public constructor(

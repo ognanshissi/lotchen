@@ -3,3 +3,4 @@ export * from './layouts/auth-layout/auth-layout.component';
 export * from './layouts/admin-layout/admin-layout.component';
 export * from './caller/caller.component';
 export * from './caller/caller.service';
+export * from './add-task-dialog';

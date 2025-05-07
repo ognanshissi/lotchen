@@ -82,7 +82,7 @@ export class FindAllTasksQueryHandler
     }
 
     const projection =
-      'id ownerId relatedToId collaborators taskType title description dueDate dueDatetime markAsCompletedAt';
+      'id ownerId relatedToId collaboratorIds taskType title description dueDate dueDatetime markAsCompletedAt';
 
     const tasks = await this._activitiesProvider.TaskModel.find(
       queryFilter,

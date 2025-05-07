@@ -1,0 +1,22 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title>Ajouter une tâche</tas-title>
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <tas-form-field>
+      <tas-label>Titre de la tâche</tas-label>
+      <input tasInput type="text" placeholder="Titre de la tâche" />
+    </tas-form-field>
+  </tas-drawer-content>
+
+  <tas-drawer-action>
+    <button tas-outlined-button closable-drawer>
+      <tas-icon [iconName]="'close'"></tas-icon>
+      Fermer
+    </button>
+    <button tas-raised-button color="primary">
+      <tas-icon iconName="feather:check"></tas-icon>
+      Sauvegarder
+    </button>
+  </tas-drawer-action>
+</tas-side-drawer>

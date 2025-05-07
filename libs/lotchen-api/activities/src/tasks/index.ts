@@ -1,7 +1,7 @@
-import { CompleteTaskCommandhandler } from './complete-task/complete-task.command';
-import { CreateTaskCommandhandler } from './create/create-task.command';
 import { DeleteTaskCommandHandler } from './delete/delete-task.command';
 import { FindAllTasksQueryHandler } from './find-all/find-all-tasks.query';
+import { CreateTaskCommandHandler } from './create/create-task.command';
+import { CompleteTaskCommandHandler } from './complete-task/complete-task.command';
 
 export * from './tasks.controller';
 export * from './create/create-task.command';
@@ -10,8 +10,8 @@ export * from './complete-task/complete-task.command';
 export * from './complete-task/complete-task.command';
 
 export const tasksModuleHandlers = [
-  CreateTaskCommandhandler,
+  CreateTaskCommandHandler,
   FindAllTasksQueryHandler,
-  CompleteTaskCommandhandler,
+  CompleteTaskCommandHandler,
   DeleteTaskCommandHandler,
 ];

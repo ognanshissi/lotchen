@@ -11,7 +11,7 @@ export class CreateTaskCommand {
   @IsUUID()
   ownerId!: string;
 
-  @ApiProperty({ description: 'Entry related to entity' })
+  @ApiProperty({ description: 'Entry related to entity, contactId' })
   relatedToId!: string;
 
   @ApiProperty({ description: 'Depending entry type' })
@@ -41,7 +41,7 @@ export class CreateTaskCommand {
 }
 
 @Injectable()
-export class CreateTaskCommandhandler
+export class CreateTaskCommandHandler
   implements CommandHandler<CreateTaskCommand, void>
 {
   private readonly _logger = new Logger(CreateTaskCommand.name);

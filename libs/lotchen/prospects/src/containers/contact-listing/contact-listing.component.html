@@ -36,7 +36,7 @@
     [title]="'Liste des contacts'"
     [data]="contacts().value ?? []"
     [isLoading]="contacts().isLoading"
-    (selectionItems)="handleSelectionItems($event)"
+    (selectionItemsChange)="handleSelectionItems($event)"
   >
     <ng-template #header>
       <tr>
@@ -100,13 +100,16 @@
 
             <ng-template #menu>
               <tas-menu>
-                <tas-menu-item class="flex space-x-2">
+                <tas-menu-item
+                  class="flex space-x-2"
+                  (click)="openAddTask(item.id)"
+                >
                   <tas-icon iconName="feather:plus-circle"></tas-icon>
                   <span>Ajouter une tâche</span>
                 </tas-menu-item>
                 <tas-menu-item class="flex space-x-2">
                   <tas-icon iconName="feather:calendar"></tas-icon>
-                  <span>Plannifier une réunion</span>
+                  <span>Planifier une réunion</span>
                 </tas-menu-item>
                 <tas-menu-item class="flex space-x-2">
                   <tas-icon iconName="feather:mail"></tas-icon>

@@ -21,11 +21,12 @@ import { RouterLink } from '@angular/router';
 import { ImportContactDialogComponent } from '../../components/import-contact-dialog/import-contact-dialog.component';
 import { CallerService } from '@lotchen/lotchen/common';
 import { Menu, MenuItem, TasMenuTrigger } from '@talisoft/ui/menu';
+import { AddTaskDialogService } from '@lotchen/lotchen/common';
 
 @Component({
-  selector: 'prospects-homepage',
+  selector: 'prospects-contact-listing',
   standalone: true,
-  templateUrl: './prospects-homepage.component.html',
+  templateUrl: './contact-listing.component.html',
   imports: [
     TasTitle,
     ButtonModule,
@@ -43,10 +44,11 @@ import { Menu, MenuItem, TasMenuTrigger } from '@talisoft/ui/menu';
     MenuItem,
   ],
 })
-export class ProspectsHomepageComponent {
+export class ContactListingComponent {
   private readonly _sideDrawerService = inject(SideDrawerService);
   private readonly _contactsApiService = inject(ContactsApiService);
   private readonly _callerService = inject(CallerService);
+  private readonly _addTaskDialogService = inject(AddTaskDialogService);
 
   public contacts = apiResources(
     this._contactsApiService.contactsControllerFindAllContactsV1()
@@ -75,6 +77,12 @@ export class ProspectsHomepageComponent {
       .open(ImportContactDialogComponent, { width: '700px' })
       .closed.subscribe();
   }
+
+  public openAddTask(contactId: string): void {
+    this._addTaskDialogService.open({
+      relatedId: contactId,
+    });
+  }
 }
 
-export default ProspectsHomepageComponent;
+export default ContactListingComponent;

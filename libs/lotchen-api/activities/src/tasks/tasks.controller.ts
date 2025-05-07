@@ -12,15 +12,15 @@ import {
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateTaskCommand,
-  CreateTaskCommandhandler,
+  CreateTaskCommandHandler,
 } from './create/create-task.command';
 import {
   FindAllTasksQuery,
   FindAllTasksQueryHandler,
   FindAllTasksQueryResponse,
 } from './find-all/find-all-tasks.query';
-import { CompleteTaskCommandhandler } from './complete-task/complete-task.command';
 import { DeleteTaskCommandHandler } from './delete/delete-task.command';
+import { CompleteTaskCommandHandler } from './complete-task/complete-task.command';
 
 @Controller({
   path: 'tasks',
@@ -29,9 +29,9 @@ import { DeleteTaskCommandHandler } from './delete/delete-task.command';
 @ApiTags('Tasks')
 export class TasksController {
   constructor(
-    private readonly _createTaskCommandHandler: CreateTaskCommandhandler,
+    private readonly _createTaskCommandHandler: CreateTaskCommandHandler,
     private readonly _findAllTasksQueryHandler: FindAllTasksQueryHandler,
-    private readonly _completeTaskCommandHandler: CompleteTaskCommandhandler,
+    private readonly _completeTaskCommandHandler: CompleteTaskCommandHandler,
     private readonly _deleteTaskCommandHandler: DeleteTaskCommandHandler
   ) {}
 

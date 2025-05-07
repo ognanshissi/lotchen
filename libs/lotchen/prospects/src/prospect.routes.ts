@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import ProspectsHomepageComponent from './containers/prospects-homepage/prospects-homepage.component';
+import { ContactListingComponent } from './containers/contact-listing/contact-listing.component';
 import { contactDetailResover } from './services/contact-detail-resolver.service';
 import { DetailNavigationComponent } from './components/detail-navigation/detail-navigation.component';
 import { ContactDetailOverviewComponent } from './containers/contact-detail/contact-detail-overview/contact-detail-overview.component';
@@ -7,7 +7,7 @@ import { ContactDetailOverviewComponent } from './containers/contact-detail/cont
 export const prospectRoutes: Route[] = [
   {
     path: '',
-    loadComponent: () => ProspectsHomepageComponent,
+    loadComponent: () => ContactListingComponent,
   },
   {
     path: ':id',

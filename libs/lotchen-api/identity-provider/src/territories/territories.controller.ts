@@ -60,7 +60,7 @@ export class TerritoriesController {
   }
 
   @Post('/paginate')
-  @ApiPaginationResponse(PaginateAllTerritoriesCommand)
+  @ApiPaginationResponse(PaginateAllTerritoriesCommandResponse)
   async paginateAllTerritories(
     @Body() command: PaginateAllTerritoriesCommand
   ): Promise<PaginateAllTerritoriesCommandResponse> {

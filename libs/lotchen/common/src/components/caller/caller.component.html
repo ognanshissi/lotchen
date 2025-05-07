@@ -172,15 +172,51 @@
 } @else {
 <!-- minimized mode -->
 <div
-  class="h-[40px] w-[300px] bg-gray-900 rounded-full p-.5 border border-gray-700 absolute top-1 right-40 shadow-2xl"
+  class="h-[80px] w-[370px] bg-gray-900 rounded-xl p-2 border border-gray-700 absolute top-1 right-40 shadow-2xl"
 >
-  <div class="flex space-x-2">
-    <button tas-text-button iconButton (click)="toggleMinimize()">
-      <tas-icon
-        iconName="feather:maximize-2"
-        iconClass="text-gray-400"
-      ></tas-icon>
-    </button>
+  <div class="flex space-x-1 h-full items-center justify-between">
+    <div class="flex space-x-2 items-center">
+      <!-- Icon -->
+      <button tas-outlined-button iconButton>
+        <tas-icon iconName="feather:user" iconClass="text-gray-50"></tas-icon>
+      </button>
+      <!-- Contact Name -->
+      <div class="text-lg font-semibold text-gray-50">
+        {{ clientName }}
+      </div>
+    </div>
+
+    <!-- left -->
+    <div class="flex space-x-2 items-center">
+      <!-- Hang up button -->
+      @if (isCalling()) {
+      <button
+        tas-raised-button
+        iconButton
+        color="warn"
+        (click)="outgoingCallHangupButton()"
+      >
+        <tas-icon iconName="feather:phone-off"></tas-icon>
+      </button>
+      } @else {
+      <button
+        tas-raised-button
+        iconButton
+        (click)="makeOutgoingCall()"
+        class="font-normal rounded-full bg-functional-success-100 text-white px-10 py-3"
+      >
+        <tas-icon iconName="feather:phone"></tas-icon>
+      </button>
+      }
+
+      <!-- Maximize button -->
+      <button tas-text-button iconButton (click)="toggleMinimize()">
+        <tas-icon
+          iconName="feather:maximize-2"
+          iconClass="text-gray-400"
+        ></tas-icon>
+      </button>
+    </div>
   </div>
 </div>
 }

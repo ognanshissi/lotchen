@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { ContactProvider } from '../../contacts/contact.provider';
-import { create } from 'domain';
 
 export class FindAllCallLogsQuery {
   @ApiProperty({

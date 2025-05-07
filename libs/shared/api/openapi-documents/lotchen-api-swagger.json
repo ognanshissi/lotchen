@@ -1035,7 +1035,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "title": "PaginationResponseOfPaginateAllTerritoriesCommand",
+                      "title": "PaginationResponseOfPaginateAllTerritoriesCommandResponse",
                       "$ref": "#/components/schemas/Pagination"
                     },
                     {
@@ -1043,7 +1043,7 @@
                         "data": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/PaginateAllTerritoriesCommand"
+                            "$ref": "#/components/schemas/PaginateAllTerritoriesCommandResponse"
                           }
                         }
                       }
@@ -2709,6 +2709,37 @@
           "name",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "PaginateAllTerritoriesCommandResponse": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "number",
+            "description": ""
+          },
+          "pageIndex": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "totalElements",
+          "pageIndex",
+          "pageSize",
+          "totalPages",
+          "data"
         ]
       },
       "FilterDto": {
