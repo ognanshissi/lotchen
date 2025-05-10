@@ -21,10 +21,6 @@ export interface CreateCallLogCommand {
      */
     toContact: string;
     /**
-     * Call from, connected user making the call
-     */
-    fromId: string;
-    /**
      * Twilio Call SID
      */
     callSid: string;

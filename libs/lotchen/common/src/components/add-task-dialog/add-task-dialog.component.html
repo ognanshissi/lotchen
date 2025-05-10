@@ -3,10 +3,58 @@
     <tas-title>Ajouter une tâche</tas-title>
   </tas-drawer-title>
   <tas-drawer-content>
-    <tas-form-field>
-      <tas-label>Titre de la tâche</tas-label>
-      <input tasInput type="text" placeholder="Titre de la tâche" />
-    </tas-form-field>
+    <!-- Related: Display a lite information on the related entity -->
+
+    <form [formGroup]="addTaskForm">
+      <div class="text-primary">
+        Associé a :
+        <span class="bg-gray-300 px-3 py-1 rounded-full">{{
+          'Ambroise BAZIE'
+        }}</span>
+      </div>
+      <div class="mt-5 flex flex-col space-y-3">
+        <tas-form-field>
+          <tas-label>Titre de la tâche</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="title"
+            placeholder="Titre de la tâche"
+          />
+        </tas-form-field>
+
+        <div class="flex space-x-3">
+          <tas-form-field>
+            <tas-label>Date</tas-label>
+            <input
+              tasInput
+              type="date"
+              formControlName="dueDate"
+              placeholder="Date de la tâche"
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Heure</tas-label>
+            <input
+              tasInput
+              type="time"
+              formControlName="dueDateTime"
+              placeholder="Heure de la tâche"
+            />
+          </tas-form-field>
+        </div>
+
+        <tas-form-field>
+          <tas-label>Description</tas-label>
+          <textarea
+            tasInput
+            formControlName="description"
+            placeholder="Entrez la description de la tâche"
+          ></textarea>
+        </tas-form-field>
+      </div>
+    </form>
   </tas-drawer-content>
 
   <tas-drawer-action>
@@ -14,7 +62,7 @@
       <tas-icon [iconName]="'close'"></tas-icon>
       Fermer
     </button>
-    <button tas-raised-button color="primary">
+    <button tas-raised-button color="primary" (click)="handleSubmit()">
       <tas-icon iconName="feather:check"></tas-icon>
       Sauvegarder
     </button>

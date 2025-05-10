@@ -1515,7 +1515,7 @@
           "Contacts"
         ]
       },
-      "put": {
+      "patch": {
         "operationId": "ContactsController_updateContact_v1",
         "parameters": [
           {
@@ -1647,7 +1647,7 @@
           {
             "name": "relatedToId",
             "required": true,
-            "in": "query",
+            "in": "path",
             "schema": {
               "type": "string"
             }
@@ -1768,7 +1768,7 @@
           {
             "name": "id",
             "required": true,
-            "in": "query",
+            "in": "path",
             "schema": {
               "type": "string"
             }
@@ -1791,7 +1791,7 @@
           {
             "name": "id",
             "required": true,
-            "in": "query",
+            "in": "path",
             "schema": {
               "type": "string"
             }
@@ -1888,7 +1888,7 @@
           {
             "name": "id",
             "required": true,
-            "in": "query",
+            "in": "path",
             "schema": {
               "type": "string"
             }
@@ -3557,7 +3557,7 @@
           },
           "relatedToId": {
             "type": "string",
-            "description": "Entry related to entity"
+            "description": "Entry related to entity, contactId"
           },
           "relatedToType": {
             "type": "string",

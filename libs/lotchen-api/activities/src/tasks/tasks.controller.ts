@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpStatus,
+  Param,
   ParseUUIDPipe,
   Patch,
   Post,
@@ -60,7 +61,7 @@ export class TasksController {
   })
   @Patch(':id/complete-task')
   public async completeTask(
-    @Query('id', new ParseUUIDPipe()) id: string
+    @Param('id', new ParseUUIDPipe()) id: string
   ): Promise<void> {
     return await this._completeTaskCommandHandler.handlerAsync({ taskId: id });
   }
@@ -70,7 +71,7 @@ export class TasksController {
   })
   @Delete(':id')
   public async deleteTask(
-    @Query('id', new ParseUUIDPipe()) id: string
+    @Param('id', new ParseUUIDPipe()) id: string
   ): Promise<void> {
     return await this._deleteTaskCommandHandler.handlerAsync({ taskId: id });
   }

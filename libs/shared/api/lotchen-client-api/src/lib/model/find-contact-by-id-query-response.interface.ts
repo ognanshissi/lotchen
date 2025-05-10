@@ -44,7 +44,7 @@ export interface FindContactByIdQueryResponse {
     /**
      * Address
      */
-    address?: AddressDto;
+    addresses?: Array<AddressDto>;
     /**
      * Job title
      */

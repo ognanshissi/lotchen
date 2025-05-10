@@ -3,7 +3,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   CallerApiService,
-  ContactsApiService,
+  CallLogsApiService,
   CreateCallLogCommandEntityTypeEnum,
 } from '@talisoft/api/lotchen-client-api';
 import { ButtonModule } from '@talisoft/ui/button';
@@ -30,7 +30,7 @@ export class CallerComponent implements OnInit {
   private readonly _dialogRef = inject(DialogRef);
   private readonly _callerApiService = inject(CallerApiService);
   private readonly _dialogData = inject(DIALOG_DATA);
-  private readonly _contactApiService = inject(ContactsApiService);
+  private readonly _callLogApiService = inject(CallLogsApiService);
 
   // Inputs
   public entityId: string = this._dialogData['id'];
@@ -122,7 +122,7 @@ export class CallerComponent implements OnInit {
 
   private intitializeDevice(token: string) {
     this.device = new Device(token, {
-      logLevel: 4, // 1 for developpment
+      logLevel: 4, // 1 for development
       codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
     });
 
@@ -206,13 +206,12 @@ export class CallerComponent implements OnInit {
       //   Disconnected event
       this.call.on('disconnect', () => {
         // save to call logs;
-        this._contactApiService
-          .contactsControllerCreateCallLogV1({
+        this._callLogApiService
+          .callLogsControllerCreateCallLogV1({
             startDate: this.startDate?.toISOString() ?? '',
             endDate: new Date().toISOString(),
             callSid: this.call?.parameters?.['CallSid'] ?? '',
             duration: this.timer(),
-            fromId: '',
             toId: this.entityId,
             entityType: CreateCallLogCommandEntityTypeEnum.Contact,
             toContact: params.To,
@@ -237,7 +236,6 @@ export class CallerComponent implements OnInit {
       });
       //   Canceled
       this.call.on('cancel', () => {
-        console.log(this.call);
         if (this.timerInterval) {
           clearInterval(this.timerInterval);
         }

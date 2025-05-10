@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpStatus,
+  Param,
   ParseUUIDPipe,
   Post,
   Query,
@@ -57,7 +58,7 @@ export class NotesController {
     status: HttpStatus.NO_CONTENT,
   })
   public async deleteNote(
-    @Query('id', new ParseUUIDPipe()) noteId: string
+    @Param('id', new ParseUUIDPipe()) noteId: string
   ): Promise<void> {
     return await this._deleteNoteCommandHandler.handlerAsync({ noteId });
   }

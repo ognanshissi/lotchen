@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -95,7 +96,7 @@ export class ContactsController {
     return await this._findContactByIdQueryHandler.handlerAsync({ id });
   }
 
-  @Put(':id')
+  @Patch(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiResponse({
     status: 204,

@@ -4,9 +4,9 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   ParseUUIDPipe,
   Post,
-  Query,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
@@ -50,7 +50,7 @@ export class CallLogsController {
   })
   @Get(':relatedToId')
   public async findAllCallLogs(
-    @Query('relatedToId', new ParseUUIDPipe()) relatedId: string
+    @Param('relatedToId', new ParseUUIDPipe()) relatedId: string
   ): Promise<FindAllCallLogsQueryResponse[]> {
     return await this._findAllCallLogsQueryHandler.handlerAsync({
       entityId: relatedId,

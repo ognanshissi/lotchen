@@ -11,30 +11,30 @@
  */
 
 
-export interface CreateContactCommand { 
+export interface FindAllNotesQueryResponse { 
     /**
-     * Email
+     * Task ID
      */
-    email: string;
+    id: string;
     /**
-     * firstName
+     * tasks onwer id
      */
-    firstName: string;
+    ownerId: string;
     /**
-     * LastName
+     * Related to entity ID
      */
-    lastName: string;
+    relatedToId: string;
     /**
-     * Mobile number
+     * Note content
      */
-    mobileNumber: string;
+    content: string;
     /**
-     * Date of birth
+     * Created date
      */
-    dateOfBirth?: string;
+    createdAt: string;
     /**
-     * Job title
+     * Deleted date
      */
-    jobTitle?: string;
+    deletedAt: string;
 }
 

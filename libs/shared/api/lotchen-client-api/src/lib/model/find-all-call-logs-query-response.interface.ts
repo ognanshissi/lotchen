@@ -11,30 +11,30 @@
  */
 
 
-export interface CreateContactCommand { 
+export interface FindAllCallLogsQueryResponse { 
     /**
-     * Email
+     * Call log id
      */
-    email: string;
+    id: string;
     /**
-     * firstName
+     * Related entity id, e.g., ContactId / ClientId
      */
-    firstName: string;
+    relatedToId: string;
     /**
-     * LastName
+     * Twilio call SID
      */
-    lastName: string;
+    callSid: string;
     /**
-     * Mobile number
+     * Recipient\'s contact number
      */
-    mobileNumber: string;
+    recipientContact: string;
     /**
-     * Date of birth
+     * Call duration in seconds
      */
-    dateOfBirth?: string;
+    duration: number;
     /**
-     * Job title
+     * Call status
      */
-    jobTitle?: string;
+    status: string;
 }
 
