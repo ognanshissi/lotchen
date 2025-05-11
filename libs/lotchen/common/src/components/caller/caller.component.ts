@@ -111,7 +111,7 @@ export class CallerComponent implements OnInit {
     this._callerApiService.callerControllerTokenV1().subscribe({
       next: (response) => {
         // this.token = response.token;
-        this.intitializeDevice(response.token);
+        this.initializeDevice(response.token);
       },
       error: (err) => {
         this.isGettingDeviceReadyLoading.set(false);
@@ -120,7 +120,7 @@ export class CallerComponent implements OnInit {
     });
   }
 
-  private intitializeDevice(token: string) {
+  private initializeDevice(token: string) {
     this.device = new Device(token, {
       logLevel: 4, // 1 for development
       codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],

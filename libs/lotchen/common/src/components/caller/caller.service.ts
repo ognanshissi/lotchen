@@ -30,7 +30,7 @@ export class CallerService {
     if (!data.mobileNumber) {
       this._snackbar.error(
         'Attention',
-        'Aucun numéro de téléphone trouvé pour ce contact'
+        "Aucun numéro de téléphone n'est défini "
       );
       return;
     }

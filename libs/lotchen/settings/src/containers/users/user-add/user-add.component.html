@@ -130,6 +130,7 @@
         color="primary"
         type="submit"
         [isLoading]="isLoadingUserCreation()"
+        [disabled]="!form.valid"
       >
         <tas-icon iconName="check"></tas-icon>
         Enregistrer

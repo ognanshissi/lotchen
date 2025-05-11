@@ -78,11 +78,6 @@ export class UserAddComponent implements OnInit {
 
   public isLoadingUserCreation = signal(false);
 
-  // Constructor
-  constructor() {
-    console.log(this.teams()?.isLoading);
-  }
-
   public ngOnInit() {
     this.form = new FormGroup({
       firstName: new FormControl(null, [Validators.required]),
@@ -107,8 +102,8 @@ export class UserAddComponent implements OnInit {
       .subscribe({
         error: () => {
           this._snackbarService.error(
-            'Attention!',
-            "Une est survenue lors de la création de l'utilisateur"
+            'Attention !',
+            "Une erreur est survenue lors de la création de l'utilisateur"
           );
         },
       });
