@@ -1,9 +1,12 @@
 import { Inject, Injectable, Provider } from '@nestjs/common';
 import { Connection, Model } from 'mongoose';
 import { Task, TaskDocument, TaskSchema } from './tasks/task.schema';
-import { BaseSchemaProvider, RequestExtendedWithUser } from '@lotchen/api/core';
+import {
+  CurrentUserProvider,
+  RequestExtendedWithUser,
+} from '@lotchen/api/core';
 import { REQUEST } from '@nestjs/core';
-import { Note, NoteSchema, NoteDocument } from './notes/note.schema';
+import { Note, NoteDocument, NoteSchema } from './notes/note.schema';
 import {
   Meeting,
   MeetingDocument,
@@ -17,7 +20,7 @@ export const NOTE_MODEL = 'NOTE_MODEL';
 
 // Provider
 @Injectable()
-export class ActivitiesProvider extends BaseSchemaProvider {
+export class ActivitiesProvider extends CurrentUserProvider {
   constructor(
     @Inject(TASK_MODEL)
     public readonly TaskModel: Model<TaskDocument>,

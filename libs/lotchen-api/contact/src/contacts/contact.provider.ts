@@ -1,7 +1,10 @@
 import { Connection, Model } from 'mongoose';
 import { Contact, ContactDocument, ContactSchema } from './contact.schema';
 import { Inject, Injectable, Provider } from '@nestjs/common';
-import { BaseSchemaProvider, RequestExtendedWithUser } from '@lotchen/api/core';
+import {
+  CurrentUserProvider,
+  RequestExtendedWithUser,
+} from '@lotchen/api/core';
 import { CallLog, CallLogSchema } from './call-log.schema';
 import { REQUEST } from '@nestjs/core';
 
@@ -9,7 +12,7 @@ export const CONTACT_MODEL = 'CONTACT_MODEL';
 export const CALL_LOG_MODEL = 'CALL_LOG_MODEL';
 
 @Injectable()
-export class ContactProvider extends BaseSchemaProvider {
+export class ContactProvider extends CurrentUserProvider {
   constructor(
     @Inject(CONTACT_MODEL)
     public readonly ContactModel: Model<ContactDocument>,
@@ -19,6 +22,7 @@ export class ContactProvider extends BaseSchemaProvider {
     super(request);
   }
 }
+
 export const contactProviders: Provider[] = [
   {
     provide: CONTACT_MODEL,

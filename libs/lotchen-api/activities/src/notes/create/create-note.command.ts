@@ -28,8 +28,8 @@ export class CreateNoteCommandHandler
       relatedToId: command.relatedToId, // contactId, clientId, dealId
       ownerId: command.ownerId,
       content: command.content,
-      createdBy: this._activitiesProvider.currentUserInfo()?.userId,
-      createdByInfo: this._activitiesProvider.currentUserInfo(),
+      createdBy: this._activitiesProvider.user()?.userId,
+      createdByInfo: this._activitiesProvider.user(),
     });
 
     await note.save();

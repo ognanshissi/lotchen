@@ -3,12 +3,12 @@ import { REQUEST } from '@nestjs/core';
 import { RequestExtendedWithUser } from '../interfaces';
 
 @Injectable()
-export class BaseSchemaProvider {
+export class CurrentUserProvider {
   public constructor(
     @Inject(REQUEST) public readonly request: RequestExtendedWithUser
   ) {}
 
-  public currentUserInfo(): {
+  public user(): {
     userId: string;
     firstName: string;
     lastName: string;

@@ -5,7 +5,9 @@ import { ProfileController, profileHandlers } from './profile';
 import {
   CreateRoleCommandHandler,
   FindAllRolesQueryHandler,
+  FindRoleByIdQueryHandler,
   RolesController,
+  UpdateRolePermissionsCommandHandler,
 } from './roles';
 import { identityModelsProvider } from './models.provider';
 import { TerritoriesController } from './territories/territories.controller';
@@ -15,8 +17,6 @@ import { PermissionsController } from './permissions';
 import { TeamsController, teamsHandlers } from './teams';
 import { organizationsHandlers } from './organizations';
 import { OrganizationsController } from './organizations/organizations.controller';
-import { UpdateRolePermissionsCommandHandler } from './roles/update-role-permissions/update-role-permissions.command';
-import { FindRoleByIdQueryHandler } from './roles/find-id/find-role-by-id.query';
 
 @Module({
   imports: [],

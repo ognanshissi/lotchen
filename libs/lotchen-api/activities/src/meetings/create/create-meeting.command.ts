@@ -95,8 +95,8 @@ export class CreateMeetingCommandHandler
         },
         location: command.location,
         description: command.description,
-        createdBy: this._activivitiesProvider.currentUserInfo()?.userId,
-        createdByInfo: this._activivitiesProvider.currentUserInfo(),
+        createdBy: this._activivitiesProvider.user()?.userId,
+        createdByInfo: this._activivitiesProvider.user(),
         attendees: command.attendees, // list of user ids
         ownerId: command.ownerId,
         relatedToId: command.relatedToId,

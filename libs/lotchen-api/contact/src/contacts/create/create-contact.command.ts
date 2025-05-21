@@ -95,10 +95,10 @@ export class CreateContactCommandHandler
       lastName: command.lastName,
       mobileNumber: command.mobileNumber,
       dateOfBirth: command.dateOfBirth,
-      createdBy: this.contactProvider.currentUserInfo()?.userId,
-      createdByInfo: this.contactProvider.currentUserInfo(),
+      createdBy: this.contactProvider.user()?.userId,
+      createdByInfo: this.contactProvider.user(),
       jobTitle: command.jobTitle,
-      assignedToUserId: this.contactProvider.currentUserInfo()?.userId,
+      assignedToUserId: this.contactProvider.user()?.userId,
       status: ContactStatus.New,
     });
     contact.validateSync();
@@ -106,7 +106,7 @@ export class CreateContactCommandHandler
     // contact.statusHistory.push({
     //   previousStatus: ContactStatus.New,
     //   changedAt: new Date(),
-    //   changedBy: this.contactProvider.currentUserInfo()?.userId,
+    //   changedBy: this.contactProvider.user()?.userId,
     //   status: ContactStatus.New,
     // });
     await contact.save(); // save the contact
@@ -117,7 +117,7 @@ export class CreateContactCommandHandler
       new ContactCreatedEvent(
         this.contactProvider.request.tenant_fqdn,
         contact.id,
-        this.contactProvider.currentUserInfo()?.userId ?? '',
+        this.contactProvider.user()?.userId ?? '',
         contact.email,
         contact.mobileNumber,
         ContactStatus.New

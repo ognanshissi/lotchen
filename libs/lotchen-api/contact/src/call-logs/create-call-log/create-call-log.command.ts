@@ -57,12 +57,12 @@ export class CreateCallLogCommandHandler
       callSid: command.callSid,
       duration: command.duration,
       entityType: 'Contact',
-      fromAgentId: this._contactProvider.currentUserInfo().userId, // User
+      fromAgentId: this._contactProvider.user().userId, // User
       fromAgentLite: {
-        id: this._contactProvider.currentUserInfo().userId,
-        firstName: this._contactProvider.currentUserInfo().firstName,
-        lastName: this._contactProvider.currentUserInfo().lastName,
-        email: this._contactProvider.currentUserInfo().email,
+        id: this._contactProvider.user().userId,
+        firstName: this._contactProvider.user().firstName,
+        lastName: this._contactProvider.user().lastName,
+        email: this._contactProvider.user().email,
       },
       relatedToId: command.toId, // contact, client
       recipientContact: command.toContact,

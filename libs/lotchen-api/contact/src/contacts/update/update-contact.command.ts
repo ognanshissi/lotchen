@@ -99,8 +99,8 @@ export class UpdateContactCommandHandler
         firstName: command.firstName,
         lastName: command.lastName,
         mobileNumber: command.mobileNumber,
-        updatedBy: this.contactProvider.currentUserInfo().userId,
-        updatedByInfo: this.contactProvider.currentUserInfo(),
+        updatedBy: this.contactProvider.user().userId,
+        updatedByInfo: this.contactProvider.user(),
       },
     });
     // await contact.save();

@@ -63,8 +63,8 @@ export class CreateTaskCommandHandler
         ownerId: command.ownerId,
         collaboratorIds: command.collaboratorIds,
         markAsCompletedAt: command.markedAsCompleted ? new Date() : null,
-        createdByInfo: this.activitiesProvider.currentUserInfo(),
-        createdBy: this.activitiesProvider.currentUserInfo().userId,
+        createdByInfo: this.activitiesProvider.user(),
+        createdBy: this.activitiesProvider.user().userId,
       });
 
       const errors = task.validateSync();

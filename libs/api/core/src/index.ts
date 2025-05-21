@@ -8,4 +8,4 @@ export * from './lib/tenant/tenant.middleware';
 export * from './lib/guards/auth.guard';
 export * from './lib/file-upload-configs/upload.config';
 export * from './lib/tenant/tenant-database.service';
-export * from './lib/providers/base-schema.provider';
+export * from './lib/providers/current-user.provider';
