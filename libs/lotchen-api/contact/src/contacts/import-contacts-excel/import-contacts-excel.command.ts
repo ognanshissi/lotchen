@@ -1,11 +1,9 @@
-import { CommandHandler, RequestExtendedWithUser } from '@lotchen/api/core';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { CommandHandler } from '@lotchen/api/core';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { Request } from 'express';
 import * as XLSX from 'xlsx';
 import * as fs from 'fs-extra';
 import { ContactProvider } from '../contact.provider';
-import { REQUEST } from '@nestjs/core';
 
 export class ImportContactsExcelCommand {
   @ApiProperty({
@@ -14,19 +12,26 @@ export class ImportContactsExcelCommand {
   excelFile!: string;
 }
 
+export class ImportContactsExcelCommandResponse {
+  @ApiProperty({ description: 'Message' })
+  message!: string;
+}
+
 @Injectable()
 export class ImportContactsExcelCommandHandler
-  implements CommandHandler<ImportContactsExcelCommand, any>
+  implements
+    CommandHandler<
+      ImportContactsExcelCommand,
+      ImportContactsExcelCommandResponse
+    >
 {
-  constructor(
-    private readonly contactProvider: ContactProvider,
-    @Inject(REQUEST) private readonly _request: RequestExtendedWithUser
-  ) {}
+  constructor(private readonly contactProvider: ContactProvider) {}
+
+  private readonly _logger = new Logger(ImportContactsExcelCommand.name);
 
   public async handlerAsync(
-    command: ImportContactsExcelCommand,
-    req?: Request
-  ): Promise<any> {
+    command: ImportContactsExcelCommand
+  ): Promise<ImportContactsExcelCommandResponse> {
     const workbook = XLSX.readFile(command.excelFile as string);
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
@@ -38,17 +43,7 @@ export class ImportContactsExcelCommandHandler
       throw new BadRequestException('No contacts to import!');
     }
 
-    const { firstName, lastName, username, sub } = this._request.user;
-    const createdBy = sub;
-    const createdByInfo = {
-      email: username,
-      userId: sub,
-      firstName,
-      lastName,
-    };
-
     // prepare conctact entity model
-
     const contactsModel = [];
     for (const contact of contacts) {
       // clean duplicated records
@@ -75,24 +70,32 @@ export class ImportContactsExcelCommandHandler
           mobileNumber: contact['Mobile'], // mobile number
           jobTitle: contact['Job title'],
           email: contact['Email'],
-          createdBy,
-          createdByInfo,
+          createdBy: this.contactProvider.user().userId,
+          createdByInfo: this.contactProvider.user(),
         };
 
         contactsModel.push(contactModel);
       } else {
-        console.log(`Duplicated record: `, contact);
+        this._logger.log(
+          `The record "${contact['First name']} ${contact['Last name']} " already exist.`,
+          JSON.stringify(contact)
+        );
       }
     }
 
-    // Save contacts
+    // Save contacts - Maybe put this persistence into another endpoint
+    // Ask user to verify data that are going to be imported from the excel file.
     const createdContacts = await this.contactProvider.ContactModel.insertMany(
       contactsModel
     );
 
     // Delete file after processing
     await fs.remove(command.excelFile as string);
+    this._logger.log(createdContacts);
 
-    return createdContacts;
+    // Response
+    return {
+      message: 'Contacts importés avec succès',
+    } satisfies ImportContactsExcelCommandResponse;
   }
 }

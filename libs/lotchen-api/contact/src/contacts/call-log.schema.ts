@@ -3,7 +3,13 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
 export type CallLogDocument = HydratedDocument<CallLog>;
-
+export enum CallLogStatus {
+  Failed = 'failed',
+  Completed = 'completed',
+  Replied = 'replied',
+  NoReply = 'no-reply',
+  Cancelled = 'cancelled',
+}
 @Schema({ timestamps: true, collection: 'contact_call_logs' })
 export class CallLog extends SchemaIdentifier {
   @Prop({ type: String, enum: ['Contact', 'Client'], default: 'Contact' })
@@ -39,8 +45,11 @@ export class CallLog extends SchemaIdentifier {
   @Prop({ type: Date })
   endDate!: Date;
 
-  @Prop({ type: String, enum: ['completed', 'replied', 'no-reply'] })
-  status!: string;
+  @Prop({
+    type: String,
+    enum: ['failed', 'cancelled', 'completed', 'replied', 'no-reply'],
+  })
+  status!: CallLogStatus;
 
   @Prop({ type: String, default: '' })
   note!: string;
