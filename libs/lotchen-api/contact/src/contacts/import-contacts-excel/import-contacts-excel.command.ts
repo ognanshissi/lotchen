@@ -31,71 +31,77 @@ export class ImportContactsExcelCommandHandler
 
   public async handlerAsync(
     command: ImportContactsExcelCommand
-  ): Promise<ImportContactsExcelCommandResponse> {
-    const workbook = XLSX.readFile(command.excelFile as string);
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
+  ): Promise<ImportContactsExcelCommandResponse | BadRequestException> {
+    try {
+      const workbook = XLSX.readFile(command.excelFile as string);
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
 
-    // Convert sheet to JSON
-    const contacts: any[] = XLSX.utils.sheet_to_json(sheet);
+      // Convert sheet to JSON
+      const contacts: any[] = XLSX.utils.sheet_to_json(sheet);
 
-    if (!contacts.length) {
-      throw new BadRequestException('No contacts to import!');
-    }
-
-    // prepare conctact entity model
-    const contactsModel = [];
-    for (const contact of contacts) {
-      // clean duplicated records
-      const existingContact = await this.contactProvider.ContactModel.findOne(
-        {
-          $or: [
-            {
-              mobileNumber: contact['Mobile'],
-            },
-            {
-              email: contact['Email'],
-            },
-          ],
-        },
-        'id'
-      )
-        .lean()
-        .exec();
-
-      if (!existingContact) {
-        const contactModel = {
-          firstName: contact['First name'],
-          lastName: contact['Last name'],
-          mobileNumber: contact['Mobile'], // mobile number
-          jobTitle: contact['Job title'],
-          email: contact['Email'],
-          createdBy: this.contactProvider.user().userId,
-          createdByInfo: this.contactProvider.user(),
-        };
-
-        contactsModel.push(contactModel);
-      } else {
-        this._logger.log(
-          `The record "${contact['First name']} ${contact['Last name']} " already exist.`,
-          JSON.stringify(contact)
-        );
+      if (!contacts.length) {
+        throw new BadRequestException('No contacts to import!');
       }
+
+      // prepare conctact entity model
+      const contactsModel = [];
+      for (const contact of contacts) {
+        // clean duplicated records
+        const existingContact = await this.contactProvider.ContactModel.findOne(
+          {
+            $or: [
+              {
+                mobileNumber: contact['Mobile'],
+              },
+              {
+                email: contact['Email'],
+              },
+            ],
+          },
+          'id'
+        )
+          .lean()
+          .exec();
+
+        if (!existingContact) {
+          const contactModel = {
+            firstName: contact['First name'],
+            lastName: contact['Last name'],
+            mobileNumber: contact['Mobile'], // mobile number
+            jobTitle: contact['Job title'],
+            email: contact['Email'],
+            createdBy: this.contactProvider.user().userId,
+            createdByInfo: this.contactProvider.user(),
+          };
+
+          contactsModel.push(contactModel);
+        } else {
+          this._logger.log(
+            `The record with "${contact['Email']}" already exist.`,
+            JSON.stringify(contact)
+          );
+        }
+      }
+
+      // Save contacts - Maybe put this persistence into another endpoint
+      // Ask user to verify data that are going to be imported from the excel file.
+      const createdContacts =
+        await this.contactProvider.ContactModel.insertMany(contactsModel);
+
+      // Delete file after processing
+      await fs.remove(command.excelFile as string);
+      this._logger.log(createdContacts);
+
+      // Response
+      return {
+        message: 'Contacts importés avec succès',
+      } satisfies ImportContactsExcelCommandResponse;
+    } catch (error) {
+      this._logger.error(JSON.stringify(error));
+      return new BadRequestException(
+        "Une erreur survenue lors de l'import des contacts"
+      );
     }
-
-    // Save contacts - Maybe put this persistence into another endpoint
-    // Ask user to verify data that are going to be imported from the excel file.
-    const createdContacts = await this.contactProvider.ContactModel.insertMany(
-      contactsModel
-    );
-
-    // Delete file after processing
-    await fs.remove(command.excelFile as string);
-    this._logger.log(createdContacts);
-
-    // Response
-    return {
-      message: 'Contacts importés avec succès',
-    } satisfies ImportContactsExcelCommandResponse;
   }
 }

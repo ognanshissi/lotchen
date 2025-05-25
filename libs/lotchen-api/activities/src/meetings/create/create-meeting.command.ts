@@ -115,7 +115,7 @@ export class CreateMeetingCommandHandler
 
       await meeting.save();
     } catch (error) {
-      this._logger.error('Error creating meeting', error);
+      this._logger.error('Error creating meeting', JSON.stringify(error));
       throw new BadRequestException('Error creating meeting');
     }
   }
