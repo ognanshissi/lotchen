@@ -3,7 +3,12 @@ import {
   CommandHandler,
   RequestExtendedWithUser,
 } from '@lotchen/api/core';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { TeamsProvider } from '../teams.provider';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
@@ -49,6 +54,8 @@ export class CreateTeamCommandResponse {
 export class CreateTeamCommandHandler
   implements CommandHandler<CreateTeamCommand, CreateTeamCommandResponse>
 {
+  private readonly _logger = new Logger(CreateTeamCommandHandler.name);
+
   constructor(
     private readonly _teamsProvider: TeamsProvider,
     @Inject('PROFILE_MODEL')
@@ -85,6 +92,8 @@ export class CreateTeamCommandHandler
             .lean()
             .exec();
 
+        this._logger.log(`Territory => ${JSON.stringify(territoryExist)}`);
+
         territory = {
           name: territoryExist?.name ?? '',
           id: territoryExist?._id.toString() ?? '',
@@ -97,15 +106,18 @@ export class CreateTeamCommandHandler
         // Get user information
         const userManagerInfo = await this.UserModel.findOne(
           { _id: command.managerId },
-          'id email'
+          '_id email'
         )
           .lean()
           .exec();
+
+        this._logger.log('ManagerId => ' + JSON.stringify(userManagerInfo));
 
         if (!userManagerInfo) {
           throw new BadRequestException('ManagerId is not a valid userId');
         }
 
+        this._logger.log('Load manager profile below => ' + command.managerId);
         // Load user profile information
         const managerProfile = await this.ProfileModel.findOne(
           {

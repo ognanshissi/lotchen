@@ -15,7 +15,7 @@ export class DeleteTeamCommandHandler
   constructor(private readonly _teamsProvider: TeamsProvider) {}
 
   public async handlerAsync(command: DeleteTeamCommand): Promise<void> {
-    const team = await this._teamsProvider.TeamModel.find(
+    const team = await this._teamsProvider.TeamModel.findOne(
       { _id: command.id, deletedAt: null },
       'id'
     )

@@ -101,7 +101,7 @@ export class AddTeamDialogComponent implements OnInit {
     this._teamsApiService
       .teamsControllerCreateTeamV1({
         ...this.form.getRawValue(),
-        memberIds: [this.form.getRawValue().memberIds],
+        memberIds: this.form.getRawValue().memberIds,
       })
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({

@@ -6,7 +6,7 @@ export const WithSchemaMiddleware = (schema: mongoose.Schema) => {
   });
 
   schema.pre('findOne', function () {
-    this.where({ deleteAt: null });
+    this.where({ deletedAt: null });
   });
 
   return schema;
