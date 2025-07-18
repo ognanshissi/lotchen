@@ -27,7 +27,6 @@ import {
 export class AbstractControlValueAccessor<T = unknown>
   implements ControlValueAccessor, Validator
 {
-
   static nextId = 0;
 
   @HostBinding('id')
@@ -43,7 +42,6 @@ export class AbstractControlValueAccessor<T = unknown>
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public onChange = (value: T) => {};
 
-
   public get value(): T {
     return this._value;
   }
@@ -58,10 +56,6 @@ export class AbstractControlValueAccessor<T = unknown>
     this.onTouched();
     this.onChange(value);
   }
-
-  constructor() {
-  }
-
 
   public writeValue(obj: T): void {
     this.value = obj;
@@ -79,10 +73,15 @@ export class AbstractControlValueAccessor<T = unknown>
     this.disabled.set(isDisabled);
   }
 
-  validate(control: AbstractControl): ValidationErrors | null {
+  public validate(control: AbstractControl): ValidationErrors | null {
     return null;
   }
-  registerOnValidatorChange?(fn: () => void): void {
+  /**
+   * This method is used to register a callback function that will be called when the validator changes.
+   * It is used to notify the form control that the validator has changed and it needs to re-evaluate the validation.
+   * @param fn - The callback function to be called when the validator changes.
+   */
+  public registerOnValidatorChange?(fn: () => void): void {
     this.onTouched = fn;
   }
 }
