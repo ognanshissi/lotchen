@@ -55,10 +55,6 @@ export class TasSideDrawer implements AfterViewInit {
   ngAfterViewInit() {
     if (this.titleDrawer) {
       this.titleDrawer()?.closable.set(this.closable());
-
-      this.titleDrawer()?.close.subscribe(() => {
-        this._matDialogRef.close();
-      });
     }
   }
 }

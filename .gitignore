@@ -44,3 +44,5 @@ Thumbs.db
 .angular
 documentation
 /apps/**/.env
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

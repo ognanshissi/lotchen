@@ -56,6 +56,8 @@ export class FindAllCallLogsQueryHandler
       .limit(100)
       .exec();
 
+    if (!callLogs.length) return []; // return empty arry when call logs found
+
     return callLogs.map((callLog) => ({
       id: callLog.id,
       relatedToId: callLog.relatedToId,

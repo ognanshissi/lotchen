@@ -40,7 +40,5 @@ import { ButtonModule } from '@talisoft/ui/button';
   imports: [TasIcon, TasClosableDrawer, ButtonModule],
 })
 export class TasDrawerTitle {
-  public close: EventEmitter<void> = new EventEmitter<void>();
-
   public closable = signal<boolean>(false);
 }
