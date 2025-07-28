@@ -14,10 +14,11 @@ import { RouterLink } from '@angular/router';
 import {
   FilterDtoOperatorEnum,
   TerritoriesApiService,
+  TerritoriesControllerPaginateAllTerritoriesV1200Response,
 } from '@talisoft/api/lotchen-client-api';
 import { SideDrawerService } from '@talisoft/ui/side-drawer';
 import { AddTerritoryDialogComponent } from '../../components/add-territory-dialog/add-territory-dialog.component';
-import { catchError, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { TimeagoPipe } from '@talisoft/ui/timeago';
 import { apiResources } from '@talisoft/ui/api-resources';
 
@@ -53,9 +54,15 @@ export class TerritoriesComponent implements OnInit {
   );
 
   public openAddDialog(): void {
-    this._sideDrawerService.open(AddTerritoryDialogComponent, {
-      width: '700px',
-    });
+    this._sideDrawerService
+      .open(AddTerritoryDialogComponent, {
+        width: '700px',
+      })
+      .closed.subscribe((res) => {
+        if (res) {
+          // refresh the list of territories, to get the latest added
+        }
+      });
   }
 
   public ngOnInit() {
@@ -69,6 +76,23 @@ export class TerritoriesComponent implements OnInit {
         },
       })
       .subscribe((res) => console.log(res));
+  }
+
+  public openImportTerritoriesDialog(): void {
+    console.log('Not implemented!');
+  }
+
+  private _loadTerritories(): Observable<TerritoriesControllerPaginateAllTerritoriesV1200Response> {
+    return this._territoriesApiService.territoriesControllerPaginateAllTerritoriesV1(
+      {
+        pageIndex: 0,
+        pageSize: 30,
+        sort: ['name:asc'],
+        filters: {
+          name: { operator: FilterDtoOperatorEnum.Eq, value: 'Region 3' },
+        },
+      }
+    );
   }
 }
 

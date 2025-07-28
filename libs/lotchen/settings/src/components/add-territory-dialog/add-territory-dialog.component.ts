@@ -94,7 +94,7 @@ export class AddTerritoryDialogComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this._snackbarService.success(
-            'Félicitation !',
+            'Félicitations !',
             'Le territoire a été créé avec succès.'
           );
           this._dialogRef.close(res);

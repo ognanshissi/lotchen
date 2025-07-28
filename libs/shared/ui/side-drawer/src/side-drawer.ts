@@ -3,10 +3,8 @@ import {
   booleanAttribute,
   Component,
   contentChild,
-  inject,
   input,
 } from '@angular/core';
-import { DialogRef } from '@angular/cdk/dialog';
 import { TasDrawerTitle } from './drawer-title';
 import { TasDrawerContent } from './drawer-content';
 import { TasDrawerAction } from './drawer-action';
@@ -22,7 +20,7 @@ const DEFAULT_SIDE_DRAWER_WIDTH = '500px';
     >
       <div
         class="bg-white  relative flex justify-between flex-col h-full overflow-hidden"
-        [style]="{ width: width() }"
+        [style.width]="width()"
       >
         <div>
           <ng-content select="tas-drawer-title"></ng-content>
@@ -36,7 +34,6 @@ const DEFAULT_SIDE_DRAWER_WIDTH = '500px';
   `,
 })
 export class TasSideDrawer implements AfterViewInit {
-  private readonly _matDialogRef = inject(DialogRef);
   public width = input<string>(DEFAULT_SIDE_DRAWER_WIDTH);
 
   public titleDrawer = contentChild<TasDrawerTitle>(TasDrawerTitle, {
@@ -52,7 +49,7 @@ export class TasSideDrawer implements AfterViewInit {
 
   public closable = input(true, { transform: booleanAttribute });
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     if (this.titleDrawer) {
       this.titleDrawer()?.closable.set(this.closable());
     }

@@ -13,7 +13,11 @@
       Ajouter un territoire
     </button>
 
-    <button tas-outlined-button color="accent">
+    <button
+      tas-outlined-button
+      color="accent"
+      (click)="openImportTerritoriesDialog()"
+    >
       <tas-icon iconName="feather:download"></tas-icon>
       Importer des territoires
     </button>

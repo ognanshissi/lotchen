@@ -101,7 +101,7 @@ export class CreateAgencyCommandHandler
     } catch (error: any) {
       if (error?.errorResponse?.code === 11000) {
         throw new BadRequestException(
-          `Agency with name '${command.name}' already exist !`
+          `Agency with name '${command.name}' already exist!`
         );
       } else {
         throw new BadRequestException(error);
