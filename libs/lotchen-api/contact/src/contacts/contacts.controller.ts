@@ -43,6 +43,7 @@ import { ImportContactsExcelCommandHandler } from './import-contacts-excel/impor
 import {
   PatchDataCommand,
   PatchDataCommandHandler,
+  PatchDataCommandRequest,
 } from './patch-data/patch-data.command';
 
 @ApiTags('Contacts')
@@ -141,9 +142,9 @@ export class ContactsController {
   })
   public async patchData(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() request: PatchDataCommand
+    @Body() request: PatchDataCommandRequest
   ): Promise<void> {
     console.log(request, id);
-    await this._patchDataCommandHandler.handlerAsync(request);
+    await this._patchDataCommandHandler.handlerAsync({ ...request, id });
   }
 }

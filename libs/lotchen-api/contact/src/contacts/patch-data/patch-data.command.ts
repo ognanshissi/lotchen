@@ -10,14 +10,7 @@ export class FieldDto {
   fieldValue!: string;
 }
 
-export class PatchDataCommand {
-  @ApiProperty({
-    required: true,
-    description: 'The contact uuid, who will be affected by the change',
-    type: String,
-  })
-  id!: string;
-
+export class PatchDataCommandRequest {
   @ApiProperty({
     required: true,
     description: 'Fields',
@@ -25,6 +18,15 @@ export class PatchDataCommand {
     type: 'array',
   })
   fields!: FieldDto[] | [];
+}
+
+export class PatchDataCommand extends PatchDataCommandRequest {
+  @ApiProperty({
+    required: true,
+    description: 'The contact uuid, who will be affected by the change',
+    type: String,
+  })
+  id!: string;
 }
 
 @Injectable()
