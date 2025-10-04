@@ -1616,6 +1616,39 @@
         ]
       }
     },
+    "/api/v1/contacts/{id}/patch-data": {
+      "patch": {
+        "operationId": "ContactsController_patchData_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchDataCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
+    },
     "/api/v1/call-logs": {
       "post": {
         "operationId": "CallLogsController_createCallLog_v1",
@@ -3454,6 +3487,26 @@
           "pageSize",
           "filters",
           "fullTextSearch"
+        ]
+      },
+      "PatchDataCommand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The contact uuid, who will be affected by the change"
+          },
+          "fields": {
+            "type": "array",
+            "description": "Fields",
+            "items": {
+              "$ref": "#/components/schemas/FieldDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "fields"
         ]
       },
       "CreateCallLogCommand": {

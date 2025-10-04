@@ -1,7 +1,11 @@
 import { AddressDto, CommandHandler } from '@lotchen/api/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { ContactProvider } from '../contact.provider';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 export class UpdateContactCommandRequest {
   @ApiProperty({
@@ -56,6 +60,7 @@ export class UpdateContactCommand extends UpdateContactCommandRequest {
   id!: string;
 }
 
+@Injectable()
 export class UpdateContactCommandHandler
   implements CommandHandler<UpdateContactCommand, void>
 {

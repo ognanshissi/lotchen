@@ -15,7 +15,7 @@ export class ActivityUser {
 }
 
 export abstract class AuditableSchema extends Document {
-  @Prop({ required: false, type: String, default: null })
+  @Prop({ required: false, type: 'UUID', default: null })
   createdBy!: string;
 
   @Prop({ required: false, type: ActivityUser, default: null })

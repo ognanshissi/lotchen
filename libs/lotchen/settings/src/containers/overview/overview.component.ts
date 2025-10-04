@@ -133,7 +133,7 @@ export class OverviewComponent {
       type: 'group',
       id: 'channels',
       description:
-        'Gérer vos differents canaux de communication avec vos prospect, clients',
+        'Gérer vos differents canaux de communication avec vos prospect, clients.',
       children: [
         {
           title: 'WhatsApp',
@@ -141,6 +141,20 @@ export class OverviewComponent {
           id: 'communication_channels_whatsapp',
           link: '/settings/whatsapp-configuration',
           description: 'Configurer votre compte whatsapp entreprise.',
+        },
+        {
+          title: 'LinkedIn',
+          type: 'basic',
+          id: 'communication_channels_linkedin',
+          link: '/settings/linkedin-configuration',
+          description: 'Récuperer les leads depuis vos posts LinkedIn.',
+        },
+        {
+          title: 'Site internet',
+          type: 'basic',
+          id: 'communication_channels_website',
+          link: '/settings/webiste-configuration',
+          description: 'Créer des formulaires et les intégrer sur votre site.',
         },
       ],
     },

@@ -11,6 +11,7 @@ import { CreateCallLogCommandHandler } from './call-logs/create-call-log/create-
 import { ContactCreatedListener } from './contacts/create/contact-created.listener';
 import { CallLogsController } from './call-logs/call-logs.controller';
 import { FindAllCallLogsQueryHandler } from './call-logs/find-call-logs/find-call-logs.query';
+import { PatchDataCommandHandler } from './contacts/patch-data/patch-data.command';
 
 @Module({
   imports: [],
@@ -26,6 +27,7 @@ import { FindAllCallLogsQueryHandler } from './call-logs/find-call-logs/find-cal
     CreateCallLogCommandHandler,
     ContactCreatedListener,
     FindAllCallLogsQueryHandler,
+    PatchDataCommandHandler,
   ],
   exports: [],
 })

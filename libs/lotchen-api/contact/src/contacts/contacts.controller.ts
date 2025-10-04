@@ -41,9 +41,9 @@ import {
 } from './paginate-all/paginate-all-contacts.command';
 import { ImportContactsExcelCommandHandler } from './import-contacts-excel/import-contacts-excel.command';
 import {
-  CreateCallLogCommand,
-  CreateCallLogCommandHandler,
-} from '../call-logs/create-call-log/create-call-log.command';
+  PatchDataCommand,
+  PatchDataCommandHandler,
+} from './patch-data/patch-data.command';
 
 @ApiTags('Contacts')
 @Controller({
@@ -57,7 +57,8 @@ export class ContactsController {
     private readonly _findContactByIdQueryHandler: FindContactByQueryHandler,
     private readonly _updateContactCommandHandler: UpdateContactCommandHandler,
     private readonly _paginateAllContactsCommandHandler: PaginateAllContactsCommandHandler,
-    private readonly _importContactsExcelCommandHandler: ImportContactsExcelCommandHandler
+    private readonly _importContactsExcelCommandHandler: ImportContactsExcelCommandHandler,
+    private readonly _patchDataCommandHandler: PatchDataCommandHandler // private readonly _patchDataHandler: PatchDataHandler,
   ) {}
 
   @Post()
@@ -130,5 +131,19 @@ export class ContactsController {
     return this._importContactsExcelCommandHandler.handlerAsync({
       excelFile: file?.path,
     });
+  }
+
+  @Patch(':id/patch-data')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({
+    status: 204,
+    description: 'Contact data updated',
+  })
+  public async patchData(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() request: PatchDataCommand
+  ): Promise<void> {
+    console.log(request, id);
+    await this._patchDataCommandHandler.handlerAsync(request);
   }
 }
