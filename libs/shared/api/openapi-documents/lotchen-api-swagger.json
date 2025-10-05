@@ -3489,6 +3489,23 @@
           "fullTextSearch"
         ]
       },
+      "FieldDto": {
+        "type": "object",
+        "properties": {
+          "fieldName": {
+            "type": "string",
+            "description": "Field name"
+          },
+          "fieldValue": {
+            "type": "string",
+            "description": "Field value"
+          }
+        },
+        "required": [
+          "fieldName",
+          "fieldValue"
+        ]
+      },
       "PatchDataCommandRequest": {
         "type": "object",
         "properties": {

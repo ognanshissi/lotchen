@@ -42,7 +42,12 @@
             Annuler
           </button>
 
-          <button tas-raised-button (click)="handleSubmittion()">
+          <button
+            tas-raised-button
+            [disabled]="!control.valid"
+            color="primary"
+            (click)="handleSubmittion()"
+          >
             Enregistrer la modification
           </button>
         </div>
@@ -54,7 +59,7 @@
   </div>
   <div class="font-semibold">
     @if (value()) { {{ value() }} } @else {
-    <span class="text-gray-400 italic underlined">Non renseigné</span>
+    <span class="text-gray-400 italic">Non renseigné</span>
     }
   </div>
 </div>

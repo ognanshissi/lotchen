@@ -42,6 +42,7 @@ model/create-team-command-response.interface.ts
 model/create-team-command.interface.ts
 model/create-territory-command.interface.ts
 model/create-user-command.interface.ts
+model/field-dto.interface.ts
 model/filter-all-contacts-command.interface.ts
 model/filter-all-territories-command.interface.ts
 model/filter-dto.interface.ts
@@ -76,6 +77,7 @@ model/paginate-all-users-command-dto.interface.ts
 model/paginate-all-users-command.interface.ts
 model/paginate-all-users-team-dto.interface.ts
 model/pagination.interface.ts
+model/patch-data-command-request.interface.ts
 model/refresh-token-command.interface.ts
 model/reset-password-command-response.interface.ts
 model/reset-password-command.interface.ts

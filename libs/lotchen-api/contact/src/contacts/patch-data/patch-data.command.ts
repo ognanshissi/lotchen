@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { ContactProvider } from '../contact.provider';
 import { CommandHandler } from '@lotchen/api/core';
 
@@ -10,6 +10,7 @@ export class FieldDto {
   fieldValue!: string;
 }
 
+@ApiExtraModels(FieldDto)
 export class PatchDataCommandRequest {
   @ApiProperty({
     required: true,
