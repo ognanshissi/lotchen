@@ -4,12 +4,59 @@
   <div class="flex justify-between">
     <tas-label class="text-gray-500">{{ label() }}</tas-label>
     @if (editable()) {
-    <span class="actions">
+    <button
+      class="actions"
+      cdkOverlayOrigin
+      #trigger="cdkOverlayOrigin"
+      (click)="isOpen.set(!isOpen())"
+    >
       <tas-icon iconName="feather:edit-3"></tas-icon>
-    </span>
+    </button>
+
+    <!-- Edition  -->
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="isOpen()"
+      (detach)="isOpen.set(false)"
+      class=""
+    >
+      <div
+        class="rounded-lg border border-gray-300 p-4 bg-white shadow-lg min-w-[200px]"
+      >
+        <p class="font-semibold text-lg">Modifier : {{ label() }}</p>
+        <hr />
+
+        <div class="my-4">
+          <tas-form-field>
+            <label tas-form-field-label for="input">{{ label() }}</label>
+            <input
+              tasInput
+              [formControl]="control"
+              type="text"
+              [placeholder]="placeholder()"
+            />
+          </tas-form-field>
+        </div>
+
+        <div class="flex justify-between space-x-2">
+          <button tas-outlined-button (click)="isOpen.set(false)">
+            Annuler
+          </button>
+
+          <button tas-raised-button (click)="handleSubmittion()">
+            Enregistrer la modification
+          </button>
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- End Edition region -->
     }
   </div>
   <div class="font-semibold">
-    <ng-content></ng-content>
+    @if (value()) { {{ value() }} } @else {
+    <span class="text-gray-400 italic underlined">Non renseigné</span>
+    }
   </div>
 </div>

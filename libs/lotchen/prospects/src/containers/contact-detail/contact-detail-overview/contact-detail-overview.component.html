@@ -23,24 +23,30 @@
     </div>
 
     <div class="grid grid-cols-3 gap-4 mt-4">
-      <tas-summary-field rawField="email" label="Email" [editable]="false">{{
-        contact()?.email
-      }}</tas-summary-field>
-      <tas-summary-field rawField="lastName" label="Nom" [editable]="true">{{
-        contact()?.lastName
-      }}</tas-summary-field>
+      <tas-summary-field
+        rawField="email"
+        label="Email"
+        [editable]="false"
+        [value]="contact()?.email"
+      />
+      <tas-summary-field
+        rawField="lastName"
+        label="Nom"
+        [editable]="true"
+        [value]="contact()?.lastName"
+      />
       <tas-summary-field
         rawField="firstName"
         label="Prenom"
         [editable]="true"
-        >{{ contact()?.firstName }}</tas-summary-field
-      >
+        [value]="contact()?.firstName"
+      />
       <tas-summary-field
         rawField="firstName"
         label="Agent responsable"
         [editable]="true"
+        [value]=""
       >
-        N/A
       </tas-summary-field>
     </div>
   </div>
