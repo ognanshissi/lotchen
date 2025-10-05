@@ -1634,14 +1634,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PatchDataCommand"
+                "$ref": "#/components/schemas/PatchDataCommandRequest"
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "204": {
+            "description": "Contact data updated"
           }
         },
         "tags": [
@@ -3489,13 +3489,9 @@
           "fullTextSearch"
         ]
       },
-      "PatchDataCommand": {
+      "PatchDataCommandRequest": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "The contact uuid, who will be affected by the change"
-          },
           "fields": {
             "type": "array",
             "description": "Fields",
@@ -3505,7 +3501,6 @@
           }
         },
         "required": [
-          "id",
           "fields"
         ]
       },

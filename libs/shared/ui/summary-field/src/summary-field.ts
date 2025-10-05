@@ -28,6 +28,8 @@ import { ButtonModule } from '@talisoft/ui/button';
     FormField,
     ReactiveFormsModule,
     ButtonModule,
+    TasInput,
+    TasLabel,
   ],
   styles: [
     `

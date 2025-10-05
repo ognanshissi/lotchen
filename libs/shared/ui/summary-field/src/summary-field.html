@@ -22,14 +22,12 @@
       class=""
     >
       <div
-        class="rounded-lg border border-gray-300 p-4 bg-white shadow-lg min-w-[200px]"
+        class="rounded-lg border border-gray-300 p-4 bg-white shadow-xl min-w-[200px]"
       >
-        <p class="font-semibold text-lg">Modifier : {{ label() }}</p>
-        <hr />
-
+        <p class="font-semibold text-lg pb-4">Modifier : {{ label() }}</p>
         <div class="my-4">
           <tas-form-field>
-            <label tas-form-field-label for="input">{{ label() }}</label>
+            <tas-label>{{ label() }}</tas-label>
             <input
               tasInput
               [formControl]="control"
