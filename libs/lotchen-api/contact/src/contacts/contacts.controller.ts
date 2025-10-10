@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  Sse,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -45,6 +46,7 @@ import {
   PatchDataCommandHandler,
   PatchDataCommandRequest,
 } from './patch-data/patch-data.command';
+import { interval, map, Observable } from 'rxjs';
 
 @ApiTags('Contacts')
 @Controller({
@@ -147,4 +149,23 @@ export class ContactsController {
     console.log(request, id);
     await this._patchDataCommandHandler.handlerAsync({ ...request, id });
   }
+
+  @Sse('contacts-stream')
+  public liveContactList(): Observable<ContactEvent> {
+    return interval(1000).pipe(
+      map((_) => ({
+        id: `${+new Date()}`,
+        data: {
+          message: 'ping',
+        },
+      }))
+    );
+  }
+}
+
+export interface ContactEvent {
+  id: string;
+  data: object;
+  type?: string;
+  retry?: number;
 }

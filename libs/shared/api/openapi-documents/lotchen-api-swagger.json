@@ -1649,6 +1649,20 @@
         ]
       }
     },
+    "/api/v1/contacts/contacts-stream": {
+      "get": {
+        "operationId": "ContactsController_liveContactList_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
+    },
     "/api/v1/call-logs": {
       "post": {
         "operationId": "CallLogsController_createCallLog_v1",

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TasTitle } from '@talisoft/ui/title';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
@@ -19,7 +19,7 @@ import { apiResources } from '@talisoft/ui/api-resources';
 import { TimeagoPipe } from '@talisoft/ui/timeago';
 import { RouterLink } from '@angular/router';
 import { ImportContactDialogComponent } from '../../components/import-contact-dialog/import-contact-dialog.component';
-import { CallerService } from '@lotchen/lotchen/common';
+import { CallerService, ENVIRONMENT_CONFIG } from '@lotchen/lotchen/common';
 import { Menu, MenuItem, TasMenuTrigger } from '@talisoft/ui/menu';
 import { AddTaskDialogService } from '@lotchen/lotchen/common';
 
@@ -44,15 +44,32 @@ import { AddTaskDialogService } from '@lotchen/lotchen/common';
     MenuItem,
   ],
 })
-export class ContactListingComponent {
+export class ContactListingComponent implements OnInit {
   private readonly _sideDrawerService = inject(SideDrawerService);
   private readonly _contactsApiService = inject(ContactsApiService);
   private readonly _callerService = inject(CallerService);
   private readonly _addTaskDialogService = inject(AddTaskDialogService);
 
+  private readonly _environment = inject(ENVIRONMENT_CONFIG);
+
   public contacts = apiResources(
     this._contactsApiService.contactsControllerFindAllContactsV1()
   );
+
+  public ngOnInit(): void {
+    console.log('ContactListingComponent initialized');
+    const eventSource = new EventSource(
+      `${this._environment.apiUrl}/api/v1/contacts/contacts-stream`,
+      { withCredentials: false }
+    );
+
+    eventSource.addEventListener('notice', (e) => {
+      console.log(e);
+    });
+    eventSource.onmessage = (event) => {
+      console.log('New event from server:', event.data);
+    };
+  }
 
   public openCaller(item: FindAllContactsQueryResponse) {
     this._callerService.openCaller({
