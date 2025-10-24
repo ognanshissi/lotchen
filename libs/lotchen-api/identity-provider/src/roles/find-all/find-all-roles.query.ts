@@ -39,7 +39,7 @@ export class FindAllRolesQueryHandler
     query: FindAllRolesQuery
   ): Promise<FindAllRolesQueryResponse[]> {
     // Dynamic projection
-    let projection = 'builtIn name permissions id ';
+    let projection = 'builtIn name permissions id';
     if (query.fields) {
       projection = query.fields.split(',').join(' ');
     }

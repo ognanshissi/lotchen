@@ -18,5 +18,23 @@ export class TasIconRegistry {
       'feather',
       this._domSanitizer.bypassSecurityTrustResourceUrl('assets/feather.svg')
     );
+    this._iconRegistry.addSvgIconSetInNamespace(
+      'heroicons-outline',
+      this._domSanitizer.bypassSecurityTrustResourceUrl(
+        'assets/heroicons-outline.svg'
+      )
+    );
+    this._iconRegistry.addSvgIconSetInNamespace(
+      'heroicons-solid',
+      this._domSanitizer.bypassSecurityTrustResourceUrl(
+        'assets/heroicons-solid.svg'
+      )
+    );
+    this._iconRegistry.addSvgIconSetInNamespace(
+      'material-solid',
+      this._domSanitizer.bypassSecurityTrustResourceUrl(
+        'assets/material-solid.svg'
+      )
+    );
   }
 }

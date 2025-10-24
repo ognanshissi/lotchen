@@ -5,6 +5,7 @@ import OverviewComponent from './containers/overview/overview.component';
 import UserAddComponent from './containers/users/user-add/user-add.component';
 import TeamsComponent from './containers/teams/teams.component';
 import TerritoriesComponent from './containers/territories/territories.component';
+import { RoleEditComponent } from './containers/roles/role-edit/role-edit.component';
 
 export const settingsRoutes: Routes = [
   {
@@ -22,6 +23,10 @@ export const settingsRoutes: Routes = [
   {
     path: 'roles',
     loadComponent: () => RolesComponent,
+  },
+  {
+    path: 'roles/:roleId/edit',
+    loadComponent: () => RoleEditComponent,
   },
   {
     path: 'territories',

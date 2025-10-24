@@ -1,0 +1,44 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title>Ajouter un rôle</tas-title>
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <Text>
+      Veuillez remplir les informations pour ajouter un nouveau rôle.
+    </Text>
+
+    <br />
+    <tas-alert type="error" *ngIf="errorMessage">{{ errorMessage }}</tas-alert>
+
+    <form class="flex flex-col gap-3" [formGroup]="form">
+      <div class="flex flex-col space-y-3">
+        <tas-form-field>
+          <tas-label>Nom du rôle</tas-label>
+          <input
+            type="text"
+            formControlName="name"
+            tasInput
+            placeholder="Nom de l'équipe"
+          />
+        </tas-form-field>
+      </div>
+    </form>
+  </tas-drawer-content>
+
+  <tas-drawer-action>
+    <button [disabled]="isLoading" tas-outlined-button closable-drawer>
+      <tas-icon [iconName]="'close'"></tas-icon>
+      Fermer
+    </button>
+    <button
+      [isLoading]="isLoading"
+      [disabled]="!form.valid"
+      tas-raised-button
+      color="primary"
+      (click)="submit()"
+    >
+      <tas-icon iconName="check"></tas-icon>
+      sauvegarder
+    </button>
+  </tas-drawer-action>
+</tas-side-drawer>
