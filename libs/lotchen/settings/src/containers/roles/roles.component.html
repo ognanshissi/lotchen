@@ -28,26 +28,36 @@
     <tas-table
       [data]="roles().value ?? []"
       identifierField="id"
+      (refresh)="handleRefreshChanges()"
       [title]="'Liste des rôles'"
     >
       <ng-template #header>
         <tr>
           <th>Nom</th>
-          <th>Créé par</th>
           <th>Date de création</th>
           <th>Dernière modification</th>
+          <th></th>
         </tr>
       </ng-template>
       <ng-template #body let-item>
         <tr>
           <td>
-            <a tas-button color="primary" [routerLink]="[item.id]">
+            <a
+              tas-button
+              color="primary"
+              [routerLink]="[item.id]"
+              class="hover:underline"
+            >
               {{ item.name }}
             </a>
           </td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{ item.createdAt | dateTimeAgo }}</td>
+          <td>{{ item.updatedAt | dateTimeAgo }}</td>
+          <td>
+            <button tas-raised-button color="primary" (click)="open(item.id)">
+              Consulter
+            </button>
+          </td>
         </tr>
       </ng-template>
     </tas-table>

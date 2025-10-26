@@ -2,7 +2,7 @@ import { QueryHandler } from '@lotchen/api/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Model } from 'mongoose';
-import { RoleDocument } from '../role.schema';
+import { Role, RoleDocument } from '../role.schema';
 
 export class FindAllRolesQuery {
   @ApiProperty({
@@ -50,14 +50,19 @@ export class FindAllRolesQueryHandler
       filter = { name: query.name };
     }
 
-    const roles = await this.roleModel.find(filter, projection).lean().exec();
+    const roles = await this.roleModel
+      .find(filter, projection, { sort: { createdAt: -1 }, limit: 100 })
+      .lean()
+      .exec();
 
-    return roles.map((role) => {
+    return roles.map((role: any) => {
       return {
         id: role._id,
         name: role.name,
         permissions: role.permissions,
         builtIn: role.builtIn,
+        createdAt: role.createdAt,
+        updatedAt: role.updatedAt,
       };
     });
   }
