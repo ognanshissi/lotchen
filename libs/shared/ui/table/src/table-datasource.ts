@@ -24,7 +24,6 @@ export class TableDataSource<TEntity> extends DataSource<TEntity> {
    */
   connect(): Observable<TEntity[]> {
     if (this.paginator) {
-      console.log(this.paginator.length);
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
       return merge(observableOf(this.data), this.paginator.page).pipe(

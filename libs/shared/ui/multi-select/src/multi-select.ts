@@ -88,8 +88,6 @@ export class TasMultiSelect<T>
 
   public ngOnChanges(changes: SimpleChanges) {
     if (changes['options']?.currentValue) {
-      console.log(changes['options'].currentValue);
-
       // if (changes['options'].currentValue.length > 10) {
       //   this.searchable();
       // }
@@ -97,7 +95,6 @@ export class TasMultiSelect<T>
   }
 
   public ngOnInit(): void {
-    console.log(this.placeholder());
     this._closeDropdownOnOutsideClick();
 
     this.selectionModel.changed.subscribe((res) => {

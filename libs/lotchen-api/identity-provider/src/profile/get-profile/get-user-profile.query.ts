@@ -52,7 +52,6 @@ export class GetUserProfileQueryHandler
   ): Promise<GetUserProfileQueryResponse> {
     const profile = await this.profileModel
       .findOne({ user: query.userId })
-      .populate('user', 'id email')
       .exec();
 
     if (!profile) {

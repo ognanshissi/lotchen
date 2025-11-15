@@ -12,7 +12,7 @@ import {
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { catchError, EMPTY } from 'rxjs';
 
-export const contactDetailResover: ResolveFn<FindContactByIdQueryResponse> = (
+export const contactDetailResolver: ResolveFn<FindContactByIdQueryResponse> = (
   route: ActivatedRouteSnapshot
 ): MaybeAsync<FindContactByIdQueryResponse | RedirectCommand> => {
   const contactApiService = inject(ContactsApiService);

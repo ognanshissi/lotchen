@@ -6,7 +6,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { TasIcon } from '@talisoft/ui/icon';
+import { TasIcon } from '../../icon';
 
 export type AlertType = 'success' | 'error' | 'info';
 
@@ -40,7 +40,7 @@ export type AlertType = 'success' | 'error' | 'info';
       }
     `,
   ],
-  imports: [TasIcon],
+  imports: [TasIcon, TasIcon],
 })
 export class TasAlert {
   public type = input<AlertType>('info');

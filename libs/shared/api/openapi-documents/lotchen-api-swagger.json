@@ -621,6 +621,44 @@
         ]
       }
     },
+    "/api/v1/profile/{id}": {
+      "get": {
+        "operationId": "ProfileController_findUserById_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserProfileQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Profile"
+        ]
+      }
+    },
     "/api/v1/permissions/generate": {
       "post": {
         "operationId": "PermissionsController_generatePermissions_v1",

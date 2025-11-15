@@ -1,0 +1,9 @@
+<button tas-button [routerLink]="['/settings', 'users']">
+  <tas-icon iconName="arrow_back"></tas-icon>
+  Retour
+</button>
+<tas-title
+  >Detail de l'utilisateur {{ user()?.profile?.firstName }}
+  {{ user()?.profile?.lastName }}</tas-title
+>
+<tas-text>Veuillez renseigner tout les champs obligatoire</tas-text>

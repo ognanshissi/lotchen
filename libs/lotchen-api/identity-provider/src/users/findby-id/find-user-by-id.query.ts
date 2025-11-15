@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { QueryHandler } from '@lotchen/api/core';
 import { User } from '../user.schema';
-import { Model, ObjectId } from 'mongoose';
+import { Model } from 'mongoose';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 export class FindUserByIdQuery {
@@ -67,6 +67,7 @@ export class FindUserByIdQueryHandler
       throw new NotFoundException('User with id ' + query.id + ' not found !');
     }
 
+    // get user profile
     return {
       id: user.id,
       email: user.email,

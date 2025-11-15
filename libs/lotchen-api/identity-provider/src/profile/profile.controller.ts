@@ -1,5 +1,5 @@
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@lotchen/api/core';
 import {
   GetUserProfileQueryHandler,
@@ -30,6 +30,16 @@ export class ProfileController {
   ) {
     return await this._getUserProfileQueryHandler.handlerAsync({
       userId: req.user.sub,
+    });
+  }
+
+  @Get(':id')
+  @ApiResponse({
+    type: GetUserProfileQueryResponse,
+  })
+  public async findUserById(@Param('id') id: string) {
+    return await this._getUserProfileQueryHandler.handlerAsync({
+      userId: id,
     });
   }
 }

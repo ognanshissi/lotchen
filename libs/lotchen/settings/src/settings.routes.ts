@@ -6,6 +6,8 @@ import UserAddComponent from './containers/users/user-add/user-add.component';
 import TeamsComponent from './containers/teams/teams.component';
 import TerritoriesComponent from './containers/territories/territories.component';
 import { RoleEditComponent } from './containers/roles/role-edit/role-edit.component';
+import UserEditComponent from './containers/users/user-edit/user-edit.component';
+import { userDetailResolverService } from './services/user-detail.resolver.service';
 
 export const settingsRoutes: Routes = [
   {
@@ -19,6 +21,13 @@ export const settingsRoutes: Routes = [
   {
     path: 'users/create',
     loadComponent: () => UserAddComponent,
+  },
+  {
+    path: 'users/:id',
+    loadComponent: () => UserEditComponent,
+    resolve: {
+      detail: userDetailResolverService,
+    },
   },
   {
     path: 'roles',

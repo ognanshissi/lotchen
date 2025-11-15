@@ -13,8 +13,4 @@ import { Component, ViewEncapsulation } from '@angular/core';
     `,
   ],
 })
-export class TasCardAction {
-  constructor() {
-    console.log('Hello world !');
-  }
-}
+export class TasCardAction {}
