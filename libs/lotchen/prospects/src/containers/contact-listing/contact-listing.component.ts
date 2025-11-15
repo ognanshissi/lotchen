@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TasTitle } from '@talisoft/ui/title';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
@@ -19,9 +19,11 @@ import { apiResources } from '@talisoft/ui/api-resources';
 import { TimeagoPipe } from '@talisoft/ui/timeago';
 import { RouterLink } from '@angular/router';
 import { ImportContactDialogComponent } from '../../components/import-contact-dialog/import-contact-dialog.component';
-import { CallerService, ENVIRONMENT_CONFIG } from '@lotchen/lotchen/common';
+import { CallerService } from '@lotchen/lotchen/common';
 import { Menu, MenuItem, TasMenuTrigger } from '@talisoft/ui/menu';
 import { AddTaskDialogService } from '@lotchen/lotchen/common';
+import { ContactStreamService } from '../../services/contact-stream.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'prospects-contact-listing',
@@ -44,31 +46,31 @@ import { AddTaskDialogService } from '@lotchen/lotchen/common';
     MenuItem,
   ],
 })
-export class ContactListingComponent implements OnInit {
+export class ContactListingComponent implements OnInit, OnDestroy {
   private readonly _sideDrawerService = inject(SideDrawerService);
   private readonly _contactsApiService = inject(ContactsApiService);
   private readonly _callerService = inject(CallerService);
   private readonly _addTaskDialogService = inject(AddTaskDialogService);
-
-  private readonly _environment = inject(ENVIRONMENT_CONFIG);
+  private readonly _contactStreamService = inject(ContactStreamService);
 
   public contacts = apiResources(
     this._contactsApiService.contactsControllerFindAllContactsV1()
   );
 
-  public ngOnInit(): void {
-    console.log('ContactListingComponent initialized');
-    const eventSource = new EventSource(
-      `${this._environment.apiUrl}/api/v1/contacts/contacts-stream`,
-      { withCredentials: false }
-    );
+  private subscription: Subscription | null = null;
 
-    eventSource.addEventListener('notice', (e) => {
-      console.log(e);
-    });
-    eventSource.onmessage = (event) => {
-      console.log('New event from server:', event.data);
-    };
+  public ngOnInit(): void {
+    this.subscription = this._contactStreamService
+      .getContactStream()
+      .subscribe({
+        next: (contactUpdate) => {
+          console.log('Contact update received in component:', contactUpdate);
+          // Here you would typically update the contacts list accordingly
+        },
+        error: (error) => {
+          console.error('Error in contact stream:', error);
+        },
+      });
   }
 
   public openCaller(item: FindAllContactsQueryResponse) {
@@ -99,6 +101,19 @@ export class ContactListingComponent implements OnInit {
     this._addTaskDialogService.open({
       relatedId: contactId,
     });
+  }
+
+  public showBrowserNotification(message: string): void {
+    console.log('Checking notification permission...', Notification.permission);
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification('CRM Notification', {
+        body: message,
+      });
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }
 

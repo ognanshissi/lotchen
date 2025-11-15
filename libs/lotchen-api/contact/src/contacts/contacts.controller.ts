@@ -42,7 +42,6 @@ import {
 } from './paginate-all/paginate-all-contacts.command';
 import { ImportContactsExcelCommandHandler } from './import-contacts-excel/import-contacts-excel.command';
 import {
-  PatchDataCommand,
   PatchDataCommandHandler,
   PatchDataCommandRequest,
 } from './patch-data/patch-data.command';
@@ -86,6 +85,58 @@ export class ContactsController {
     @Query() query: FindAllContactsQuery
   ): Promise<FindAllContactsQueryResponse[]> {
     return await this._findAllContactsQueryHandler.handlerAsync(query);
+  }
+
+  @Sse('contacts-stream')
+  public liveContactList(): Observable<MessageEvent> {
+    console.log('SSE connection established for contacts-stream');
+
+    return new Observable<MessageEvent>((observer) => {
+      let counter = 0;
+
+      // data should be query in this part
+
+      const mockLeads = [
+        {
+          id: 1,
+          name: 'Marie Laurent',
+          source: 'LinkedIn',
+          status: 'new',
+          viewStatus: 'unseen',
+        },
+
+        {
+          id: 2,
+          name: 'Pierre Martin',
+          source: 'Website',
+          status: 'contacted',
+          viewStatus: 'seen',
+        },
+        {
+          id: 3,
+          name: 'Sophie Dubois',
+          source: 'HubSpot',
+          status: 'converted',
+          viewStatus: 'seen',
+        },
+        {
+          id: 3,
+          name: 'Marie Laurent new created',
+          source: 'LinkedIn',
+          status: 'new',
+          viewStatus: 'unseen',
+        },
+      ];
+      const inervalId = setInterval(() => {
+        observer.next({
+          data: mockLeads[counter % mockLeads.length],
+          type: 'lead',
+        } as MessageEvent);
+        counter++;
+      }, 5000);
+
+      return () => clearInterval(inervalId);
+    });
   }
 
   @Get(':id')
@@ -148,18 +199,6 @@ export class ContactsController {
   ): Promise<void> {
     console.log(request, id);
     await this._patchDataCommandHandler.handlerAsync({ ...request, id });
-  }
-
-  @Sse('contacts-stream')
-  public liveContactList(): Observable<ContactEvent> {
-    return interval(1000).pipe(
-      map((_) => ({
-        id: `${+new Date()}`,
-        data: {
-          message: 'ping',
-        },
-      }))
-    );
   }
 }
 

@@ -1486,6 +1486,20 @@
         ]
       }
     },
+    "/api/v1/contacts/contacts-stream": {
+      "get": {
+        "operationId": "ContactsController_liveContactList_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
+    },
     "/api/v1/contacts/{id}": {
       "get": {
         "operationId": "ContactsController_findContactById_v1",
@@ -1642,20 +1656,6 @@
         "responses": {
           "204": {
             "description": "Contact data updated"
-          }
-        },
-        "tags": [
-          "Contacts"
-        ]
-      }
-    },
-    "/api/v1/contacts/contacts-stream": {
-      "get": {
-        "operationId": "ContactsController_liveContactList_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
           }
         },
         "tags": [
