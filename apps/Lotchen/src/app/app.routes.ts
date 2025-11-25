@@ -2,7 +2,7 @@ import { Route } from '@angular/router';
 import {
   AuthLayoutComponent,
   PortalLayoutComponent,
-} from '@lotchen/lotchen/common';
+} from '@lotchen/lotchen/common/components';
 
 export const appRoutes: Route[] = [
   {

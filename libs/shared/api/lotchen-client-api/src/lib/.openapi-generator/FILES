@@ -78,6 +78,8 @@ model/paginate-all-users-command.interface.ts
 model/paginate-all-users-team-dto.interface.ts
 model/pagination.interface.ts
 model/patch-data-command-request.interface.ts
+model/phone-number-dto.interface.ts
+model/phone-numbers-dto.interface.ts
 model/refresh-token-command.interface.ts
 model/reset-password-command-response.interface.ts
 model/reset-password-command.interface.ts

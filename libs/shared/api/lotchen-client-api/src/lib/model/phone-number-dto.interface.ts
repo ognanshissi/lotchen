@@ -9,11 +9,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PhoneNumbersDto } from './phone-numbers-dto.interface';
 
 
-export interface ContactInfoDto { 
-    email: string;
-    phoneNumbers: PhoneNumbersDto;
+export interface PhoneNumberDto { 
+    /**
+     * Phone number
+     */
+    contact: string;
+    /**
+     * Is primary phone number
+     */
+    isPrimary: boolean;
+    /**
+     * Is the contact confirmed
+     */
+    isConfirmed: boolean;
 }
 

@@ -6,19 +6,13 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { CallerService } from '@lotchen/lotchen/common';
+import { CallerService } from '@lotchen/lotchen/common/components/caller/caller.service';
 import { FindContactByIdQueryResponse } from '@talisoft/api/lotchen-client-api';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasCard } from '@talisoft/ui/card';
 import { TasIcon } from '@talisoft/ui/icon';
 import { map } from 'rxjs';
-
-export interface MenuItem {
-  label: string;
-  icon: string;
-  route: string;
-  active: boolean;
-}
+import { MenuItem } from '@lotchen/lotchen/common/models/menu-item';
 
 @Component({
   selector: 'prospects-detail-navigation',

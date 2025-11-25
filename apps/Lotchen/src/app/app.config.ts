@@ -15,11 +15,9 @@ import {
 import { TasIconRegistry } from '@talisoft/ui/icon';
 import { BASE_PATH as BASE_PATH_LOTCHEN_API } from '@talisoft/api/lotchen-client-api';
 import { environment } from '../environments/environment';
-import {
-  accessTokenInterceptor,
-  ENVIRONMENT_CONFIG,
-  tenantInterceptor,
-} from '@lotchen/lotchen/common';
+import { accessTokenInterceptor } from '@lotchen/lotchen/common/interceptors/access-token.interceptor';
+import { tenantInterceptor } from '@lotchen/lotchen/common/interceptors/tenant.interceptor';
+import { ENVIRONMENT_CONFIG } from '@lotchen/lotchen/common/utils';
 
 export const appConfig: ApplicationConfig = {
   providers: [

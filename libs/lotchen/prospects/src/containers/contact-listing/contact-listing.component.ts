@@ -19,9 +19,9 @@ import { apiResources } from '@talisoft/ui/api-resources';
 import { TimeagoPipe } from '@talisoft/ui/timeago';
 import { RouterLink } from '@angular/router';
 import { ImportContactDialogComponent } from '../../components/import-contact-dialog/import-contact-dialog.component';
-import { CallerService } from '@lotchen/lotchen/common';
+import { CallerService } from '@lotchen/lotchen/common/components/caller/caller.service';
 import { Menu, MenuItem, TasMenuTrigger } from '@talisoft/ui/menu';
-import { AddTaskDialogService } from '@lotchen/lotchen/common';
+import { AddTaskDialogService } from '@lotchen/lotchen/common/components/add-task-dialog';
 import { ContactStreamService } from '../../services/contact-stream.service';
 import { Subscription } from 'rxjs';
 

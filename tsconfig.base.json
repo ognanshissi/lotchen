@@ -29,7 +29,7 @@
       "@lotchen/lotchen-api/leads": ["libs/lotchen-api/leads/src/index.ts"],
       "@lotchen/lotchen/auth": ["libs/lotchen/auth/src/index.ts"],
       "@lotchen/lotchen/clients": ["libs/lotchen/clients/src/index.ts"],
-      "@lotchen/lotchen/common": ["libs/lotchen/common/src/index.ts"],
+      "@lotchen/lotchen/common/*": ["libs/lotchen/common/src/*"],
       "@lotchen/lotchen/dashboard": ["libs/lotchen/dashboard/src/index.ts"],
       "@lotchen/lotchen/prospects": ["libs/lotchen/prospects/src/index.ts"],
       "@lotchen/lotchen/settings": ["libs/lotchen/settings/src/index.ts"],

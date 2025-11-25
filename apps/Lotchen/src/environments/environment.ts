@@ -1,4 +1,4 @@
-import { EnvironmentConfig } from '@lotchen/lotchen/common';
+import { EnvironmentConfig } from '@lotchen/lotchen/common/models';
 
 export const environment: EnvironmentConfig = {
   production: false,

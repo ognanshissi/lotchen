@@ -1,10 +1,8 @@
 import { inject, Injectable, NgZone } from '@angular/core';
-import {
-  AuthenticationService,
-  ENVIRONMENT_CONFIG,
-} from '@lotchen/lotchen/common';
+import { AuthenticationService } from '@lotchen/lotchen/common/services';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { Observable } from 'rxjs';
+import { ENVIRONMENT_CONFIG } from '@lotchen/lotchen/common/utils';
 
 @Injectable({ providedIn: 'root' })
 export class ContactStreamService {

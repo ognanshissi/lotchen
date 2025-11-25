@@ -11,9 +11,30 @@ export class GetUserProfileQuery {
   userId!: string;
 }
 
+export class PhoneNumberDto {
+  @ApiProperty({ description: 'Phone number' })
+  contact!: string;
+  @ApiProperty({ description: 'Is primary phone number' })
+  isPrimary!: boolean;
+  @ApiProperty({ description: 'Is the contact confirmed' })
+  isConfirmed!: boolean;
+}
+
+export class PhoneNumbersDto {
+  @ApiProperty({ description: 'Mobile Phone number', type: PhoneNumberDto })
+  mobileNumber!: PhoneNumberDto;
+  @ApiProperty({ description: 'Work Phone number', type: PhoneNumberDto })
+  workNumber!: PhoneNumberDto;
+  @ApiProperty({ description: 'Home Phone number', type: PhoneNumberDto })
+  homeNumber!: PhoneNumberDto;
+}
+
 export class ContactInfoDto {
   @ApiProperty()
   email!: string;
+
+  @ApiProperty({ type: PhoneNumbersDto })
+  phoneNumbers!: PhoneNumbersDto;
 }
 
 export class GetUserProfileQueryResponse {

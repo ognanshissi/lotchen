@@ -14,7 +14,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TasAlert } from '@talisoft/ui/alert';
 import { TasText } from '@talisoft/ui/text';
 import { TasInputEmail } from '@talisoft/ui/input-email';
-import { AuthenticationService } from '@lotchen/lotchen/common';
+import { AuthenticationService } from '@lotchen/lotchen/common/services';
 import { finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 

@@ -54,6 +54,8 @@ export * from './paginate-all-users-command-dto.interface';
 export * from './paginate-all-users-team-dto.interface';
 export * from './pagination.interface';
 export * from './patch-data-command-request.interface';
+export * from './phone-number-dto.interface';
+export * from './phone-numbers-dto.interface';
 export * from './refresh-token-command.interface';
 export * from './reset-password-command.interface';
 export * from './reset-password-command-response.interface';

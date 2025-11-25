@@ -2540,15 +2540,75 @@
           "message"
         ]
       },
+      "PhoneNumberDto": {
+        "type": "object",
+        "properties": {
+          "contact": {
+            "type": "string",
+            "description": "Phone number"
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "description": "Is primary phone number"
+          },
+          "isConfirmed": {
+            "type": "boolean",
+            "description": "Is the contact confirmed"
+          }
+        },
+        "required": [
+          "contact",
+          "isPrimary",
+          "isConfirmed"
+        ]
+      },
+      "PhoneNumbersDto": {
+        "type": "object",
+        "properties": {
+          "mobileNumber": {
+            "description": "Mobile Phone number",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhoneNumberDto"
+              }
+            ]
+          },
+          "workNumber": {
+            "description": "Work Phone number",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhoneNumberDto"
+              }
+            ]
+          },
+          "homeNumber": {
+            "description": "Home Phone number",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhoneNumberDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "mobileNumber",
+          "workNumber",
+          "homeNumber"
+        ]
+      },
       "ContactInfoDto": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string"
+          },
+          "phoneNumbers": {
+            "$ref": "#/components/schemas/PhoneNumbersDto"
           }
         },
         "required": [
-          "email"
+          "email",
+          "phoneNumbers"
         ]
       },
       "GetUserProfileQueryResponse": {
