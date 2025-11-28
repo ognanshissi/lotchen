@@ -3,41 +3,111 @@
   Retour
 </button>
 
-<div class="grid grid-cols-4 gap-3">
-  <div class="col-span-3">
-    <tas-card class="w-full grid grid-cols-6 gap-2 p-4">
-      <div class="col-span-2 flex space-x-2">
-        <span
-          class="h-[80px] w-[80px] border border-slate-400 bg-slate-300 rounded-full flex justify-center items-center font-bold text-2xl"
-        >
-          J
-        </span>
-        <div class="">
-          <tas-title class="font">
-            {{ user()?.profile?.firstName }}
-            {{ user()?.profile?.lastName }}
-          </tas-title>
-          <p>{{ user()?.profile?.contactInfo?.email }}</p>
+<div class="mt-4">
+  <p-tabs value="info">
+    <p-tablist class="pb-4">
+      <p-tab value="info">Informations</p-tab>
+      <p-tab value="roles">Roles et permissions</p-tab>
+      <p-tab value="settings">Parametrage du compte</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="info">
+        <div class="grid grid-cols-4 gap-3">
+          <div class="col-span-3">
+            <tas-card class="w-full grid grid-cols-6 gap-2 p-4">
+              <div class="col-span-2 flex space-x-2">
+                <span
+                  class="h-[80px] w-[80px] border border-slate-400 bg-slate-300 rounded-full flex justify-center items-center font-bold text-2xl"
+                >
+                  J
+                </span>
+                <div class="">
+                  <tas-title class="font">
+                    {{ user()?.profile?.firstName }}
+                    {{ user()?.profile?.lastName }}
+                  </tas-title>
+                  <p>{{ user()?.profile?.contactInfo?.email }}</p>
+                </div>
+              </div>
+              <div class="col-span-1">
+                <p class="text-slate-400">Occupation</p>
+                <span></span>
+              </div>
+              <div class="col-span-1">
+                <p class="text-slate-400">Contact de travail</p>
+                <span>{{
+                  user()?.profile?.contactInfo?.phoneNumbers?.workNumber
+                    ?.contact
+                }}</span>
+              </div>
+              <div class="col-span-1">
+                <p class="text-slate-400">Numéro de téléphone</p>
+              </div>
+              <div class="col-span-1">
+                <p class="text-slate-400">Dernière connexion</p>
+              </div>
+            </tas-card>
+          </div>
         </div>
-      </div>
-      <div class="col-span-1">
-        <p class="text-slate-400">Occupation</p>
-        <span></span>
-      </div>
-      <div class="col-span-1">
-        <p class="text-slate-400">Contact de travail</p>
-        <span>{{
-          user()?.profile?.contactInfo?.phoneNumbers?.workNumber?.contact
-        }}</span>
-      </div>
-      <div class="col-span-1">
-        <p class="text-slate-400">Numéro de téléphone</p>
-      </div>
-      <div class="col-span-1">
-        <p class="text-slate-400">Dernière connexion</p>
-      </div>
-    </tas-card>
+      </p-tabpanel>
+      <p-tabpanel value="roles">
+        <div class="grid grid-cols-2 gap-4">
+          <tas-card>
+            <div class="flex justify-between items-center p-4">
+              <tas-title>Rôles</tas-title>
+            </div>
+            <tas-table
+              [data]="[]"
+              identifierField="id"
+              [title]="'Liste des rôles'"
+            >
+              <ng-template #header>
+                <tr>
+                  <th>Nom</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-item>
+                <tr>
+                  <td>{{ item.name }}</td>
+                </tr>
+              </ng-template>
+            </tas-table>
+          </tas-card>
 
-    <tas-title>Reglage de l'utilisateur</tas-title>
-  </div>
+          <tas-card>
+            <div class="flex justify-between items-center p-4">
+              <tas-title>Permissions</tas-title>
+              <button
+                tas-raised-button
+                color="primary"
+                (click)="assignPermission()"
+              >
+                <tas-icon iconName="plus"></tas-icon>
+                Assigner une permission
+              </button>
+            </div>
+            <tas-table
+              [data]="[]"
+              identifierField=""
+              [title]="'Liste des permissions'"
+            >
+              <ng-template #header>
+                <tr>
+                  <th>Nom</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-item>
+                <tr>
+                  <td>{{ item }}</td>
+                </tr>
+              </ng-template>
+            </tas-table>
+          </tas-card>
+        </div>
+      </p-tabpanel>
+      <p-tabpanel value="settings">
+        <p>Parametrage du compte content placeholder</p>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 </div>

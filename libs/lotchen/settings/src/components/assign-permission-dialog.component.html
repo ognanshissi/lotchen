@@ -1,0 +1,45 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title>Assigner des permissions</tas-title>
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <tas-text>
+      Sélectionnez les permissions à assigner à l'utilisateur.
+    </tas-text>
+
+    <br />
+    <tas-alert type="error" *ngIf="errorMessage">{{ errorMessage }}</tas-alert>
+
+    <form class="flex flex-col gap-3" [formGroup]="form">
+      <div class="flex flex-col space-y-3">
+        <tas-form-field>
+          <tas-label>Permissions</tas-label>
+          <tas-multi-select
+            formControlName="permissions"
+            [options]="permissions().value ?? []"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Sélectionner des permissions"
+          ></tas-multi-select>
+        </tas-form-field>
+      </div>
+    </form>
+  </tas-drawer-content>
+
+  <tas-drawer-action>
+    <button [disabled]="isLoading" tas-outlined-button closable-drawer>
+      <tas-icon [iconName]="'close'"></tas-icon>
+      Fermer
+    </button>
+    <button
+      [isLoading]="isLoading"
+      [disabled]="!form.valid"
+      tas-raised-button
+      color="primary"
+      (click)="submit()"
+    >
+      <tas-icon iconName="check"></tas-icon>
+      Assigner
+    </button>
+  </tas-drawer-action>
+</tas-side-drawer>
