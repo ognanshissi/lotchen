@@ -8,7 +8,7 @@ import { map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserDetailResolver } from '../../../services/user-detail.resolver.service';
 import { TasCard } from '@talisoft/ui/card';
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, NgFor, NgIf } from '@angular/common';
 
 import { TasTable } from '@talisoft/ui/table';
 import { AssignPermissionDialogComponent } from '../../../components/assign-permission-dialog.component';
@@ -29,6 +29,8 @@ import { SnackbarService } from '@talisoft/ui/snackbar';
     JsonPipe,
     TabsModule,
     TasTable,
+    NgIf,
+    NgFor,
   ],
 })
 export class UserEditComponent {

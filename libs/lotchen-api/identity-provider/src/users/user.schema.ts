@@ -28,7 +28,7 @@ export class User extends AggregateRoot {
   @Prop({
     type: [String],
   })
-  permissions!: string[];
+  permissions!: string[]; // code of the permission
 
   @Prop({ default: true, type: Boolean })
   isActive!: boolean;

@@ -30,11 +30,13 @@ export class InviteUserCommand {
   jobTitle!: string;
 
   @ApiProperty({ description: 'Work number', type: String, required: false })
-  @MinLength(10, { message: 'Le number should be at least 8 characters' })
+  @MinLength(10, { message: 'The work number should be at least 8 characters' })
   workNumber!: string;
 
   @ApiProperty({ description: 'Mobile number', type: String, required: false })
-  @MinLength(10, { message: 'Le number should be at least 8 characters' })
+  @MinLength(10, {
+    message: 'The mobile number should be at least 8 characters',
+  })
   mobileNumber!: string;
 
   @ApiProperty({

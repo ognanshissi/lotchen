@@ -1,0 +1,154 @@
+{
+  "permissions": [
+    {
+      "code": "users.create",
+      "description": "Créer des utilisateurs",
+      "group": "Gestion des utilisateurs"
+    },
+    {
+      "code": "users.read",
+      "description": "Voir les utilisateurs",
+      "group": "Gestion des utilisateurs"
+    },
+    {
+      "code": "users.update",
+      "description": "Modifier des utilisateurs",
+      "group": "Gestion des utilisateurs"
+    },
+    {
+      "code": "users.delete",
+      "description": "Supprimer des utilisateurs",
+      "group": "Gestion des utilisateurs"
+    },
+    {
+      "code": "roles.create",
+      "description": "Créer des rôles",
+      "group": "Gestion des rôles"
+    },
+    {
+      "code": "roles.read",
+      "description": "Voir les rôles",
+      "group": "Gestion des rôles"
+    },
+    {
+      "code": "roles.update",
+      "description": "Modifier des rôles",
+      "group": "Gestion des rôles"
+    },
+    {
+      "code": "roles.delete",
+      "description": "Supprimer des rôles",
+      "group": "Gestion des rôles"
+    },
+    {
+      "code": "clients.create",
+      "description": "Créer des clients",
+      "group": "Gestion des clients"
+    },
+    {
+      "code": "clients.read",
+      "description": "Voir les clients",
+      "group": "Gestion des clients"
+    },
+    {
+      "code": "clients.update",
+      "description": "Modifier des clients",
+      "group": "Gestion des clients"
+    },
+    {
+      "code": "clients.delete",
+      "description": "Supprimer des clients",
+      "group": "Gestion des clients"
+    },
+    {
+      "code": "prospects.create",
+      "description": "Créer des prospects",
+      "group": "Gestion des prospects"
+    },
+    {
+      "code": "prospects.read",
+      "description": "Voir les prospects",
+      "group": "Gestion des prospects"
+    },
+    {
+      "code": "prospects.update",
+      "description": "Modifier des prospects",
+      "group": "Gestion des prospects"
+    },
+    {
+      "code": "prospects.delete",
+      "description": "Supprimer des prospects",
+      "group": "Gestion des prospects"
+    },
+    {
+      "code": "leads.create",
+      "description": "Créer des leads",
+      "group": "Gestion des leads"
+    },
+    {
+      "code": "leads.read",
+      "description": "Voir les leads",
+      "group": "Gestion des leads"
+    },
+    {
+      "code": "leads.update",
+      "description": "Modifier des leads",
+      "group": "Gestion des leads"
+    },
+    {
+      "code": "leads.delete",
+      "description": "Supprimer des leads",
+      "group": "Gestion des leads"
+    },
+    {
+      "code": "settings.read",
+      "description": "Voir les paramètres",
+      "group": "Paramètres"
+    },
+    {
+      "code": "settings.update",
+      "description": "Modifier les paramètres",
+      "group": "Paramètres"
+    },
+    {
+      "code": "navigation_menus.create",
+      "description": "Créer des menus de navigation",
+      "group": "Gestion des menus de navigation"
+    },
+    {
+      "code": "navigation_menus.read",
+      "description": "Voir les menus de navigation",
+      "group": "Gestion des menus de navigation"
+    },
+    {
+      "code": "navigation_menus.update",
+      "description": "Modifier des menus de navigation",
+      "group": "Gestion des menus de navigation"
+    },
+    {
+      "code": "navigation_menus.delete",
+      "description": "Supprimer des menus de navigation",
+      "group": "Gestion des menus de navigation"
+    },
+    {
+      "code": "territories.create",
+      "description": "Créer des territoires",
+      "group": "Gestion des territoires"
+    },
+    {
+      "code": "territories.read",
+      "description": "Voir les territoires",
+      "group": "Gestion des territoires"
+    },
+    {
+      "code": "territories.update",
+      "description": "Modifier des territoires",
+      "group": "Gestion des territoires"
+    },
+    {
+      "code": "territories.delete",
+      "description": "Supprimer des territoires",
+      "group": "Gestion des territoires"
+    }
+  ]
+}

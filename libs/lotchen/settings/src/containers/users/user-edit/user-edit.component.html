@@ -56,22 +56,21 @@
             <div class="flex justify-between items-center p-4">
               <tas-title>Rôles</tas-title>
             </div>
-            <tas-table
-              [data]="[]"
-              identifierField="id"
-              [title]="'Liste des rôles'"
-            >
-              <ng-template #header>
-                <tr>
-                  <th>Nom</th>
-                </tr>
-              </ng-template>
-              <ng-template #body let-item>
-                <tr>
-                  <td>{{ item.name }}</td>
-                </tr>
-              </ng-template>
-            </tas-table>
+            <div class="p-4">
+              <div
+                *ngIf="user()?.user?.roles as role"
+                class="border rounded-md p-3 flex items-center space-x-2 bg-gray-50"
+              >
+                <tas-icon iconName="shield" class="text-primary"></tas-icon>
+                <span class="font-medium">{{ role.name }}</span>
+              </div>
+              <div
+                *ngIf="!user()?.user?.roles"
+                class="text-gray-500 italic text-sm"
+              >
+                Aucun rôle assigné.
+              </div>
+            </div>
           </tas-card>
 
           <tas-card>
@@ -86,22 +85,23 @@
                 Assigner une permission
               </button>
             </div>
-            <tas-table
-              [data]="[]"
-              identifierField=""
-              [title]="'Liste des permissions'"
-            >
-              <ng-template #header>
-                <tr>
-                  <th>Nom</th>
-                </tr>
-              </ng-template>
-              <ng-template #body let-item>
-                <tr>
-                  <td>{{ item }}</td>
-                </tr>
-              </ng-template>
-            </tas-table>
+            <div class="p-4 grid grid-cols-2 gap-2">
+              <div
+                *ngFor="let permission of user()?.user?.permissions ?? []"
+                class="border rounded-md p-2 flex items-center space-x-2 bg-gray-50 text-sm"
+              >
+                <tas-icon iconName="key" class="text-gray-500"></tas-icon>
+                <span class="truncate" [title]="permission">{{
+                  permission
+                }}</span>
+              </div>
+              <div
+                *ngIf="!(user()?.user?.permissions ?? []).length"
+                class="col-span-2 text-gray-500 italic text-sm"
+              >
+                Aucune permission assignée.
+              </div>
+            </div>
           </tas-card>
         </div>
       </p-tabpanel>
