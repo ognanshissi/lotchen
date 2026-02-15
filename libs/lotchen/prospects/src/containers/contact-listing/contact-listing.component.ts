@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TasTitle } from '@talisoft/ui/title';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
@@ -22,8 +22,6 @@ import { ImportContactDialogComponent } from '../../components/import-contact-di
 import { CallerService } from '@lotchen/lotchen/common/components/caller/caller.service';
 import { Menu, MenuItem, TasMenuTrigger } from '@talisoft/ui/menu';
 import { AddTaskDialogService } from '@lotchen/lotchen/common/components/add-task-dialog';
-import { ContactStreamService } from '../../services/contact-stream.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'prospects-contact-listing',
@@ -46,32 +44,15 @@ import { Subscription } from 'rxjs';
     MenuItem,
   ],
 })
-export class ContactListingComponent implements OnInit, OnDestroy {
+export class ContactListingComponent {
   private readonly _sideDrawerService = inject(SideDrawerService);
   private readonly _contactsApiService = inject(ContactsApiService);
   private readonly _callerService = inject(CallerService);
   private readonly _addTaskDialogService = inject(AddTaskDialogService);
-  private readonly _contactStreamService = inject(ContactStreamService);
 
   public contacts = apiResources(
     this._contactsApiService.contactsControllerFindAllContactsV1()
   );
-
-  private subscription: Subscription | null = null;
-
-  public ngOnInit(): void {
-    this.subscription = this._contactStreamService
-      .getContactStream()
-      .subscribe({
-        next: (contactUpdate) => {
-          console.log('Contact update received in component:', contactUpdate);
-          // Here you would typically update the contacts list accordingly
-        },
-        error: (error) => {
-          console.error('Error in contact stream:', error);
-        },
-      });
-  }
 
   public openCaller(item: FindAllContactsQueryResponse) {
     this._callerService.openCaller({
@@ -103,6 +84,10 @@ export class ContactListingComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   *
+   * @param message
+   */
   public showBrowserNotification(message: string): void {
     console.log('Checking notification permission...', Notification.permission);
     if ('Notification' in window && Notification.permission === 'granted') {
@@ -110,10 +95,6 @@ export class ContactListingComponent implements OnInit, OnDestroy {
         body: message,
       });
     }
-  }
-
-  public ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
   }
 }
 

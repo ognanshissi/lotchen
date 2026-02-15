@@ -23,7 +23,7 @@ export class FindAllUserQueryHandler
   ): Promise<FindAllUserQueryResponse[]> {
     // dynamic projection
     let projection =
-      'contactInfo firstName lastName createdAt updatedAt user jobTitle createdByInfo';
+      'contactInfo firstName lastName createdAt updatedAt user jobTitle createdByInfo _id';
 
     if (query.fields) {
       projection = query.fields.split(',').join(' ');
@@ -49,6 +49,7 @@ export class FindAllUserQueryHandler
       };
     }
 
+    // Get all users profiles
     const profiles = await this.profileModel
       .find(queryFilter, projection, {
         sort: { createdAt: -1 },
@@ -59,7 +60,7 @@ export class FindAllUserQueryHandler
 
     return profiles.map((item) => {
       return {
-        userId: item.user._id,
+        userId: item.user?._id ?? null,
         email: item.contactInfo.email,
         firstName: item.firstName,
         lastName: item.lastName,
