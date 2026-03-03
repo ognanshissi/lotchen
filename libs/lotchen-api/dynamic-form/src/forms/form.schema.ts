@@ -1,9 +1,18 @@
 import { AggregateRoot } from '@lotchen/api/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Field, FieldSchema } from './field.schema';
+import mongoose from 'mongoose';
+import { randomUUID } from 'crypto';
 
 @Schema({ timestamps: true, collection: 'dynamic_form_forms' })
 export class Form extends AggregateRoot {
+  @Prop({
+    default: () => randomUUID(),
+    required: true,
+    type: mongoose.Schema.Types.UUID,
+  })
+  versionId!: string;
+
   @Prop({ type: String, required: true, unique: true })
   formClass!: string;
 

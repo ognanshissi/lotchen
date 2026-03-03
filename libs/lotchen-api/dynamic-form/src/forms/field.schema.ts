@@ -10,6 +10,18 @@ export enum FieldType {
   Checkbox = 'checkbox',
   Radio = 'radio',
   Textarea = 'textarea',
+  Number = 'number',
+  Email = 'email',
+  Phone = 'phone',
+  Url = 'url',
+  Color = 'color',
+  File = 'file',
+  Image = 'image',
+  Autocomplete = 'autocomplete',
+  Rating = 'rating',
+  Tags = 'tags',
+  Currency = 'currency',
+  Formula = 'formula', // a field that is calculated from other fields
 }
 
 @Schema({ timestamps: false, id: false, _id: false })
@@ -53,6 +65,7 @@ export class Field {
   @Prop({ type: String })
   name!: string;
 
+  @Prop({ type: String })
   subTitle!: string;
 
   @Prop({ type: String })
@@ -111,11 +124,15 @@ export class Field {
   link!: string;
 
   @Prop({ type: [String] })
-  options!: string;
+  options!: [string];
 
   // Date validation
+  @Prop({ type: Boolean })
+  dateValidation!: boolean;
+  @Prop({ type: String })
   minDate!: 'now' | 'formula';
 
+  @Prop({ type: String })
   maxDate!: 'now' | 'formula';
 }
 
