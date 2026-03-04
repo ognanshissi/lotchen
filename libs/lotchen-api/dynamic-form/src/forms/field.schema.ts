@@ -102,7 +102,7 @@ export class Field {
   hint!: string;
 
   @Prop({ type: Boolean, default: false })
-  custom!: boolean; // ether the field is added by user or predefined in the system config
+  custom!: boolean; // either the field is added by users or predefined in the system config
 
   @Prop({ type: String })
   placeholder!: string;

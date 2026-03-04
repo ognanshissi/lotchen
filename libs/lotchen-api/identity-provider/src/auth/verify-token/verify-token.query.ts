@@ -27,14 +27,13 @@ export class VerifyTokenQueryHandler
     query?: undefined,
     req?: Request
   ): Promise<VerifyTokenQueryResponse> {
-    console.log('Verifying token...');
-
     const token = extractTokenFromHeader(req);
     if (!token) {
       throw new UnauthorizedException('No token provided');
     }
-    const isValid = await this._jwtService.verifyAsync(token); // Implement your token verification logic here
-
-    return { isValid };
+    const tokenVerification = await this._jwtService.verifyAsync(token, {
+      secret: process.env['SECRET'],
+    }); // Implement your token verification logic here
+    return { isValid: !!tokenVerification };
   }
 }

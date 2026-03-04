@@ -5,6 +5,7 @@ import {
   AuthApiService,
   LoginCommand,
   RefreshTokenCommand,
+  VerifyTokenQueryResponse,
 } from '@talisoft/api/lotchen-client-api';
 
 export const TOKEN_STORAGE_KEY = 'LOTCHEN_ACCESS_TOKEN';
@@ -54,10 +55,9 @@ export class AuthenticationService {
   /**
    * Need to be reimplemented
    *
-   * TODO: Create an api that will be used to verify the token
    */
-  public verifyToken(): Observable<{ success: boolean }> {
-    return of({ success: true });
+  public verifyToken(): Observable<VerifyTokenQueryResponse> {
+    return this._authService.authControllerVerifyTokenV1();
   }
 
   public loadAccessToken(): string | null {

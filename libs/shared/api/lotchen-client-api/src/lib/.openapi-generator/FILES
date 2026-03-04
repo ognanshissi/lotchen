@@ -91,5 +91,6 @@ model/update-contact-command-request.interface.ts
 model/update-role-permissions-command-response.interface.ts
 model/update-team-command-request.interface.ts
 model/users-controller-search-user-paginate-v1200-response.interface.ts
+model/verify-token-query-response.interface.ts
 param.ts
 variables.ts

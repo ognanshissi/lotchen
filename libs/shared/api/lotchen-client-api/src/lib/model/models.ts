@@ -67,3 +67,4 @@ export * from './update-contact-command-request.interface';
 export * from './update-role-permissions-command-response.interface';
 export * from './update-team-command-request.interface';
 export * from './users-controller-search-user-paginate-v1200-response.interface';
+export * from './verify-token-query-response.interface';
