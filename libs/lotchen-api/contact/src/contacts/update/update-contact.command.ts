@@ -67,9 +67,9 @@ export class UpdateContactCommandHandler
   constructor(private readonly contactProvider: ContactProvider) {}
 
   async handlerAsync(command: UpdateContactCommand): Promise<void> {
-    const contact = await this.contactProvider.ContactModel.findById(
-      command.id
-    ).exec();
+    const contact = await this.contactProvider.ContactModel.findById(command.id)
+      .lean()
+      .exec();
     if (!contact) {
       throw new NotFoundException('Contact not found');
     }
@@ -91,7 +91,7 @@ export class UpdateContactCommandHandler
       .lean()
       .exec();
 
-    if (isDuplicated?.id !== contact.id) {
+    if (isDuplicated?._id.toString() !== contact._id.toString()) {
       throw new BadRequestException(
         'There is a contact with `email` or `mobile number`'
       );

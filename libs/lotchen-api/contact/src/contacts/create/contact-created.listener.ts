@@ -42,7 +42,7 @@ export class ContactCreatedListener {
       };
 
       await contactCollection.updateOne(
-        { id: payload.contactId },
+        { _id: payload.contactId.toString() as any },
         {
           $addToSet: {
             statusHistory: contactHistory,

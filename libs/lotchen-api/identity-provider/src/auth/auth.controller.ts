@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -27,7 +28,11 @@ import {
   ResetPasswordCommandHandler,
   ResetPasswordCommandResponse,
 } from './reset-password/reset-password.command';
-import { Public } from '@lotchen/api/core';
+import { extractTokenFromHeader, Public } from '@lotchen/api/core';
+import {
+  VerifyTokenQueryHandler,
+  VerifyTokenQueryResponse,
+} from './verify-token/verify-token.query';
 
 @ApiHeader({
   name: 'x-tenant-fqn',
@@ -40,7 +45,8 @@ export class AuthController {
     private readonly _loginCommandHandler: LoginCommandHandler,
     private readonly _refreshTokenCommandHandler: RefreshTokenCommandHandler,
     private readonly _forgotPasswordCommandHandler: ForgotPasswordCommandHandler,
-    private readonly _resetPasswordCommandHandler: ResetPasswordCommandHandler
+    private readonly _resetPasswordCommandHandler: ResetPasswordCommandHandler,
+    private readonly _verifyTokenQueryHandler: VerifyTokenQueryHandler
   ) {}
 
   @HttpCode(HttpStatus.OK)
@@ -84,5 +90,16 @@ export class AuthController {
     @Body() request: ResetPasswordCommand
   ): Promise<ResetPasswordCommandResponse> {
     return await this._resetPasswordCommandHandler.handlerAsync(request);
+  }
+
+  @Get('verify-token')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    type: VerifyTokenQueryResponse,
+  })
+  async verifyToken(
+    @Request() req: ExpressRequest
+  ): Promise<VerifyTokenQueryResponse> {
+    return await this._verifyTokenQueryHandler.handlerAsync(undefined, req);
   }
 }

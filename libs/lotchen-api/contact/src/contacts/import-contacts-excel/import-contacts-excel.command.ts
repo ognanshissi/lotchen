@@ -31,7 +31,7 @@ export class ImportContactsExcelCommandHandler
 
   public async handlerAsync(
     command: ImportContactsExcelCommand
-  ): Promise<ImportContactsExcelCommandResponse | BadRequestException> {
+  ): Promise<ImportContactsExcelCommandResponse> {
     try {
       const workbook = XLSX.readFile(command.excelFile as string);
       const sheetName = workbook.SheetNames[0];
@@ -99,7 +99,7 @@ export class ImportContactsExcelCommandHandler
       } satisfies ImportContactsExcelCommandResponse;
     } catch (error) {
       this._logger.error(JSON.stringify(error));
-      return new BadRequestException(
+      throw new BadRequestException(
         "Une erreur survenue lors de l'import des contacts"
       );
     }

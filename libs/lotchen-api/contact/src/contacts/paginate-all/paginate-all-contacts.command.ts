@@ -148,10 +148,10 @@ export class PaginateAllContactsCommandHandler
 
     const results = await this.contactProvider.ContactModel.aggregate([
       { $match: queryFilter },
-      { $skip: Math.max(command.pageIndex * command.pageSize, 0) },
-      { $addFields: addFields },
-      { $limit: command.pageSize },
       { $sort: { score: -1 } },
+      { $skip: Math.max(command.pageIndex * command.pageSize, 0) },
+      { $limit: command.pageSize },
+      { $addFields: addFields },
       { $project: projection },
     ]).exec();
 

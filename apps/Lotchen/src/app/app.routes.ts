@@ -3,6 +3,7 @@ import {
   AuthLayoutComponent,
   PortalLayoutComponent,
 } from '@lotchen/lotchen/common/components';
+import { authorized } from '@lotchen/lotchen/common/guards/authorized.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -13,6 +14,7 @@ export const appRoutes: Route[] = [
   {
     path: 'portal',
     component: PortalLayoutComponent,
+    canActivate: [authorized],
     children: [
       {
         path: '',

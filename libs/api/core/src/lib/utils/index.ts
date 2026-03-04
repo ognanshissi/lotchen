@@ -7,3 +7,4 @@ export * from './filter-query-generator';
 export * from './schema-middleware';
 export * from './schema.plugin';
 export * from './tenant-connection-string';
+export * from './token-extractor';

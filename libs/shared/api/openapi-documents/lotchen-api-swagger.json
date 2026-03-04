@@ -591,6 +591,36 @@
         ]
       }
     },
+    "/api/v1/auth/verify-token": {
+      "get": {
+        "operationId": "AuthController_verifyToken_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyTokenQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/api/v1/profile/me": {
       "get": {
         "operationId": "ProfileController_currentUser_v1",
@@ -2538,6 +2568,18 @@
         },
         "required": [
           "message"
+        ]
+      },
+      "VerifyTokenQueryResponse": {
+        "type": "object",
+        "properties": {
+          "isValid": {
+            "type": "boolean",
+            "description": "Is the token valid"
+          }
+        },
+        "required": [
+          "isValid"
         ]
       },
       "PhoneNumberDto": {
