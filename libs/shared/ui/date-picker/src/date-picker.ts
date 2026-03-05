@@ -26,6 +26,9 @@ import {
   DatePickerValue,
   DateRangeValue,
 } from './date-picker.types';
+import { TasIcon } from '../../icon';
+import { FormField, TasLabel, TasSuffix } from '../../form-field';
+import { TasInput } from '../../input';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -99,6 +102,11 @@ function pad2(n: number): string {
     CdkOverlayOrigin,
     CdkConnectedOverlay,
     NgClass,
+    TasIcon,
+    TasSuffix,
+    TasInput,
+    FormField,
+    TasLabel,
   ],
   providers: [
     {
