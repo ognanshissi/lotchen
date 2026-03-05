@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import {
   TasClosableDrawer,
   TasDrawerAction,
@@ -9,8 +9,6 @@ import {
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasTitle } from '@talisoft/ui/title';
 import { ButtonModule } from '@talisoft/ui/button';
-import { AddTaskDialogData } from './add-task.service';
-import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import { TasInput } from '@talisoft/ui/input';
 import {
@@ -20,6 +18,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { TasDatePicker } from '@talisoft/ui/date-picker';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'common-add-task-dialog',
@@ -42,13 +41,13 @@ import { TasDatePicker } from '@talisoft/ui/date-picker';
   ],
 })
 export class AddTaskDialogComponent implements OnInit {
-  private data: AddTaskDialogData = inject(DIALOG_DATA);
+  private readonly _authService = inject(AuthenticationService);
+
+  public readonly currentUser = computed(() =>
+    this._authService.connectedUser()
+  );
 
   public addTaskForm!: FormGroup;
-
-  constructor() {
-    console.log('AddTaskDialogComponent', this.data);
-  }
 
   public ngOnInit(): void {
     this.addTaskForm = new FormGroup({
@@ -56,10 +55,11 @@ export class AddTaskDialogComponent implements OnInit {
       dueDate: new FormControl(null, [Validators.required]),
       dueDateTime: new FormControl(null, [Validators.required]),
       description: new FormControl(null),
+      assigneeIds: new FormControl<string[]>([]),
     });
   }
 
-  public handleSubmit() {
+  public handleSubmit(): void {
     console.log(this.addTaskForm.value);
   }
 }

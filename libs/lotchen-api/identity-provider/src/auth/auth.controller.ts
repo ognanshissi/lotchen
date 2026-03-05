@@ -33,6 +33,7 @@ import {
   VerifyTokenQueryHandler,
   VerifyTokenQueryResponse,
 } from './verify-token/verify-token.query';
+import { GetMeQueryHandler, GetMeQueryResponse } from './me/me.query';
 
 @ApiHeader({
   name: 'x-tenant-fqn',
@@ -46,7 +47,8 @@ export class AuthController {
     private readonly _refreshTokenCommandHandler: RefreshTokenCommandHandler,
     private readonly _forgotPasswordCommandHandler: ForgotPasswordCommandHandler,
     private readonly _resetPasswordCommandHandler: ResetPasswordCommandHandler,
-    private readonly _verifyTokenQueryHandler: VerifyTokenQueryHandler
+    private readonly _verifyTokenQueryHandler: VerifyTokenQueryHandler,
+    private readonly _getMeQueryHandler: GetMeQueryHandler
   ) {}
 
   @HttpCode(HttpStatus.OK)
@@ -101,5 +103,12 @@ export class AuthController {
     @Request() req: ExpressRequest
   ): Promise<VerifyTokenQueryResponse> {
     return await this._verifyTokenQueryHandler.handlerAsync(undefined, req);
+  }
+
+  @Get('me')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({ type: GetMeQueryResponse })
+  async me(@Request() req: ExpressRequest): Promise<GetMeQueryResponse> {
+    return await this._getMeQueryHandler.handlerAsync(undefined, req);
   }
 }

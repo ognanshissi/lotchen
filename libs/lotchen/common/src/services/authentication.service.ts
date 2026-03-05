@@ -1,5 +1,5 @@
 import { afterNextRender, inject, Injectable, signal } from '@angular/core';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 import {
   AccessTokenResponse,
   AuthApiService,

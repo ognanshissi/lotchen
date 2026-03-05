@@ -621,6 +621,36 @@
         ]
       }
     },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "AuthController_me_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMeQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/api/v1/profile/me": {
       "get": {
         "operationId": "ProfileController_currentUser_v1",
@@ -2580,6 +2610,46 @@
         },
         "required": [
           "isValid"
+        ]
+      },
+      "GetMeQueryResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User ID"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "First name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name"
+          },
+          "profileId": {
+            "type": "string",
+            "description": "Profile ID"
+          },
+          "permissions": {
+            "description": "List of granted permissions",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "userId",
+          "email",
+          "firstName",
+          "lastName",
+          "profileId",
+          "permissions"
         ]
       },
       "PhoneNumberDto": {
