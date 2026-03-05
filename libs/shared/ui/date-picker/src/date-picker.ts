@@ -9,9 +9,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { AbstractControlValueAccessor } from '@talisoft/ui/core';
-import { FormField, TasLabel, TasSuffix } from '@talisoft/ui/form-field';
-import { TasInput } from '@talisoft/ui/input';
-import { TasIcon } from '@talisoft/ui/icon';
 import {
   AbstractControl,
   NG_VALIDATORS,
