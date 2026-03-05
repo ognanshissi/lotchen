@@ -19,6 +19,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { TasDatePicker } from '@talisoft/ui/date-picker';
 
 @Component({
   selector: 'common-add-task-dialog',
@@ -37,6 +38,7 @@ import {
     TasInput,
     TasLabel,
     ReactiveFormsModule,
+    TasDatePicker,
   ],
 })
 export class AddTaskDialogComponent implements OnInit {

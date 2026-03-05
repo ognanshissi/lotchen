@@ -15,9 +15,8 @@ export class AddTaskDialogService {
   private readonly _snackbar = inject(SnackbarService);
 
   public open(data: AddTaskDialogData): void {
-    console.log('open add task dialog', data);
     this._dialog.open(AddTaskDialogComponent, {
-      width: '500px',
+      width: '600px',
       data: {
         relatedId: data.relatedId,
       },

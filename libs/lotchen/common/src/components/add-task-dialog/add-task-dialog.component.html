@@ -24,25 +24,23 @@
         </tas-form-field>
 
         <div class="flex space-x-3">
-          <tas-form-field>
-            <tas-label>Date</tas-label>
-            <input
-              tasInput
-              type="date"
-              formControlName="dueDate"
-              placeholder="Date de la tâche"
-            />
-          </tas-form-field>
+          <!--          <tas-form-field>-->
+          <!--            <tas-label>Date</tas-label>-->
+          <!--            <input-->
+          <!--              tasInput-->
+          <!--              type="date"-->
+          <!--              formControlName="dueDate"-->
+          <!--              placeholder="Date de la tâche"-->
+          <!--            />-->
+          <!--          </tas-form-field>-->
 
-          <tas-form-field>
-            <tas-label>Heure</tas-label>
-            <input
-              tasInput
-              type="time"
-              formControlName="dueDateTime"
-              placeholder="Heure de la tâche"
-            />
-          </tas-form-field>
+          <tas-date-picker formControlName="dueDate">
+            Date de la tâche
+          </tas-date-picker>
+
+          <tas-date-picker mode="time" formControlName="dueDateTime">
+            Heure
+          </tas-date-picker>
         </div>
 
         <tas-form-field>
