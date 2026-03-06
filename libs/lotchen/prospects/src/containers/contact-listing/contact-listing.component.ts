@@ -74,7 +74,7 @@ export class ContactListingComponent {
 
   public openImportContactDialog(): void {
     this._sideDrawerService
-      .open(ImportContactDialogComponent, { width: '700px' })
+      .open(ImportContactDialogComponent)
       .closed.subscribe();
   }
 

@@ -1,0 +1,16 @@
+tas-file-uploader {
+  display: block;
+
+  .tas-file-uploader {
+    @apply border-gray-300;
+
+    &--drag-over,
+    &--has-file {
+      @apply border-primary;
+    }
+
+    &--drag-over {
+      background-color: rgb(var(--tas-color-primary) / 0.05);
+    }
+  }
+}

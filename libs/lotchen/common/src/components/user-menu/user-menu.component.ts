@@ -92,7 +92,7 @@ export class UserMenuComponent {
     return (first + last).toUpperCase();
   });
 
-  navigate(path: string): void {
+  public navigate(path: string): void {
     this._router.navigate([path]);
   }
 
