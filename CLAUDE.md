@@ -64,6 +64,7 @@ libs/
     settings/            Settings feature
   shared/
     api/lotchen-client-api/  Auto-generated OpenAPI Angular HTTP client
+    ui/                      @talisoft/ui/* design system (secondary entry points)
 ```
 
 ## Backend Architecture
@@ -146,6 +147,61 @@ Routes are defined in `apps/Lotchen/src/app/app.routes.ts`. Protected routes use
 - Stores tokens in `localStorage` under key `LOTCHEN_ACCESS_TOKEN` as `AccessTokenResponse` JSON
 - Exposes Angular signals: `connectedUser`, `accessToken`, `loadingUserInfo`, `errorMessage`
 - `verifyToken()` calls `POST /api/v1/auth/verify-token` — used by the route guard
+
+### UI Design System (`@talisoft/ui`)
+
+All shared UI components live in `libs/shared/ui/` and are exposed as **secondary ng-packagr entry points**. The path alias `@talisoft/ui/*` maps directly to `libs/shared/ui/*`, so a component at `libs/shared/ui/button/` is imported as `@talisoft/ui/button`.
+
+**Component anatomy** — every component follows this layout:
+
+```
+libs/shared/ui/<name>/
+  index.ts              → export * from './src/public_api'
+  ng-package.json       → {} (empty, marks secondary entry point)
+  src/
+    <name>.ts           → component class
+    <name>.html         → template (if not inline)
+    <name>.scss         → styles (if not inline)
+    public_api.ts       → export * from './<name>'
+```
+
+**Component conventions:**
+
+- Always `standalone: true`, `ViewEncapsulation.None`, `ChangeDetectionStrategy.OnPush`
+- Styles go on the host element selector (e.g. `tas-button { @apply ... }`)
+- Use Angular signals (`signal`, `computed`, `input`, `output`) — not `@Input()`/`@Output()` decorators
+- Tailwind color tokens in use: `primary`, `accent`, `warn`, `functional-error`, `functional-success`
+- CSS variable for primary color: `rgb(var(--tas-color-primary) / <opacity>)`
+
+**Form control components** extend `AbstractControlValueAccessor<T>` from `@talisoft/ui/core`:
+
+```typescript
+export class TasMyControl extends AbstractControlValueAccessor<string> {
+  // override value getter/setter to use a signal for reactivity:
+  private _val = signal<string>('');
+  override get value() {
+    return this._val();
+  }
+  override set value(v: string) {
+    this._val.set(v);
+    this.onTouched();
+    this.onChange(v);
+  }
+}
+```
+
+Provide `NG_VALUE_ACCESSOR` with `forwardRef` (do **not** rely on the parent class provider — it references the abstract class, not the concrete one).
+
+**Available components** (import path → selector):
+`@talisoft/ui/button` → `button[tas-raised-button]`, `button[tas-outlined-button]`
+`@talisoft/ui/icon` → `<tas-icon iconName="feather:name">`
+`@talisoft/ui/side-drawer` → `<tas-side-drawer>`, `<tas-drawer-title>`, `<tas-drawer-content>`, `<tas-drawer-action>`, `TasClosableDrawer`
+`@talisoft/ui/card` → `<tas-card>`
+`@talisoft/ui/alert` → `<tas-alert type="success|error|info">`
+`@talisoft/ui/form-field` → `<tas-form-field>`, `<tas-label>`, `TasPrefix`, `TasSuffix`
+`@talisoft/ui/input` → `input[tasInput][type=text|email|…]`
+`@talisoft/ui/date-picker` → `<tas-date-picker>` (modes: `date|time|datetime|daterange`)
+`@talisoft/ui/file-uploader` → `<tas-file-uploader accept=".xlsx">` (ControlValueAccessor, `File | null`)
 
 ## Known Architecture Issues
 
