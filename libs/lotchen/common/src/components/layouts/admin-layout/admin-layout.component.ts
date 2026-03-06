@@ -10,6 +10,7 @@ import {
 import { RouterOutlet } from '@angular/router';
 import { TasIcon } from '@talisoft/ui/icon';
 import { ButtonModule } from '@talisoft/ui/button';
+import { UserMenuComponent } from '../../user-menu/user-menu.component';
 
 @Component({
   selector: 'common-admin-layout',
@@ -30,19 +31,7 @@ import { ButtonModule } from '@talisoft/ui/button';
                 <tas-icon iconName="feather:plus" iconSize="md"></tas-icon>
               </button>
             </div>
-
-            <div class="flex space-x-1 items-center">
-              <span class="sr-only">Ambroise BAZIE </span>
-              <button
-                class="bg-gray-200 rounded-full p-2 hover:bg-gray-300"
-                title="Ambroise BAZIE"
-              >
-                <tas-icon
-                  iconName="feather:user"
-                  iconClass="text-gray-500"
-                ></tas-icon>
-              </button>
-            </div>
+            <common-user-menu></common-user-menu>
           </div>
         </div>
       </tas-navigation-navbar>
@@ -83,6 +72,7 @@ import { ButtonModule } from '@talisoft/ui/button';
     ButtonModule,
     TasNavigationNavbar,
     TasNavigationSidebar,
+    UserMenuComponent,
   ],
 })
 export class AdminLayoutComponent implements OnInit {

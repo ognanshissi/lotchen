@@ -10,6 +10,7 @@ import {
   TasNavigationNavbar,
   TasNavigationSidebar,
 } from '@talisoft/ui/layouts';
+import { UserMenuComponent } from '../../user-menu/user-menu.component';
 
 @Component({
   selector: 'common-portal-layout',
@@ -24,6 +25,7 @@ import {
     TasNavigationNavbar,
     TasNavigationMenu,
     TasNavigationMenuItem,
+    UserMenuComponent,
   ],
 })
 export class PortalLayoutComponent implements OnInit {

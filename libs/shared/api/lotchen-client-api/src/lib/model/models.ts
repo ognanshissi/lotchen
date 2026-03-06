@@ -41,6 +41,7 @@ export * from './find-user-by-id-query-response.interface';
 export * from './find-user-by-id-query-role-dto.interface';
 export * from './forgot-password-command.interface';
 export * from './forgot-password-command-response.interface';
+export * from './get-me-query-response.interface';
 export * from './get-user-profile-query-response.interface';
 export * from './invite-user-command.interface';
 export * from './location-dto.interface';

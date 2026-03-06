@@ -64,6 +64,7 @@ model/find-user-by-id-query-response.interface.ts
 model/find-user-by-id-query-role-dto.interface.ts
 model/forgot-password-command-response.interface.ts
 model/forgot-password-command.interface.ts
+model/get-me-query-response.interface.ts
 model/get-user-profile-query-response.interface.ts
 model/invite-user-command.interface.ts
 model/location-dto.interface.ts
