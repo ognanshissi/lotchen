@@ -36,5 +36,42 @@ export interface CreateContactCommand {
      * Job title
      */
     jobTitle?: string;
+    /**
+     * Source of the contact
+     */
+    source?: CreateContactCommandSourceEnum;
+    /**
+     * Gender
+     */
+    gender?: CreateContactCommandGenderEnum;
 }
+export enum CreateContactCommandSourceEnum {
+    Website = 'Website',
+    Referral = 'Referral',
+    SocialMedia = 'Social Media',
+    Event = 'Event',
+    ColdCall = 'Cold Call',
+    Email = 'Email',
+    BackOffice = 'Back Office',
+    LinkedIn = 'LinkedIn',
+    Facebook = 'Facebook',
+    Twitter = 'Twitter',
+    Google = 'Google',
+    Instagram = 'Instagram',
+    YouTube = 'YouTube',
+    Pinterest = 'Pinterest',
+    Snapchat = 'Snapchat',
+    TikTok = 'TikTok',
+    Reddit = 'Reddit',
+    Quora = 'Quora',
+    Yelp = 'Yelp',
+    Campaign = 'Campaign',
+    Other = 'Other'
+};
+export enum CreateContactCommandGenderEnum {
+    Male = 'Male',
+    Female = 'Female'
+};
+
+
 

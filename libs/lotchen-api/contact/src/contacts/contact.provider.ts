@@ -7,9 +7,15 @@ import {
 } from '@lotchen/api/core';
 import { CallLog, CallLogSchema } from './call-log.schema';
 import { REQUEST } from '@nestjs/core';
+import {
+  User,
+  UserDocument,
+  UserSchema,
+} from '@lotchen/lotchen-api/identity-provider';
 
 export const CONTACT_MODEL = 'CONTACT_MODEL';
 export const CALL_LOG_MODEL = 'CALL_LOG_MODEL';
+export const USER_MODEL = 'USER_MODEL';
 
 @Injectable()
 export class ContactProvider extends CurrentUserProvider {
@@ -17,6 +23,7 @@ export class ContactProvider extends CurrentUserProvider {
     @Inject(CONTACT_MODEL)
     public readonly ContactModel: Model<ContactDocument>,
     @Inject(CALL_LOG_MODEL) public readonly CallLogModel: Model<CallLog>,
+    @Inject(USER_MODEL) public readonly UserModel: Model<UserDocument>,
     @Inject(REQUEST) public override readonly request: RequestExtendedWithUser
   ) {
     super(request);
@@ -35,6 +42,13 @@ export const contactProviders: Provider[] = [
     provide: CALL_LOG_MODEL,
     useFactory: async (tenantConnection: Connection) => {
       return tenantConnection.model(CallLog.name, CallLogSchema);
+    },
+    inject: ['TENANT_CONNECTION'],
+  },
+  {
+    provide: USER_MODEL,
+    useFactory: async (tenantConnection: Connection) => {
+      return tenantConnection.model(User.name, UserSchema);
     },
     inject: ['TENANT_CONNECTION'],
   },

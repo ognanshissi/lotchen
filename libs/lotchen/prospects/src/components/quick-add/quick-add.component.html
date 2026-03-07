@@ -1,0 +1,131 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title>Ajouter un contact</tas-title>
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus,
+      excepturi fuga fugit harum ipsum minus molestiae nobis possimus!
+    </Text>
+
+    <form [formGroup]="form" class="flex flex-col gap-3 mt-4">
+      <tas-card>
+        <card-header>
+          <tas-title>Informations personnelles</tas-title>
+        </card-header>
+
+        <div class="p-4 flex flex-col gap-3">
+          <tas-form-field>
+            <tas-label>Email</tas-label>
+            <input
+              tasInput
+              formControlName="email"
+              type="email"
+              placeholder="Adresse électronique"
+            />
+          </tas-form-field>
+          <tas-form-field>
+            <tas-label>Nom</tas-label>
+            <input
+              type="text"
+              formControlName="lastName"
+              tasInput
+              placeholder="Nom"
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Prénom</tas-label>
+            <input
+              type="text"
+              formControlName="firstName"
+              tasInput
+              placeholder="Prénom"
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Genre</tas-label>
+            <tas-select
+              formControlName="gender"
+              [options]="genderOptions"
+              placeholder="Sélectionner le genre"
+              [searchable]="false"
+            ></tas-select>
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Numéro de téléphone</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="mobileNumber"
+              placeholder="Numéro de téléphone"
+            />
+          </tas-form-field>
+
+          <tas-date-picker
+            formControlName="dateOfBirth"
+            placeholder="Date de naissance"
+          >
+            Date de naissance
+          </tas-date-picker>
+        </div>
+      </tas-card>
+
+      <tas-card>
+        <card-header>
+          <tas-title>Informations supplémentaires</tas-title>
+        </card-header>
+
+        <div class="p-4 flex flex-col gap-3">
+          <tas-form-field>
+            <tas-label>Nom de la société</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="company"
+              placeholder="Nom de la société"
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Occupation</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="jobTitle"
+              placeholder="Occupation / Profession"
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Source</tas-label>
+            <tas-select
+              formControlName="source"
+              [options]="sourceOptions"
+              placeholder="Sélectionner la source"
+              [searchable]="false"
+            ></tas-select>
+          </tas-form-field>
+        </div>
+      </tas-card>
+    </form>
+  </tas-drawer-content>
+  <tas-drawer-action>
+    <button tas-outlined-button closable-drawer [disabled]="form.disabled">
+      <tas-icon [iconName]="'close'"></tas-icon>
+      Fermer
+    </button>
+    <button
+      tas-raised-button
+      color="primary"
+      [disabled]="!form.valid"
+      (click)="submit()"
+      [isLoading]="form.disabled"
+    >
+      <tas-icon iconName="check"></tas-icon>
+      sauvegarder
+    </button>
+  </tas-drawer-action>
+</tas-side-drawer>

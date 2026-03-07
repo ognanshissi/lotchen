@@ -12,6 +12,7 @@ import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import { TasText } from '@talisoft/ui/text';
 import { TasInput } from '@talisoft/ui/input';
 import { TasIcon } from '@talisoft/ui/icon';
+import { TasSelect } from '@talisoft/ui/select';
 import {
   FormControl,
   FormGroup,
@@ -22,99 +23,12 @@ import { ContactsApiService } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { finalize } from 'rxjs';
 import { DialogRef } from '@angular/cdk/dialog';
+import { TasCard, TasCardHeader } from '@talisoft/ui/card';
+import { TasDatePicker } from '@talisoft/ui/date-picker';
 
 @Component({
   selector: 'prospects-quick-add',
-  template: `
-    <tas-side-drawer>
-      <tas-drawer-title>
-        <tas-title>Ajouter un contact</tas-title>
-      </tas-drawer-title>
-      <tas-drawer-content>
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus,
-          excepturi fuga fugit harum ipsum minus molestiae nobis possimus!
-        </Text>
-
-        <form [formGroup]="form" class="flex flex-col gap-3">
-          <tas-form-field>
-            <tas-label>Email</tas-label>
-            <input
-              tasInput
-              formControlName="email"
-              type="email"
-              placeholder="Adresse électronique"
-            />
-          </tas-form-field>
-          <tas-form-field>
-            <tas-label>Nom</tas-label>
-            <input
-              type="text"
-              formControlName="lastName"
-              tasInput
-              placeholder="Nom"
-            />
-          </tas-form-field>
-
-          <tas-form-field>
-            <tas-label>Prénom</tas-label>
-            <input
-              type="text"
-              formControlName="firstName"
-              tasInput
-              placeholder="Prénom"
-            />
-          </tas-form-field>
-
-          <tas-form-field>
-            <tas-label>Numéro de téléphone</tas-label>
-            <input
-              tasInput
-              type="text"
-              formControlName="mobileNumber"
-              placeholder="Numéro de téléphone"
-            />
-          </tas-form-field>
-
-          <tas-form-field>
-            <tas-label>Occupation</tas-label>
-            <input
-              tasInput
-              type="text"
-              formControlName="jobTitle"
-              placeholder="Occupation / Profession"
-            />
-          </tas-form-field>
-
-          <tas-form-field>
-            <tas-label>Date de naissance</tas-label>
-            <input
-              type="date"
-              formControlName="dateOfBirth"
-              tasInput
-              placeholder="Date de naissaince"
-            />
-          </tas-form-field>
-        </form>
-      </tas-drawer-content>
-      <tas-drawer-action>
-        <button tas-outlined-button closable-drawer [disabled]="form.disabled">
-          <tas-icon [iconName]="'close'"></tas-icon>
-          Fermer
-        </button>
-        <button
-          tas-raised-button
-          color="primary"
-          [disabled]="!form.valid"
-          (click)="submit()"
-          [isLoading]="form.disabled"
-        >
-          <tas-icon iconName="check"></tas-icon>
-          sauvegarder
-        </button>
-      </tas-drawer-action>
-    </tas-side-drawer>
-  `,
+  templateUrl: './quick-add.component.html',
   imports: [
     TasSideDrawer,
     TasTitle,
@@ -128,7 +42,11 @@ import { DialogRef } from '@angular/cdk/dialog';
     TasText,
     TasInput,
     TasIcon,
+    TasSelect,
     ReactiveFormsModule,
+    TasCard,
+    TasCardHeader,
+    TasDatePicker,
   ],
   standalone: true,
 })
@@ -136,6 +54,21 @@ export class QuickAddComponent implements OnInit {
   private readonly _contactApiService = inject(ContactsApiService);
   private readonly _snackbarService = inject(SnackbarService);
   private readonly _dialogRef = inject(DialogRef);
+  public genderOptions = [
+    { label: 'Homme', value: 'Male' },
+    { label: 'Femme', value: 'Female' },
+  ];
+  public sourceOptions = [
+    { label: 'Back Office', value: 'Back Office' },
+    { label: 'Website', value: 'Website' },
+    { label: 'Referral', value: 'Referral' },
+    { label: 'Social Media', value: 'Social Media' },
+    { label: 'Event', value: 'Event' },
+    { label: 'Cold Call', value: 'Cold Call' },
+    { label: 'Email', value: 'Email' },
+    { label: 'Campaign', value: 'Campaign' },
+    { label: 'Other', value: 'Other' },
+  ];
   public form!: FormGroup;
 
   public ngOnInit() {
@@ -146,6 +79,9 @@ export class QuickAddComponent implements OnInit {
       lastName: new FormControl(null, [Validators.required]),
       jobTitle: new FormControl(null),
       dateOfBirth: new FormControl(null),
+      gender: new FormControl(null),
+      source: new FormControl(null),
+      company: new FormControl(null),
     });
   }
 

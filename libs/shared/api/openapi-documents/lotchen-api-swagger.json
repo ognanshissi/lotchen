@@ -3384,6 +3384,41 @@
           "jobTitle": {
             "type": "string",
             "description": "Job title"
+          },
+          "source": {
+            "type": "string",
+            "description": "Source of the contact",
+            "enum": [
+              "Website",
+              "Referral",
+              "Social Media",
+              "Event",
+              "Cold Call",
+              "Email",
+              "Back Office",
+              "LinkedIn",
+              "Facebook",
+              "Twitter",
+              "Google",
+              "Instagram",
+              "YouTube",
+              "Pinterest",
+              "Snapchat",
+              "TikTok",
+              "Reddit",
+              "Quora",
+              "Yelp",
+              "Campaign",
+              "Other"
+            ]
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender",
+            "enum": [
+              "Male",
+              "Female"
+            ]
           }
         },
         "required": [

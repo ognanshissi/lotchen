@@ -24,7 +24,10 @@ const DEFAULT_SIDE_DRAWER_WIDTH = '500px';
       >
         <div>
           <ng-content select="tas-drawer-title"></ng-content>
-          <div class="overflow-y-auto p-4" style="height: calc(100vh - 58px)">
+          <div
+            class="overflow-y-auto p-4"
+            style="height: calc(100vh - 58px); padding-bottom: 100px"
+          >
             <ng-content select="tas-drawer-content"></ng-content>
           </div>
         </div>

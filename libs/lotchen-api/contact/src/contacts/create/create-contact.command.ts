@@ -1,13 +1,37 @@
 import { CommandHandler } from '@lotchen/api/core';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsIn, IsNotEmpty, IsOptional } from 'class-validator';
 import { ContactProvider } from '../contact.provider';
 import { Model } from 'mongoose';
-import { ContactDocument } from '../contact.schema';
+import { ContactDocument, contactSource } from '../contact.schema';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CONTACT_CREATED, ContactCreatedEvent } from './contact-created.event';
 import { ContactStatus } from '../contact-status.enum';
+
+const VALID_SOURCES: contactSource[] = [
+  'Website',
+  'Referral',
+  'Social Media',
+  'Event',
+  'Cold Call',
+  'Email',
+  'Back Office',
+  'LinkedIn',
+  'Facebook',
+  'Twitter',
+  'Google',
+  'Instagram',
+  'YouTube',
+  'Pinterest',
+  'Snapchat',
+  'TikTok',
+  'Reddit',
+  'Quora',
+  'Yelp',
+  'Campaign',
+  'Other',
+];
 
 export class CreateContactCommand {
   @ApiProperty({ required: true, description: 'Email', type: String })
@@ -31,6 +55,26 @@ export class CreateContactCommand {
 
   @ApiProperty({ description: 'Job title', type: String, required: false })
   jobTitle!: string;
+
+  @ApiProperty({
+    description: 'Source of the contact',
+    type: String,
+    required: false,
+    enum: VALID_SOURCES,
+  })
+  @IsOptional()
+  @IsIn(VALID_SOURCES)
+  source?: string;
+
+  @ApiProperty({
+    description: 'Gender',
+    type: String,
+    required: false,
+    enum: ['Male', 'Female'],
+  })
+  @IsOptional()
+  @IsIn(['Male', 'Female'])
+  gender?: string;
 }
 
 export class CreateContactCommandResponse {
@@ -89,27 +133,47 @@ export class CreateContactCommandHandler
     contactModel: Model<ContactDocument>,
     command: CreateContactCommand
   ): Promise<void> {
+    const userId = this.contactProvider.user()?.userId;
+
+    // Lookup creator's user record for team/territory assignment
+    let assignedToTeamId: string | undefined;
+    let territoryId: string | undefined;
+
+    if (userId) {
+      const creator = await this.contactProvider.UserModel.findById(userId)
+        .lean()
+        .exec();
+      if (creator?.teams?.length) {
+        assignedToTeamId = (creator.teams[0] as any)._id?.toString();
+        territoryId = (creator.teams[0] as any).territoryId?.toString();
+      }
+    }
+
     const contact = new contactModel({
       email: command.email,
       firstName: command.firstName,
       lastName: command.lastName,
       mobileNumber: command.mobileNumber,
       dateOfBirth: command.dateOfBirth,
-      createdBy: this.contactProvider.user()?.userId,
+      createdBy: userId,
       createdByInfo: this.contactProvider.user(),
       jobTitle: command.jobTitle,
-      assignedToUserId: this.contactProvider.user()?.userId,
+      source: command.source ?? 'Back Office',
+      gender: command.gender ?? null,
+      assignedToUserId: userId,
+      assignedToTeamId,
+      territoryId,
       status: ContactStatus.New,
     });
     contact.validateSync();
 
-    // contact.statusHistory.push({
-    //   previousStatus: ContactStatus.New,
-    //   changedAt: new Date(),
-    //   changedBy: this.contactProvider.user()?.userId,
-    //   status: ContactStatus.New,
-    // });
-    await contact.save(); // save the contact
+    contact.statusHistory.push({
+      previousStatus: ContactStatus.New,
+      changedAt: new Date(),
+      changedBy: userId,
+      status: ContactStatus.New,
+    });
+    await contact.save();
 
     // Event contact created event
     this.eventEmitter.emit(
@@ -117,7 +181,7 @@ export class CreateContactCommandHandler
       new ContactCreatedEvent(
         this.contactProvider.request.tenant_fqdn,
         contact.id,
-        this.contactProvider.user()?.userId ?? '',
+        userId ?? '',
         contact.email,
         contact.mobileNumber,
         ContactStatus.New
