@@ -1,14 +1,22 @@
-import { Component, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  output,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 import { TasCheckbox } from '@talisoft/ui/checkbox';
 
 @Component({
   selector: '[rowSelectionMaster]',
   standalone: true,
-  template: ` <tas-checkbox
+  template: `<tas-checkbox
     [checked]="isChecked()"
     (valueChange)="handleChangeEvent($event)"
   ></tas-checkbox>`,
   imports: [TasCheckbox],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RowSelectionMaster {
   public isChecked = signal(false);

@@ -82,7 +82,11 @@ export class ContactListingComponent {
   public openImportContactDialog(): void {
     this._sideDrawerService
       .open(ImportContactDialogComponent)
-      .closed.subscribe();
+      .closed.subscribe((result) => {
+        if (result === 'imported') {
+          this.refreshContacts();
+        }
+      });
   }
 
   public openAddTask(contactId: string): void {

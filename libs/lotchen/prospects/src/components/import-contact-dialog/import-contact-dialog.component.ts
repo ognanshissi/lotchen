@@ -1,5 +1,7 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { DialogRef } from '@angular/cdk/dialog';
 import * as XLSX from 'xlsx';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasFileUploader } from '@talisoft/ui/file-uploader';
@@ -12,18 +14,12 @@ import {
   TasSideDrawer,
 } from '@talisoft/ui/side-drawer';
 import { TasTitle } from '@talisoft/ui/title';
+import { SnackbarService } from '@talisoft/ui/snackbar';
+import { ContactsService } from '@lotchen/lotchen/common/services';
+import { ImportSummary } from '@lotchen/lotchen/common/models';
+import { ContactPreviewRow } from './contact-preview.model';
 
-export interface ContactPreviewRow {
-  firstName: string;
-  lastName: string;
-  email: string;
-  mobile: string;
-  jobTitle: string;
-  valid: boolean;
-  observation: string;
-}
-
-type DialogStep = 'upload' | 'review';
+type DialogStep = 'upload' | 'review' | 'summary';
 
 @Component({
   selector: 'prospects-import-contact-dialog',
@@ -43,10 +39,17 @@ type DialogStep = 'upload' | 'review';
   ],
 })
 export class ImportContactDialogComponent {
+  private readonly _http = inject(HttpClient);
+  private readonly _dialogRef = inject(DialogRef);
+  private readonly _snackbar = inject(SnackbarService);
+  private readonly _contactsService = inject(ContactsService);
+
   public step = signal<DialogStep>('upload');
   public selectedFile = signal<File | null>(null);
   public parsedContacts = signal<ContactPreviewRow[]>([]);
   public parseError = signal<string | null>(null);
+  public importing = signal(false);
+  public importResult = signal<ImportSummary | null>(null);
 
   public validCount = computed(
     () => this.parsedContacts().filter((c) => c.valid).length
@@ -73,13 +76,29 @@ export class ImportContactDialogComponent {
         defval: '',
       });
 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
       const contacts: ContactPreviewRow[] = rows.map((row) => {
         const firstName = String(row['First name'] ?? '').trim();
         const lastName = String(row['Last name'] ?? '').trim();
         const email = String(row['Email'] ?? '').trim();
         const mobile = String(row['Mobile'] ?? '').trim();
         const jobTitle = String(row['Job title'] ?? '').trim();
-        const valid = !!(firstName || lastName) && !!(email || mobile);
+
+        const hasName = !!(firstName || lastName);
+        const hasContact = !!(email || mobile);
+        const emailValid = !email || emailRegex.test(email);
+        const valid = hasName && hasContact && emailValid;
+
+        let observation = '';
+        if (!hasName) {
+          observation = 'Prénom ou nom requis';
+        } else if (!hasContact) {
+          observation = 'Email ou mobile requis';
+        } else if (!emailValid) {
+          observation = 'Format email invalide';
+        }
+
         return {
           firstName,
           lastName,
@@ -87,7 +106,7 @@ export class ImportContactDialogComponent {
           mobile,
           jobTitle,
           valid,
-          observation: '',
+          observation,
         };
       });
 
@@ -110,17 +129,41 @@ export class ImportContactDialogComponent {
   }
 
   public importContacts(): void {
-    const validContacts = this.parsedContacts().filter((c) => c.valid);
-    // import valid contacts here
-    console.log('Importing valid contacts:', validContacts);
+    const file = this.selectedFile();
+    if (!file) return;
+
+    this.importing.set(true);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    this._contactsService.importContacts(formData).subscribe({
+      next: (result) => {
+        this.importing.set(false);
+        this.importResult.set(result);
+        this.step.set('summary');
+        this._snackbar.success(
+          'Import terminé',
+          `${result.createdCount} contact(s) créé(s)`
+        );
+      },
+      error: () => {
+        this.importing.set(false);
+        this._snackbar.error('Erreur', "Impossible d'importer les contacts");
+      },
+    });
+  }
+
+  public closeDrawer(): void {
+    const result = this.importResult();
+    this._dialogRef.close(result?.createdCount ? 'imported' : undefined);
   }
 
   public downloadTemplate(): void {
-    const link = document.createElement('a');
-    link.href = 'path/to/your/template.xlsx';
-    link.download = 'contact_import_template.xlsx';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const headers = ['First name', 'Last name', 'Email', 'Mobile', 'Job title'];
+    const ws = XLSX.utils.aoa_to_sheet([headers]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Contacts');
+    XLSX.writeFile(wb, 'contact_import_template.xlsx');
   }
 }

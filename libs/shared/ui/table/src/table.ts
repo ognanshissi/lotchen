@@ -92,14 +92,13 @@ export class TasTable<T extends TableEntity>
 
   public rowSelectionMaster = contentChild<RowSelectionMaster>(
     RowSelectionMaster,
-    {
-      descendants: true,
-    }
+    { descendants: true }
   );
 
-  public rowSelectionItems = contentChildren(RowSelectionItem, {
-    descendants: true,
-  });
+  public rowSelectionItems = contentChildren<RowSelectionItem>(
+    RowSelectionItem,
+    { descendants: true }
+  );
 
   // ContentChild
   @ContentChild('header') header!: TemplateRef<any>;

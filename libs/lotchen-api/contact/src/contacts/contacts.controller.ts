@@ -41,7 +41,10 @@ import {
   PaginateAllContactsCommandRequest,
   PaginateAllContactsCommandResponse,
 } from './paginate-all/paginate-all-contacts.command';
-import { ImportContactsExcelCommandHandler } from './import-contacts-excel/import-contacts-excel.command';
+import {
+  ImportContactsExcelCommandHandler,
+  ImportContactsExcelCommandResponse,
+} from './import-contacts-excel/import-contacts-excel.command';
 import {
   PatchDataCommandHandler,
   PatchDataCommandRequest,
@@ -187,9 +190,14 @@ export class ContactsController {
 
   @Post('import-excel')
   @UseInterceptors(FileInterceptor('file', uploadConfig))
+  @ApiResponse({
+    status: 200,
+    description: 'Import summary',
+    type: ImportContactsExcelCommandResponse,
+  })
   async importContactsExcel(
     @UploadedFile() file: Express.Multer.File
-  ): Promise<any> {
+  ): Promise<ImportContactsExcelCommandResponse> {
     return this._importContactsExcelCommandHandler.handlerAsync({
       excelFile: file?.path,
     });

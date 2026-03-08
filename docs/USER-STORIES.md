@@ -16,10 +16,10 @@
 
 Acceptance Criteria:
 
-- [ ] Form captures: first name, last name, email, mobile, phone, job title, company, address, source, tags
-- [ ] Duplicate detection on email and mobile number before creation
-- [ ] Contact is automatically assigned to the creator's territory/agency
-- [ ] Audit fields populated (createdBy, createdByInfo, createdAt)
+- [x] Form captures: first name, last name, email, mobile, phone, job title, company, address, source, tags
+- [x] Duplicate detection on email and mobile number before creation
+- [x] Contact is automatically assigned to the creator's territory/agency
+- [x] Audit fields populated (createdBy, createdByInfo, createdAt)
 
 **US-1.1.2** — View contact detail
 
@@ -27,9 +27,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Summary card: avatar, name, status, source, assigned agent
-- [ ] Tabs: Overview, Activities, Documents, Notes, Call logs
-- [ ] Activity timeline shows all interactions (calls, emails, meetings, notes) in chronological order
+- [x] Summary card: avatar, name, status, source, assigned agent
+- [x] Tabs: Overview, Activities, Documents, Notes, Call logs
+- [x] Activity timeline shows all interactions (calls, emails, meetings, notes) in chronological order
 
 **US-1.1.3** — Edit a contact
 
@@ -37,9 +37,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Inline editing on detail page or via edit drawer
-- [ ] Duplicate detection re-runs on email/mobile change
-- [ ] Audit trail records who changed what and when
+- [x] Inline editing on detail page or via edit drawer
+- [x] Duplicate detection re-runs on email/mobile change
+- [x] Audit trail records who changed what and when
 
 **US-1.1.4** — Delete / archive a contact
 
@@ -47,9 +47,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Soft delete sets `deletedAt` timestamp
-- [ ] Archived contacts hidden from default list but searchable via filter
-- [ ] Bulk archive from list view
+- [x] Soft delete sets `deletedAt` timestamp
+- [x] Archived contacts hidden from default list but searchable via filter
+- [x] Bulk archive from list view
 
 **US-1.1.5** — Import contacts from Excel
 

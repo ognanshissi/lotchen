@@ -229,6 +229,97 @@
       email/mobile requis).
     </p>
     }
+
+    <!-- ── STEP 3: SUMMARY ──────────────────────────────────────────── -->
+    @if (step() === 'summary') { @if (importResult(); as result) {
+    <div class="flex flex-col gap-4">
+      <!-- Created -->
+      <div
+        class="flex items-center gap-3 p-4 rounded-lg bg-green-50 border border-green-200"
+      >
+        <tas-icon
+          iconName="feather:check-circle"
+          class="text-green-600 flex-shrink-0 text-lg"
+        ></tas-icon>
+        <div>
+          <p class="text-sm font-semibold text-green-700">
+            {{ result.createdCount }} contact(s) créé(s)
+          </p>
+          <p class="text-xs text-green-600">Importés avec succès</p>
+        </div>
+      </div>
+
+      <!-- Skipped (duplicates) -->
+      @if (result.skippedCount > 0) {
+      <div
+        class="flex items-center gap-3 p-4 rounded-lg bg-amber-50 border border-amber-200"
+      >
+        <tas-icon
+          iconName="feather:alert-triangle"
+          class="text-amber-500 flex-shrink-0 text-lg"
+        ></tas-icon>
+        <div>
+          <p class="text-sm font-semibold text-amber-700">
+            {{ result.skippedCount }} contact(s) ignoré(s)
+          </p>
+          <p class="text-xs text-amber-600">
+            Doublons détectés (email ou mobile déjà existant)
+          </p>
+        </div>
+      </div>
+      }
+
+      <!-- Errors -->
+      @if (result.errorCount > 0) {
+      <div
+        class="flex items-center gap-3 p-4 rounded-lg bg-red-50 border border-red-200"
+      >
+        <tas-icon
+          iconName="feather:x-circle"
+          class="text-red-500 flex-shrink-0 text-lg"
+        ></tas-icon>
+        <div>
+          <p class="text-sm font-semibold text-red-700">
+            {{ result.errorCount }} erreur(s)
+          </p>
+          <p class="text-xs text-red-600">Lignes invalides non importées</p>
+        </div>
+      </div>
+
+      <!-- Error details table -->
+      <div class="rounded-lg border border-gray-200 overflow-hidden">
+        <div class="overflow-x-auto max-h-[200px] overflow-y-auto">
+          <table class="w-full text-xs">
+            <thead class="bg-gray-50 sticky top-0 z-10">
+              <tr>
+                <th
+                  class="px-3 py-2 text-left font-semibold text-gray-600 border-b border-gray-200"
+                >
+                  Ligne
+                </th>
+                <th
+                  class="px-3 py-2 text-left font-semibold text-gray-600 border-b border-gray-200"
+                >
+                  Raison
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (err of result.errors; track err.row) {
+              <tr class="border-b border-gray-100 last:border-0">
+                <td class="px-3 py-2 text-gray-700 font-medium">
+                  {{ err.row }}
+                </td>
+                <td class="px-3 py-2 text-gray-500">{{ err.reason }}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      }
+    </div>
+    } }
   </tas-drawer-content>
 
   <!-- ── ACTIONS ──────────────────────────────────────────────────── -->
@@ -248,7 +339,7 @@
       Vérifier
     </button>
     } @if (step() === 'review') {
-    <button tas-outlined-button (click)="back()">
+    <button tas-outlined-button (click)="back()" [disabled]="importing()">
       <tas-icon iconName="feather:arrow-left"></tas-icon>
       Retour
     </button>
@@ -256,10 +347,18 @@
       tas-raised-button
       color="primary"
       (click)="importContacts()"
-      [disabled]="validCount() === 0"
+      [disabled]="validCount() === 0 || importing()"
     >
+      @if (importing()) {
+      <tas-icon iconName="feather:loader"></tas-icon>
+      Import en cours... } @else {
       <tas-icon iconName="feather:upload"></tas-icon>
-      Importer {{ validCount() }} contact(s)
+      Importer {{ validCount() }} contact(s) }
+    </button>
+    } @if (step() === 'summary') {
+    <button tas-raised-button color="primary" (click)="closeDrawer()">
+      <tas-icon iconName="feather:check"></tas-icon>
+      Fermer
     </button>
     }
   </tas-drawer-action>

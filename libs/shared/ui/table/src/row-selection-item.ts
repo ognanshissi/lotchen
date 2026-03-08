@@ -27,9 +27,7 @@ export class RowSelectionItem {
     this.isChecked.set(!this.isChecked());
   }
 
-  constructor(private readonly _elementRef: ElementRef<any>) {
-    console.log(this._elementRef.nativeElement.parent);
-  }
+  constructor(private readonly _elementRef: ElementRef<any>) {}
 
   @HostBinding('class')
   public get classes() {

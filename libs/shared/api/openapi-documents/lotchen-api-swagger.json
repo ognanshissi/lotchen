@@ -1740,8 +1740,15 @@
         "operationId": "ContactsController_importContactsExcel_v1",
         "parameters": [],
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Import summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportContactsExcelCommandResponse"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -3967,6 +3974,53 @@
           "pageSize",
           "filters",
           "fullTextSearch"
+        ]
+      },
+      "ImportContactsExcelErrorDetail": {
+        "type": "object",
+        "properties": {
+          "row": {
+            "type": "number",
+            "description": "Row number in the Excel file"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for the error"
+          }
+        },
+        "required": [
+          "row",
+          "reason"
+        ]
+      },
+      "ImportContactsExcelCommandResponse": {
+        "type": "object",
+        "properties": {
+          "createdCount": {
+            "type": "number",
+            "description": "Number of contacts created"
+          },
+          "skippedCount": {
+            "type": "number",
+            "description": "Number of contacts skipped (duplicates)"
+          },
+          "errorCount": {
+            "type": "number",
+            "description": "Number of rows with errors"
+          },
+          "errors": {
+            "description": "Details of rows that had errors",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportContactsExcelErrorDetail"
+            }
+          }
+        },
+        "required": [
+          "createdCount",
+          "skippedCount",
+          "errorCount",
+          "errors"
         ]
       },
       "FieldDto": {
