@@ -7,7 +7,10 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Data } from '@angular/router';
-import { FindContactByIdQueryResponse } from '@talisoft/api/lotchen-client-api';
+import {
+  ContactsApiService,
+  FindContactByIdQueryResponse,
+} from '@talisoft/api/lotchen-client-api';
 import { TasCard } from '@talisoft/ui/card';
 import { TasSummaryField } from '@talisoft/ui/summary-field';
 import { map, Observable } from 'rxjs';
@@ -22,6 +25,7 @@ import { map, Observable } from 'rxjs';
 })
 export class ContactDetailOverviewComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _contactApi = inject(ContactsApiService);
 
   public contact = toSignal(
     (this._activatedRoute?.parent?.data as Observable<Data>).pipe(
@@ -49,4 +53,19 @@ export class ContactDetailOverviewComponent {
     const tags = (this.contact() as any)?.tags;
     return tags?.length ? tags.join(', ') : '';
   });
+
+  public handleSaveInlineItemAction($event: {
+    value: string;
+    field: string;
+  }): void {
+    console.log('handleSaveInlineItemAction', $event);
+    this._contactApi.contactsControllerPatchDataV1(this.contact()?.id ?? '', {
+      fields: [
+        {
+          fieldName: $event.field,
+          fieldValue: $event.value,
+        },
+      ],
+    });
+  }
 }

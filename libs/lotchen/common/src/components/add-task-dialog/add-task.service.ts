@@ -5,6 +5,7 @@ import { AddTaskDialogComponent } from './add-task-dialog.component';
 
 export interface AddTaskDialogData {
   relatedId: string;
+  relatedType: string;
 }
 
 @Injectable({
@@ -15,10 +16,12 @@ export class AddTaskDialogService {
   private readonly _snackbar = inject(SnackbarService);
 
   public open(data: AddTaskDialogData): void {
+    // ...thinking to how to handle a closed dialog externally
     this._dialog.open(AddTaskDialogComponent, {
       width: '600px',
       data: {
         relatedId: data.relatedId,
+        relatedType: data.relatedType,
       },
     });
   }

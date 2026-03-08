@@ -45,6 +45,48 @@ export class UpdateContactCommandRequest {
 
   @ApiProperty({
     required: false,
+    description: 'Contact gender',
+    type: String,
+  })
+  gender!: string;
+
+  @ApiProperty({
+    required: false,
+    description: 'Contact phone (landline)',
+    type: String,
+  })
+  phone!: string;
+
+  @ApiProperty({
+    required: false,
+    description: 'Contact date of birth',
+    type: Date,
+  })
+  dateOfBirth!: Date;
+
+  @ApiProperty({
+    required: false,
+    description: 'Contact company name',
+    type: String,
+  })
+  companyName!: string;
+
+  @ApiProperty({
+    required: false,
+    description: 'Contact tags',
+    type: [String],
+  })
+  tags!: string[];
+
+  @ApiProperty({
+    required: false,
+    description: 'Contact source',
+    type: String,
+  })
+  source!: string;
+
+  @ApiProperty({
+    required: false,
     description: 'Contact Address',
     type: () => AddressDto,
   })
@@ -67,7 +109,9 @@ export class UpdateContactCommandHandler
   constructor(private readonly contactProvider: ContactProvider) {}
 
   async handlerAsync(command: UpdateContactCommand): Promise<void> {
-    const contact = await this.contactProvider.ContactModel.findById(command.id)
+    const contact = await this.contactProvider.ContactModel.exists({
+      _id: command.id,
+    })
       .lean()
       .exec();
     if (!contact) {
@@ -75,37 +119,34 @@ export class UpdateContactCommandHandler
     }
 
     // validate new fields - email must be unique
-    const isDuplicated = await this.contactProvider.ContactModel.findOne(
-      {
-        $or: [
-          {
-            mobileNumber: command.mobileNumber,
-          },
-          {
-            email: command.email,
-          },
-        ],
-      },
-      'id'
-    )
-      .lean()
-      .exec();
+    const dupeFilters = [];
+    if (command.email) dupeFilters.push({ email: command.email });
+    if (command.mobileNumber)
+      dupeFilters.push({ mobileNumber: command.mobileNumber });
 
-    if (isDuplicated?._id.toString() !== contact._id.toString()) {
-      throw new BadRequestException(
-        'There is a contact with `email` or `mobile number`'
-      );
+    if (dupeFilters.length > 0) {
+      const isDuplicated = await this.contactProvider.ContactModel.findOne(
+        { $or: dupeFilters },
+        '_id'
+      )
+        .lean()
+        .exec();
+
+      if (
+        isDuplicated &&
+        isDuplicated._id.toString() !== contact._id.toString()
+      ) {
+        throw new BadRequestException(
+          'Un contact avec cet email ou numero de telephone existe déjà'
+        );
+      }
     }
 
     await this.contactProvider.ContactModel.findByIdAndUpdate(contact._id, {
       $set: {
-        address: command.address,
-        email: command.email,
-        firstName: command.firstName,
-        lastName: command.lastName,
-        mobileNumber: command.mobileNumber,
         updatedBy: this.contactProvider.user().userId,
         updatedByInfo: this.contactProvider.user(),
+        ...command,
       },
     });
     // await contact.save();

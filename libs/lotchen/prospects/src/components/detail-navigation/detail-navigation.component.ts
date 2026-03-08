@@ -13,6 +13,7 @@ import { TasCard } from '@talisoft/ui/card';
 import { TasIcon } from '@talisoft/ui/icon';
 import { map } from 'rxjs';
 import { MenuItem } from '@lotchen/lotchen/common/models/menu-item';
+import { AddTaskDialogService } from '@lotchen/lotchen/common/components';
 
 @Component({
   selector: 'prospects-detail-navigation',
@@ -38,6 +39,7 @@ import { MenuItem } from '@lotchen/lotchen/common/models/menu-item';
 export class DetailNavigationComponent {
   private readonly _callerService = inject(CallerService);
   private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _taskDialogService = inject(AddTaskDialogService);
 
   public menuItems: MenuItem[] = [
     {
@@ -92,6 +94,13 @@ export class DetailNavigationComponent {
         this.contact()?.firstName
       } ${this.contact()?.lastName?.toUpperCase()}`,
       mobileNumber: this.contact()?.mobileNumber ?? '',
+    });
+  }
+
+  public openAddTaskDialog(): void {
+    this._taskDialogService.open({
+      relatedId: this.contact()?.id ?? '',
+      relatedType: 'contact',
     });
   }
 }

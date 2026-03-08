@@ -1871,7 +1871,8 @@
               "default": "follow up",
               "enum": [
                 "follow up",
-                "call reminder"
+                "call reminder",
+                "other"
               ],
               "type": "string"
             }
@@ -3755,6 +3756,34 @@
             "type": "string",
             "description": "Contact job title"
           },
+          "gender": {
+            "type": "string",
+            "description": "Contact gender"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Contact phone (landline)"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Contact date of birth"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "Contact company name"
+          },
+          "tags": {
+            "description": "Contact tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source": {
+            "type": "string",
+            "description": "Contact source"
+          },
           "address": {
             "description": "Contact Address",
             "allOf": [
@@ -4091,7 +4120,8 @@
             "type": "string",
             "enum": [
               "follow up",
-              "call reminder"
+              "call reminder",
+              "other"
             ],
             "default": "follow up"
           },

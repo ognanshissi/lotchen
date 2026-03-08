@@ -53,9 +53,12 @@ function isSameDay(a: Date, b: Date): boolean {
   );
 }
 
-function isInRange(d: Date, a: Date, b: Date): boolean {
-  const [s, e] = a <= b ? [a, b] : [b, a];
-  return d.getTime() > s.getTime() && d.getTime() < e.getTime();
+function isInRange(currentDate: Date, startDate: Date, endDate: Date): boolean {
+  const [s, e] =
+    startDate <= endDate ? [startDate, endDate] : [endDate, startDate];
+  return (
+    currentDate.getTime() > s.getTime() && currentDate.getTime() < e.getTime()
+  );
 }
 
 function toISODate(d: Date): string {

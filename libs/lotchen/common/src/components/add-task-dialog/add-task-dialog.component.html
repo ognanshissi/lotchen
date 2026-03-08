@@ -4,14 +4,16 @@
   </tas-drawer-title>
   <tas-drawer-content>
     <!-- Related: Display a lite information on the related entity -->
-
     <form [formGroup]="addTaskForm">
       <div class="text-primary">
         Associé a :
-        <span class="bg-gray-300 px-3 py-1 rounded-full">{{
-          'Ambroise BAZIE'
-        }}</span>
+        <span class="bg-gray-300 px-3 py-1 rounded-full"
+          >{{ currentUser()?.firstName }} {{ currentUser()?.lastName }}</span
+        >
       </div>
+
+      <!-- User should be able to assign the task to another user (agent) -->
+
       <div class="mt-5 flex flex-col space-y-3">
         <tas-form-field>
           <tas-label>Titre de la tâche</tas-label>

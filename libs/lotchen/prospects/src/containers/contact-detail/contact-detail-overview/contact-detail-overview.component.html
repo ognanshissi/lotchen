@@ -23,12 +23,14 @@
         label="Nom"
         [editable]="true"
         [value]="contact()?.lastName"
+        (fieldSaved)="handleSaveInlineItemAction($event)"
       />
       <tas-summary-field
         rawField="firstName"
         label="Prénom"
         [editable]="true"
         [value]="contact()?.firstName"
+        (fieldSaved)="handleSaveInlineItemAction($event)"
       />
       <tas-summary-field
         rawField="gender"
@@ -44,6 +46,7 @@
         rawField="mobileNumber"
         label="Téléphone mobile"
         [value]="contact()?.mobileNumber"
+        (fieldSaved)="handleSaveInlineItemAction($event)"
       />
       <tas-summary-field
         rawField="phone"
@@ -53,6 +56,7 @@
       <tas-summary-field
         rawField="dateOfBirth"
         label="Date de naissance"
+        type="date"
         [value]="contact()?.dateOfBirth"
       />
       <tas-summary-field

@@ -25,7 +25,11 @@
         class="rounded-lg border border-gray-300 p-4 bg-white shadow-xl min-w-[200px]"
       >
         <p class="font-semibold text-lg pb-4">Modifier : {{ label() }}</p>
+
+        <!--  Input fields -->
+
         <div class="my-4">
+          @switch (type()) { @case ('text') {
           <tas-form-field>
             <tas-label>{{ label() }}</tas-label>
             <input
@@ -35,8 +39,25 @@
               [placeholder]="placeholder()"
             />
           </tas-form-field>
+          } @case ('number') {
+          <tas-form-field>
+            <tas-label>{{ label() }}</tas-label>
+            <input
+              tasInput
+              [formControl]="control"
+              type="number"
+              [placeholder]="placeholder()"
+            />
+          </tas-form-field>
+          } @case ('date') {
+          <tas-date-picker
+            [formControl]="control"
+            [placeholder]="placeholder()"
+          >
+            {{ label() }}
+          </tas-date-picker>
+          } }
         </div>
-
         <div class="flex justify-between space-x-2">
           <button tas-outlined-button (click)="isOpen.set(false)">
             Annuler
@@ -46,7 +67,7 @@
             tas-raised-button
             [disabled]="!control.valid"
             color="primary"
-            (click)="handleSubmittion()"
+            (click)="handleSubmit()"
           >
             Enregistrer la modification
           </button>

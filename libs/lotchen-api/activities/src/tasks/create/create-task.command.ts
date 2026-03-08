@@ -1,7 +1,7 @@
 import { CommandHandler } from '@lotchen/api/core';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsUUID } from 'class-validator';
+import { IsIn, IsNotEmpty, IsUUID } from 'class-validator';
 import { TaskTypeEnum } from '../task-type.enum';
 import { ActivitiesProvider } from '../../activities.provider';
 
@@ -18,6 +18,7 @@ export class CreateTaskCommand {
   relatedToType!: string;
 
   @ApiProperty({ enum: TaskTypeEnum, default: TaskTypeEnum.FollowUp })
+  @IsIn(Object.values(TaskTypeEnum))
   taskType!: string;
 
   @ApiProperty({ description: 'Task title' })
