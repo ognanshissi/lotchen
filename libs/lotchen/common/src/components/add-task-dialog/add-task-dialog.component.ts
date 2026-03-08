@@ -79,17 +79,11 @@ export class AddTaskDialogComponent implements OnInit {
       })
       .subscribe({
         next: (response) => {
-          console.log(response);
           this._dialogRef.close(response);
-          this._snackbar.success(
-            'Felicitations !',
-            'Task created successfully'
-          );
+          this._snackbar.success('Felicitations !', 'Tâche créée avec succès');
         },
-        error: (error) => {
-          console.error('Failed to create task:', error);
-          // this._dialogRef.close();
-          this._snackbar.error('Oops', 'Failed to create task');
+        error: () => {
+          this._snackbar.error('Oops', 'Impossible de créer la tâche');
         },
       });
   }
