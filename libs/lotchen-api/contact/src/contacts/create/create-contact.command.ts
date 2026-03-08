@@ -75,6 +75,13 @@ export class CreateContactCommand {
   @IsOptional()
   @IsIn(['Male', 'Female'])
   gender?: string;
+
+  @ApiProperty({
+    description: 'Company name',
+    type: String,
+    required: false,
+  })
+  companyName?: string;
 }
 
 export class CreateContactCommandResponse {
@@ -135,9 +142,11 @@ export class CreateContactCommandHandler
   ): Promise<void> {
     const userId = this.contactProvider.user()?.userId;
 
-    // Lookup creator's user record for team/territory assignment
+    // Look up the creator's user record for team/territory assignment
     let assignedToTeamId: string | undefined;
     let territoryId: string | undefined;
+
+    console.log('userId', userId);
 
     if (userId) {
       const creator = await this.contactProvider.UserModel.findById(userId)
@@ -164,6 +173,7 @@ export class CreateContactCommandHandler
       assignedToTeamId,
       territoryId,
       status: ContactStatus.New,
+      companyName: command.companyName,
     });
     contact.validateSync();
 

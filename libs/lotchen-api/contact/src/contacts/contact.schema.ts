@@ -101,6 +101,9 @@ export class Contact extends AggregateRoot {
   @Prop({ type: AmountSchema })
   requestedLoanAmount?: Amount;
 
+  @Prop({ type: String })
+  companyName?: string;
+
   @Prop()
   loanPurpose?: string;
 

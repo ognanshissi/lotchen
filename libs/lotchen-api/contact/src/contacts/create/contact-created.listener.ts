@@ -22,7 +22,7 @@ export class ContactCreatedListener {
       this._logger.log(`Event payload: ${JSON.stringify(payload)}`);
 
       const contact = await contactCollection.findOne({
-        _id: payload.contactId as any,
+        _id: payload.contactId.toString() as any,
       });
 
       this._logger.log(`Contact: ${JSON.stringify(contact)}`);
