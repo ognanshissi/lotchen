@@ -82,6 +82,12 @@ export class QuickAddComponent implements OnInit {
       gender: new FormControl(null),
       source: new FormControl(null),
       company: new FormControl(null),
+      phone: new FormControl(null),
+      street: new FormControl(null),
+      city: new FormControl(null),
+      postalCode: new FormControl(null),
+      country: new FormControl(null),
+      tags: new FormControl(null),
     });
   }
 
@@ -89,8 +95,22 @@ export class QuickAddComponent implements OnInit {
     this.form.disable();
     const formValue = this.form.getRawValue();
 
+    const { street, city, postalCode, country, tags, ...rest } = formValue;
+    const payload: any = { ...rest };
+
+    if (street || city || postalCode || country) {
+      payload.address = { street, city, postalCode, country };
+    }
+
+    if (tags) {
+      payload.tags = tags
+        .split(',')
+        .map((t: string) => t.trim())
+        .filter(Boolean);
+    }
+
     this._contactApiService
-      .contactsControllerCreateContactV1(formValue)
+      .contactsControllerCreateContactV1(payload)
       .pipe(finalize(() => this.form.enable()))
       .subscribe({
         next: () => {

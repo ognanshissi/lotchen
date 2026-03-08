@@ -63,6 +63,9 @@ export class Contact extends AggregateRoot {
   @Prop({ required: true }) // Stores phone number
   mobileNumber!: string;
 
+  @Prop({ type: String, required: false, default: null }) // Stores landline phone number
+  phone?: string;
+
   @Prop({ type: Date }) // Stores date of birth
   dateOfBirth!: Date;
 
@@ -125,6 +128,9 @@ export class Contact extends AggregateRoot {
 
   @Prop({ type: 'UUID', default: null, required: false })
   territoryId?: string;
+
+  @Prop({ type: [String], default: [] }) // Stores tags for categorization
+  tags!: string[];
 
   @Prop({ type: Map, of: String }) // Stores custom fields
   customFields!: Record<string, string>;

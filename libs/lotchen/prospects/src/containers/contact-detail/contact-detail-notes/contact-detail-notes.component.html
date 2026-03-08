@@ -1,0 +1,20 @@
+<tas-card class="p-4">
+  <h2 class="text-2xl font-semibold mb-4">Notes</h2>
+
+  @if (loading()) {
+  <p class="text-gray-500">Chargement...</p>
+  } @else if (notes().length === 0) {
+  <p class="text-gray-500 italic">Aucune note pour ce contact.</p>
+  } @else {
+  <div class="space-y-3">
+    @for (note of notes(); track note.id) {
+    <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
+      <p class="text-gray-700">{{ note.content }}</p>
+      <p class="text-xs text-gray-400 mt-2">
+        {{ note.createdAt | date : 'dd/MM/yyyy HH:mm' }}
+      </p>
+    </div>
+    }
+  </div>
+  }
+</tas-card>

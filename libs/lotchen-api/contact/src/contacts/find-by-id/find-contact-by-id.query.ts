@@ -1,6 +1,10 @@
 import { Address, AddressDto, QueryHandler } from '@lotchen/api/core';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+  getSchemaPath,
+} from '@nestjs/swagger';
 import { ContactProvider } from '../contact.provider';
 
 export class FindContactByIdQuery {
@@ -10,6 +14,34 @@ export class FindContactByIdQuery {
     type: String,
   })
   id!: string;
+}
+
+class CreatedByInfoDto {
+  @ApiProperty({ type: String })
+  userId!: string;
+
+  @ApiProperty({ type: String })
+  firstName!: string;
+
+  @ApiProperty({ type: String })
+  lastName!: string;
+
+  @ApiProperty({ type: String })
+  email!: string;
+}
+
+class StatusHistoryDto {
+  @ApiProperty({ type: String })
+  previousStatus!: string;
+
+  @ApiProperty({ type: String })
+  status!: string;
+
+  @ApiProperty({ type: Date })
+  changedAt!: Date;
+
+  @ApiProperty({ type: String })
+  changedBy!: string;
 }
 
 export class FindContactByIdQueryResponse {
@@ -27,6 +59,9 @@ export class FindContactByIdQueryResponse {
 
   @ApiProperty({ required: false, description: 'Mobile number', type: String })
   mobileNumber!: string;
+
+  @ApiPropertyOptional({ description: 'Phone number', type: String })
+  phone!: string | null;
 
   @ApiProperty({ required: false, description: 'Date of birth', type: Date })
   dateOfBirth!: Date;
@@ -47,6 +82,30 @@ export class FindContactByIdQueryResponse {
 
   @ApiProperty({ type: String, description: 'Contact source' })
   source!: string;
+
+  @ApiProperty({ type: String, description: 'Contact status' })
+  status!: string;
+
+  @ApiPropertyOptional({ type: String, description: 'Gender' })
+  gender!: string | null;
+
+  @ApiProperty({ type: [String], description: 'Tags' })
+  tags!: string[];
+
+  @ApiPropertyOptional({ type: String, description: 'Company name' })
+  companyName!: string | null;
+
+  @ApiPropertyOptional({ type: String, description: 'Assigned user ID' })
+  assignedToUserId!: string | null;
+
+  @ApiPropertyOptional({
+    type: CreatedByInfoDto,
+    description: 'Created by info',
+  })
+  createdByInfo!: CreatedByInfoDto | null;
+
+  @ApiProperty({ type: [StatusHistoryDto], description: 'Status history' })
+  statusHistory!: StatusHistoryDto[];
 }
 
 @Injectable()
@@ -60,7 +119,7 @@ export class FindContactByQueryHandler
   ): Promise<FindContactByIdQueryResponse> {
     const contact = await this.contactProvider.ContactModel.findById(
       query.id,
-      'id email firstName lastName mobileNumber dateOfBirth address createdAt updatedAt jobTitle source'
+      '_id email firstName lastName mobileNumber phone dateOfBirth addresses createdAt updatedAt jobTitle source status gender tags companyName assignedToUserId createdByInfo statusHistory'
     )
       .lean()
       .exec();
@@ -74,6 +133,19 @@ export class FindContactByQueryHandler
       email: contact.email,
       jobTitle: contact.jobTitle,
       source: contact.source,
+      status: contact.status,
+      gender: contact.gender ?? null,
+      phone: contact.phone ?? null,
+      tags: contact.tags ?? [],
+      companyName: contact.companyName ?? null,
+      assignedToUserId: contact.assignedToUserId ?? null,
+      createdByInfo: contact.createdByInfo ?? null,
+      statusHistory: (contact.statusHistory ?? []).map((sh: any) => ({
+        previousStatus: sh.previousStatus,
+        status: sh.status,
+        changedAt: sh.changedAt,
+        changedBy: sh.changedBy,
+      })),
       firstName: contact.firstName,
       lastName: contact.lastName,
       mobileNumber: contact.mobileNumber,

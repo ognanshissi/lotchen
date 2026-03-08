@@ -11,8 +11,8 @@
  */
 
 
-export interface CreatedByInfoDto { 
-    userId: string;
+export interface FromAgentLiteDto { 
+    id: string;
     firstName: string;
     lastName: string;
     email: string;

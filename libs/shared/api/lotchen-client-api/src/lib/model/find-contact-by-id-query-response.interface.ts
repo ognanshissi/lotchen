@@ -9,6 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CreatedByInfoDto } from './created-by-info-dto.interface';
+import { StatusHistoryDto } from './status-history-dto.interface';
 import { AddressDto } from './address-dto.interface';
 
 
@@ -34,6 +36,10 @@ export interface FindContactByIdQueryResponse {
      */
     mobileNumber?: string;
     /**
+     * Phone number
+     */
+    phone?: string;
+    /**
      * Date of birth
      */
     dateOfBirth?: string;
@@ -53,5 +59,33 @@ export interface FindContactByIdQueryResponse {
      * Contact source
      */
     source: string;
+    /**
+     * Contact status
+     */
+    status: string;
+    /**
+     * Gender
+     */
+    gender?: string;
+    /**
+     * Tags
+     */
+    tags: Array<string>;
+    /**
+     * Company name
+     */
+    companyName?: string;
+    /**
+     * Assigned user ID
+     */
+    assignedToUserId?: string;
+    /**
+     * Created by info
+     */
+    createdByInfo?: CreatedByInfoDto;
+    /**
+     * Status history
+     */
+    statusHistory: Array<StatusHistoryDto>;
 }
 

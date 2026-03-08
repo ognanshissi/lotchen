@@ -60,6 +60,15 @@
               placeholder="Numéro de téléphone"
             />
           </tas-form-field>
+          <tas-form-field>
+            <tas-label>Téléphone fixe</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="phone"
+              placeholder="Téléphone fixe"
+            />
+          </tas-form-field>
           <tas-date-picker
             formControlName="dateOfBirth"
             placeholder="Date de naissance"
@@ -103,6 +112,61 @@
               placeholder="Sélectionner la source"
               [searchable]="false"
             ></tas-select>
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Tags</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="tags"
+              placeholder="Tags (séparés par des virgules)"
+            />
+          </tas-form-field>
+        </div>
+      </tas-card>
+
+      <tas-card>
+        <card-header>
+          <tas-title>Adresse</tas-title>
+        </card-header>
+
+        <div class="p-4 flex flex-col gap-3">
+          <tas-form-field>
+            <tas-label>Rue</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="street"
+              placeholder="Rue"
+            />
+          </tas-form-field>
+          <tas-form-field>
+            <tas-label>Ville</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="city"
+              placeholder="Ville"
+            />
+          </tas-form-field>
+          <tas-form-field>
+            <tas-label>Code postal</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="postalCode"
+              placeholder="Code postal"
+            />
+          </tas-form-field>
+          <tas-form-field>
+            <tas-label>Pays</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="country"
+              placeholder="Pays"
+            />
           </tas-form-field>
         </div>
       </tas-card>

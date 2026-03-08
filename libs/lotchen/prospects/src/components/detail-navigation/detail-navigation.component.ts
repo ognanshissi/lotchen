@@ -59,9 +59,9 @@ export class DetailNavigationComponent {
       active: true,
     },
     {
-      label: 'Conversations',
-      icon: 'feather:message-circle',
-      route: 'conversations',
+      label: "Journal d'appels",
+      icon: 'feather:phone',
+      route: 'call-logs',
       active: true,
     },
     {
@@ -72,8 +72,13 @@ export class DetailNavigationComponent {
     },
   ];
 
-  public contact = toSignal<FindContactByIdQueryResponse>(
-    this._activatedRoute.data.pipe(map((data) => data['contact']))
+  public contact = toSignal(
+    this._activatedRoute.data.pipe(
+      map(
+        (data) =>
+          data['contact'] as FindContactByIdQueryResponse & Record<string, any>
+      )
+    )
   );
 
   public callerIsOpened = this._callerService.isCallerOpened;

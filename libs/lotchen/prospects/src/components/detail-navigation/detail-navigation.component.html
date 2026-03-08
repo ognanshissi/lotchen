@@ -63,6 +63,20 @@
             {{ contact()?.mobileNumber }}</span
           >
         </p>
+
+        <div class="flex justify-center gap-2 mt-3">
+          @if (contact()?.status) {
+          <span
+            class="px-2 py-0.5 bg-primary text-white text-xs rounded-full"
+            >{{ contact()?.status }}</span
+          >
+          } @if (contact()?.source) {
+          <span
+            class="px-2 py-0.5 bg-gray-200 text-gray-700 text-xs rounded-full"
+            >{{ contact()?.source }}</span
+          >
+          }
+        </div>
       </div>
       @for (item of menuItems; track $index) {
       <a

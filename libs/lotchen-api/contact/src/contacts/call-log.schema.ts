@@ -15,8 +15,11 @@ export class CallLog extends SchemaIdentifier {
   @Prop({ type: String, enum: ['Contact', 'Client'], default: 'Contact' })
   entityType!: string;
 
+  @Prop({ type: Date, default: Date.now })
+  createdAt!: Date;
+
   @Prop({ type: 'UUID' })
-  relatedToId!: string; // call is relatedto this entry ()
+  relatedToId!: string; // call is relatedTo this entry ()
 
   @Prop({ type: String })
   recipientContact!: string;

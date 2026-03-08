@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AddressDto } from './address-dto.interface';
 
 
 export interface CreateContactCommand { 
@@ -44,6 +45,22 @@ export interface CreateContactCommand {
      * Gender
      */
     gender?: CreateContactCommandGenderEnum;
+    /**
+     * Company name
+     */
+    companyName?: string;
+    /**
+     * Landline phone number
+     */
+    phone?: string;
+    /**
+     * Address
+     */
+    address?: AddressDto;
+    /**
+     * Tags for categorization
+     */
+    tags?: Array<string>;
 }
 export enum CreateContactCommandSourceEnum {
     Website = 'Website',

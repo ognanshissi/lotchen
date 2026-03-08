@@ -11,10 +11,10 @@
  */
 
 
-export interface CreatedByInfoDto { 
-    userId: string;
-    firstName: string;
-    lastName: string;
-    email: string;
+export interface StatusHistoryDto { 
+    previousStatus: string;
+    status: string;
+    changedAt: string;
+    changedBy: string;
 }
 

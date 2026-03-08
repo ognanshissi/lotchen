@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FromAgentLiteDto } from './from-agent-lite-dto.interface';
 
 
 export interface FindAllCallLogsQueryResponse { 
@@ -36,5 +37,25 @@ export interface FindAllCallLogsQueryResponse {
      * Call status
      */
     status: string;
+    /**
+     * Call note
+     */
+    note: string;
+    /**
+     * Call start date
+     */
+    startDate: string;
+    /**
+     * Call end date
+     */
+    endDate?: string;
+    /**
+     * Agent who placed the call
+     */
+    fromAgentLite?: FromAgentLiteDto;
+    /**
+     * Created date
+     */
+    createdAt: string;
 }
 

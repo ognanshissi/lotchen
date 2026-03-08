@@ -2068,6 +2068,38 @@
         "tags": [
           "Meetings"
         ]
+      },
+      "get": {
+        "operationId": "MeetingsController_findAllMeetings_v1",
+        "parameters": [
+          {
+            "name": "relatedToId",
+            "required": true,
+            "in": "query",
+            "description": "Entry related to entity, for example contactId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllMeetingsQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Meetings"
+        ]
       }
     }
   },
@@ -3357,6 +3389,61 @@
           "description"
         ]
       },
+      "LocationDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type",
+            "default": "Point"
+          },
+          "coordinates": {
+            "description": "Coordinates [longitude, latitude]",
+            "example": "[7.5455112, -5.547545]",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "AddressDto": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "Street"
+          },
+          "city": {
+            "type": "string",
+            "description": "City"
+          },
+          "state": {
+            "type": "string",
+            "description": "State"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Zip code"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country"
+          },
+          "isDefaultAddress": {
+            "type": "boolean",
+            "description": "Is default address"
+          },
+          "location": {
+            "description": "Location",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationDto"
+              }
+            ]
+          }
+        }
+      },
       "CreateContactCommand": {
         "type": "object",
         "properties": {
@@ -3423,6 +3510,25 @@
           "companyName": {
             "type": "string",
             "description": "Company name"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Landline phone number"
+          },
+          "address": {
+            "description": "Address",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressDto"
+              }
+            ]
+          },
+          "tags": {
+            "description": "Tags for categorization",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "required": [
@@ -3479,6 +3585,53 @@
           "id"
         ]
       },
+      "CreatedByInfoDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "firstName",
+          "lastName",
+          "email"
+        ]
+      },
+      "StatusHistoryDto": {
+        "type": "object",
+        "properties": {
+          "previousStatus": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "changedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "changedBy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "previousStatus",
+          "status",
+          "changedAt",
+          "changedBy"
+        ]
+      },
       "FindContactByIdQueryResponse": {
         "type": "object",
         "properties": {
@@ -3501,6 +3654,10 @@
           "mobileNumber": {
             "type": "string",
             "description": "Mobile number"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number"
           },
           "dateOfBirth": {
             "format": "date-time",
@@ -3526,68 +3683,54 @@
           "source": {
             "type": "string",
             "description": "Contact source"
+          },
+          "status": {
+            "type": "string",
+            "description": "Contact status"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender"
+          },
+          "tags": {
+            "description": "Tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "companyName": {
+            "type": "string",
+            "description": "Company name"
+          },
+          "assignedToUserId": {
+            "type": "string",
+            "description": "Assigned user ID"
+          },
+          "createdByInfo": {
+            "description": "Created by info",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreatedByInfoDto"
+              }
+            ]
+          },
+          "statusHistory": {
+            "description": "Status history",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatusHistoryDto"
+            }
           }
         },
         "required": [
           "id",
           "jobTitle",
-          "source"
+          "source",
+          "status",
+          "tags",
+          "statusHistory"
         ]
-      },
-      "LocationDto": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "Type",
-            "default": "Point"
-          },
-          "coordinates": {
-            "description": "Coordinates [longitude, latitude]",
-            "example": "[7.5455112, -5.547545]",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          }
-        }
-      },
-      "AddressDto": {
-        "type": "object",
-        "properties": {
-          "street": {
-            "type": "string",
-            "description": "Street"
-          },
-          "city": {
-            "type": "string",
-            "description": "City"
-          },
-          "state": {
-            "type": "string",
-            "description": "State"
-          },
-          "postalCode": {
-            "type": "string",
-            "description": "Zip code"
-          },
-          "country": {
-            "type": "string",
-            "description": "Country"
-          },
-          "isDefaultAddress": {
-            "type": "boolean",
-            "description": "Is default address"
-          },
-          "location": {
-            "description": "Location",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LocationDto"
-              }
-            ]
-          }
-        }
       },
       "UpdateContactCommandRequest": {
         "type": "object",
@@ -3839,6 +3982,29 @@
           "status"
         ]
       },
+      "FromAgentLiteDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email"
+        ]
+      },
       "FindAllCallLogsQueryResponse": {
         "type": "object",
         "properties": {
@@ -3865,6 +4031,33 @@
           "status": {
             "type": "string",
             "description": "Call status"
+          },
+          "note": {
+            "type": "string",
+            "description": "Call note"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Call start date"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Call end date"
+          },
+          "fromAgentLite": {
+            "description": "Agent who placed the call",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FromAgentLiteDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Created date"
           }
         },
         "required": [
@@ -3873,7 +4066,10 @@
           "callSid",
           "recipientContact",
           "duration",
-          "status"
+          "status",
+          "note",
+          "startDate",
+          "createdAt"
         ]
       },
       "CreateTaskCommand": {
@@ -4127,6 +4323,54 @@
           "description",
           "attendees",
           "meetingTimeZone"
+        ]
+      },
+      "FindAllMeetingsQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "relatedToId": {
+            "type": "string",
+            "description": "Related to entity ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Meeting title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Meeting description"
+          },
+          "location": {
+            "type": "string",
+            "description": "Meeting location"
+          },
+          "startAt": {
+            "type": "object",
+            "description": "Meeting start time"
+          },
+          "endAt": {
+            "type": "object",
+            "description": "Meeting end time"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Created date"
+          }
+        },
+        "required": [
+          "id",
+          "relatedToId",
+          "title",
+          "description",
+          "location",
+          "startAt",
+          "endAt",
+          "createdAt"
         ]
       }
     }

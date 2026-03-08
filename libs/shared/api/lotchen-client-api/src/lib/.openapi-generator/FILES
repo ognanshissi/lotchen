@@ -42,6 +42,7 @@ model/create-team-command-response.interface.ts
 model/create-team-command.interface.ts
 model/create-territory-command.interface.ts
 model/create-user-command.interface.ts
+model/created-by-info-dto.interface.ts
 model/field-dto.interface.ts
 model/filter-all-contacts-command.interface.ts
 model/filter-all-territories-command.interface.ts
@@ -50,6 +51,7 @@ model/find-all-agencies-address-dto.interface.ts
 model/find-all-agencies-query-response.interface.ts
 model/find-all-call-logs-query-response.interface.ts
 model/find-all-contacts-query-response.interface.ts
+model/find-all-meetings-query-response.interface.ts
 model/find-all-notes-query-response.interface.ts
 model/find-all-organization-query-response.interface.ts
 model/find-all-permission-query.interface.ts
@@ -64,6 +66,7 @@ model/find-user-by-id-query-response.interface.ts
 model/find-user-by-id-query-role-dto.interface.ts
 model/forgot-password-command-response.interface.ts
 model/forgot-password-command.interface.ts
+model/from-agent-lite-dto.interface.ts
 model/get-me-query-response.interface.ts
 model/get-user-profile-query-response.interface.ts
 model/invite-user-command.interface.ts
@@ -84,6 +87,7 @@ model/phone-numbers-dto.interface.ts
 model/refresh-token-command.interface.ts
 model/reset-password-command-response.interface.ts
 model/reset-password-command.interface.ts
+model/status-history-dto.interface.ts
 model/territories-controller-paginate-all-territories-v1200-response.interface.ts
 model/territories-query-user-dto.interface.ts
 model/territory-lite-dto.interface.ts

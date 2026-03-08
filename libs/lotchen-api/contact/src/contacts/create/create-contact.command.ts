@@ -1,7 +1,16 @@
-import { CommandHandler } from '@lotchen/api/core';
+import { AddressDto, CommandHandler } from '@lotchen/api/core';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsIn, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  IsIn,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 import { ContactProvider } from '../contact.provider';
 import { Model } from 'mongoose';
 import { ContactDocument, contactSource } from '../contact.schema';
@@ -82,6 +91,35 @@ export class CreateContactCommand {
     required: false,
   })
   companyName?: string;
+
+  @ApiProperty({
+    description: 'Landline phone number',
+    type: String,
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @ApiProperty({
+    description: 'Address',
+    type: AddressDto,
+    required: false,
+  })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AddressDto)
+  address?: AddressDto;
+
+  @ApiProperty({
+    description: 'Tags for categorization',
+    type: [String],
+    required: false,
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  tags?: string[];
 }
 
 export class CreateContactCommandResponse {
@@ -174,6 +212,9 @@ export class CreateContactCommandHandler
       territoryId,
       status: ContactStatus.New,
       companyName: command.companyName,
+      phone: command.phone ?? null,
+      addresses: command.address ? [command.address] : [],
+      tags: command.tags ?? [],
     });
     contact.validateSync();
 

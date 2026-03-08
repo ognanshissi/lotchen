@@ -1,33 +1,23 @@
 <tas-card class="p-4">
-  <h2 class="text-2xl font-semibold">Apperçu</h2>
+  <h2 class="text-2xl font-semibold">Aperçu</h2>
 
-  <div class="h-[500px]">
+  <div>
     <div class="border-b border-gray-300 py-4">
       <span>Niveau de progression du contact</span>
 
       <div class="flex space-x-2 pt-2">
+        @for (step of statusPipeline; track step.value) {
         <span
-          class="px-4 py-1 bg-functional-success text-white rounded-full uppercase"
-          >Nouveau</span
+          class="px-4 py-1 text-white rounded-full uppercase text-sm"
+          [class.bg-primary]="contact()?.status === step.value"
+          [class.bg-gray-400]="contact()?.status !== step.value"
+          >{{ step.label }}</span
         >
-        <span class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
-          >Contacté</span
-        >
-        <span class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
-          >Interessé</span
-        >
-        <span class="px-4 py-1 bg-gray-400 text-white rounded-full uppercase"
-          >Qualifié</span
-        >
+        }
       </div>
     </div>
 
     <div class="grid grid-cols-3 gap-4 mt-4">
-      <tas-summary-field
-        rawField="email"
-        label="Email"
-        [value]="contact()?.email"
-      />
       <tas-summary-field
         rawField="lastName"
         label="Nom"
@@ -41,12 +31,52 @@
         [value]="contact()?.firstName"
       />
       <tas-summary-field
-        rawField="firstName"
-        label="Agent responsable"
+        rawField="gender"
+        label="Genre"
+        [value]="contact()?.gender"
+      />
+      <tas-summary-field
+        rawField="email"
+        label="Email"
+        [value]="contact()?.email"
+      />
+      <tas-summary-field
+        rawField="mobileNumber"
+        label="Téléphone mobile"
+        [value]="contact()?.mobileNumber"
+      />
+      <tas-summary-field
+        rawField="phone"
+        label="Téléphone fixe"
+        [value]="contact()?.phone"
+      />
+      <tas-summary-field
+        rawField="dateOfBirth"
+        label="Date de naissance"
+        [value]="contact()?.dateOfBirth"
+      />
+      <tas-summary-field
+        rawField="jobTitle"
+        label="Profession"
         [editable]="true"
-        [value]=""
-      >
-      </tas-summary-field>
+        [value]="contact()?.jobTitle"
+      />
+      <tas-summary-field
+        rawField="source"
+        label="Source"
+        [value]="contact()?.source"
+      />
+      <tas-summary-field
+        rawField="companyName"
+        label="Entreprise"
+        [value]="contact()?.companyName"
+      />
+      <tas-summary-field rawField="tags" label="Tags" [value]="tagsDisplay()" />
+      <tas-summary-field
+        rawField="assignedAgent"
+        label="Agent responsable"
+        [value]="assignedAgent()"
+      />
     </div>
   </div>
 </tas-card>

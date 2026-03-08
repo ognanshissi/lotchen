@@ -1,6 +1,6 @@
 import { QueryHandler } from '@lotchen/api/core';
 import { Injectable } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { ContactProvider } from '../../contacts/contact.provider';
 
@@ -11,6 +11,20 @@ export class FindAllCallLogsQuery {
   })
   @IsNotEmpty()
   public entityId!: string;
+}
+
+class FromAgentLiteDto {
+  @ApiProperty({ type: String })
+  id!: string;
+
+  @ApiProperty({ type: String })
+  firstName!: string;
+
+  @ApiProperty({ type: String })
+  lastName!: string;
+
+  @ApiProperty({ type: String })
+  email!: string;
 }
 
 export class FindAllCallLogsQueryResponse {
@@ -27,10 +41,28 @@ export class FindAllCallLogsQueryResponse {
   public recipientContact!: string;
 
   @ApiProperty({ description: 'Call duration in seconds' })
-  public duration!: number; // seconds
+  public duration!: number;
 
   @ApiProperty({ description: 'Call status' })
   public status!: string;
+
+  @ApiProperty({ description: 'Call note' })
+  public note!: string;
+
+  @ApiProperty({ type: Date, description: 'Call start date' })
+  public startDate!: Date;
+
+  @ApiPropertyOptional({ type: Date, description: 'Call end date' })
+  public endDate!: Date | null;
+
+  @ApiPropertyOptional({
+    type: FromAgentLiteDto,
+    description: 'Agent who placed the call',
+  })
+  public fromAgentLite!: FromAgentLiteDto | null;
+
+  @ApiProperty({ type: Date, description: 'Created date' })
+  public createdAt!: Date;
 }
 
 @Injectable()
@@ -39,10 +71,6 @@ export class FindAllCallLogsQueryHandler
 {
   public constructor(private readonly _contactProvider: ContactProvider) {}
 
-  /**
-   *
-   * @param query
-   */
   public async handlerAsync(
     query?: FindAllCallLogsQuery | undefined
   ): Promise<FindAllCallLogsQueryResponse[]> {
@@ -50,13 +78,13 @@ export class FindAllCallLogsQueryHandler
       {
         relatedToId: query?.entityId,
       },
-      'id relatedToId callSid recipientContact duration status createdAt'
+      'id relatedToId callSid recipientContact duration status note startDate endDate fromAgentLite createdAt'
     )
       .sort({ createdAt: -1 })
       .limit(100)
       .exec();
 
-    if (!callLogs.length) return []; // return empty arry when call logs found
+    if (!callLogs.length) return [];
 
     return callLogs.map((callLog) => ({
       id: callLog.id,
@@ -65,6 +93,11 @@ export class FindAllCallLogsQueryHandler
       recipientContact: callLog.recipientContact,
       duration: callLog.duration,
       status: callLog.status,
+      note: callLog.note ?? '',
+      startDate: callLog.startDate,
+      endDate: callLog.endDate ?? null,
+      fromAgentLite: callLog.fromAgentLite ?? null,
+      createdAt: callLog.createdAt,
     }));
   }
 }
