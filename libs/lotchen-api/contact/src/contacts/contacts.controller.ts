@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -45,6 +46,11 @@ import {
   PatchDataCommandHandler,
   PatchDataCommandRequest,
 } from './patch-data/patch-data.command';
+import {
+  BulkDeleteContactsCommand,
+  BulkDeleteContactsCommandHandler,
+  DeleteContactCommandHandler,
+} from './delete/delete-contact.command';
 import { interval, map, Observable } from 'rxjs';
 
 @ApiTags('Contacts')
@@ -60,7 +66,9 @@ export class ContactsController {
     private readonly _updateContactCommandHandler: UpdateContactCommandHandler,
     private readonly _paginateAllContactsCommandHandler: PaginateAllContactsCommandHandler,
     private readonly _importContactsExcelCommandHandler: ImportContactsExcelCommandHandler,
-    private readonly _patchDataCommandHandler: PatchDataCommandHandler // private readonly _patchDataHandler: PatchDataHandler,
+    private readonly _patchDataCommandHandler: PatchDataCommandHandler,
+    private readonly _deleteContactCommandHandler: DeleteContactCommandHandler,
+    private readonly _bulkDeleteContactsCommandHandler: BulkDeleteContactsCommandHandler
   ) {}
 
   @Post()
@@ -199,6 +207,30 @@ export class ContactsController {
   ): Promise<void> {
     console.log(request, id);
     await this._patchDataCommandHandler.handlerAsync({ ...request, id });
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({
+    status: 204,
+    description: 'Contact deleted (soft)',
+  })
+  public async deleteContact(
+    @Param('id', new ParseUUIDPipe()) id: string
+  ): Promise<void> {
+    await this._deleteContactCommandHandler.handlerAsync({ id });
+  }
+
+  @Post('bulk-delete')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({
+    status: 204,
+    description: 'Contacts deleted (soft)',
+  })
+  public async bulkDeleteContacts(
+    @Body() request: BulkDeleteContactsCommand
+  ): Promise<void> {
+    await this._bulkDeleteContactsCommandHandler.handlerAsync(request);
   }
 }
 

@@ -117,8 +117,8 @@ export class FindContactByQueryHandler
   async handlerAsync(
     query: FindContactByIdQuery
   ): Promise<FindContactByIdQueryResponse> {
-    const contact = await this.contactProvider.ContactModel.findById(
-      query.id,
+    const contact = await this.contactProvider.ContactModel.findOne(
+      { _id: query.id, deletedAt: null },
       '_id email firstName lastName mobileNumber phone dateOfBirth addresses createdAt updatedAt jobTitle source status gender tags companyName assignedToUserId createdByInfo statusHistory'
     )
       .lean()

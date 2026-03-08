@@ -28,9 +28,18 @@
     <tas-icon iconName="feather:user-plus"></tas-icon>
     Convertir en client
   </button>
-  <button tas-outlined-button color="primary">
+  <button tas-outlined-button color="primary" TasMenuTrigger [panel]="moreMenu">
     <tas-icon iconName="feather:more-vertical"></tas-icon>
   </button>
+
+  <ng-template #moreMenu>
+    <tas-menu>
+      <tas-menu-item class="flex space-x-2" (click)="archiveContact()">
+        <tas-icon iconName="feather:archive"></tas-icon>
+        <span>Archiver le contact</span>
+      </tas-menu-item>
+    </tas-menu>
+  </ng-template>
 </div>
 
 <div class="grid grid-cols-4 gap-4 mt-4">

@@ -1657,6 +1657,27 @@
         "tags": [
           "Contacts"
         ]
+      },
+      "delete": {
+        "operationId": "ContactsController_deleteContact_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Contact deleted (soft)"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
       }
     },
     "/api/v1/contacts/paginate": {
@@ -1754,6 +1775,30 @@
         "responses": {
           "204": {
             "description": "Contact data updated"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
+    },
+    "/api/v1/contacts/bulk-delete": {
+      "post": {
+        "operationId": "ContactsController_bulkDeleteContacts_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkDeleteContactsCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Contacts deleted (soft)"
           }
         },
         "tags": [
@@ -3954,6 +3999,21 @@
         },
         "required": [
           "fields"
+        ]
+      },
+      "BulkDeleteContactsCommand": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "Contact Ids to delete",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ids"
         ]
       },
       "CreateCallLogCommand": {

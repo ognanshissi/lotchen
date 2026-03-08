@@ -31,6 +31,20 @@
   </card-header>
 </tas-card>
 
+@if (selectedItems().length > 0) {
+<div
+  class="mt-4 px-4 py-3 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-between"
+>
+  <span class="font-medium text-primary"
+    >{{ selectedItems().length }} contact(s) sélectionné(s)</span
+  >
+  <button tas-raised-button color="warn" (click)="bulkDeleteContacts()">
+    <tas-icon iconName="feather:trash"></tas-icon>
+    Archiver
+  </button>
+</div>
+}
+
 <tas-card class="mt-4">
   <tas-table
     [title]="'Liste des contacts'"
@@ -119,7 +133,10 @@
                   <tas-icon iconName="feather:copy"></tas-icon>
                   <span>Dupliquer</span>
                 </tas-menu-item>
-                <tas-menu-item class="flex space-x-2">
+                <tas-menu-item
+                  class="flex space-x-2"
+                  (click)="deleteContact(item)"
+                >
                   <tas-icon iconName="feather:trash"></tas-icon>
                   <span>Supprimer le contact</span>
                 </tas-menu-item>

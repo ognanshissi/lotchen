@@ -26,6 +26,7 @@ model/address-dto.interface.ts
 model/assign-permissions-command-request.interface.ts
 model/assign-roles-command-request.interface.ts
 model/audit-user-info-dto.interface.ts
+model/bulk-delete-contacts-command.interface.ts
 model/contact-info-dto.interface.ts
 model/contacts-controller-paginate-all-territories-v1200-response.interface.ts
 model/create-agency-address-dto.interface.ts

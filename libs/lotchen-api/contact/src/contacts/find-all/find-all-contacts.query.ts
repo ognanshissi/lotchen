@@ -110,7 +110,7 @@ export class FindAllContactsQueryHandler
     }
 
     // queryFilter
-    let queryFilter = {};
+    let queryFilter: Record<string, any> = { deletedAt: null };
     if (query.email) {
       queryFilter = { ...queryFilter, email: new RegExp(query.email, 'i') };
     }

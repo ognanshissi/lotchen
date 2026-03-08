@@ -57,8 +57,6 @@ export class AddTaskDialogComponent implements OnInit {
   public addTaskForm!: FormGroup;
 
   public ngOnInit(): void {
-    console.log(this._data);
-    console.log(this.currentUser());
     this.addTaskForm = new FormGroup({
       title: new FormControl(null, [Validators.required]),
       dueDate: new FormControl(null, [Validators.required]),

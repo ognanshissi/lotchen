@@ -12,6 +12,10 @@ import { ContactCreatedListener } from './contacts/create/contact-created.listen
 import { CallLogsController } from './call-logs/call-logs.controller';
 import { FindAllCallLogsQueryHandler } from './call-logs/find-call-logs/find-call-logs.query';
 import { PatchDataCommandHandler } from './contacts/patch-data/patch-data.command';
+import {
+  BulkDeleteContactsCommandHandler,
+  DeleteContactCommandHandler,
+} from './contacts/delete/delete-contact.command';
 
 @Module({
   imports: [],
@@ -28,6 +32,8 @@ import { PatchDataCommandHandler } from './contacts/patch-data/patch-data.comman
     ContactCreatedListener,
     FindAllCallLogsQueryHandler,
     PatchDataCommandHandler,
+    DeleteContactCommandHandler,
+    BulkDeleteContactsCommandHandler,
   ],
   exports: [],
 })

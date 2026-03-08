@@ -3,6 +3,7 @@ export * from './address-dto.interface';
 export * from './assign-permissions-command-request.interface';
 export * from './assign-roles-command-request.interface';
 export * from './audit-user-info-dto.interface';
+export * from './bulk-delete-contacts-command.interface';
 export * from './contact-info-dto.interface';
 export * from './contacts-controller-paginate-all-territories-v1200-response.interface';
 export * from './create-agency-address-dto.interface';
