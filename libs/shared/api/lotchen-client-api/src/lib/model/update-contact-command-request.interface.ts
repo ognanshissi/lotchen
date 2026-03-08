@@ -34,6 +34,30 @@ export interface UpdateContactCommandRequest {
      */
     jobTitle?: string;
     /**
+     * Contact gender
+     */
+    gender?: string;
+    /**
+     * Contact phone (landline)
+     */
+    phone?: string;
+    /**
+     * Contact date of birth
+     */
+    dateOfBirth?: string;
+    /**
+     * Contact company name
+     */
+    companyName?: string;
+    /**
+     * Contact tags
+     */
+    tags?: Array<string>;
+    /**
+     * Contact source
+     */
+    source?: string;
+    /**
      * Contact Address
      */
     address?: AddressDto;

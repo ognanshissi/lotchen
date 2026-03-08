@@ -23,57 +23,71 @@
         label="Nom"
         [editable]="true"
         [value]="contact()?.lastName"
-        (fieldSaved)="handleSaveInlineItemAction($event)"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field
         rawField="firstName"
         label="Prénom"
         [editable]="true"
         [value]="contact()?.firstName"
-        (fieldSaved)="handleSaveInlineItemAction($event)"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field
         rawField="gender"
         label="Genre"
+        [editable]="true"
         [value]="contact()?.gender"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field
         rawField="email"
         label="Email"
+        [editable]="true"
         [value]="contact()?.email"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field
         rawField="mobileNumber"
         label="Téléphone mobile"
+        [editable]="true"
         [value]="contact()?.mobileNumber"
-        (fieldSaved)="handleSaveInlineItemAction($event)"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field
         rawField="phone"
         label="Téléphone fixe"
+        [editable]="true"
         [value]="contact()?.phone"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field
         rawField="dateOfBirth"
         label="Date de naissance"
         type="date"
+        [editable]="true"
         [value]="contact()?.dateOfBirth"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field
         rawField="jobTitle"
         label="Profession"
         [editable]="true"
         [value]="contact()?.jobTitle"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field
         rawField="source"
         label="Source"
+        [editable]="true"
         [value]="contact()?.source"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field
         rawField="companyName"
         label="Entreprise"
+        [editable]="true"
         [value]="contact()?.companyName"
+        (fieldSaved)="onFieldSaved($event)"
       />
       <tas-summary-field rawField="tags" label="Tags" [value]="tagsDisplay()" />
       <tas-summary-field

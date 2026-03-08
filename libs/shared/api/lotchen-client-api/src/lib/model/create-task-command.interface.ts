@@ -52,7 +52,8 @@ export interface CreateTaskCommand {
 }
 export enum CreateTaskCommandTaskTypeEnum {
     FollowUp = 'follow up',
-    CallReminder = 'call reminder'
+    CallReminder = 'call reminder',
+    Other = 'other'
 };
 
 
