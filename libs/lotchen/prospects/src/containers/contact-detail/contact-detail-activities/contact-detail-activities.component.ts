@@ -12,13 +12,16 @@ import {
   NotesApiService,
   CallLogsApiService,
   MeetingsApiService,
+  TasksApiService,
 } from '@talisoft/api/lotchen-client-api';
 import { TasCard } from '@talisoft/ui/card';
 import { TasIcon } from '@talisoft/ui/icon';
 import { forkJoin, map, Observable } from 'rxjs';
+import { AuthenticationService } from '@lotchen/lotchen/common/services';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 interface TimelineItem {
-  kind: 'note' | 'call' | 'meeting';
+  kind: 'note' | 'call' | 'meeting' | 'task';
   date: Date;
   id: string;
   content?: string;
@@ -28,6 +31,8 @@ interface TimelineItem {
   status?: string;
   note?: string;
   agentName?: string;
+  hour?: string;
+  dueDate?: string;
 }
 
 @Component({
@@ -43,6 +48,11 @@ export class ContactDetailActivitiesComponent implements OnInit {
   private readonly _notesApi = inject(NotesApiService);
   private readonly _callLogsApi = inject(CallLogsApiService);
   private readonly _meetingsApi = inject(MeetingsApiService);
+  private readonly _tasksApi = inject(TasksApiService);
+
+  private readonly _authService = inject(AuthenticationService);
+
+  public currentUser = this._authService.connectedUser;
 
   public timeline = signal<TimelineItem[]>([]);
   public loading = signal(true);
@@ -56,8 +66,15 @@ export class ContactDetailActivitiesComponent implements OnInit {
 
     forkJoin({
       notes: this._notesApi.notesControllerFindAllNotesV1(
-        '' as any,
+        this.currentUser()?.userId ?? '',
         contactId,
+        '' as any
+      ),
+      tasks: this._tasksApi.tasksControllerFindAllTasksV1(
+        this.currentUser()?.userId ?? '',
+        contactId,
+        'other',
+        '' as any,
         '' as any
       ),
       callLogs:
@@ -71,8 +88,20 @@ export class ContactDetailActivitiesComponent implements OnInit {
             sub.complete();
           }),
     }).subscribe({
-      next: ({ notes, callLogs, meetings }) => {
+      next: ({ notes, tasks, callLogs, meetings }) => {
         const items: TimelineItem[] = [];
+        console.log('tasks', tasks);
+
+        (tasks ?? []).forEach((t: any) => {
+          items.push({
+            kind: 'task',
+            date: new Date(t.createdAt),
+            id: t.id,
+            content: t.content,
+            dueDate: t.dueDate,
+            hour: t.dueDatetime,
+          });
+        });
 
         (notes ?? []).forEach((n: any) =>
           items.push({

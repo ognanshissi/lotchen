@@ -16,13 +16,18 @@
     <tas-icon iconName="mail"></tas-icon>
     SMS
   </button>
-  <button tas-outlined-button color="primary" (click)="openAddTaskDialog()">
+  <button
+    tas-outlined-button
+    title="Ajouter une tâche"
+    color="primary"
+    (click)="openAddTaskDialog()"
+  >
     <tas-icon iconName="task"></tas-icon>
     Tâche
   </button>
   <button tas-outlined-button color="primary">
     <tas-icon iconName="feather:calendar"></tas-icon>
-    Reunion
+    Réunion
   </button>
   <button tas-outlined-button color="primary">
     <tas-icon iconName="feather:user-plus"></tas-icon>

@@ -80,6 +80,12 @@ export class DetailNavigationComponent {
       active: true,
     },
     {
+      label: 'Tâches',
+      icon: 'note',
+      route: 'tasks',
+      active: true,
+    },
+    {
       label: "Journal d'appels",
       icon: 'feather:phone',
       route: 'call-logs',
@@ -119,7 +125,7 @@ export class DetailNavigationComponent {
   public openAddTaskDialog(): void {
     this._taskDialogService.open({
       relatedId: this.contact()?.id ?? '',
-      relatedType: 'contact',
+      relatedType: 'Contact',
     });
   }
 

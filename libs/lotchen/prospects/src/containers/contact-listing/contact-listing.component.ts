@@ -88,7 +88,7 @@ export class ContactListingComponent {
   public openAddTask(contactId: string): void {
     this._addTaskDialogService.open({
       relatedId: contactId,
-      relatedType: 'contact',
+      relatedType: 'Contact',
     });
   }
 

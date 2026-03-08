@@ -15,6 +15,7 @@
         [class.bg-blue-500]="item.kind === 'note'"
         [class.bg-green-500]="item.kind === 'call'"
         [class.bg-purple-500]="item.kind === 'meeting'"
+        [class.bg-blue-700]="item.kind === 'task'"
       ></span>
 
       <div class="bg-gray-50 rounded-lg p-4">
@@ -31,6 +32,12 @@
             class="text-purple-500"
           ></tas-icon>
           <span class="text-sm font-medium text-purple-600">Réunion</span>
+          } @case ('task') {
+          <tas-icon
+            iconName="feather:calendar"
+            class="text-purple-500"
+          ></tas-icon>
+          <span class="text-sm font-medium text-purple-600">Tâche</span>
           } }
           <span class="text-xs text-gray-400 ml-auto">{{
             item.date | date : 'dd/MM/yyyy HH:mm'
@@ -39,6 +46,12 @@
 
         @switch (item.kind) { @case ('note') {
         <p class="text-gray-700">{{ item.content }}</p>
+        } @case ('task') {
+        <p class="text-gray-700">{{ item.content }}</p>
+        <p>
+          Date : {{ item.date }} — Statut :
+          {{ item.status }}
+        </p>
         } @case ('call') {
         <div class="text-gray-700 text-sm space-y-1">
           <p>

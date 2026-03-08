@@ -22,6 +22,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { TasksApiService } from '@talisoft/api/lotchen-client-api';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
+import { AddTaskDialogData } from '@lotchen/lotchen/common/components';
 
 @Component({
   selector: 'common-add-task-dialog',
@@ -48,7 +49,7 @@ export class AddTaskDialogComponent implements OnInit {
   private readonly _taskApi = inject(TasksApiService);
   private readonly _dialogRef = inject(DialogRef);
   private readonly _snackbar = inject(SnackbarService);
-  private readonly _data = inject(DIALOG_DATA);
+  private readonly _data: AddTaskDialogData = inject(DIALOG_DATA);
 
   public readonly currentUser = computed(() =>
     this._authService.connectedUser()
@@ -57,32 +58,36 @@ export class AddTaskDialogComponent implements OnInit {
   public addTaskForm!: FormGroup;
 
   public ngOnInit(): void {
+    console.log(this._data);
     this.addTaskForm = new FormGroup({
       title: new FormControl(null, [Validators.required]),
       dueDate: new FormControl(null, [Validators.required]),
       dueDateTime: new FormControl(null, [Validators.required]),
       description: new FormControl(null),
       assigneeIds: new FormControl<string[]>([]),
+      relatedToId: new FormControl(this._data.relatedId),
+      relatedToType: new FormControl(this._data.relatedType),
     });
+
+    console.log(this.addTaskForm.getRawValue());
   }
 
   public handleSubmit(): void {
-    this._taskApi
-      .tasksControllerCreateTaskV1({
-        ownerId: this.currentUser()?.userId,
-        taskType: 'other',
-        relatedToId: this._data.relatedToId,
-        relatedToType: this._data.relatedToType,
-        ...this.addTaskForm.value,
-      })
-      .subscribe({
-        next: (response) => {
-          this._dialogRef.close(response);
-          this._snackbar.success('Felicitations !', 'Tâche créée avec succès');
-        },
-        error: () => {
-          this._snackbar.error('Oops', 'Impossible de créer la tâche');
-        },
-      });
+    const payload = {
+      ...this.addTaskForm.getRawValue(),
+      ownerId: this.currentUser()?.userId,
+      taskType: 'other',
+    };
+    console.log({ payload });
+
+    this._taskApi.tasksControllerCreateTaskV1(payload).subscribe({
+      next: (response) => {
+        this._dialogRef.close(response);
+        this._snackbar.success('Felicitations !', 'Tâche créée avec succès');
+      },
+      error: () => {
+        this._snackbar.error('Oops', 'Impossible de créer la tâche');
+      },
+    });
   }
 }
