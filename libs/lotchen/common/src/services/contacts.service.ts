@@ -13,7 +13,7 @@ export class ContactsService {
 
   public importContacts(formData: FormData): Observable<ImportSummary> {
     return this._http.post<ImportSummary>(
-      `${this._environment.apiUrl}/api/v1/contacts/import`,
+      `${this._environment.apiUrl}/api/v1/contacts/import-excel`,
       formData
     );
   }

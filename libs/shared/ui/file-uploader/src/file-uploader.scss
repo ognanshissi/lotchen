@@ -2,7 +2,7 @@ tas-file-uploader {
   display: block;
 
   .tas-file-uploader {
-    @apply border-gray-400;
+    @apply border-gray-400 border-dashed border-2;
 
     &--drag-over,
     &--has-file {
