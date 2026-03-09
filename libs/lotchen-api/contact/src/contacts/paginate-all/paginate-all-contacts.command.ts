@@ -6,28 +6,80 @@ import {
   Pagination,
   PaginationRequest,
 } from '@lotchen/api/core';
-import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiExtraModels,
+  ApiProperty,
+  ApiPropertyOptional,
+} from '@nestjs/swagger';
 import { ContactProvider } from '../contact.provider';
 import { Injectable } from '@nestjs/common';
 
 export class FilterAllContactsCommand {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: () => FilterDto<string>,
     description: 'Filter by fullName',
   })
-  fullName!: FilterDto<string>;
+  fullName?: FilterDto<string>;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: () => FilterDto<string>,
     description: 'Filter by email',
   })
-  email!: FilterDto<string>;
+  email?: FilterDto<string>;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: () => FilterDto<string>,
     description: 'Filter by mobileNumber',
   })
-  mobileNumber!: FilterDto<string>;
+  mobileNumber?: FilterDto<string>;
+
+  @ApiPropertyOptional({
+    type: () => FilterDto<string>,
+    description: 'Filter by status (eq or in)',
+  })
+  status?: FilterDto<string>;
+
+  @ApiPropertyOptional({
+    type: () => FilterDto<string>,
+    description: 'Filter by source (eq or in)',
+  })
+  source?: FilterDto<string>;
+
+  @ApiPropertyOptional({
+    type: () => FilterDto<string>,
+    description: 'Filter by territoryId',
+  })
+  territoryId?: FilterDto<string>;
+
+  @ApiPropertyOptional({
+    type: () => FilterDto<string>,
+    description: 'Filter by agencyId',
+  })
+  agencyId?: FilterDto<string>;
+
+  @ApiPropertyOptional({
+    type: () => FilterDto<string>,
+    description: 'Filter by assignedToTeamId',
+  })
+  assignedToTeamId?: FilterDto<string>;
+
+  @ApiPropertyOptional({
+    type: () => FilterDto<string>,
+    description: 'Filter by assignedToUserId',
+  })
+  assignedToUserId?: FilterDto<string>;
+
+  @ApiPropertyOptional({
+    type: () => FilterDto<string>,
+    description: 'Filter by tags (contain)',
+  })
+  tags?: FilterDto<string>;
+
+  @ApiPropertyOptional({
+    type: () => FilterDto<string>,
+    description: 'Filter by createdAt (gte, lte)',
+  })
+  createdAt?: FilterDto<string>;
 }
 
 @ApiExtraModels(FilterAllContactsCommand)
@@ -84,6 +136,15 @@ export class PaginateAllContactsCommandDto {
 
   @ApiProperty({ description: 'Record score', type: Number, default: 0 })
   score!: number;
+
+  @ApiPropertyOptional({ description: 'Contact status', type: String })
+  status!: string;
+
+  @ApiPropertyOptional({ description: 'Contact source', type: String })
+  source!: string;
+
+  @ApiPropertyOptional({ description: 'Assigned user ID', type: String })
+  assignedToUserId!: string | null;
 }
 
 export class PaginateAllContactsCommandResponse extends Pagination<PaginateAllContactsCommandDto> {}
@@ -116,6 +177,49 @@ export class PaginateAllContactsCommandHandler
         mobileNumber: filterQueryGenerator(command.filters.mobileNumber),
       };
     }
+
+    if (command.filters?.status) {
+      const f = command.filters.status;
+      if (f.operator === 'in' && Array.isArray(f.value)) {
+        queryFilter.status = { $in: f.value };
+      } else {
+        queryFilter.status = f.value;
+      }
+    }
+
+    if (command.filters?.source) {
+      const f = command.filters.source;
+      if (f.operator === 'in' && Array.isArray(f.value)) {
+        queryFilter.source = { $in: f.value };
+      } else {
+        queryFilter.source = f.value;
+      }
+    }
+
+    if (command.filters?.territoryId) {
+      queryFilter.territoryId = command.filters.territoryId.value;
+    }
+
+    if (command.filters?.agencyId) {
+      queryFilter.agencyId = command.filters.agencyId.value;
+    }
+
+    if (command.filters?.assignedToTeamId) {
+      queryFilter.assignedToTeamId = command.filters.assignedToTeamId.value;
+    }
+
+    if (command.filters?.assignedToUserId) {
+      queryFilter.assignedToUserId = command.filters.assignedToUserId.value;
+    }
+
+    if (command.filters?.tags) {
+      queryFilter.tags = filterQueryGenerator(command.filters.tags);
+    }
+
+    if (command.filters?.createdAt) {
+      queryFilter.createdAt = filterQueryGenerator(command.filters.createdAt);
+    }
+
     let addFields = {};
 
     if (command.fullTextSearch) {
@@ -137,6 +241,9 @@ export class PaginateAllContactsCommandHandler
       updatedBy: 1,
       createdByInfo: 1,
       score: 1,
+      status: 1,
+      source: 1,
+      assignedToUserId: 1,
     };
 
     const totalDocuments =
@@ -146,12 +253,16 @@ export class PaginateAllContactsCommandHandler
 
     const totalPages = Math.ceil(totalDocuments / command.pageSize);
 
+    const sortStage = command.fullTextSearch
+      ? { $sort: { score: { $meta: 'textScore' } } as Record<string, any> }
+      : { $sort: { createdAt: -1 } as Record<string, any> };
+
     const results = await this.contactProvider.ContactModel.aggregate([
       { $match: queryFilter },
-      { $sort: { score: -1 } },
+      ...(Object.keys(addFields).length ? [{ $addFields: addFields }] : []),
+      sortStage,
       { $skip: Math.max(command.pageIndex * command.pageSize, 0) },
       { $limit: command.pageSize },
-      { $addFields: addFields },
       { $project: projection },
     ]).exec();
 
@@ -169,8 +280,11 @@ export class PaginateAllContactsCommandHandler
             lastName: item.lastName,
             createdAt: item.createdAt,
             updatedAt: item.updatedAt,
-            createdByInfo: item.createdBy,
+            createdByInfo: item.createdByInfo,
             score: item.score,
+            status: item.status,
+            source: item.source,
+            assignedToUserId: item.assignedToUserId ?? null,
           } satisfies PaginateAllContactsCommandDto;
         }),
       ],

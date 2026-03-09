@@ -16,14 +16,46 @@ export interface FilterAllContactsCommand {
     /**
      * Filter by fullName
      */
-    fullName: FilterDto;
+    fullName?: FilterDto;
     /**
      * Filter by email
      */
-    email: FilterDto;
+    email?: FilterDto;
     /**
      * Filter by mobileNumber
      */
-    mobileNumber: FilterDto;
+    mobileNumber?: FilterDto;
+    /**
+     * Filter by status (eq or in)
+     */
+    status?: FilterDto;
+    /**
+     * Filter by source (eq or in)
+     */
+    source?: FilterDto;
+    /**
+     * Filter by territoryId
+     */
+    territoryId?: FilterDto;
+    /**
+     * Filter by agencyId
+     */
+    agencyId?: FilterDto;
+    /**
+     * Filter by assignedToTeamId
+     */
+    assignedToTeamId?: FilterDto;
+    /**
+     * Filter by assignedToUserId
+     */
+    assignedToUserId?: FilterDto;
+    /**
+     * Filter by tags (contain)
+     */
+    tags?: FilterDto;
+    /**
+     * Filter by createdAt (gte, lte)
+     */
+    createdAt?: FilterDto;
 }
 

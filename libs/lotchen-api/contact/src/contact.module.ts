@@ -16,6 +16,11 @@ import {
   BulkDeleteContactsCommandHandler,
   DeleteContactCommandHandler,
 } from './contacts/delete/delete-contact.command';
+import {
+  AssignContactCommandHandler,
+  BulkAssignContactsCommandHandler,
+} from './contacts/assign/assign-contact.command';
+import { UpdateContactStatusCommandHandler } from './contacts/update-status/update-contact-status.command';
 
 @Module({
   imports: [],
@@ -34,6 +39,9 @@ import {
     PatchDataCommandHandler,
     DeleteContactCommandHandler,
     BulkDeleteContactsCommandHandler,
+    AssignContactCommandHandler,
+    BulkAssignContactsCommandHandler,
+    UpdateContactStatusCommandHandler,
   ],
   exports: [],
 })

@@ -49,5 +49,17 @@ export interface PaginateAllContactsCommandDto {
      * Record score
      */
     score: number;
+    /**
+     * Contact status
+     */
+    status?: string;
+    /**
+     * Contact source
+     */
+    source?: string;
+    /**
+     * Assigned user ID
+     */
+    assignedToUserId?: string;
 }
 

@@ -1,0 +1,67 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title>Réassigner des contacts</tas-title>
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <tas-text>
+      Vous allez réassigner {{ contactCount }} contact(s). Sélectionnez les
+      champs à modifier ci-dessous.
+    </tas-text>
+
+    <div class="flex flex-col gap-3 mt-4">
+      <tas-form-field>
+        <tas-label>Territoire</tas-label>
+        <tas-select
+          [options]="territories().value ?? []"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Sélectionner un territoire"
+          [formControl]="territoryControl"
+        ></tas-select>
+      </tas-form-field>
+
+      <tas-form-field>
+        <tas-label>Agence</tas-label>
+        <tas-select
+          [options]="agencies().value ?? []"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Sélectionner une agence"
+          [formControl]="agencyControl"
+        ></tas-select>
+      </tas-form-field>
+
+      <tas-form-field>
+        <tas-label>Équipe</tas-label>
+        <tas-select
+          [options]="teams().value ?? []"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Sélectionner une équipe"
+          [formControl]="teamControl"
+        ></tas-select>
+      </tas-form-field>
+
+      <tas-form-field>
+        <tas-label>Agent</tas-label>
+        <tas-select
+          [options]="users().value ?? []"
+          optionLabel="firstName"
+          optionValue="id"
+          placeholder="Sélectionner un agent"
+          [formControl]="agentControl"
+        ></tas-select>
+      </tas-form-field>
+    </div>
+  </tas-drawer-content>
+  <tas-drawer-action>
+    <button
+      tas-raised-button
+      color="primary"
+      [disabled]="submitting()"
+      (click)="submit()"
+    >
+      {{ submitting() ? 'En cours...' : 'Réassigner' }}
+    </button>
+  </tas-drawer-action>
+</tas-side-drawer>

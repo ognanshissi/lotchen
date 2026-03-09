@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ContactDocument } from '../contact.schema';
 import { Model } from 'mongoose';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -73,6 +73,18 @@ export class FindAllContactsQueryResponse {
 
   @ApiProperty({ required: false, description: 'Date of update', type: Date })
   updatedAt!: Date;
+
+  @ApiProperty({ required: false, description: 'Contact status', type: String })
+  status!: string;
+
+  @ApiPropertyOptional({ description: 'Assigned user ID', type: String })
+  assignedToUserId!: string | null;
+
+  @ApiPropertyOptional({ description: 'Assigned team ID', type: String })
+  assignedToTeamId!: string | null;
+
+  @ApiPropertyOptional({ description: 'Territory ID', type: String })
+  territoryId!: string | null;
 }
 
 @Injectable()
@@ -100,7 +112,7 @@ export class FindAllContactsQueryHandler
   ): Promise<FindAllContactsQueryResponse[]> {
     // projection
     let projection =
-      'id email firstName lastName source mobileNumber dateOfBirth address createdAt updatedAt';
+      'id email firstName lastName source mobileNumber dateOfBirth address createdAt updatedAt status assignedToUserId assignedToTeamId territoryId';
 
     if (query.fields) {
       projection = query.fields
@@ -147,6 +159,10 @@ export class FindAllContactsQueryHandler
         dateOfBirth: contact.dateOfBirth,
         createdAt: contact.createdAt,
         updatedAt: contact.updatedAt,
+        status: contact.status,
+        assignedToUserId: contact.assignedToUserId ?? null,
+        assignedToTeamId: contact.assignedToTeamId ?? null,
+        territoryId: contact.territoryId ?? null,
       };
     });
   }

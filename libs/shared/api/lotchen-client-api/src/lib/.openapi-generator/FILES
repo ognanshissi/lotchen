@@ -23,9 +23,11 @@ git_push.sh
 index.ts
 model/access-token-response.interface.ts
 model/address-dto.interface.ts
+model/assign-contact-command-request.interface.ts
 model/assign-permissions-command-request.interface.ts
 model/assign-roles-command-request.interface.ts
 model/audit-user-info-dto.interface.ts
+model/bulk-assign-contacts-command-request.interface.ts
 model/bulk-delete-contacts-command.interface.ts
 model/contact-info-dto.interface.ts
 model/contacts-controller-paginate-all-territories-v1200-response.interface.ts
@@ -70,6 +72,8 @@ model/forgot-password-command.interface.ts
 model/from-agent-lite-dto.interface.ts
 model/get-me-query-response.interface.ts
 model/get-user-profile-query-response.interface.ts
+model/import-contacts-excel-command-response.interface.ts
+model/import-contacts-excel-error-detail.interface.ts
 model/invite-user-command.interface.ts
 model/location-dto.interface.ts
 model/login-command.interface.ts
@@ -94,6 +98,7 @@ model/territories-query-user-dto.interface.ts
 model/territory-lite-dto.interface.ts
 model/twilio-access-token-response.interface.ts
 model/update-contact-command-request.interface.ts
+model/update-contact-status-command-request.interface.ts
 model/update-role-permissions-command-response.interface.ts
 model/update-team-command-request.interface.ts
 model/users-controller-search-user-paginate-v1200-response.interface.ts

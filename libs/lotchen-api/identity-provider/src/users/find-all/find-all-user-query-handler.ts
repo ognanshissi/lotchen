@@ -54,14 +54,14 @@ export class FindAllUserQueryHandler
       .find(queryFilter, projection, {
         sort: { createdAt: -1 },
       })
-      .populate('user', '_id roles reportedTo teams')
+      .populate('user', '_id roles reportedTo teams contactInfo')
       .lean()
       .exec();
 
     return profiles.map((item) => {
       return {
         userId: item.user?._id ?? null,
-        email: item.contactInfo.email,
+        email: item.contactInfo?.email,
         firstName: item.firstName,
         lastName: item.lastName,
         createdByInfo: item?.createdByInfo

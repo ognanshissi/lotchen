@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  signal,
   ViewEncapsulation,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -10,17 +11,20 @@ import { ActivatedRoute, Data, Router } from '@angular/router';
 import {
   ContactsApiService,
   FindContactByIdQueryResponse,
+  UpdateContactStatusCommandRequestStatusEnum,
 } from '@talisoft/api/lotchen-client-api';
 import { TasCard } from '@talisoft/ui/card';
 import { TasSummaryField } from '@talisoft/ui/summary-field';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { map, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'prospects-contact-detail-overview',
   templateUrl: './contact-detail-overview.component.html',
   standalone: true,
-  imports: [TasSummaryField, TasCard],
+  imports: [TasSummaryField, TasCard, DatePipe],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -29,6 +33,7 @@ export class ContactDetailOverviewComponent {
   private readonly _contactApi = inject(ContactsApiService);
   private readonly _snackbarService = inject(SnackbarService);
   private readonly _router = inject(Router);
+  private readonly _http = inject(HttpClient);
 
   public contact = toSignal(
     (this._activatedRoute?.parent?.data as Observable<Data>).pipe(
@@ -44,10 +49,24 @@ export class ContactDetailOverviewComponent {
     { value: 'Contacted', label: 'Contacté' },
     { value: 'Interested', label: 'Intéressé' },
     { value: 'Qualified', label: 'Qualifié' },
+    { value: 'ProposalSent', label: 'Proposition envoyée' },
+    { value: 'Negotiation', label: 'Négociation' },
+    { value: 'ConvertedToClient', label: 'Converti en client' },
   ];
 
+  public secondaryStatuses = [
+    { value: 'Lost', label: 'Perdu' },
+    { value: 'OnHold', label: 'En attente' },
+  ];
+
+  public showStatusHistory = signal(false);
+
+  public updatingStatus = signal(false);
+
   public assignedAgent = computed(() => {
-    const info = (this.contact() as any)?.createdByInfo;
+    const contact = this.contact() as any;
+    // Use createdByInfo as fallback if no explicit assignment
+    const info = contact?.createdByInfo;
     if (!info) return '';
     return `${info.firstName ?? ''} ${info.lastName ?? ''}`.trim();
   });
@@ -56,6 +75,39 @@ export class ContactDetailOverviewComponent {
     const tags = (this.contact() as any)?.tags;
     return tags?.length ? tags.join(', ') : '';
   });
+
+  public onStatusChange(newStatus: string): void {
+    const contactId = this.contact()?.id;
+    if (!contactId || this.contact()?.status === newStatus) return;
+
+    this.updatingStatus.set(true);
+
+    this._contactApi
+      .contactsControllerUpdateContactStatusV1(contactId, {
+        status: newStatus as UpdateContactStatusCommandRequestStatusEnum,
+      })
+      .subscribe({
+        next: () => {
+          this._snackbarService.success(
+            'Succès',
+            'Le statut du contact a été mis à jour'
+          );
+          this.updatingStatus.set(false);
+          this._refreshPage(contactId);
+        },
+        error: () => {
+          this._snackbarService.error(
+            'Erreur',
+            'La mise à jour du statut a échoué'
+          );
+          this.updatingStatus.set(false);
+        },
+      });
+  }
+
+  public toggleStatusHistory(): void {
+    this.showStatusHistory.update((v) => !v);
+  }
 
   public onFieldSaved(event: { field: string; value: any }): void {
     const contactId = this.contact()?.id;
@@ -71,16 +123,7 @@ export class ContactDetailOverviewComponent {
             'Succès',
             'Le contact a été mis à jour'
           );
-          // Re-navigate to refresh resolver data
-          this._router
-            .navigateByUrl('/', { skipLocationChange: true })
-            .then(() => {
-              this._router.navigate([
-                '/portal/contacts',
-                contactId,
-                'overview',
-              ]);
-            });
+          this._refreshPage(contactId);
         },
         error: () => {
           this._snackbarService.error(
@@ -89,5 +132,11 @@ export class ContactDetailOverviewComponent {
           );
         },
       });
+  }
+
+  private _refreshPage(contactId: string): void {
+    this._router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this._router.navigate(['/portal/contacts', contactId, 'overview']);
+    });
   }
 }

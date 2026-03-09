@@ -1789,6 +1789,96 @@
         ]
       }
     },
+    "/api/v1/contacts/{id}/assign": {
+      "patch": {
+        "operationId": "ContactsController_assignContact_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignContactCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Contact assigned"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
+    },
+    "/api/v1/contacts/bulk-assign": {
+      "post": {
+        "operationId": "ContactsController_bulkAssignContacts_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkAssignContactsCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Contacts assigned"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
+    },
+    "/api/v1/contacts/{id}/status": {
+      "patch": {
+        "operationId": "ContactsController_updateContactStatus_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateContactStatusCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Contact status updated"
+          }
+        },
+        "tags": [
+          "Contacts"
+        ]
+      }
+    },
     "/api/v1/contacts/bulk-delete": {
       "post": {
         "operationId": "ContactsController_bulkDeleteContacts_v1",
@@ -3632,6 +3722,22 @@
             "format": "date-time",
             "type": "string",
             "description": "Date of update"
+          },
+          "status": {
+            "type": "string",
+            "description": "Contact status"
+          },
+          "assignedToUserId": {
+            "type": "string",
+            "description": "Assigned user ID"
+          },
+          "assignedToTeamId": {
+            "type": "string",
+            "description": "Assigned team ID"
+          },
+          "territoryId": {
+            "type": "string",
+            "description": "Territory ID"
           }
         },
         "required": [
@@ -3759,6 +3865,18 @@
           "assignedToUserId": {
             "type": "string",
             "description": "Assigned user ID"
+          },
+          "assignedToTeamId": {
+            "type": "string",
+            "description": "Assigned team ID"
+          },
+          "territoryId": {
+            "type": "string",
+            "description": "Territory ID"
+          },
+          "agencyId": {
+            "type": "string",
+            "description": "Agency ID"
           },
           "createdByInfo": {
             "description": "Created by info",
@@ -3891,6 +4009,18 @@
             "type": "number",
             "description": "Record score",
             "default": 0
+          },
+          "status": {
+            "type": "string",
+            "description": "Contact status"
+          },
+          "source": {
+            "type": "string",
+            "description": "Contact source"
+          },
+          "assignedToUserId": {
+            "type": "string",
+            "description": "Assigned user ID"
           }
         },
         "required": [
@@ -3930,13 +4060,72 @@
                 "$ref": "#/components/schemas/FilterDto"
               }
             ]
+          },
+          "status": {
+            "description": "Filter by status (eq or in)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "source": {
+            "description": "Filter by source (eq or in)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "territoryId": {
+            "description": "Filter by territoryId",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "agencyId": {
+            "description": "Filter by agencyId",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "assignedToTeamId": {
+            "description": "Filter by assignedToTeamId",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "assignedToUserId": {
+            "description": "Filter by assignedToUserId",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "tags": {
+            "description": "Filter by tags (contain)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "description": "Filter by createdAt (gte, lte)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
           }
-        },
-        "required": [
-          "fullName",
-          "email",
-          "mobileNumber"
-        ]
+        }
       },
       "PaginateAllContactsCommandRequest": {
         "type": "object",
@@ -4053,6 +4242,87 @@
         },
         "required": [
           "fields"
+        ]
+      },
+      "AssignContactCommandRequest": {
+        "type": "object",
+        "properties": {
+          "assignedToUserId": {
+            "type": "string",
+            "description": "Assigned user ID"
+          },
+          "assignedToTeamId": {
+            "type": "string",
+            "description": "Assigned team ID"
+          },
+          "territoryId": {
+            "type": "string",
+            "description": "Territory ID"
+          },
+          "agencyId": {
+            "type": "string",
+            "description": "Agency ID"
+          }
+        }
+      },
+      "BulkAssignContactsCommandRequest": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "Contact Ids to assign",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assignedToUserId": {
+            "type": "string",
+            "description": "Assigned user ID"
+          },
+          "assignedToTeamId": {
+            "type": "string",
+            "description": "Assigned team ID"
+          },
+          "territoryId": {
+            "type": "string",
+            "description": "Territory ID"
+          },
+          "agencyId": {
+            "type": "string",
+            "description": "Agency ID"
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "UpdateContactStatusCommandRequest": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "New status",
+            "enum": [
+              "New",
+              "Contacted",
+              "Interested",
+              "Qualified",
+              "Unqualified",
+              "FollowUpNeeded",
+              "ProposalSent",
+              "Negotiation",
+              "PendingApproval",
+              "ConvertedToProspect",
+              "ConvertedToClient",
+              "Lost",
+              "Disqualified",
+              "NoResponse",
+              "OnHold"
+            ]
+          }
+        },
+        "required": [
+          "status"
         ]
       },
       "BulkDeleteContactsCommand": {

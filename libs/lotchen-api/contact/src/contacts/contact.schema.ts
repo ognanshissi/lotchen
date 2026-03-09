@@ -129,6 +129,9 @@ export class Contact extends AggregateRoot {
   @Prop({ type: 'UUID', default: null, required: false })
   territoryId?: string;
 
+  @Prop({ type: 'UUID', default: null, required: false })
+  agencyId?: string;
+
   @Prop({ type: [String], default: [] }) // Stores tags for categorization
   tags!: string[];
 

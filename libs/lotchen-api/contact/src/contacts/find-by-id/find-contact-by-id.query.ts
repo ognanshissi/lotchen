@@ -98,6 +98,15 @@ export class FindContactByIdQueryResponse {
   @ApiPropertyOptional({ type: String, description: 'Assigned user ID' })
   assignedToUserId!: string | null;
 
+  @ApiPropertyOptional({ type: String, description: 'Assigned team ID' })
+  assignedToTeamId!: string | null;
+
+  @ApiPropertyOptional({ type: String, description: 'Territory ID' })
+  territoryId!: string | null;
+
+  @ApiPropertyOptional({ type: String, description: 'Agency ID' })
+  agencyId!: string | null;
+
   @ApiPropertyOptional({
     type: CreatedByInfoDto,
     description: 'Created by info',
@@ -119,7 +128,7 @@ export class FindContactByQueryHandler
   ): Promise<FindContactByIdQueryResponse> {
     const contact = await this.contactProvider.ContactModel.findOne(
       { _id: query.id, deletedAt: null },
-      '_id email firstName lastName mobileNumber phone dateOfBirth addresses createdAt updatedAt jobTitle source status gender tags companyName assignedToUserId createdByInfo statusHistory'
+      '_id email firstName lastName mobileNumber phone dateOfBirth addresses createdAt updatedAt jobTitle source status gender tags companyName assignedToUserId assignedToTeamId territoryId agencyId createdByInfo statusHistory'
     )
       .lean()
       .exec();
@@ -139,6 +148,9 @@ export class FindContactByQueryHandler
       tags: contact.tags ?? [],
       companyName: contact.companyName ?? null,
       assignedToUserId: contact.assignedToUserId ?? null,
+      assignedToTeamId: contact.assignedToTeamId ?? null,
+      territoryId: contact.territoryId ?? null,
+      agencyId: contact.agencyId ?? null,
       createdByInfo: contact.createdByInfo ?? null,
       statusHistory: (contact.statusHistory ?? []).map((sh: any) => ({
         previousStatus: sh.previousStatus,

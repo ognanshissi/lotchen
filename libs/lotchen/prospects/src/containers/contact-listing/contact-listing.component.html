@@ -31,6 +31,86 @@
   </card-header>
 </tas-card>
 
+<!-- Filter Bar -->
+<tas-card class="mt-4 p-4">
+  <div class="flex items-center gap-2 mb-2">
+    <tas-icon iconName="feather:filter" iconClass="text-gray-500"></tas-icon>
+    <span class="font-medium text-sm text-gray-700">Filtres</span>
+    <button
+      class="ml-auto text-sm text-primary cursor-pointer"
+      (click)="clearFilters()"
+    >
+      Réinitialiser
+    </button>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+    <tas-form-field>
+      <tas-label>Statut</tas-label>
+      <tas-multi-select
+        [options]="statusOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Tous les statuts"
+        [formControl]="statusFilter"
+      ></tas-multi-select>
+    </tas-form-field>
+
+    <tas-form-field>
+      <tas-label>Source</tas-label>
+      <tas-multi-select
+        [options]="sourceOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Toutes les sources"
+        [formControl]="sourceFilter"
+      ></tas-multi-select>
+    </tas-form-field>
+
+    <tas-form-field>
+      <tas-label>Territoire</tas-label>
+      <tas-select
+        [options]="territories().value ?? []"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Tous les territoires"
+        [formControl]="territoryFilter"
+      ></tas-select>
+    </tas-form-field>
+
+    <tas-form-field>
+      <tas-label>Équipe</tas-label>
+      <tas-select
+        [options]="teams().value ?? []"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Toutes les équipes"
+        [formControl]="teamFilter"
+      ></tas-select>
+    </tas-form-field>
+
+    <tas-form-field>
+      <tas-label>Agent</tas-label>
+      <tas-select
+        [options]="users().value ?? []"
+        optionLabel="firstName"
+        optionValue="id"
+        placeholder="Tous les agents"
+        [formControl]="agentFilter"
+      ></tas-select>
+    </tas-form-field>
+
+    <tas-form-field>
+      <tas-label>Recherche</tas-label>
+      <input
+        tasInput
+        type="text"
+        placeholder="Rechercher..."
+        [formControl]="searchControl"
+      />
+    </tas-form-field>
+  </div>
+</tas-card>
+
 @if (selectedItems().length > 0) {
 <div
   class="mt-4 px-4 py-3 bg-white border border-gray-300 rounded-lg flex items-center justify-between"
@@ -38,19 +118,32 @@
   <span class="font-medium text-primary"
     >{{ selectedItems().length }} contact(s) sélectionné(s)</span
   >
-  <button tas-raised-button color="warn" (click)="bulkDeleteContacts()">
-    <tas-icon iconName="feather:trash"></tas-icon>
-    Archiver
-  </button>
+  <div class="flex space-x-2">
+    <button
+      tas-outlined-button
+      color="primary"
+      (click)="bulkReassignContacts()"
+    >
+      <tas-icon iconName="feather:user-check"></tas-icon>
+      Réassigner
+    </button>
+    <button tas-raised-button color="warn" (click)="bulkDeleteContacts()">
+      <tas-icon iconName="feather:trash"></tas-icon>
+      Archiver
+    </button>
+  </div>
 </div>
 }
 
 <tas-card class="mt-4">
   <tas-table
     [title]="'Liste des contacts'"
-    [data]="contacts().value ?? []"
-    [isLoading]="contacts().isLoading"
+    [data]="contacts()"
+    [isLoading]="isLoading()"
+    [config]="tableConfig"
     (selectionItemsChange)="handleSelectionItems($event)"
+    (pageEventChange)="onPageChange($event)"
+    (searchInputChange)="onSearchChange($event)"
   >
     <ng-template #header>
       <tr>
@@ -145,7 +238,37 @@
           </div>
         </td>
         <td>{{ item.source }}</td>
-        <td>{{ item.status }}</td>
+        <td>
+          <span
+            class="px-2 py-1 text-xs rounded-full"
+            [class.bg-primary]="item.status === 'New'"
+            [class.text-white]="item.status === 'New'"
+            [class.bg-blue-100]="item.status === 'Contacted'"
+            [class.text-blue-800]="item.status === 'Contacted'"
+            [class.bg-green-100]="
+              item.status === 'Interested' || item.status === 'Qualified'
+            "
+            [class.text-green-800]="
+              item.status === 'Interested' || item.status === 'Qualified'
+            "
+            [class.bg-red-100]="item.status === 'Lost'"
+            [class.text-red-800]="item.status === 'Lost'"
+            [class.bg-yellow-100]="item.status === 'OnHold'"
+            [class.text-yellow-800]="item.status === 'OnHold'"
+            [class.bg-gray-100]="
+              ![
+                'New',
+                'Contacted',
+                'Interested',
+                'Qualified',
+                'Lost',
+                'OnHold'
+              ].includes(item.status ?? '')
+            "
+          >
+            {{ item.status }}
+          </span>
+        </td>
         <td>{{ item.createdAt | dateTimeAgo }}</td>
       </tr>
     </ng-template>

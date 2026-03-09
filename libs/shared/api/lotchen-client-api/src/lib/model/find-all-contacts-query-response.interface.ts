@@ -48,5 +48,21 @@ export interface FindAllContactsQueryResponse {
      * Date of update
      */
     updatedAt?: string;
+    /**
+     * Contact status
+     */
+    status?: string;
+    /**
+     * Assigned user ID
+     */
+    assignedToUserId?: string;
+    /**
+     * Assigned team ID
+     */
+    assignedToTeamId?: string;
+    /**
+     * Territory ID
+     */
+    territoryId?: string;
 }
 

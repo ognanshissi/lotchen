@@ -54,6 +54,16 @@ import {
   BulkDeleteContactsCommandHandler,
   DeleteContactCommandHandler,
 } from './delete/delete-contact.command';
+import {
+  AssignContactCommandHandler,
+  AssignContactCommandRequest,
+  BulkAssignContactsCommandHandler,
+  BulkAssignContactsCommandRequest,
+} from './assign/assign-contact.command';
+import {
+  UpdateContactStatusCommandHandler,
+  UpdateContactStatusCommandRequest,
+} from './update-status/update-contact-status.command';
 import { interval, map, Observable } from 'rxjs';
 
 @ApiTags('Contacts')
@@ -71,7 +81,10 @@ export class ContactsController {
     private readonly _importContactsExcelCommandHandler: ImportContactsExcelCommandHandler,
     private readonly _patchDataCommandHandler: PatchDataCommandHandler,
     private readonly _deleteContactCommandHandler: DeleteContactCommandHandler,
-    private readonly _bulkDeleteContactsCommandHandler: BulkDeleteContactsCommandHandler
+    private readonly _bulkDeleteContactsCommandHandler: BulkDeleteContactsCommandHandler,
+    private readonly _assignContactCommandHandler: AssignContactCommandHandler,
+    private readonly _bulkAssignContactsCommandHandler: BulkAssignContactsCommandHandler,
+    private readonly _updateContactStatusCommandHandler: UpdateContactStatusCommandHandler
   ) {}
 
   @Post()
@@ -215,6 +228,47 @@ export class ContactsController {
   ): Promise<void> {
     console.log(request, id);
     await this._patchDataCommandHandler.handlerAsync({ ...request, id });
+  }
+
+  @Patch(':id/assign')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({
+    status: 204,
+    description: 'Contact assigned',
+  })
+  public async assignContact(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() request: AssignContactCommandRequest
+  ): Promise<void> {
+    await this._assignContactCommandHandler.handlerAsync({ id, ...request });
+  }
+
+  @Post('bulk-assign')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({
+    status: 204,
+    description: 'Contacts assigned',
+  })
+  public async bulkAssignContacts(
+    @Body() request: BulkAssignContactsCommandRequest
+  ): Promise<void> {
+    await this._bulkAssignContactsCommandHandler.handlerAsync(request);
+  }
+
+  @Patch(':id/status')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({
+    status: 204,
+    description: 'Contact status updated',
+  })
+  public async updateContactStatus(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() request: UpdateContactStatusCommandRequest
+  ): Promise<void> {
+    await this._updateContactStatusCommandHandler.handlerAsync({
+      id,
+      ...request,
+    });
   }
 
   @Delete(':id')

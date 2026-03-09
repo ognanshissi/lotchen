@@ -80,6 +80,18 @@ export interface FindContactByIdQueryResponse {
      */
     assignedToUserId?: string;
     /**
+     * Assigned team ID
+     */
+    assignedToTeamId?: string;
+    /**
+     * Territory ID
+     */
+    territoryId?: string;
+    /**
+     * Agency ID
+     */
+    agencyId?: string;
+    /**
      * Created by info
      */
     createdByInfo?: CreatedByInfoDto;
