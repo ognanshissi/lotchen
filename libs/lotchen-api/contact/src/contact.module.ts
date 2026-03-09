@@ -21,10 +21,24 @@ import {
   BulkAssignContactsCommandHandler,
 } from './contacts/assign/assign-contact.command';
 import { UpdateContactStatusCommandHandler } from './contacts/update-status/update-contact-status.command';
+// Leads
+import { LeadsController } from './leads/leads.controller';
+import { LeadProvider } from './leads/lead.provider';
+import { CreateLeadCommandHandler } from './leads/create/create-lead.command';
+import { PaginateAllLeadsCommandHandler } from './leads/paginate-all/paginate-all-leads.command';
+import { FindLeadByIdQueryHandler } from './leads/find-by-id/find-lead-by-id.query';
+import { UpdateLeadCommandHandler } from './leads/update/update-lead.command';
+import { DeleteLeadCommandHandler } from './leads/delete/delete-lead.command';
+import { QualifyLeadCommandHandler } from './leads/qualify/qualify-lead.command';
+import { DisqualifyLeadCommandHandler } from './leads/disqualify/disqualify-lead.command';
+import { ConvertLeadCommandHandler } from './leads/convert/convert-lead.command';
+import { CaptureLeadCommandHandler } from './leads/capture/capture-lead.command';
+import { WebhookLeadCommandHandler } from './leads/capture/webhook-lead.command';
+import { EnrichLeadCommandHandler } from './leads/enrich/enrich-lead.command';
 
 @Module({
   imports: [],
-  controllers: [ContactsController, CallLogsController],
+  controllers: [ContactsController, CallLogsController, LeadsController],
   providers: [
     ...contactProviders,
     CreateContactCommandHandler,
@@ -42,6 +56,19 @@ import { UpdateContactStatusCommandHandler } from './contacts/update-status/upda
     AssignContactCommandHandler,
     BulkAssignContactsCommandHandler,
     UpdateContactStatusCommandHandler,
+    // Leads
+    LeadProvider,
+    CreateLeadCommandHandler,
+    PaginateAllLeadsCommandHandler,
+    FindLeadByIdQueryHandler,
+    UpdateLeadCommandHandler,
+    DeleteLeadCommandHandler,
+    QualifyLeadCommandHandler,
+    DisqualifyLeadCommandHandler,
+    ConvertLeadCommandHandler,
+    CaptureLeadCommandHandler,
+    WebhookLeadCommandHandler,
+    EnrichLeadCommandHandler,
   ],
   exports: [],
 })

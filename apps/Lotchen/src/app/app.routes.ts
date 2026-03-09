@@ -29,6 +29,10 @@ export const appRoutes: Route[] = [
         path: 'contacts',
         loadChildren: () => import('@lotchen/lotchen/prospects'),
       },
+      {
+        path: 'leads',
+        loadChildren: () => import('@lotchen/lotchen/leads'),
+      },
     ],
   },
   {

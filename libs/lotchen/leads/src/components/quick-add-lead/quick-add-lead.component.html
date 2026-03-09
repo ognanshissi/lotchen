@@ -1,0 +1,142 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title>Ajouter un lead</tas-title>
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <tas-text>
+      Renseignez les informations du nouveau lead pour commencer le suivi
+      commercial.
+    </tas-text>
+
+    <form [formGroup]="form" class="flex flex-col gap-3 mt-4">
+      <tas-card>
+        <card-header>
+          <tas-title>Informations personnelles</tas-title>
+        </card-header>
+
+        <div class="p-4 flex flex-col gap-3">
+          <tas-form-field>
+            <tas-label>Email</tas-label>
+            <input
+              tasInput
+              formControlName="email"
+              type="email"
+              placeholder="Adresse électronique"
+            />
+          </tas-form-field>
+          <tas-form-field>
+            <tas-label>Nom</tas-label>
+            <input
+              type="text"
+              formControlName="lastName"
+              tasInput
+              placeholder="Nom"
+            />
+          </tas-form-field>
+          <tas-form-field>
+            <tas-label>Prénom</tas-label>
+            <input
+              type="text"
+              formControlName="firstName"
+              tasInput
+              placeholder="Prénom"
+            />
+          </tas-form-field>
+          <tas-form-field>
+            <tas-label>Numéro de téléphone</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="mobileNumber"
+              placeholder="Numéro de téléphone"
+            />
+          </tas-form-field>
+        </div>
+      </tas-card>
+
+      <tas-card>
+        <card-header>
+          <tas-title>Informations commerciales</tas-title>
+        </card-header>
+
+        <div class="p-4 flex flex-col gap-3">
+          <tas-form-field>
+            <tas-label>Source</tas-label>
+            <tas-select
+              formControlName="source"
+              [options]="sourceOptions"
+              placeholder="Sélectionner la source"
+              [searchable]="false"
+            ></tas-select>
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Produit d'intérêt</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="productInterest"
+              placeholder="Ex: Prêt immobilier, Assurance vie..."
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Valeur estimée</tas-label>
+            <input
+              tasInput
+              type="number"
+              formControlName="estimatedValue"
+              placeholder="Montant estimé"
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Priorité</tas-label>
+            <tas-select
+              formControlName="priority"
+              [options]="priorityOptions"
+              placeholder="Sélectionner la priorité"
+              [searchable]="false"
+            ></tas-select>
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Notes</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="notes"
+              placeholder="Notes additionnelles"
+            />
+          </tas-form-field>
+
+          <tas-form-field>
+            <tas-label>Tags</tas-label>
+            <input
+              tasInput
+              type="text"
+              formControlName="tags"
+              placeholder="Tags (séparés par des virgules)"
+            />
+          </tas-form-field>
+        </div>
+      </tas-card>
+    </form>
+  </tas-drawer-content>
+  <tas-drawer-action>
+    <button tas-outlined-button closable-drawer [disabled]="form.disabled">
+      <tas-icon [iconName]="'close'"></tas-icon>
+      Fermer
+    </button>
+    <button
+      tas-raised-button
+      color="primary"
+      [disabled]="!form.valid"
+      (click)="submit()"
+      [isLoading]="form.disabled"
+    >
+      <tas-icon iconName="check"></tas-icon>
+      Sauvegarder
+    </button>
+  </tas-drawer-action>
+</tas-side-drawer>

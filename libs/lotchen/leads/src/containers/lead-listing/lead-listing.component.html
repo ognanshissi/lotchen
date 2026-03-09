@@ -1,0 +1,226 @@
+<tas-card>
+  <card-header>
+    <div class="flex">
+      <div class="w-2/3">
+        <tas-title>Leads</tas-title>
+        <tas-text>
+          Gérez vos leads, qualifiez-les et convertissez-les en prospects ou
+          clients.
+        </tas-text>
+      </div>
+      <div class="flex justify-end space-x-2 w-1/3">
+        <button tas-raised-button color="primary" (click)="openQuickAdd()">
+          <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
+          Nouveau lead
+        </button>
+      </div>
+    </div>
+  </card-header>
+</tas-card>
+
+<!-- Filters -->
+<tas-card class="mt-4">
+  <div class="p-4 flex gap-3 items-end">
+    <tas-form-field class="flex-1">
+      <tas-label>Rechercher</tas-label>
+      <input
+        tasInput
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Nom, email, téléphone..."
+        (keyup.enter)="onFilterChange()"
+      />
+    </tas-form-field>
+    <tas-form-field>
+      <tas-label>Statut</tas-label>
+      <tas-select
+        [formControl]="statusFilter"
+        [options]="statusOptions"
+        placeholder="Tous les statuts"
+        [searchable]="false"
+        (ngModelChange)="onFilterChange()"
+      ></tas-select>
+    </tas-form-field>
+    <tas-form-field>
+      <tas-label>Source</tas-label>
+      <tas-select
+        [formControl]="sourceFilter"
+        [options]="sourceOptions"
+        placeholder="Toutes les sources"
+        [searchable]="false"
+        (ngModelChange)="onFilterChange()"
+      ></tas-select>
+    </tas-form-field>
+    <tas-form-field>
+      <tas-label>Priorité</tas-label>
+      <tas-select
+        [formControl]="priorityFilter"
+        [options]="priorityOptions"
+        placeholder="Toutes"
+        [searchable]="false"
+        (ngModelChange)="onFilterChange()"
+      ></tas-select>
+    </tas-form-field>
+    <button tas-outlined-button color="primary" (click)="onFilterChange()">
+      <tas-icon iconName="feather:search"></tas-icon>
+      Filtrer
+    </button>
+  </div>
+</tas-card>
+
+@if (selectedItems().length > 0) {
+<div
+  class="mt-4 px-4 py-3 bg-white border border-gray-300 rounded-lg flex items-center justify-between"
+>
+  <span class="font-medium text-primary"
+    >{{ selectedItems().length }} lead(s) sélectionné(s)</span
+  >
+  <div class="flex space-x-2">
+    <button tas-raised-button color="warn">
+      <tas-icon iconName="feather:trash"></tas-icon>
+      Supprimer
+    </button>
+  </div>
+</div>
+}
+
+<tas-card class="mt-4">
+  <tas-table
+    [title]="'Liste des leads'"
+    [data]="leads()"
+    [isLoading]="isLoading()"
+    [config]="tableConfig"
+    (selectionItemsChange)="handleSelectionItems($event)"
+    (pageEventChange)="onPageChange($event)"
+  >
+    <ng-template #header>
+      <tr>
+        <th rowSelectionMaster></th>
+        <th class="w-[400px]">Nom Complet</th>
+        <th>Source</th>
+        <th>Statut</th>
+        <th>Priorité</th>
+        <th>Score</th>
+        <th>Date de création</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item>
+      <tr class="row-hover">
+        <td rowSelectionItem></td>
+        <td class="flex justify-between">
+          <div class="flex space-x-2">
+            <span
+              class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center"
+            >
+              <tas-icon
+                iconName="feather:target"
+                iconClass="text-gray-500"
+              ></tas-icon>
+            </span>
+            <div>
+              <a
+                [routerLink]="[item.id]"
+                class="font-semibold text-primary inline-block"
+                >{{ item.firstName }} {{ item.lastName }}</a
+              >
+              <div class="text-gray-500">
+                {{ item.mobileNumber }} - {{ item.email }}
+              </div>
+            </div>
+          </div>
+
+          <div class="flex space-x-2">
+            <button
+              tas-button
+              iconButton
+              color="primary"
+              (click)="openCaller(item)"
+            >
+              <tas-icon iconName="phone" iconClass="text-gray-500"></tas-icon>
+            </button>
+            <a tas-button iconButton [routerLink]="[item.id]">
+              <tas-icon
+                iconName="visibility"
+                iconClass="text-gray-500"
+              ></tas-icon>
+            </a>
+            <button tas-button iconButton TasMenuTrigger [panel]="menu">
+              <tas-icon iconName="feather:more-vertical"></tas-icon>
+            </button>
+
+            <ng-template #menu>
+              <tas-menu>
+                <tas-menu-item
+                  class="flex space-x-2"
+                  (click)="qualifyLead(item)"
+                >
+                  <tas-icon iconName="feather:check-circle"></tas-icon>
+                  <span>Qualifier</span>
+                </tas-menu-item>
+                <tas-menu-item
+                  class="flex space-x-2"
+                  (click)="convertLead(item)"
+                >
+                  <tas-icon iconName="feather:refresh-cw"></tas-icon>
+                  <span>Convertir</span>
+                </tas-menu-item>
+                <tas-menu-item
+                  class="flex space-x-2 text-functional-error"
+                  (click)="deleteLead(item)"
+                >
+                  <tas-icon iconName="feather:trash"></tas-icon>
+                  <span>Supprimer</span>
+                </tas-menu-item>
+              </tas-menu>
+            </ng-template>
+          </div>
+        </td>
+        <td>{{ item.source }}</td>
+        <td>
+          <span
+            class="px-2 py-1 text-xs rounded-full"
+            [class.bg-primary]="item.status === 'New'"
+            [class.text-white]="item.status === 'New'"
+            [class.bg-blue-100]="item.status === 'Contacted'"
+            [class.text-blue-800]="item.status === 'Contacted'"
+            [class.bg-green-100]="
+              item.status === 'Interested' || item.status === 'Qualified'
+            "
+            [class.text-green-800]="
+              item.status === 'Interested' || item.status === 'Qualified'
+            "
+            [class.bg-red-100]="item.status === 'Disqualified'"
+            [class.text-red-800]="item.status === 'Disqualified'"
+            [class.bg-gray-100]="
+              ![
+                'New',
+                'Contacted',
+                'Interested',
+                'Qualified',
+                'Disqualified'
+              ].includes(item.status ?? '')
+            "
+          >
+            {{ item.status }}
+          </span>
+        </td>
+        <td>
+          @if (item.priority) {
+          <span
+            class="px-2 py-1 text-xs rounded-full"
+            [ngClass]="getPriorityClass(item.priority)"
+          >
+            {{ item.priority }}
+          </span>
+          } @else {
+          <span class="text-gray-400">—</span>
+          }
+        </td>
+        <td>
+          <span class="font-semibold">{{ item.score ?? 0 }}</span>
+        </td>
+        <td>{{ item.createdAt | dateTimeAgo }}</td>
+      </tr>
+    </ng-template>
+  </tas-table>
+</tas-card>

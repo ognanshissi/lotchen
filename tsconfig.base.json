@@ -31,6 +31,7 @@
       "@lotchen/lotchen/clients": ["libs/lotchen/clients/src/index.ts"],
       "@lotchen/lotchen/common/*": ["libs/lotchen/common/src/*"],
       "@lotchen/lotchen/dashboard": ["libs/lotchen/dashboard/src/index.ts"],
+      "@lotchen/lotchen/leads": ["libs/lotchen/leads/src/index.ts"],
       "@lotchen/lotchen/prospects": ["libs/lotchen/prospects/src/index.ts"],
       "@lotchen/lotchen/settings": ["libs/lotchen/settings/src/index.ts"],
       "@talisoft/api/lotchen-client-api": [

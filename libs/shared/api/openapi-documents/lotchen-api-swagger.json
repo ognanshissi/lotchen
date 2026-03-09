@@ -1960,6 +1960,356 @@
         ]
       }
     },
+    "/api/v1/leads": {
+      "post": {
+        "operationId": "LeadsController_createLead_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLeadCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Lead created"
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/v1/leads/paginate": {
+      "post": {
+        "operationId": "LeadsController_paginateAllLeads_v1",
+        "parameters": [
+          {
+            "name": "fields",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaginateAllLeadsCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "title": "PaginationResponseOfPaginateAllLeadsCommandDto",
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PaginateAllLeadsCommandDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/v1/leads/{id}": {
+      "get": {
+        "operationId": "LeadsController_findLeadById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lead found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindLeadByIdQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      },
+      "patch": {
+        "operationId": "LeadsController_updateLead_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLeadCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Lead updated"
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      },
+      "delete": {
+        "operationId": "LeadsController_deleteLead_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Lead deleted (soft)"
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/v1/leads/{id}/qualify": {
+      "patch": {
+        "operationId": "LeadsController_qualifyLead_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualifyLeadCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Lead qualified"
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/v1/leads/{id}/disqualify": {
+      "patch": {
+        "operationId": "LeadsController_disqualifyLead_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisqualifyLeadCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Lead disqualified"
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/v1/leads/{id}/convert": {
+      "post": {
+        "operationId": "LeadsController_convertLead_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConvertLeadCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Lead converted"
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/v1/leads/capture": {
+      "post": {
+        "operationId": "LeadsController_captureLead_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptureLeadCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Lead captured from external source"
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/v1/leads/webhook/{platform}": {
+      "post": {
+        "operationId": "LeadsController_webhookLead_v1",
+        "parameters": [
+          {
+            "name": "platform",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookLeadCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Lead captured from webhook"
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/v1/leads/{id}/enrich": {
+      "patch": {
+        "operationId": "LeadsController_enrichLead_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnrichLeadCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Lead enriched"
+          }
+        },
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
     "/api/v1/tasks": {
       "post": {
         "operationId": "TasksController_createTask_v1",
@@ -4484,6 +4834,561 @@
           "startDate",
           "createdAt"
         ]
+      },
+      "CreateLeadCommand": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "Website",
+              "Referral",
+              "Social Media",
+              "Event",
+              "Cold Call",
+              "Email",
+              "Back Office",
+              "LinkedIn",
+              "Facebook",
+              "Twitter",
+              "Google",
+              "Instagram",
+              "YouTube",
+              "Pinterest",
+              "Snapchat",
+              "TikTok",
+              "Reddit",
+              "Quora",
+              "Yelp",
+              "Campaign",
+              "Other"
+            ]
+          },
+          "productInterest": {
+            "type": "string"
+          },
+          "estimatedValue": {
+            "type": "number"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "Low",
+              "Medium",
+              "High",
+              "Critical"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "mobileNumber",
+          "source"
+        ]
+      },
+      "PaginateAllLeadsCommandDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Lead Id"
+          },
+          "email": {
+            "type": "string",
+            "description": "Lead email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Lead firstName"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Lead lastName"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "description": "Lead mobile number"
+          },
+          "createdByInfo": {
+            "description": "User information who created the record",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AuditUserInfoDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of creation"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date of update"
+          },
+          "status": {
+            "type": "string",
+            "description": "Lead status"
+          },
+          "source": {
+            "type": "string",
+            "description": "Lead source"
+          },
+          "priority": {
+            "type": "string",
+            "description": "Lead priority"
+          },
+          "productInterest": {
+            "type": "string",
+            "description": "Product interest"
+          },
+          "estimatedValue": {
+            "type": "number",
+            "description": "Estimated value"
+          },
+          "assignedToUserId": {
+            "type": "string",
+            "description": "Assigned user ID"
+          },
+          "score": {
+            "type": "number",
+            "description": "Lead score"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "firstName",
+          "lastName",
+          "mobileNumber",
+          "createdByInfo",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "FilterAllLeadsCommand": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "description": "Filter by fullName",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "email": {
+            "description": "Filter by email",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "mobileNumber": {
+            "description": "Filter by mobileNumber",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "status": {
+            "description": "Filter by status (eq or in)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "source": {
+            "description": "Filter by source (eq or in)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "priority": {
+            "description": "Filter by priority (eq or in)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "territoryId": {
+            "description": "Filter by territoryId",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "agencyId": {
+            "description": "Filter by agencyId",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "assignedToTeamId": {
+            "description": "Filter by assignedToTeamId",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "assignedToUserId": {
+            "description": "Filter by assignedToUserId",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "tags": {
+            "description": "Filter by tags (contain)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "description": "Filter by createdAt (gte, lte)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterDto"
+              }
+            ]
+          }
+        }
+      },
+      "PaginateAllLeadsCommandRequest": {
+        "type": "object",
+        "properties": {
+          "sort": {
+            "type": "object"
+          },
+          "pageIndex": {
+            "type": "number",
+            "description": "Page Index",
+            "example": 0,
+            "minimum": 0
+          },
+          "pageSize": {
+            "type": "number",
+            "maximum": 30,
+            "minimum": 5,
+            "example": 5
+          },
+          "filters": {
+            "description": "Filters for the query",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterAllLeadsCommand"
+              }
+            ]
+          },
+          "fullTextSearch": {
+            "type": "string",
+            "description": "Full-Text search on following fields: firstName, lastname, email, mobileNumber"
+          }
+        },
+        "required": [
+          "pageIndex",
+          "pageSize",
+          "filters",
+          "fullTextSearch"
+        ]
+      },
+      "FindLeadByIdQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "assignedToUserId": {
+            "type": "string"
+          },
+          "assignedToTeamId": {
+            "type": "string"
+          },
+          "territoryId": {
+            "type": "string"
+          },
+          "agencyId": {
+            "type": "string"
+          },
+          "createdByInfo": {
+            "$ref": "#/components/schemas/CreatedByInfoDto"
+          },
+          "statusHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatusHistoryDto"
+            }
+          },
+          "productInterest": {
+            "type": "string"
+          },
+          "estimatedValue": {
+            "type": "number"
+          },
+          "priority": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "bantBudget": {
+            "type": "string"
+          },
+          "bantAuthority": {
+            "type": "string"
+          },
+          "bantNeed": {
+            "type": "string"
+          },
+          "bantTimeline": {
+            "type": "string"
+          },
+          "disqualificationReason": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "firstName",
+          "lastName",
+          "mobileNumber",
+          "createdAt",
+          "source",
+          "status",
+          "tags",
+          "statusHistory"
+        ]
+      },
+      "UpdateLeadCommandRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "productInterest": {
+            "type": "string"
+          },
+          "estimatedValue": {
+            "type": "number"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "Low",
+              "Medium",
+              "High",
+              "Critical"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "QualifyLeadCommandRequest": {
+        "type": "object",
+        "properties": {
+          "budget": {
+            "type": "string",
+            "description": "Budget info (BANT)"
+          },
+          "authority": {
+            "type": "string",
+            "description": "Decision-maker info (BANT)"
+          },
+          "need": {
+            "type": "string",
+            "description": "Need description (BANT)"
+          },
+          "timeline": {
+            "type": "string",
+            "description": "Expected timeline (BANT)"
+          }
+        }
+      },
+      "DisqualifyLeadCommandRequest": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Reason for disqualification"
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "ConvertLeadCommandRequest": {
+        "type": "object",
+        "properties": {
+          "convertTo": {
+            "type": "string",
+            "enum": [
+              "prospect",
+              "client"
+            ],
+            "description": "Convert lead to prospect or client"
+          }
+        },
+        "required": [
+          "convertTo"
+        ]
+      },
+      "CaptureLeadCommand": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "formData": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "WebhookLeadCommandRequest": {
+        "type": "object",
+        "properties": {
+          "payload": {
+            "type": "object"
+          },
+          "apiKey": {
+            "type": "string"
+          }
+        }
+      },
+      "EnrichLeadCommandRequest": {
+        "type": "object",
+        "properties": {
+          "comments": {
+            "type": "string",
+            "description": "Free text comments"
+          },
+          "interestCategories": {
+            "description": "Interest categories (Banking, Insurance, Loan, etc.)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "CreateTaskCommand": {
         "type": "object",

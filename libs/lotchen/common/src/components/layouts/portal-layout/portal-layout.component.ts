@@ -48,6 +48,13 @@ export class PortalLayoutComponent implements OnInit {
         link: '/portal/contacts',
       },
       {
+        id: 'leads',
+        icon: 'feather:target',
+        title: 'Leads',
+        type: 'basic',
+        link: '/portal/leads',
+      },
+      {
         id: 'clients',
         icon: 'feather:user',
         title: 'Clients',
