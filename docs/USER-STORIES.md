@@ -57,11 +57,11 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Download template (.xlsx) with expected columns
-- [ ] Upload file, parse client-side, show preview table with validation status
-- [ ] Valid rows imported; invalid rows flagged with reason
-- [ ] Duplicate detection during import
-- [ ] Import summary report (created, skipped, errors)
+- [x] Download template (.xlsx) with expected columns
+- [x] Upload file, parse client-side, show preview table with validation status
+- [x] Valid rows imported; invalid rows flagged with reason
+- [x] Duplicate detection during import
+- [x] Import summary report (created, skipped, errors)
 
 **US-1.1.6** — Export contacts
 
@@ -81,9 +81,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Contact has `territory`, `agency`, `team`, `assignedTo` fields
-- [ ] Reassignment logged in activity timeline
-- [ ] Bulk reassignment from list view
+- [x] Contact has `territory`, `agency`, `team`, `assignedTo` fields
+- [x] Reassignment logged in activity timeline
+- [x] Bulk reassignment from list view
 
 **US-1.2.2** — Contact status lifecycle
 
@@ -91,9 +91,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Statuses: New, Contacted, Qualified, Nurturing, Converted, Lost, Archived
-- [ ] Status change triggers workflow actions (see Module 8)
-- [ ] Status history with timestamps visible on contact detail
+- [x] Statuses: New, Contacted, Qualified, Nurturing, Converted, Lost, Archived
+- [x] Status change triggers workflow actions (see Module 8)
+- [x] Status history with timestamps visible on contact detail
 
 **US-1.2.3** — Advanced search and filters
 
@@ -101,9 +101,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Filter by: status, source, territory, agency, team, tags, date range, assigned agent
-- [ ] Saved filters (personal and shared)
-- [ ] Full-text search across name, email, phone, company
+- [x] Filter by: status, source, territory, agency, team, tags, date range, assigned agent
+- [x] Saved filters (personal and shared)
+- [x] Full-text search across name, email, phone, company
 
 ---
 
@@ -117,9 +117,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Lead captures: contact reference, source, product interest, estimated value, priority, notes
-- [ ] Lead auto-linked to contact record
-- [ ] Lead score computed from profile completeness + engagement signals
+- [x] Lead captures: contact reference, source, product interest, estimated value, priority, notes
+- [x] Lead auto-linked to contact record
+- [x] Lead score computed from profile completeness + engagement signals
 
 **US-2.1.2** — Lead qualification
 
@@ -127,9 +127,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Qualification form: budget, authority, need, timeline (BANT)
-- [ ] Qualified leads auto-move to pipeline stage (see Module 9)
-- [ ] Disqualified leads archived with reason
+- [x] Qualification form: budget, authority, need, timeline (BANT)
+- [x] Qualified leads auto-move to pipeline stage (see Module 9)
+- [x] Disqualified leads archived with reason
 
 **US-2.1.3** — Convert lead to opportunity / client
 
@@ -137,9 +137,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Conversion creates an opportunity record linked to the contact
-- [ ] Lead status updates to "Converted"
-- [ ] All lead history preserved and accessible from the opportunity
+- [x] Conversion creates an opportunity record linked to the contact
+- [x] Lead status updates to "Converted"
+- [x] All lead history preserved and accessible from the opportunity
 
 ### Epic 2.2 — Lead Capture from External Sources
 
