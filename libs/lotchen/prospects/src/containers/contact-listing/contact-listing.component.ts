@@ -32,18 +32,12 @@ import { AddTaskDialogService } from '@lotchen/lotchen/common/components/add-tas
 import { Dialog } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { ConfirmDeleteDialogComponent } from '../../components/confirm-delete-dialog/confirm-delete-dialog.component';
-import { TasSelect } from '@talisoft/ui/select';
-import { TasMultiSelect } from '@talisoft/ui/multi-select';
-import { FormField, TasLabel } from '@talisoft/ui/form-field';
-import { TasInput } from '@talisoft/ui/input';
-import { TasDatePicker } from '@talisoft/ui/date-picker';
-import {
-  AbstractControl,
-  FormControl,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ReassignContactDialogComponent } from '../../components/reassign-contact-dialog/reassign-contact-dialog.component';
+import {
+  ContactFilterData,
+  ContactSearchComponent,
+} from '../../components/contact-search/contact-search.component';
 
 @Component({
   selector: 'prospects-contact-listing',
@@ -64,79 +58,20 @@ import { ReassignContactDialogComponent } from '../../components/reassign-contac
     Menu,
     TasMenuTrigger,
     MenuItem,
-    TasSelect,
-    TasMultiSelect,
-    FormField,
-    TasLabel,
-    TasInput,
-    TasDatePicker,
     ReactiveFormsModule,
+    ContactSearchComponent,
   ],
 })
-export class ContactListingComponent implements OnInit, OnDestroy {
+export class ContactListingComponent implements OnInit {
   private readonly _sideDrawerService = inject(SideDrawerService);
   private readonly _contactsApiService = inject(ContactsApiService);
-  private readonly _territoriesApiService = inject(TerritoriesApiService);
-  private readonly _teamsApiService = inject(TeamsApiService);
-  private readonly _usersApiService = inject(UsersApiService);
+
   private readonly _callerService = inject(CallerService);
   private readonly _addTaskDialogService = inject(AddTaskDialogService);
   private readonly _dialog = inject(Dialog);
   private readonly _snackbar = inject(SnackbarService);
-  private readonly _destroy$ = new Subject<void>();
 
-  // Filter form controls
-  public statusFilter = new FormControl<string[]>([]);
-  public sourceFilter = new FormControl<string[]>([]);
-  public territoryFilter = new FormControl<string | null>(null);
-  public teamFilter = new FormControl<string | null>(null);
-  public agentFilter = new FormControl<string | null>(null);
-  public dateRangeFilter = new FormControl<string | null>(null);
-  public searchControl = new FormControl<string>('');
-
-  // Filter options
-  public statusOptions = [
-    { label: 'Nouveau', value: 'New' },
-    { label: 'Contacté', value: 'Contacted' },
-    { label: 'Intéressé', value: 'Interested' },
-    { label: 'Qualifié', value: 'Qualified' },
-    { label: 'Proposition envoyée', value: 'ProposalSent' },
-    { label: 'Négociation', value: 'Negotiation' },
-    { label: 'Converti en client', value: 'ConvertedToClient' },
-    { label: 'Perdu', value: 'Lost' },
-    { label: 'En attente', value: 'OnHold' },
-  ];
-
-  public sourceOptions = [
-    { label: 'Back Office', value: 'Back Office' },
-    { label: 'Website', value: 'Website' },
-    { label: 'Referral', value: 'Referral' },
-    { label: 'Social Media', value: 'Social Media' },
-    { label: 'Event', value: 'Event' },
-    { label: 'Cold Call', value: 'Cold Call' },
-    { label: 'Email', value: 'Email' },
-    { label: 'LinkedIn', value: 'LinkedIn' },
-    { label: 'Campaign', value: 'Campaign' },
-    { label: 'Other', value: 'Other' },
-  ];
-
-  public territories = apiResources(
-    this._territoriesApiService.territoriesControllerAllTerritoriesV1(
-      'id,name',
-      100
-    )
-  );
-
-  public teams = apiResources(
-    this._teamsApiService.teamsControllerFindAllTeamsV1(undefined, 'id,name')
-  );
-
-  public users = apiResources(
-    this._usersApiService.usersControllerAllUsersV1(
-      undefined,
-      'id,firstName,lastName'
-    )
-  );
+  private filterData = {} as ContactFilterData;
 
   // Pagination state
   public pageIndex = signal(0);
@@ -161,49 +96,17 @@ export class ContactListingComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.loadContacts();
-
-    // Debounced search
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300), takeUntil(this._destroy$))
-      .subscribe(() => {
-        this.pageIndex.set(0);
-        this.loadContacts();
-      });
-
-    // Filter changes (non-search filters reload immediately)
-    const filterControls = [
-      this.statusFilter,
-      this.sourceFilter,
-      this.territoryFilter,
-      this.teamFilter,
-      this.agentFilter,
-    ] as AbstractControl[];
-    for (const control of filterControls) {
-      control.valueChanges
-        .pipe(takeUntil(this._destroy$))
-        .subscribe(() => this.onFiltersChange());
-    }
-  }
-
-  public ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
-  public onFiltersChange(): void {
-    this.pageIndex.set(0);
-    this.loadContacts();
   }
 
   public onPageChange(event: PageEvent): void {
-    console.log('Page change event:', event);
     this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
     this.loadContacts();
   }
 
-  public onSearchChange(searchTerm: string): void {
-    this.searchControl.setValue(searchTerm);
+  public onFilterChange(filterData: ContactFilterData) {
+    this.filterData = filterData;
+    this.loadContacts();
   }
 
   public loadContacts(): void {
@@ -211,27 +114,27 @@ export class ContactListingComponent implements OnInit, OnDestroy {
 
     const filters: any = {};
 
-    const statusVal = this.statusFilter.value;
+    const statusVal = this.filterData.status;
     if (statusVal && statusVal.length > 0) {
       filters.status = { operator: 'in', value: statusVal };
     }
 
-    const sourceVal = this.sourceFilter.value;
+    const sourceVal = this.filterData.source;
     if (sourceVal && sourceVal.length > 0) {
       filters.source = { operator: 'in', value: sourceVal };
     }
 
-    const territoryVal = this.territoryFilter.value;
+    const territoryVal = this.filterData.territory;
     if (territoryVal) {
       filters.territoryId = { operator: 'eq', value: territoryVal };
     }
 
-    const teamVal = this.teamFilter.value;
+    const teamVal = this.filterData.team;
     if (teamVal) {
       filters.assignedToTeamId = { operator: 'eq', value: teamVal };
     }
 
-    const agentVal = this.agentFilter.value;
+    const agentVal = this.filterData.agent;
     if (agentVal) {
       filters.assignedToUserId = { operator: 'eq', value: agentVal };
     }
@@ -240,7 +143,7 @@ export class ContactListingComponent implements OnInit, OnDestroy {
       pageIndex: this.pageIndex(),
       pageSize: this.pageSize(),
       filters,
-      fullTextSearch: this.searchControl.value || '',
+      fullTextSearch: this.filterData.searchTerm || '',
     };
 
     this._contactsApiService
@@ -378,18 +281,6 @@ export class ContactListingComponent implements OnInit, OnDestroy {
         this.loadContacts();
       }
     });
-  }
-
-  public clearFilters(): void {
-    this.statusFilter.reset([]);
-    this.sourceFilter.reset([]);
-    this.territoryFilter.reset(null);
-    this.teamFilter.reset(null);
-    this.agentFilter.reset(null);
-    this.dateRangeFilter.reset(null);
-    this.searchControl.reset('');
-    this.pageIndex.set(0);
-    this.loadContacts();
   }
 }
 

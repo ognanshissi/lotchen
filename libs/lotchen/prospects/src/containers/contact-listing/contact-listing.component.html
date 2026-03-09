@@ -31,85 +31,7 @@
   </card-header>
 </tas-card>
 
-<!-- Filter Bar -->
-<tas-card class="mt-4 p-4">
-  <div class="flex items-center gap-2 mb-2">
-    <tas-icon iconName="feather:filter" iconClass="text-gray-500"></tas-icon>
-    <span class="font-medium text-sm text-gray-700">Filtres</span>
-    <button
-      class="ml-auto text-sm text-primary cursor-pointer"
-      (click)="clearFilters()"
-    >
-      Réinitialiser
-    </button>
-  </div>
-  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-    <tas-form-field>
-      <tas-label>Statut</tas-label>
-      <tas-multi-select
-        [options]="statusOptions"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="Tous les statuts"
-        [formControl]="statusFilter"
-      ></tas-multi-select>
-    </tas-form-field>
-
-    <tas-form-field>
-      <tas-label>Source</tas-label>
-      <tas-multi-select
-        [options]="sourceOptions"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="Toutes les sources"
-        [formControl]="sourceFilter"
-      ></tas-multi-select>
-    </tas-form-field>
-
-    <tas-form-field>
-      <tas-label>Territoire</tas-label>
-      <tas-select
-        [options]="territories().value ?? []"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Tous les territoires"
-        [formControl]="territoryFilter"
-      ></tas-select>
-    </tas-form-field>
-
-    <tas-form-field>
-      <tas-label>Équipe</tas-label>
-      <tas-select
-        [options]="teams().value ?? []"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Toutes les équipes"
-        [formControl]="teamFilter"
-      ></tas-select>
-    </tas-form-field>
-
-    <tas-form-field>
-      <tas-label>Agent</tas-label>
-      <tas-select
-        [options]="users().value ?? []"
-        optionLabel="firstName"
-        optionValue="id"
-        placeholder="Tous les agents"
-        [formControl]="agentFilter"
-      ></tas-select>
-    </tas-form-field>
-
-    <tas-form-field>
-      <tas-label>Recherche</tas-label>
-      <input
-        tasInput
-        type="text"
-        placeholder="Rechercher..."
-        [formControl]="searchControl"
-      />
-    </tas-form-field>
-  </div>
-</tas-card>
+<prospects-contact-search (filterChange)="onFilterChange($event)" />
 
 @if (selectedItems().length > 0) {
 <div
@@ -143,7 +65,6 @@
     [config]="tableConfig"
     (selectionItemsChange)="handleSelectionItems($event)"
     (pageEventChange)="onPageChange($event)"
-    (searchInputChange)="onSearchChange($event)"
   >
     <ng-template #header>
       <tr>
