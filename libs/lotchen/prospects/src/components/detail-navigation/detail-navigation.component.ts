@@ -80,12 +80,6 @@ export class DetailNavigationComponent {
       active: true,
     },
     {
-      label: 'Tâches',
-      icon: 'note',
-      route: 'tasks',
-      active: true,
-    },
-    {
       label: "Journal d'appels",
       icon: 'feather:phone',
       route: 'call-logs',
