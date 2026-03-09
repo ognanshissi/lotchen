@@ -27,7 +27,7 @@ export class FindAllTerritoriesQuery {
   fields!: string;
 
   @ApiProperty({
-    maximum: 30,
+    maximum: 100,
     minimum: 5,
     example: 5,
     default: 5,
@@ -36,7 +36,7 @@ export class FindAllTerritoriesQuery {
   })
   @IsInt()
   @Type(() => Number)
-  @Max(30)
+  @Max(100)
   @Min(5)
   public limit!: number;
 }

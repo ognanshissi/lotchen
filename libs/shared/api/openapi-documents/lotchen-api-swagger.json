@@ -1075,7 +1075,7 @@
             "description": "Length of records to return",
             "schema": {
               "minimum": 5,
-              "maximum": 30,
+              "maximum": 100,
               "default": 5,
               "example": 5,
               "type": "number"
