@@ -10,7 +10,7 @@ import { TasIcon } from '@talisoft/ui/icon';
 import { TasTitle } from '@talisoft/ui/title';
 import { ButtonModule } from '@talisoft/ui/button';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
-import { TasInput, TasNativeSelect } from '@talisoft/ui/input';
+import { TasInput } from '@talisoft/ui/input';
 import {
   FormControl,
   FormGroup,
@@ -27,7 +27,6 @@ import {
 } from '@talisoft/api/lotchen-client-api';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TasSelect } from '@talisoft/ui/select';
 
 export interface AddMeetingDialogData {
@@ -55,124 +54,8 @@ export interface AddMeetingDialogData {
     ReactiveFormsModule,
     TasDatePicker,
     TasSelect,
-    TasNativeSelect,
   ],
-  template: `
-    <tas-side-drawer>
-      <tas-drawer-title>
-        <tas-title>Planifier un événement</tas-title>
-      </tas-drawer-title>
-      <tas-drawer-content>
-        <form [formGroup]="form">
-          <div class="text-primary">
-            Associé a :
-            <span class="bg-gray-300 px-3 py-1 rounded-full"
-              >{{ currentUser()?.firstName }}
-              {{ currentUser()?.lastName }}</span
-            >
-          </div>
-
-          <div class="mt-5 flex flex-col space-y-3">
-            <!-- Event Type -->
-            <tas-form-field>
-              <tas-label>Type d'événement</tas-label>
-              <tas-select
-                formControlName="eventTypeId"
-                optionLabel="name"
-                optionValue="id"
-                [options]="eventTypes()"
-              >
-              </tas-select>
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Titre</tas-label>
-              <input
-                tasInput
-                type="text"
-                formControlName="title"
-                placeholder="Titre de l'événement"
-              />
-            </tas-form-field>
-
-            <div class="flex justify-between space-x-3">
-              <tas-date-picker formControlName="startAtDate">
-                Date de début
-              </tas-date-picker>
-              <tas-date-picker mode="time" formControlName="startAtTime">
-                Heure de début
-              </tas-date-picker>
-            </div>
-
-            <div class="flex justify-between space-x-3">
-              <tas-date-picker formControlName="endAtDate">
-                Date de fin
-              </tas-date-picker>
-              <tas-date-picker mode="time" formControlName="endAtTime">
-                Heure de fin
-              </tas-date-picker>
-            </div>
-
-            <tas-form-field>
-              <tas-label>Lieu</tas-label>
-              <input
-                tasInput
-                type="text"
-                formControlName="location"
-                placeholder="Lieu de l'événement"
-              />
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Description</tas-label>
-              <textarea
-                tasInput
-                formControlName="description"
-                placeholder="Description de l'événement"
-              ></textarea>
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Rappel</tas-label>
-              <tas-select
-                formControlName="reminderMinutesBefore"
-                optionValue="value"
-                optionLabel="label"
-                [options]="reminderMinutesBeforeOptions()"
-              >
-              </tas-select>
-            </tas-form-field>
-
-            @if (conflicts().length > 0) {
-            <div
-              class="rounded-lg p-4 border border-red-300 bg-red-50 text-red-700"
-            >
-              <strong>Conflit détecté !</strong>
-              {{ conflicts().length }} événement(s) en conflit : @for (c of
-              conflicts(); track c.id) {
-              <div>
-                {{ c.title }} ({{ $any(c.startAt)?.time }} -
-                {{ $any(c.endAt).time }})
-              </div>
-              }
-            </div>
-            }
-          </div>
-        </form>
-      </tas-drawer-content>
-
-      <tas-drawer-action>
-        <button tas-outlined-button closable-drawer>
-          <tas-icon iconName="close"></tas-icon>
-          Fermer
-        </button>
-        <button tas-raised-button color="primary" (click)="handleSubmit()">
-          <tas-icon iconName="feather:check"></tas-icon>
-          Sauvegarder
-        </button>
-      </tas-drawer-action>
-    </tas-side-drawer>
-  `,
+  templateUrl: 'add-meeting-dialog.component.html',
 })
 export class AddMeetingDialogComponent implements OnInit {
   private readonly _authService = inject(AuthenticationService);

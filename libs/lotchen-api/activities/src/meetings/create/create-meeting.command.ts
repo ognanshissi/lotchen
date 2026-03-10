@@ -1,6 +1,6 @@
 import { CommandHandler } from '@lotchen/api/core';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { ActivitiesProvider } from '../../activities.provider';
 
@@ -9,8 +9,9 @@ export class CreateMeetingCommand {
   @IsNotEmpty()
   ownerId!: string;
 
-  @ApiProperty({ description: 'Entity id on which the meeting is related' })
-  @IsNotEmpty()
+  @ApiPropertyOptional({
+    description: 'Entity id on which the meeting is related',
+  })
   relatedToId!: string;
 
   @ApiProperty({ description: 'Meeting title' })
