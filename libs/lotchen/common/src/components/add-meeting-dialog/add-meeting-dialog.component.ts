@@ -10,7 +10,7 @@ import { TasIcon } from '@talisoft/ui/icon';
 import { TasTitle } from '@talisoft/ui/title';
 import { ButtonModule } from '@talisoft/ui/button';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
-import { TasInput } from '@talisoft/ui/input';
+import { TasInput, TasNativeSelect } from '@talisoft/ui/input';
 import {
   FormControl,
   FormGroup,
@@ -27,6 +27,8 @@ import {
 } from '@talisoft/api/lotchen-client-api';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { TasSelect } from '@talisoft/ui/select';
 
 export interface AddMeetingDialogData {
   relatedId: string;
@@ -52,6 +54,8 @@ export interface AddMeetingDialogData {
     TasLabel,
     ReactiveFormsModule,
     TasDatePicker,
+    TasSelect,
+    TasNativeSelect,
   ],
   template: `
     <tas-side-drawer>
@@ -72,16 +76,13 @@ export interface AddMeetingDialogData {
             <!-- Event Type -->
             <tas-form-field>
               <tas-label>Type d'événement</tas-label>
-              <select
-                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+              <tas-select
                 formControlName="eventTypeId"
-                (change)="onEventTypeChange()"
+                optionLabel="name"
+                optionValue="id"
+                [options]="eventTypes()"
               >
-                <option value="">-- Choisir --</option>
-                @for (et of eventTypes(); track et.id) {
-                <option [value]="et.id">{{ et.name }}</option>
-                }
-              </select>
+              </tas-select>
             </tas-form-field>
 
             <tas-form-field>
@@ -133,17 +134,13 @@ export interface AddMeetingDialogData {
 
             <tas-form-field>
               <tas-label>Rappel</tas-label>
-              <select
-                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+              <tas-select
                 formControlName="reminderMinutesBefore"
+                optionValue="value"
+                optionLabel="label"
+                [options]="reminderMinutesBeforeOptions()"
               >
-                <option [ngValue]="null">Aucun</option>
-                <option [ngValue]="5">5 minutes avant</option>
-                <option [ngValue]="10">10 minutes avant</option>
-                <option [ngValue]="15">15 minutes avant</option>
-                <option [ngValue]="30">30 minutes avant</option>
-                <option [ngValue]="60">1 heure avant</option>
-              </select>
+              </tas-select>
             </tas-form-field>
 
             @if (conflicts().length > 0) {
@@ -193,6 +190,15 @@ export class AddMeetingDialogComponent implements OnInit {
   public conflicts = signal<ConflictingMeetingResponse[]>([]);
   public form!: FormGroup;
 
+  public readonly reminderMinutesBeforeOptions = signal([
+    { value: null, label: 'Aucun' },
+    { value: 5, label: '5 minutes avant' },
+    { value: 10, label: '10 minutes avant' },
+    { value: 15, label: '15 minutes avant' },
+    { value: 30, label: '30 minutes avant' },
+    { value: 60, label: '1 heure avant' },
+  ]);
+
   public ngOnInit(): void {
     this.form = new FormGroup({
       eventTypeId: new FormControl(''),
@@ -211,7 +217,14 @@ export class AddMeetingDialogComponent implements OnInit {
     });
 
     this._eventTypesApi.eventTypesControllerFindAllEventTypesV1().subscribe({
-      next: (types) => this.eventTypes.set(types),
+      next: (types) => {
+        console.log(types);
+        this.eventTypes.set(types);
+        if (types.length > 0) {
+          this.form.get('eventTypeId')?.setValue(types[0].id);
+          this.onEventTypeChange();
+        }
+      },
     });
   }
 
