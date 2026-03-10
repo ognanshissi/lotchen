@@ -84,6 +84,22 @@ export class OverviewComponent {
       ],
     },
     {
+      title: 'Activités & Événements',
+      type: 'group',
+      id: 'activities_events',
+      description: "Configurer les types d'événements et activités",
+      children: [
+        {
+          title: "Types d'événements",
+          type: 'basic',
+          id: 'activities_event_types',
+          link: '/settings/event-types',
+          description:
+            "Configurer les types d'événements (réunion, appel, démo...)",
+        },
+      ],
+    },
+    {
       title: 'Produits & Services',
       type: 'group',
       id: 'products_services',

@@ -164,6 +164,7 @@ export class CreateLeadCommandHandler
         createdBy: userId,
         createdByInfo: this.leadProvider.user(),
         assignedToUserId: userId,
+        creditScore: leadScore,
         assignedToTeamId,
         territoryId,
         tags: command.tags ?? [],

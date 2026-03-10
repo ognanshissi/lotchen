@@ -2546,6 +2546,16 @@
       "post": {
         "operationId": "MeetingsController_createMeeting_v1",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMeetingCommand"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Create a new meeting",
@@ -2592,6 +2602,385 @@
         },
         "tags": [
           "Meetings"
+        ]
+      }
+    },
+    "/api/v1/meetings/conflicts": {
+      "get": {
+        "operationId": "MeetingsController_checkConflicts_v1",
+        "parameters": [
+          {
+            "name": "ownerId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startTime",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endTime",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "excludeMeetingId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConflictingMeetingResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Meetings"
+        ]
+      }
+    },
+    "/api/v1/meetings/range": {
+      "get": {
+        "operationId": "MeetingsController_findByRange_v1",
+        "parameters": [
+          {
+            "name": "ownerId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindMeetingsByRangeResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Meetings"
+        ]
+      }
+    },
+    "/api/v1/meetings/{id}": {
+      "get": {
+        "operationId": "MeetingsController_findMeetingById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindMeetingByIdQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Meetings"
+        ]
+      },
+      "patch": {
+        "operationId": "MeetingsController_updateMeeting_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMeetingCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Meetings"
+        ]
+      },
+      "delete": {
+        "operationId": "MeetingsController_deleteMeeting_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Meetings"
+        ]
+      }
+    },
+    "/api/v1/meetings/{id}/outcome": {
+      "patch": {
+        "operationId": "MeetingsController_setOutcome_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetMeetingOutcomeCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Meetings"
+        ]
+      }
+    },
+    "/api/v1/event-types": {
+      "post": {
+        "operationId": "EventTypesController_createEventType_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEventTypeCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create a new event type"
+          }
+        },
+        "tags": [
+          "Event Types"
+        ]
+      },
+      "get": {
+        "operationId": "EventTypesController_findAllEventTypes_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllEventTypesQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Event Types"
+        ]
+      }
+    },
+    "/api/v1/event-types/{id}": {
+      "get": {
+        "operationId": "EventTypesController_findEventTypeById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindEventTypeByIdQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Event Types"
+        ]
+      },
+      "patch": {
+        "operationId": "EventTypesController_updateEventType_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEventTypeCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Event Types"
+        ]
+      },
+      "delete": {
+        "operationId": "EventTypesController_deleteEventType_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Event Types"
+        ]
+      }
+    },
+    "/api/v1/event-types/seed": {
+      "post": {
+        "operationId": "EventTypesController_seedEventTypes_v1",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Seed default event types"
+          }
+        },
+        "tags": [
+          "Event Types"
         ]
       }
     }
@@ -5627,6 +6016,14 @@
             "description": "Meeting timezone",
             "example": "Africa/Abidjan +00:00 GMT",
             "default": "Europe/London +00:00 GMT"
+          },
+          "eventTypeId": {
+            "type": "string",
+            "description": "Event type ID"
+          },
+          "reminderMinutesBefore": {
+            "type": "number",
+            "description": "Reminder minutes before"
           }
         },
         "required": [
@@ -5642,6 +6039,72 @@
           "description",
           "attendees",
           "meetingTimeZone"
+        ]
+      },
+      "ConflictingMeetingResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "object"
+          },
+          "endAt": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "startAt",
+          "endAt"
+        ]
+      },
+      "FindMeetingsByRangeResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "object"
+          },
+          "endAt": {
+            "type": "object"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "eventTypeId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "startAt",
+          "endAt",
+          "ownerId",
+          "eventTypeId",
+          "status",
+          "location",
+          "description"
         ]
       },
       "FindAllMeetingsQueryResponse": {
@@ -5691,6 +6154,301 @@
           "endAt",
           "createdAt"
         ]
+      },
+      "FindMeetingByIdQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "object"
+          },
+          "endAt": {
+            "type": "object"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "relatedToId": {
+            "type": "string"
+          },
+          "relatedToType": {
+            "type": "string"
+          },
+          "attendees": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "eventTypeId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "outcomeNotes": {
+            "type": "string"
+          },
+          "followUpEventId": {
+            "type": "string"
+          },
+          "reminderMinutesBefore": {
+            "type": "number"
+          },
+          "meetingTimeZone": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "location",
+          "startAt",
+          "endAt",
+          "ownerId",
+          "relatedToId",
+          "relatedToType",
+          "attendees",
+          "eventTypeId",
+          "status",
+          "outcome",
+          "outcomeNotes",
+          "followUpEventId",
+          "reminderMinutesBefore",
+          "meetingTimeZone",
+          "createdAt"
+        ]
+      },
+      "UpdateMeetingCommand": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "startAtDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "startAtTime": {
+            "type": "string"
+          },
+          "endAtDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endAtTime": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "attendees": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "eventTypeId": {
+            "type": "string"
+          },
+          "reminderMinutesBefore": {
+            "type": "number"
+          },
+          "meetingTimeZone": {
+            "type": "string"
+          }
+        }
+      },
+      "SetMeetingOutcomeCommand": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "type": "string",
+            "description": "Outcome value",
+            "enum": [
+              "completed",
+              "no-show",
+              "rescheduled",
+              "cancelled"
+            ]
+          },
+          "outcomeNotes": {
+            "type": "string",
+            "description": "Outcome notes"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "CreateEventTypeCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Event type name"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Feather icon name"
+          },
+          "color": {
+            "type": "string",
+            "description": "Hex color for calendar display"
+          },
+          "defaultDurationMinutes": {
+            "type": "number",
+            "description": "Default duration in minutes"
+          },
+          "requiredFields": {
+            "description": "Required fields when scheduling",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "FindAllEventTypesQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "defaultDurationMinutes": {
+            "type": "number"
+          },
+          "requiredFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isSystem": {
+            "type": "boolean"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "icon",
+          "color",
+          "defaultDurationMinutes",
+          "requiredFields",
+          "isSystem",
+          "isActive"
+        ]
+      },
+      "FindEventTypeByIdQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "defaultDurationMinutes": {
+            "type": "number"
+          },
+          "requiredFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isSystem": {
+            "type": "boolean"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "icon",
+          "color",
+          "defaultDurationMinutes",
+          "requiredFields",
+          "isSystem",
+          "isActive"
+        ]
+      },
+      "UpdateEventTypeCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Event type name"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Feather icon name"
+          },
+          "color": {
+            "type": "string",
+            "description": "Hex color"
+          },
+          "defaultDurationMinutes": {
+            "type": "number",
+            "description": "Default duration in minutes"
+          },
+          "requiredFields": {
+            "description": "Required fields",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Active status"
+          }
+        }
       }
     }
   }

@@ -1,7 +1,7 @@
 import { CommandHandler } from '@lotchen/api/core';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { ActivitiesProvider } from '../../activities.provider';
 
 export class CreateMeetingCommand {
@@ -70,6 +70,14 @@ export class CreateMeetingCommand {
     default: 'Europe/London +00:00 GMT',
   })
   meetingTimeZone!: string;
+
+  @ApiProperty({ description: 'Event type ID', required: false })
+  @IsOptional()
+  eventTypeId?: string;
+
+  @ApiProperty({ description: 'Reminder minutes before', required: false })
+  @IsOptional()
+  reminderMinutesBefore?: number;
 }
 
 @Injectable()
@@ -102,6 +110,9 @@ export class CreateMeetingCommandHandler
         relatedToId: command.relatedToId,
         relatedToType: 'Meeting',
         meetingTimeZone: command.meetingTimeZone,
+        eventTypeId: command.eventTypeId,
+        reminderMinutesBefore: command.reminderMinutesBefore,
+        status: 'Scheduled',
       });
 
       const errors = meeting.validateSync();

@@ -35,6 +35,28 @@ export class Meeting extends ActivityBase {
 
   @Prop({ type: String, default: '' })
   location!: string;
+
+  @Prop({ type: 'UUID', required: false })
+  eventTypeId!: string;
+
+  @Prop({
+    type: String,
+    enum: ['Scheduled', 'Completed', 'Cancelled', 'NoShow', 'Rescheduled'],
+    default: 'Scheduled',
+  })
+  status!: string;
+
+  @Prop({ type: String, required: false })
+  outcome!: string;
+
+  @Prop({ type: String, required: false })
+  outcomeNotes!: string;
+
+  @Prop({ type: 'UUID', required: false })
+  followUpEventId!: string;
+
+  @Prop({ type: Number, required: false, default: null })
+  reminderMinutesBefore!: number;
 }
 
 export const MeetingSchema = SchemaFactory.createForClass(Meeting);

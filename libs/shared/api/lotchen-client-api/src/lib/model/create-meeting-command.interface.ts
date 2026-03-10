@@ -60,5 +60,13 @@ export interface CreateMeetingCommand {
      * Meeting timezone
      */
     meetingTimeZone: string;
+    /**
+     * Event type ID
+     */
+    eventTypeId?: string;
+    /**
+     * Reminder minutes before
+     */
+    reminderMinutesBefore?: number;
 }
 

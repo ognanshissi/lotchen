@@ -55,6 +55,13 @@ export class PortalLayoutComponent implements OnInit {
         link: '/portal/leads',
       },
       {
+        id: 'events',
+        icon: 'feather:calendar',
+        title: 'Événements',
+        type: 'basic',
+        link: '/portal/events',
+      },
+      {
         id: 'clients',
         icon: 'feather:user',
         title: 'Clients',

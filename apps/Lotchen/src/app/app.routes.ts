@@ -33,6 +33,10 @@ export const appRoutes: Route[] = [
         path: 'leads',
         loadChildren: () => import('@lotchen/lotchen/leads'),
       },
+      {
+        path: 'events',
+        loadChildren: () => import('@lotchen/lotchen/events'),
+      },
     ],
   },
   {

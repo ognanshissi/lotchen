@@ -17,7 +17,10 @@ import { TasCard } from '@talisoft/ui/card';
 import { TasIcon } from '@talisoft/ui/icon';
 import { map } from 'rxjs';
 import { MenuItem } from '@lotchen/lotchen/common/models/menu-item';
-import { AddTaskDialogService } from '@lotchen/lotchen/common/components';
+import {
+  AddTaskDialogService,
+  AddMeetingDialogService,
+} from '@lotchen/lotchen/common/components';
 import { Dialog } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-delete-dialog.component';
@@ -55,6 +58,7 @@ export class DetailNavigationComponent {
   private readonly _callerService = inject(CallerService);
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _taskDialogService = inject(AddTaskDialogService);
+  private readonly _meetingDialogService = inject(AddMeetingDialogService);
   private readonly _contactsApiService = inject(ContactsApiService);
   private readonly _dialog = inject(Dialog);
   private readonly _snackbar = inject(SnackbarService);
@@ -113,6 +117,13 @@ export class DetailNavigationComponent {
         this.contact()?.firstName
       } ${this.contact()?.lastName?.toUpperCase()}`,
       mobileNumber: this.contact()?.mobileNumber ?? '',
+    });
+  }
+
+  public openAddMeetingDialog(): void {
+    this._meetingDialogService.open({
+      relatedId: this.contact()?.id ?? '',
+      relatedType: 'Contact',
     });
   }
 

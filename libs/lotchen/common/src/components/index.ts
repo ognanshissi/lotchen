@@ -4,4 +4,5 @@ export * from './layouts/admin-layout/admin-layout.component';
 export * from './caller/caller.component';
 export * from './caller/caller.service';
 export * from './add-task-dialog';
+export * from './add-meeting-dialog';
 export * from './user-menu/user-menu.component';

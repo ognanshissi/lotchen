@@ -45,4 +45,9 @@ export const settingsRoutes: Routes = [
     path: 'teams',
     loadComponent: () => TeamsComponent,
   },
+  {
+    path: 'event-types',
+    loadComponent: () =>
+      import('./containers/event-types/event-types.component'),
+  },
 ];
