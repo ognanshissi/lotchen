@@ -1,0 +1,140 @@
+<div class="p-6" *ngIf="!isLoading()">
+  <div class="flex items-center gap-3 mb-6">
+    <button
+      class="text-gray-500 hover:text-gray-700 text-sm"
+      (click)="goBack()"
+    >
+      ← Retour
+    </button>
+    <h1 class="text-2xl font-semibold text-gray-900">Détail d'exécution</h1>
+  </div>
+
+  <div *ngIf="execution() as exec" class="flex flex-col gap-6">
+    <!-- Summary card -->
+    <div
+      class="bg-white rounded-xl border border-gray-200 p-5 flex flex-wrap gap-6"
+    >
+      <div>
+        <div class="text-xs text-gray-400">Workflow</div>
+        <div class="font-semibold text-gray-900">{{ exec.workflowName }}</div>
+      </div>
+      <div>
+        <div class="text-xs text-gray-400">Statut</div>
+        <span
+          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1"
+          [ngClass]="getStatusClass(exec.status)"
+        >
+          {{ exec.status }}
+        </span>
+      </div>
+      <div>
+        <div class="text-xs text-gray-400">Déclencheur</div>
+        <div class="text-sm text-gray-700">{{ exec.triggerType }}</div>
+      </div>
+      <div>
+        <div class="text-xs text-gray-400">Démarré</div>
+        <div class="text-sm text-gray-700">
+          {{ exec.createdAt | date : 'dd/MM/yyyy HH:mm:ss' }}
+        </div>
+      </div>
+      <div *ngIf="exec.completedAt">
+        <div class="text-xs text-gray-400">Terminé</div>
+        <div class="text-sm text-gray-700">
+          {{ exec.completedAt | date : 'dd/MM/yyyy HH:mm:ss' }}
+        </div>
+      </div>
+      <div *ngIf="exec.testMode" class="self-center">
+        <span
+          class="bg-purple-100 text-purple-700 text-xs px-2 py-0.5 rounded-full"
+          >Test</span
+        >
+      </div>
+
+      <!-- Action buttons -->
+      <div class="ml-auto flex gap-2 self-center">
+        <button
+          *ngIf="exec.status === 'running'"
+          class="px-3 py-1.5 text-sm border border-red-300 text-red-700 rounded-lg hover:bg-red-50"
+          (click)="cancel()"
+        >
+          Annuler
+        </button>
+      </div>
+    </div>
+
+    <!-- Step timeline -->
+    <div class="bg-white rounded-xl border border-gray-200 p-5">
+      <h2 class="font-semibold text-gray-900 mb-4">Étapes</h2>
+      <div *ngIf="exec.stepLogs.length === 0" class="text-sm text-gray-400">
+        Aucune étape exécutée
+      </div>
+      <div class="flex flex-col gap-3">
+        <div *ngFor="let step of exec.stepLogs" class="flex gap-4">
+          <!-- Status icon -->
+          <div class="flex flex-col items-center">
+            <div
+              class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-bold shrink-0"
+              [ngClass]="getStepClass(step.status)"
+            >
+              {{ getStepIcon(step.status) }}
+            </div>
+          </div>
+          <!-- Step details -->
+          <div class="flex-1 pb-4 border-b border-gray-100 last:border-0">
+            <div class="flex items-start justify-between">
+              <div>
+                <div class="font-medium text-gray-900">
+                  {{ step.nodeLabel }}
+                </div>
+                <div class="text-xs text-gray-400 mt-0.5">
+                  {{ step.startedAt | date : 'HH:mm:ss' }} —
+                  {{
+                    step.completedAt
+                      ? (step.completedAt | date : 'HH:mm:ss')
+                      : 'En cours'
+                  }}
+                </div>
+              </div>
+              <div class="flex gap-2">
+                <button
+                  *ngIf="step.status === 'failed'"
+                  class="text-xs px-2 py-1 border border-blue-300 text-blue-700 rounded hover:bg-blue-50"
+                  (click)="retryStep(step.nodeId)"
+                >
+                  Relancer
+                </button>
+                <button
+                  *ngIf="step.status === 'failed'"
+                  class="text-xs px-2 py-1 border border-gray-300 text-gray-600 rounded hover:bg-gray-50"
+                  (click)="skipStep(step.nodeId)"
+                >
+                  Ignorer
+                </button>
+              </div>
+            </div>
+            <div
+              *ngIf="step.errorMessage"
+              class="mt-2 text-xs text-red-600 bg-red-50 rounded px-3 py-2"
+            >
+              {{ step.errorMessage }}
+            </div>
+            <div *ngIf="step.retryCount > 0" class="text-xs text-gray-400 mt-1">
+              {{ step.retryCount }} tentative(s)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!execution() && !isLoading()"
+    class="p-8 text-center text-gray-500"
+  >
+    Exécution introuvable.
+  </div>
+</div>
+
+<div *ngIf="isLoading()" class="p-8 text-center text-gray-500">
+  Chargement...
+</div>

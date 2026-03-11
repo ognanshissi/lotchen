@@ -37,6 +37,10 @@ export const appRoutes: Route[] = [
         path: 'events',
         loadChildren: () => import('@lotchen/lotchen/events'),
       },
+      {
+        path: 'automation-workflows',
+        loadChildren: () => import('@lotchen/lotchen/workflows'),
+      },
     ],
   },
   {

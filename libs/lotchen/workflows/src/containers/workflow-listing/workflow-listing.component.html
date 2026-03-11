@@ -1,0 +1,193 @@
+<div class="p-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-semibold text-gray-900">Automatisations</h1>
+      <p class="text-sm text-gray-500 mt-1">
+        Gérer vos workflows d'automatisation
+      </p>
+    </div>
+    <button
+      class="inline-flex items-center px-4 py-2 rounded-lg text-white text-sm font-medium"
+      style="background-color: rgb(var(--tas-color-primary))"
+      (click)="create()"
+    >
+      <span class="mr-2">+</span> Nouveau Workflow
+    </button>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="flex gap-2 mb-4">
+    <button
+      class="px-3 py-1 rounded-full text-sm font-medium transition-colors"
+      [ngClass]="
+        filterStatus() === undefined
+          ? 'bg-gray-900 text-white'
+          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+      "
+      (click)="setFilter(undefined)"
+    >
+      Tous
+    </button>
+    <button
+      class="px-3 py-1 rounded-full text-sm font-medium transition-colors"
+      [ngClass]="
+        filterStatus() === 'active'
+          ? 'bg-gray-900 text-white'
+          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+      "
+      (click)="setFilter('active')"
+    >
+      Actifs
+    </button>
+    <button
+      class="px-3 py-1 rounded-full text-sm font-medium transition-colors"
+      [ngClass]="
+        filterStatus() === 'draft'
+          ? 'bg-gray-900 text-white'
+          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+      "
+      (click)="setFilter('draft')"
+    >
+      Brouillons
+    </button>
+    <button
+      class="px-3 py-1 rounded-full text-sm font-medium transition-colors"
+      [ngClass]="
+        filterStatus() === 'archived'
+          ? 'bg-gray-900 text-white'
+          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+      "
+      (click)="setFilter('archived')"
+    >
+      Archivés
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div *ngIf="isLoading()" class="p-8 text-center text-gray-500">
+      Chargement...
+    </div>
+
+    <div
+      *ngIf="!isLoading() && workflows().length === 0"
+      class="p-8 text-center text-gray-500"
+    >
+      Aucun workflow trouvé.
+      <button class="text-primary underline" (click)="create()">
+        Créer le premier
+      </button>
+    </div>
+
+    <table *ngIf="!isLoading() && workflows().length > 0" class="w-full">
+      <thead class="bg-gray-50 border-b border-gray-200">
+        <tr>
+          <th
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+          >
+            Nom
+          </th>
+          <th
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+          >
+            Statut
+          </th>
+          <th
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+          >
+            Déclencheur
+          </th>
+          <th
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+          >
+            Version
+          </th>
+          <th
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+          >
+            Modifié
+          </th>
+          <th
+            class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr
+          *ngFor="let wf of workflows()"
+          class="hover:bg-gray-50 transition-colors"
+        >
+          <td class="px-4 py-3">
+            <div class="font-medium text-gray-900">{{ wf.name }}</div>
+            <div
+              *ngIf="wf.description"
+              class="text-xs text-gray-500 truncate max-w-xs"
+            >
+              {{ wf.description }}
+            </div>
+          </td>
+          <td class="px-4 py-3">
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+              [ngClass]="getStatusClass(wf.status)"
+            >
+              {{ getStatusLabel(wf.status) }}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-sm text-gray-600">
+            {{ getTriggerLabel(wf.trigger?.type) }}
+          </td>
+          <td class="px-4 py-3 text-sm text-gray-600">v{{ wf.version }}</td>
+          <td class="px-4 py-3 text-sm text-gray-500">
+            {{ wf.updatedAt | date : 'dd/MM/yyyy' }}
+          </td>
+          <td class="px-4 py-3 text-right">
+            <div class="flex items-center justify-end gap-2">
+              <button
+                class="text-xs px-2 py-1 text-gray-600 hover:text-gray-900 border border-gray-200 rounded"
+                (click)="edit(wf._id)"
+              >
+                Éditer
+              </button>
+              <button
+                class="text-xs px-2 py-1 text-gray-600 hover:text-gray-900 border border-gray-200 rounded"
+                (click)="viewExecutions(wf._id)"
+              >
+                Logs
+              </button>
+              <button
+                *ngIf="wf.status !== 'active'"
+                class="text-xs px-2 py-1 text-green-700 hover:text-green-900 border border-green-200 rounded"
+                (click)="activate(wf._id)"
+              >
+                Activer
+              </button>
+              <button
+                *ngIf="wf.status === 'active'"
+                class="text-xs px-2 py-1 text-yellow-700 hover:text-yellow-900 border border-yellow-200 rounded"
+                (click)="archive(wf._id)"
+              >
+                Archiver
+              </button>
+              <button
+                class="text-xs px-2 py-1 text-blue-700 hover:text-blue-900 border border-blue-200 rounded"
+                (click)="duplicate(wf._id)"
+              >
+                Dupliquer
+              </button>
+              <button
+                class="text-xs px-2 py-1 text-red-600 hover:text-red-800 border border-red-200 rounded"
+                (click)="delete(wf._id)"
+              >
+                Suppr.
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

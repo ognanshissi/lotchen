@@ -19,7 +19,7 @@ export interface CreateMeetingCommand {
     /**
      * Entity id on which the meeting is related
      */
-    relatedToId: string;
+    relatedToId?: string;
     /**
      * Meeting title
      */

@@ -2983,6 +2983,408 @@
           "Event Types"
         ]
       }
+    },
+    "/api/v1/workflow-templates": {
+      "post": {
+        "operationId": "WorkflowTemplatesController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkflowTemplateCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Templates"
+        ]
+      },
+      "get": {
+        "operationId": "WorkflowTemplatesController_findAll_v1",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Templates"
+        ]
+      }
+    },
+    "/api/v1/workflow-templates/{id}": {
+      "get": {
+        "operationId": "WorkflowTemplatesController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Templates"
+        ]
+      },
+      "patch": {
+        "operationId": "WorkflowTemplatesController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorkflowTemplateCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Templates"
+        ]
+      },
+      "delete": {
+        "operationId": "WorkflowTemplatesController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Templates"
+        ]
+      }
+    },
+    "/api/v1/workflow-templates/{id}/activate": {
+      "patch": {
+        "operationId": "WorkflowTemplatesController_activate_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Templates"
+        ]
+      }
+    },
+    "/api/v1/workflow-templates/{id}/archive": {
+      "patch": {
+        "operationId": "WorkflowTemplatesController_archive_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Templates"
+        ]
+      }
+    },
+    "/api/v1/workflow-templates/{id}/duplicate": {
+      "post": {
+        "operationId": "WorkflowTemplatesController_duplicate_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Templates"
+        ]
+      }
+    },
+    "/api/v1/workflow-executions/dashboard": {
+      "get": {
+        "operationId": "WorkflowExecutionsController_getDashboard_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Executions"
+        ]
+      }
+    },
+    "/api/v1/workflow-executions/trigger": {
+      "post": {
+        "operationId": "WorkflowExecutionsController_triggerManual_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TriggerManualWorkflowCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Executions"
+        ]
+      }
+    },
+    "/api/v1/workflow-executions/test-run": {
+      "post": {
+        "operationId": "WorkflowExecutionsController_testRun_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestRunWorkflowCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Executions"
+        ]
+      }
+    },
+    "/api/v1/workflow-executions": {
+      "get": {
+        "operationId": "WorkflowExecutionsController_findAll_v1",
+        "parameters": [
+          {
+            "name": "workflowTemplateId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetEntityId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Executions"
+        ]
+      }
+    },
+    "/api/v1/workflow-executions/{id}": {
+      "get": {
+        "operationId": "WorkflowExecutionsController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Executions"
+        ]
+      }
+    },
+    "/api/v1/workflow-executions/{id}/retry-step": {
+      "patch": {
+        "operationId": "WorkflowExecutionsController_retryStep_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetryExecutionStepCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Executions"
+        ]
+      }
+    },
+    "/api/v1/workflow-executions/{id}/skip-step": {
+      "patch": {
+        "operationId": "WorkflowExecutionsController_skipStep_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkipExecutionStepCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Executions"
+        ]
+      }
+    },
+    "/api/v1/workflow-executions/{id}/cancel": {
+      "patch": {
+        "operationId": "WorkflowExecutionsController_cancel_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflow Executions"
+        ]
+      }
     }
   },
   "info": {
@@ -6028,7 +6430,6 @@
         },
         "required": [
           "ownerId",
-          "relatedToId",
           "title",
           "startAtDate",
           "startAtTime",
@@ -6449,6 +6850,206 @@
             "description": "Active status"
           }
         }
+      },
+      "WorkflowTriggerDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "status_change",
+              "new_lead",
+              "form_submission",
+              "date_based",
+              "manual"
+            ]
+          },
+          "config": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "WorkflowNodeDto": {
+        "type": "object",
+        "properties": {
+          "nodeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "actionType": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object"
+          },
+          "position": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "label",
+          "position"
+        ]
+      },
+      "WorkflowEdgeDto": {
+        "type": "object",
+        "properties": {
+          "fromNodeId": {
+            "type": "string"
+          },
+          "toNodeId": {
+            "type": "string"
+          },
+          "conditionLabel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fromNodeId",
+          "toNodeId"
+        ]
+      },
+      "CreateWorkflowTemplateCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/WorkflowTriggerDto"
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowNodeDto"
+            }
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowEdgeDto"
+            }
+          },
+          "assignedToEntityType": {
+            "type": "string"
+          },
+          "assignedToEntityId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateWorkflowTemplateCommandRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/WorkflowTriggerDto"
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowNodeDto"
+            }
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowEdgeDto"
+            }
+          },
+          "assignedToEntityType": {
+            "type": "string"
+          },
+          "assignedToEntityId": {
+            "type": "string"
+          }
+        }
+      },
+      "TriggerManualWorkflowCommand": {
+        "type": "object",
+        "properties": {
+          "workflowTemplateId": {
+            "type": "string"
+          },
+          "targetEntityId": {
+            "type": "string"
+          },
+          "targetEntityType": {
+            "type": "string"
+          },
+          "triggerPayload": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "workflowTemplateId",
+          "targetEntityId",
+          "targetEntityType"
+        ]
+      },
+      "TestRunWorkflowCommand": {
+        "type": "object",
+        "properties": {
+          "workflowTemplateId": {
+            "type": "string"
+          },
+          "targetEntityId": {
+            "type": "string"
+          },
+          "targetEntityType": {
+            "type": "string"
+          },
+          "triggerPayload": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "workflowTemplateId",
+          "targetEntityId",
+          "targetEntityType"
+        ]
+      },
+      "RetryExecutionStepCommandRequest": {
+        "type": "object",
+        "properties": {
+          "nodeId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nodeId"
+        ]
+      },
+      "SkipExecutionStepCommandRequest": {
+        "type": "object",
+        "properties": {
+          "nodeId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nodeId"
+        ]
       }
     }
   }

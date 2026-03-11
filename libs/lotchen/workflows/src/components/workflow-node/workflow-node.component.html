@@ -1,0 +1,25 @@
+<div
+  class="workflow-node relative flex items-center gap-3 px-4 py-3 bg-white border-2 rounded-xl cursor-pointer select-none transition-all"
+  [ngClass]="
+    selected()
+      ? 'border-primary shadow-md'
+      : 'border-gray-200 hover:border-gray-400'
+  "
+  (click)="onClick()"
+  cdkDrag
+>
+  <div class="text-2xl">{{ icon() }}</div>
+  <div class="flex-1 min-w-0">
+    <div class="text-xs text-gray-400 font-medium uppercase tracking-wide">
+      {{ getNodeTypeLabel() }}
+    </div>
+    <div class="font-semibold text-gray-900 truncate">{{ node().label }}</div>
+  </div>
+  <button
+    class="text-gray-300 hover:text-red-500 transition-colors ml-2 text-lg leading-none"
+    (click)="onDelete($event)"
+    title="Supprimer"
+  >
+    &times;
+  </button>
+</div>

@@ -1,0 +1,232 @@
+<div
+  class="fixed inset-y-0 right-0 w-96 bg-white shadow-xl border-l border-gray-200 flex flex-col z-50"
+>
+  <!-- Header -->
+  <div
+    class="flex items-center justify-between px-5 py-4 border-b border-gray-200"
+  >
+    <h2 class="font-semibold text-gray-900">Configurer l'étape</h2>
+    <button
+      class="text-gray-400 hover:text-gray-700 text-xl"
+      (click)="cancel()"
+    >
+      &times;
+    </button>
+  </div>
+
+  <!-- Body -->
+  <div class="flex-1 overflow-y-auto p-5 flex flex-col gap-4">
+    <!-- Label -->
+    <div class="flex flex-col gap-1">
+      <label class="text-xs font-medium text-gray-600">Nom de l'étape</label>
+      <input
+        class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+        type="text"
+        [value]="node().label"
+        (input)="setLabel($any($event.target).value)"
+      />
+    </div>
+
+    <!-- Dynamic config by actionType -->
+    <ng-container [ngSwitch]="actionType">
+      <!-- assign_user -->
+      <ng-container *ngSwitchCase="'assign_user'">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600"
+            >ID Utilisateur</label
+          >
+          <input
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            type="text"
+            [value]="getConfig('userId') || ''"
+            (input)="setConfig('userId', $any($event.target).value)"
+            placeholder="UUID de l'utilisateur"
+          />
+        </div>
+      </ng-container>
+
+      <!-- assign_team -->
+      <ng-container *ngSwitchCase="'assign_team'">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600">ID Équipe</label>
+          <input
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            type="text"
+            [value]="getConfig('teamId') || ''"
+            (input)="setConfig('teamId', $any($event.target).value)"
+            placeholder="UUID de l'équipe"
+          />
+        </div>
+      </ng-container>
+
+      <!-- send_email -->
+      <ng-container *ngSwitchCase="'send_email'">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600">Sujet</label>
+          <input
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            type="text"
+            [value]="getConfig('subject') || ''"
+            (input)="setConfig('subject', $any($event.target).value)"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600"
+            >Corps du message</label
+          >
+          <textarea
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
+            rows="4"
+            [value]="getConfig('body') || ''"
+            (input)="setConfig('body', $any($event.target).value)"
+          ></textarea>
+        </div>
+      </ng-container>
+
+      <!-- send_sms -->
+      <ng-container *ngSwitchCase="'send_sms'">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600">Message</label>
+          <textarea
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
+            rows="3"
+            [value]="getConfig('message') || ''"
+            (input)="setConfig('message', $any($event.target).value)"
+          ></textarea>
+        </div>
+      </ng-container>
+
+      <!-- create_task -->
+      <ng-container *ngSwitchCase="'create_task'">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600"
+            >Titre de la tâche</label
+          >
+          <input
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            type="text"
+            [value]="getConfig('title') || ''"
+            (input)="setConfig('title', $any($event.target).value)"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600">Délai (jours)</label>
+          <input
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            type="number"
+            min="0"
+            [value]="getConfig('dueDateOffsetDays') || 0"
+            (input)="setConfig('dueDateOffsetDays', +$any($event.target).value)"
+          />
+        </div>
+      </ng-container>
+
+      <!-- update_field -->
+      <ng-container *ngSwitchCase="'update_field'">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600">Nom du champ</label>
+          <input
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            type="text"
+            [value]="getConfig('fieldName') || ''"
+            (input)="setConfig('fieldName', $any($event.target).value)"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600">Valeur</label>
+          <input
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            type="text"
+            [value]="getConfig('value') || ''"
+            (input)="setConfig('value', $any($event.target).value)"
+          />
+        </div>
+      </ng-container>
+
+      <!-- wait_duration -->
+      <ng-container *ngSwitchCase="'wait_duration'">
+        <div class="flex gap-2">
+          <div class="flex flex-col gap-1 flex-1">
+            <label class="text-xs font-medium text-gray-600">Durée</label>
+            <input
+              class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              type="number"
+              min="1"
+              [value]="getConfig('duration') || 1"
+              (input)="setConfig('duration', +$any($event.target).value)"
+            />
+          </div>
+          <div class="flex flex-col gap-1 w-28">
+            <label class="text-xs font-medium text-gray-600">Unité</label>
+            <select
+              class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              [value]="getConfig('unit') || 'hours'"
+              (change)="setConfig('unit', $any($event.target).value)"
+            >
+              <option value="hours">Heures</option>
+              <option value="days">Jours</option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- conditional_branch -->
+      <ng-container *ngSwitchCase="'conditional_branch'">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600">Champ</label>
+          <input
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            type="text"
+            [value]="getConfig('fieldName') || ''"
+            (input)="setConfig('fieldName', $any($event.target).value)"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600">Opérateur</label>
+          <select
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            [value]="getConfig('operator') || 'equals'"
+            (change)="setConfig('operator', $any($event.target).value)"
+          >
+            <option value="equals">Égal à</option>
+            <option value="not_equals">Différent de</option>
+            <option value="contains">Contient</option>
+            <option value="greater_than">Supérieur à</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-gray-600">Valeur</label>
+          <input
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            type="text"
+            [value]="getConfig('value') || ''"
+            (input)="setConfig('value', $any($event.target).value)"
+          />
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchDefault>
+        <p class="text-sm text-gray-400 italic">
+          Aucune configuration requise pour ce type.
+        </p>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <!-- Footer -->
+  <div class="px-5 py-4 border-t border-gray-200 flex gap-3">
+    <button
+      class="flex-1 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
+      (click)="cancel()"
+    >
+      Annuler
+    </button>
+    <button
+      class="flex-1 py-2 rounded-lg text-sm text-white font-medium"
+      style="background-color: rgb(var(--tas-color-primary))"
+      (click)="save()"
+    >
+      Enregistrer
+    </button>
+  </div>
+</div>

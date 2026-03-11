@@ -1,0 +1,8 @@
+{
+  "name": "workflows",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/lotchen-api/workflows/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}

@@ -5,6 +5,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ContactTypeEnum } from '../../contacts/contact.schema';
 import { ContactStatus } from '../../contacts/contact-status.enum';
 import { IsOptional, IsString } from 'class-validator';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+
+export const LEAD_STATUS_CHANGED = 'lead.status_changed';
 
 export class QualifyLeadCommandRequest {
   @ApiPropertyOptional({ type: String, description: 'Budget info (BANT)' })
@@ -43,16 +46,17 @@ export class QualifyLeadCommand extends QualifyLeadCommandRequest {
 export class QualifyLeadCommandHandler
   implements CommandHandler<QualifyLeadCommand, void>
 {
-  constructor(private readonly leadProvider: LeadProvider) {}
+  constructor(
+    private readonly leadProvider: LeadProvider,
+    private readonly eventEmitter: EventEmitter2
+  ) {}
 
   async handlerAsync(command: QualifyLeadCommand): Promise<void> {
     const lead = await this.leadProvider.ContactModel.findOne({
       _id: command.id,
       type: ContactTypeEnum.Lead,
       deletedAt: null,
-    })
-      .lean()
-      .exec();
+    }).lean();
 
     if (!lead) {
       throw new NotFoundException('Lead not found');
@@ -81,6 +85,14 @@ export class QualifyLeadCommandHandler
           changedBy: this.leadProvider.user().userId,
         },
       },
+    });
+
+    this.eventEmitter.emit(LEAD_STATUS_CHANGED, {
+      tenantId: this.leadProvider.request.tenant_fqdn,
+      contactId: command.id,
+      previousStatus,
+      newStatus: ContactStatus.Qualified,
+      changedByUserId: this.leadProvider.user().userId,
     });
   }
 }

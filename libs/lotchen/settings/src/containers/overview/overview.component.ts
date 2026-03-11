@@ -49,7 +49,7 @@ export class OverviewComponent {
           title: 'Automatisations',
           type: 'basic',
           id: 'groups_workflows',
-          link: '/settings/workflow-automations/templates',
+          link: '/portal/automation-workflows',
           description:
             'Gerer les automatismes dans le cycle de vie des contacts et clients',
         },

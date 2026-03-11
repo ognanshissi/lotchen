@@ -1,0 +1,114 @@
+<div class="p-6">
+  <h1 class="text-2xl font-semibold text-gray-900 mb-6">
+    Tableau de bord — Workflows
+  </h1>
+
+  <!-- Stats cards -->
+  <div *ngIf="stats() as s" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-xl border border-gray-200 p-4">
+      <div class="text-xs text-gray-400 uppercase tracking-wide">En cours</div>
+      <div class="text-3xl font-bold text-blue-600 mt-1">
+        {{ s.activeInstances }}
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-4">
+      <div class="text-xs text-gray-400 uppercase tracking-wide">
+        Complétés (30j)
+      </div>
+      <div class="text-3xl font-bold text-green-600 mt-1">
+        {{ s.completedLast30Days }}
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-4">
+      <div class="text-xs text-gray-400 uppercase tracking-wide">
+        Échoués (30j)
+      </div>
+      <div class="text-3xl font-bold text-red-600 mt-1">
+        {{ s.failedLast30Days }}
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-4">
+      <div class="text-xs text-gray-400 uppercase tracking-wide">
+        Taux de succès
+      </div>
+      <div class="text-3xl font-bold text-gray-900 mt-1">
+        {{ s.completionRate }}%
+      </div>
+      <div class="text-xs text-gray-400 mt-1">
+        Durée moy: {{ formatDuration(s.averageDurationMs) }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent executions -->
+  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="px-5 py-4 border-b border-gray-100">
+      <h2 class="font-semibold text-gray-900">Exécutions récentes</h2>
+    </div>
+
+    <div *ngIf="isLoading()" class="p-8 text-center text-gray-500">
+      Chargement...
+    </div>
+
+    <table *ngIf="!isLoading()" class="w-full">
+      <thead class="bg-gray-50 border-b border-gray-200">
+        <tr>
+          <th
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+          >
+            Workflow
+          </th>
+          <th
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+          >
+            Statut
+          </th>
+          <th
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+          >
+            Déclencheur
+          </th>
+          <th
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+          >
+            Date
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr *ngFor="let exec of recentExecutions()" class="hover:bg-gray-50">
+          <td class="px-4 py-3 text-sm font-medium text-gray-900">
+            {{ exec.workflowName }}
+          </td>
+          <td class="px-4 py-3">
+            <span
+              class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+              [class]="
+                exec.status === 'completed'
+                  ? 'bg-green-100 text-green-800'
+                  : exec.status === 'failed'
+                  ? 'bg-red-100 text-red-800'
+                  : exec.status === 'running'
+                  ? 'bg-blue-100 text-blue-800'
+                  : 'bg-gray-100 text-gray-600'
+              "
+            >
+              {{ exec.status }}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-sm text-gray-600">
+            {{ exec.triggerType }}
+          </td>
+          <td class="px-4 py-3 text-sm text-gray-500">
+            {{ exec.createdAt | date : 'dd/MM/yy HH:mm' }}
+          </td>
+        </tr>
+        <tr *ngIf="recentExecutions().length === 0">
+          <td colspan="4" class="px-4 py-8 text-center text-gray-400">
+            Aucune exécution récente
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

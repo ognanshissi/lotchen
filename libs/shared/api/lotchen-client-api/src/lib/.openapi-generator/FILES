@@ -19,6 +19,8 @@ api/tasks.service.ts
 api/teams.service.ts
 api/territories.service.ts
 api/users.service.ts
+api/workflow-executions.service.ts
+api/workflow-templates.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -52,6 +54,7 @@ model/create-team-command-response.interface.ts
 model/create-team-command.interface.ts
 model/create-territory-command.interface.ts
 model/create-user-command.interface.ts
+model/create-workflow-template-command.interface.ts
 model/created-by-info-dto.interface.ts
 model/disqualify-lead-command-request.interface.ts
 model/enrich-lead-command-request.interface.ts
@@ -111,11 +114,15 @@ model/qualify-lead-command-request.interface.ts
 model/refresh-token-command.interface.ts
 model/reset-password-command-response.interface.ts
 model/reset-password-command.interface.ts
+model/retry-execution-step-command-request.interface.ts
 model/set-meeting-outcome-command.interface.ts
+model/skip-execution-step-command-request.interface.ts
 model/status-history-dto.interface.ts
 model/territories-controller-paginate-all-territories-v1200-response.interface.ts
 model/territories-query-user-dto.interface.ts
 model/territory-lite-dto.interface.ts
+model/test-run-workflow-command.interface.ts
+model/trigger-manual-workflow-command.interface.ts
 model/twilio-access-token-response.interface.ts
 model/update-contact-command-request.interface.ts
 model/update-contact-status-command-request.interface.ts
@@ -124,8 +131,12 @@ model/update-lead-command-request.interface.ts
 model/update-meeting-command.interface.ts
 model/update-role-permissions-command-response.interface.ts
 model/update-team-command-request.interface.ts
+model/update-workflow-template-command-request.interface.ts
 model/users-controller-search-user-paginate-v1200-response.interface.ts
 model/verify-token-query-response.interface.ts
 model/webhook-lead-command-request.interface.ts
+model/workflow-edge-dto.interface.ts
+model/workflow-node-dto.interface.ts
+model/workflow-trigger-dto.interface.ts
 param.ts
 variables.ts

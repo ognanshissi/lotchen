@@ -1,0 +1,124 @@
+<div class="flex flex-col h-full" *ngIf="!isLoading(); else loadingTpl">
+  <!-- Toolbar -->
+  <div
+    class="flex items-center justify-between px-6 py-3 border-b border-gray-200 bg-white shrink-0"
+  >
+    <div class="flex items-center gap-3">
+      <button
+        class="text-gray-500 hover:text-gray-700 text-sm"
+        (click)="goBack()"
+      >
+        ← Retour
+      </button>
+      <input
+        class="text-lg font-semibold text-gray-900 border-0 border-b-2 border-transparent focus:border-primary focus:outline-none bg-transparent px-1"
+        type="text"
+        [value]="workflowName()"
+        (input)="workflowName.set($any($event.target).value)"
+      />
+      <span
+        class="text-xs px-2 py-0.5 rounded-full font-medium"
+        [ngClass]="
+          workflowStatus() === 'active'
+            ? 'bg-green-100 text-green-700'
+            : workflowStatus() === 'archived'
+            ? 'bg-gray-100 text-gray-500'
+            : 'bg-yellow-100 text-yellow-700'
+        "
+      >
+        {{
+          workflowStatus() === 'active'
+            ? 'Actif'
+            : workflowStatus() === 'archived'
+            ? 'Archivé'
+            : 'Brouillon'
+        }}
+      </span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button
+        class="px-3 py-1.5 text-sm text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+        (click)="testRun()"
+      >
+        Test Run
+      </button>
+      <button
+        class="px-3 py-1.5 text-sm text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+        [disabled]="isSaving()"
+        (click)="save()"
+      >
+        {{ isSaving() ? 'Sauvegarde...' : 'Sauvegarder' }}
+      </button>
+      <button
+        *ngIf="workflowStatus() !== 'active'"
+        class="px-3 py-1.5 text-sm text-white rounded-lg font-medium"
+        style="background-color: rgb(var(--tas-color-primary))"
+        (click)="activate()"
+      >
+        Activer
+      </button>
+    </div>
+  </div>
+
+  <!-- Main layout -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Palette sidebar -->
+    <workflow-node-palette
+      (nodeAdded)="onNodeAdded($event)"
+    ></workflow-node-palette>
+
+    <!-- Flow canvas -->
+    <div class="flex-1 overflow-y-auto bg-gray-50 p-8">
+      <div class="max-w-lg mx-auto flex flex-col gap-0">
+        <!-- Trigger node -->
+        <workflow-trigger-config
+          [trigger]="trigger()"
+          (triggerChange)="onTriggerChange($event)"
+        ></workflow-trigger-config>
+
+        <!-- Connector line -->
+        <div *ngIf="nodes().length > 0" class="flex justify-center my-1">
+          <div class="w-0.5 h-6 bg-gray-300"></div>
+        </div>
+
+        <!-- Action nodes (drag-sortable) -->
+        <div
+          cdkDropList
+          [cdkDropListData]="nodes()"
+          (cdkDropListDropped)="onDrop($event)"
+          class="flex flex-col gap-0"
+        >
+          <ng-container *ngFor="let node of nodes(); let i = index">
+            <workflow-node
+              [node]="node"
+              [selected]="isNodeSelected(node)"
+              (nodeClick)="onNodeClick($event)"
+              (nodeDelete)="onNodeDelete($event)"
+            ></workflow-node>
+            <!-- Connector between nodes -->
+            <div
+              *ngIf="i < nodes().length - 1"
+              class="flex justify-center my-1"
+            >
+              <div class="w-0.5 h-6 bg-gray-300"></div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Add step button -->
+        <div class="flex justify-center mt-4">
+          <div
+            class="text-center text-sm text-gray-400 border-2 border-dashed border-gray-300 rounded-xl px-6 py-4 w-full"
+          >
+            Glissez un composant depuis la palette ou cliquez dessus pour
+            ajouter une étape
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="p-8 text-center text-gray-500">Chargement du workflow...</div>
+</ng-template>

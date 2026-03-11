@@ -10,6 +10,7 @@ import { IdentityProviderModule } from '@lotchen/lotchen-api/identity-provider';
 import { ContactModule } from '@lotchen/lotchen-api/contact';
 import { CallerController } from './caller.controller';
 import { ActivitiesModule } from '@lotchen/lotchen-api/activities';
+import { WorkflowsModule } from '@lotchen/lotchen-api/workflows';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ActivitiesModule } from '@lotchen/lotchen-api/activities';
     ContactModule,
     CoreModule,
     ActivitiesModule,
+    WorkflowsModule,
   ],
   controllers: [CallerController],
   providers: [
