@@ -9,6 +9,7 @@ import {
   TriggerTypeEnum,
 } from '../common/workflow.enums';
 import { ExecutionContext } from './execution-context.interface';
+import { WorkflowExecution } from '../executions';
 
 @Injectable()
 export class WorkflowEngineService {
@@ -41,7 +42,7 @@ export class WorkflowEngineService {
   async startExecution(
     template: any,
     context: ExecutionContext,
-    WorkflowExecutionModel: Model<any>
+    WorkflowExecutionModel: Model<WorkflowExecution>
   ): Promise<any> {
     const execution = new WorkflowExecutionModel({
       workflowTemplateId: template._id,
@@ -76,7 +77,7 @@ export class WorkflowEngineService {
     execution: any,
     template: any,
     context: ExecutionContext,
-    WorkflowExecutionModel: Model<any>
+    WorkflowExecutionModel: Model<WorkflowExecution>
   ): Promise<void> {
     const nodes: any[] = [...(template.nodes || [])].sort(
       (a: any, b: any) => a.position - b.position

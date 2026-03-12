@@ -201,8 +201,8 @@ export class WorkflowBuilderComponent implements OnInit {
     this._executionsApi
       .workflowExecutionsControllerTestRunV1({
         workflowTemplateId: this.workflowId()!,
-        targetEntityId: 'test-entity-id',
-        targetEntityType: 'contact',
+        targetEntityId: 'f9d22db0-247d-4279-9622-e5279eeb06a3',
+        targetEntityType: 'Contact',
       })
       .subscribe({
         next: () => {
