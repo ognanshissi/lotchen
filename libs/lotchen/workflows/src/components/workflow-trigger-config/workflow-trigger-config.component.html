@@ -1,14 +1,21 @@
 <div
-  class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 flex flex-col gap-3"
+  class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col gap-3"
 >
-  <div class="flex items-center gap-2 mb-1">
-    <span class="text-xl">⚡</span>
-    <span class="font-semibold text-blue-900 text-sm uppercase tracking-wide"
+  <div class="flex items-center gap-2.5 mb-1">
+    <div
+      class="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-100"
+    >
+      <tas-icon
+        iconName="feather:zap"
+        class="text-amber-600 text-sm"
+      ></tas-icon>
+    </div>
+    <span class="font-semibold text-amber-900 text-sm uppercase tracking-wide"
       >Déclencheur</span
     >
   </div>
 
-  <tas-form-field class="flex flex-col gap-1">
+  <tas-form-field>
     <tas-label>Type de déclencheur</tas-label>
     <tas-select
       [options]="triggerTypes"
@@ -18,60 +25,56 @@
   </tas-form-field>
 
   <!-- Config by type -->
-  <ng-container [ngSwitch]="localTrigger().type">
-    <ng-container *ngSwitchCase="'status_change'">
-      <div class="flex gap-3">
-        <div class="flex flex-col gap-1 flex-1">
-          <label class="text-xs font-medium text-blue-700">De statut</label>
-          <select
-            class="border border-blue-300 rounded-lg px-3 py-2 text-sm bg-white"
-            [value]="getConfig('fromStatus')"
-            (change)="setConfig('fromStatus', $any($event.target).value)"
-          >
-            <option value="">Tous</option>
-            <option *ngFor="let s of contactStatuses" [value]="s.value">
-              {{ s.label }}
-            </option>
-          </select>
-        </div>
-        <div class="flex flex-col gap-1 flex-1">
-          <label class="text-xs font-medium text-blue-700">Vers statut</label>
-          <select
-            class="border border-blue-300 rounded-lg px-3 py-2 text-sm bg-white"
-            [value]="getConfig('toStatus')"
-            (change)="setConfig('toStatus', $any($event.target).value)"
-          >
-            <option value="">Tous</option>
-            <option *ngFor="let s of contactStatuses" [value]="s.value">
-              {{ s.label }}
-            </option>
-          </select>
-        </div>
-      </div>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'date_based'">
-      <div class="flex gap-3">
-        <div class="flex flex-col gap-1 flex-1">
-          <label class="text-xs font-medium text-blue-700">Champ date</label>
-          <input
-            class="border border-blue-300 rounded-lg px-3 py-2 text-sm bg-white"
-            type="text"
-            placeholder="ex: dateOfBirth"
-            [value]="getConfig('field')"
-            (input)="setConfig('field', $any($event.target).value)"
-          />
-        </div>
-        <div class="flex flex-col gap-1 w-24">
-          <label class="text-xs font-medium text-blue-700">Décalage (j)</label>
-          <input
-            class="border border-blue-300 rounded-lg px-3 py-2 text-sm bg-white"
-            type="number"
-            [value]="getConfig('offsetDays') || '0'"
-            (input)="setConfig('offsetDays', $any($event.target).value)"
-          />
-        </div>
-      </div>
-    </ng-container>
-  </ng-container>
+  @switch (localTrigger().type) { @case ('status_change') {
+  <div class="flex gap-3">
+    <tas-form-field class="flex-1">
+      <tas-label>De statut</tas-label>
+      <select
+        class="w-full h-[38px] border border-amber-300 rounded-[var(--tas-field-border-radius)] px-3 text-sm bg-white focus:border-primary focus:outline-none transition-colors"
+        [value]="getConfig('fromStatus')"
+        (change)="setConfig('fromStatus', $any($event.target).value)"
+      >
+        <option value="">Tous</option>
+        @for (s of contactStatuses; track s.value) {
+        <option [value]="s.value">{{ s.label }}</option>
+        }
+      </select>
+    </tas-form-field>
+    <tas-form-field class="flex-1">
+      <tas-label>Vers statut</tas-label>
+      <select
+        class="w-full h-[38px] border border-amber-300 rounded-[var(--tas-field-border-radius)] px-3 text-sm bg-white focus:border-primary focus:outline-none transition-colors"
+        [value]="getConfig('toStatus')"
+        (change)="setConfig('toStatus', $any($event.target).value)"
+      >
+        <option value="">Tous</option>
+        @for (s of contactStatuses; track s.value) {
+        <option [value]="s.value">{{ s.label }}</option>
+        }
+      </select>
+    </tas-form-field>
+  </div>
+  } @case ('date_based') {
+  <div class="flex gap-3">
+    <tas-form-field class="flex-1">
+      <tas-label>Champ date</tas-label>
+      <input
+        tasInput
+        type="text"
+        placeholder="ex: dateOfBirth"
+        [value]="getConfig('field')"
+        (input)="setConfig('field', $any($event.target).value)"
+      />
+    </tas-form-field>
+    <tas-form-field class="w-28">
+      <tas-label>Décalage (j)</tas-label>
+      <input
+        tasInput
+        type="number"
+        [value]="getConfig('offsetDays') || '0'"
+        (input)="setConfig('offsetDays', $any($event.target).value)"
+      />
+    </tas-form-field>
+  </div>
+  } }
 </div>

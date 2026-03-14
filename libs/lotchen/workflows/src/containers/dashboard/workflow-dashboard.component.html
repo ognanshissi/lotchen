@@ -1,114 +1,217 @@
-<div class="p-6">
-  <h1 class="text-2xl font-semibold text-gray-900 mb-6">
-    Tableau de bord — Workflows
-  </h1>
+<div class="p-6 space-y-4">
+  <!-- Header -->
+  <tas-card>
+    <card-header>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <button
+            tas-button
+            iconButton
+            color="neutral"
+            size="small"
+            (click)="goBack()"
+          >
+            <tas-icon
+              iconName="feather:arrow-left"
+              class="text-gray-500"
+            ></tas-icon>
+          </button>
+          <div
+            class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10"
+          >
+            <tas-icon
+              iconName="feather:bar-chart-2"
+              class="text-primary"
+            ></tas-icon>
+          </div>
+          <div>
+            <tas-title>Tableau de bord</tas-title>
+            <tas-text>Vue d'ensemble des workflows</tas-text>
+          </div>
+        </div>
+      </div>
+    </card-header>
+  </tas-card>
 
   <!-- Stats cards -->
-  <div *ngIf="stats() as s" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-    <div class="bg-white rounded-xl border border-gray-200 p-4">
-      <div class="text-xs text-gray-400 uppercase tracking-wide">En cours</div>
-      <div class="text-3xl font-bold text-blue-600 mt-1">
-        {{ s.activeInstances }}
+  @if (stats(); as s) {
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <tas-card>
+      <div class="p-5 flex flex-col items-center">
+        <div class="flex items-center gap-2 mb-3">
+          <div
+            class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100"
+          >
+            <tas-icon
+              iconName="feather:loader"
+              class="text-blue-600 text-sm"
+            ></tas-icon>
+          </div>
+        </div>
+        <div class="text-3xl font-bold text-gray-900">
+          {{ s.activeInstances }}
+        </div>
+        <div
+          class="text-xs text-gray-400 uppercase tracking-wide font-semibold mt-1"
+        >
+          En cours
+        </div>
       </div>
-    </div>
-    <div class="bg-white rounded-xl border border-gray-200 p-4">
-      <div class="text-xs text-gray-400 uppercase tracking-wide">
-        Complétés (30j)
+    </tas-card>
+
+    <tas-card>
+      <div class="flex flex-col items-center p-5">
+        <div class="flex items-center gap-2 mb-3">
+          <div
+            class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100"
+          >
+            <tas-icon
+              iconName="feather:check-circle"
+              class="text-emerald-600 text-sm"
+            ></tas-icon>
+          </div>
+        </div>
+        <div class="text-3xl font-bold text-gray-900">
+          {{ s.completedLast30Days }}
+        </div>
+        <div
+          class="text-xs text-gray-400 uppercase tracking-wide font-semibold mt-1"
+        >
+          Complétés (30j)
+        </div>
       </div>
-      <div class="text-3xl font-bold text-green-600 mt-1">
-        {{ s.completedLast30Days }}
+    </tas-card>
+
+    <tas-card>
+      <div class="flex flex-col items-center p-5">
+        <div class="flex items-center gap-2 mb-3">
+          <div
+            class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100"
+          >
+            <tas-icon
+              iconName="feather:x-circle"
+              class="text-red-600 text-sm"
+            ></tas-icon>
+          </div>
+        </div>
+        <div class="text-3xl font-bold text-gray-900">
+          {{ s.failedLast30Days }}
+        </div>
+        <div
+          class="text-xs text-gray-400 uppercase tracking-wide font-semibold mt-1"
+        >
+          Échoués (30j)
+        </div>
       </div>
-    </div>
-    <div class="bg-white rounded-xl border border-gray-200 p-4">
-      <div class="text-xs text-gray-400 uppercase tracking-wide">
-        Échoués (30j)
+    </tas-card>
+
+    <tas-card>
+      <div class="flex flex-col items-center p-5">
+        <div class="flex items-center gap-2 mb-3">
+          <div
+            class="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-100"
+          >
+            <tas-icon
+              iconName="feather:trending-up"
+              class="text-amber-600 text-sm"
+            ></tas-icon>
+          </div>
+        </div>
+        <div class="text-3xl font-bold text-gray-900">
+          {{ s.completionRate }}%
+        </div>
+        <div
+          class="text-xs text-gray-400 uppercase tracking-wide font-semibold mt-1"
+        >
+          Taux de succès
+        </div>
+        <div class="text-xs text-gray-400 mt-1">
+          Durée moy: {{ formatDuration(s.averageDurationMs) }}
+        </div>
       </div>
-      <div class="text-3xl font-bold text-red-600 mt-1">
-        {{ s.failedLast30Days }}
-      </div>
-    </div>
-    <div class="bg-white rounded-xl border border-gray-200 p-4">
-      <div class="text-xs text-gray-400 uppercase tracking-wide">
-        Taux de succès
-      </div>
-      <div class="text-3xl font-bold text-gray-900 mt-1">
-        {{ s.completionRate }}%
-      </div>
-      <div class="text-xs text-gray-400 mt-1">
-        Durée moy: {{ formatDuration(s.averageDurationMs) }}
-      </div>
-    </div>
+    </tas-card>
   </div>
+  }
 
   <!-- Recent executions -->
-  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-    <div class="px-5 py-4 border-b border-gray-100">
-      <h2 class="font-semibold text-gray-900">Exécutions récentes</h2>
-    </div>
+  <tas-card>
+    <card-header>
+      <div class="flex items-center gap-2">
+        <tas-icon iconName="feather:clock" class="text-gray-400"></tas-icon>
+        <tas-title>Exécutions récentes</tas-title>
+      </div>
+    </card-header>
 
-    <div *ngIf="isLoading()" class="p-8 text-center text-gray-500">
-      Chargement...
+    @if (isLoading()) {
+    <div class="flex items-center justify-center py-16">
+      <tas-spinner size="8"></tas-spinner>
     </div>
-
-    <table *ngIf="!isLoading()" class="w-full">
-      <thead class="bg-gray-50 border-b border-gray-200">
-        <tr>
-          <th
-            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-          >
-            Workflow
-          </th>
-          <th
-            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-          >
-            Statut
-          </th>
-          <th
-            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-          >
-            Déclencheur
-          </th>
-          <th
-            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-          >
-            Date
-          </th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-100">
-        <tr *ngFor="let exec of recentExecutions()" class="hover:bg-gray-50">
-          <td class="px-4 py-3 text-sm font-medium text-gray-900">
-            {{ exec.workflowName }}
-          </td>
-          <td class="px-4 py-3">
-            <span
-              class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
-              [class]="
-                exec.status === 'completed'
-                  ? 'bg-green-100 text-green-800'
-                  : exec.status === 'failed'
-                  ? 'bg-red-100 text-red-800'
-                  : exec.status === 'running'
-                  ? 'bg-blue-100 text-blue-800'
-                  : 'bg-gray-100 text-gray-600'
-              "
+    } @else {
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-gray-200 bg-gray-50/50">
+            <th
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
             >
-              {{ exec.status }}
-            </span>
-          </td>
-          <td class="px-4 py-3 text-sm text-gray-600">
-            {{ exec.triggerType }}
-          </td>
-          <td class="px-4 py-3 text-sm text-gray-500">
-            {{ exec.createdAt | date : 'dd/MM/yy HH:mm' }}
-          </td>
-        </tr>
-        <tr *ngIf="recentExecutions().length === 0">
-          <td colspan="4" class="px-4 py-8 text-center text-gray-400">
-            Aucune exécution récente
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+              Workflow
+            </th>
+            <th
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+            >
+              Statut
+            </th>
+            <th
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+            >
+              Déclencheur
+            </th>
+            <th
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+            >
+              Date
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          @for (exec of recentExecutions(); track exec._id) {
+          <tr class="hover:bg-gray-50/50 transition-colors">
+            <td class="px-4 py-3.5 text-sm font-medium text-gray-900">
+              {{ exec.workflowName }}
+            </td>
+            <td class="px-4 py-3.5">
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                [class]="getStatusClass(exec.status)"
+              >
+                {{ getStatusLabel(exec.status) }}
+              </span>
+            </td>
+            <td class="px-4 py-3.5 text-sm text-gray-600">
+              {{ exec.triggerType }}
+            </td>
+            <td class="px-4 py-3.5 text-sm text-gray-500">
+              {{ exec.createdAt | date : 'dd/MM/yy HH:mm' }}
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="4" class="px-4 py-12 text-center">
+              <div class="flex flex-col items-center gap-2">
+                <tas-icon
+                  iconName="feather:inbox"
+                  class="text-gray-300 text-xl"
+                ></tas-icon>
+                <span class="text-sm text-gray-400"
+                  >Aucune exécution récente</span
+                >
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+  </tas-card>
 </div>

@@ -1,140 +1,247 @@
-<div class="p-6" *ngIf="!isLoading()">
-  <div class="flex items-center gap-3 mb-6">
-    <button
-      class="text-gray-500 hover:text-gray-700 text-sm"
-      (click)="goBack()"
-    >
-      ← Retour
-    </button>
-    <h1 class="text-2xl font-semibold text-gray-900">Détail d'exécution</h1>
-  </div>
-
-  <div *ngIf="execution() as exec" class="flex flex-col gap-6">
-    <!-- Summary card -->
-    <div
-      class="bg-white rounded-xl border border-gray-200 p-5 flex flex-wrap gap-6"
-    >
-      <div>
-        <div class="text-xs text-gray-400">Workflow</div>
-        <div class="font-semibold text-gray-900">{{ exec.workflowName }}</div>
-      </div>
-      <div>
-        <div class="text-xs text-gray-400">Statut</div>
-        <span
-          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1"
-          [ngClass]="getStatusClass(exec.status)"
-        >
-          {{ exec.status }}
-        </span>
-      </div>
-      <div>
-        <div class="text-xs text-gray-400">Déclencheur</div>
-        <div class="text-sm text-gray-700">{{ exec.triggerType }}</div>
-      </div>
-      <div>
-        <div class="text-xs text-gray-400">Démarré</div>
-        <div class="text-sm text-gray-700">
-          {{ exec.createdAt | date : 'dd/MM/yyyy HH:mm:ss' }}
-        </div>
-      </div>
-      <div *ngIf="exec.completedAt">
-        <div class="text-xs text-gray-400">Terminé</div>
-        <div class="text-sm text-gray-700">
-          {{ exec.completedAt | date : 'dd/MM/yyyy HH:mm:ss' }}
-        </div>
-      </div>
-      <div *ngIf="exec.testMode" class="self-center">
-        <span
-          class="bg-purple-100 text-purple-700 text-xs px-2 py-0.5 rounded-full"
-          >Test</span
-        >
-      </div>
-
-      <!-- Action buttons -->
-      <div class="ml-auto flex gap-2 self-center">
-        <button
-          *ngIf="exec.status === 'running'"
-          class="px-3 py-1.5 text-sm border border-red-300 text-red-700 rounded-lg hover:bg-red-50"
-          (click)="cancel()"
-        >
-          Annuler
-        </button>
-      </div>
-    </div>
-
-    <!-- Step timeline -->
-    <div class="bg-white rounded-xl border border-gray-200 p-5">
-      <h2 class="font-semibold text-gray-900 mb-4">Étapes</h2>
-      <div *ngIf="exec.stepLogs.length === 0" class="text-sm text-gray-400">
-        Aucune étape exécutée
-      </div>
-      <div class="flex flex-col gap-3">
-        <div *ngFor="let step of exec.stepLogs" class="flex gap-4">
-          <!-- Status icon -->
-          <div class="flex flex-col items-center">
-            <div
-              class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-bold shrink-0"
-              [ngClass]="getStepClass(step.status)"
-            >
-              {{ getStepIcon(step.status) }}
-            </div>
+@if (isLoading()) {
+<div class="flex items-center justify-center py-24">
+  <tas-spinner size="8"></tas-spinner>
+</div>
+} @else if (execution()) { // declare variable @let exec = execution();
+<div class="p-6 space-y-4">
+  <!-- Header -->
+  <tas-card>
+    <card-header>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <button
+            tas-button
+            iconButton
+            color="neutral"
+            size="small"
+            (click)="goBack()"
+          >
+            <tas-icon
+              iconName="feather:arrow-left"
+              class="text-gray-500"
+            ></tas-icon>
+          </button>
+          <div
+            class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10"
+          >
+            <tas-icon
+              iconName="feather:activity"
+              class="text-primary"
+            ></tas-icon>
           </div>
-          <!-- Step details -->
-          <div class="flex-1 pb-4 border-b border-gray-100 last:border-0">
-            <div class="flex items-start justify-between">
-              <div>
-                <div class="font-medium text-gray-900">
-                  {{ step.nodeLabel }}
-                </div>
-                <div class="text-xs text-gray-400 mt-0.5">
-                  {{ step.startedAt | date : 'HH:mm:ss' }} —
-                  {{
-                    step.completedAt
-                      ? (step.completedAt | date : 'HH:mm:ss')
-                      : 'En cours'
-                  }}
-                </div>
-              </div>
-              <div class="flex gap-2">
-                <button
-                  *ngIf="step.status === 'failed'"
-                  class="text-xs px-2 py-1 border border-blue-300 text-blue-700 rounded hover:bg-blue-50"
-                  (click)="retryStep(step.nodeId)"
-                >
-                  Relancer
-                </button>
-                <button
-                  *ngIf="step.status === 'failed'"
-                  class="text-xs px-2 py-1 border border-gray-300 text-gray-600 rounded hover:bg-gray-50"
-                  (click)="skipStep(step.nodeId)"
-                >
-                  Ignorer
-                </button>
-              </div>
-            </div>
-            <div
-              *ngIf="step.errorMessage"
-              class="mt-2 text-xs text-red-600 bg-red-50 rounded px-3 py-2"
-            >
-              {{ step.errorMessage }}
-            </div>
-            <div *ngIf="step.retryCount > 0" class="text-xs text-gray-400 mt-1">
-              {{ step.retryCount }} tentative(s)
+          <div>
+            <tas-title>{{ exec.workflowName }}</tas-title>
+            <div class="flex items-center gap-3 mt-0.5">
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium"
+                [class]="getStatusClass(exec.status)"
+              >
+                {{ getStatusLabel(exec.status) }}
+              </span>
+              <span class="text-xs text-gray-400">{{ exec.triggerType }}</span>
+              <span class="text-xs text-gray-400">{{
+                exec.createdAt | date : 'dd/MM/yyyy HH:mm:ss'
+              }}</span>
+              @if (exec.testMode) {
+              <span
+                class="text-xs bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full font-medium"
+                >Test</span
+              >
+              }
             </div>
           </div>
         </div>
+        <div class="flex items-center gap-2">
+          @if (exec.status === 'running') {
+          <button
+            tas-outlined-button
+            color="warn"
+            size="small"
+            (click)="cancel()"
+          >
+            <tas-icon iconName="feather:x-circle"></tas-icon>
+            Annuler
+          </button>
+          }
+        </div>
       </div>
-    </div>
+    </card-header>
+  </tas-card>
+
+  <!-- Summary info -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <tas-card>
+      <div class="p-4">
+        <div
+          class="text-xs text-gray-400 uppercase tracking-wide font-semibold"
+        >
+          Démarré
+        </div>
+        <div class="text-sm font-medium text-gray-900 mt-1">
+          {{ exec.createdAt | date : 'dd/MM/yyyy HH:mm' }}
+        </div>
+      </div>
+    </tas-card>
+    <tas-card>
+      <div class="p-4">
+        <div
+          class="text-xs text-gray-400 uppercase tracking-wide font-semibold"
+        >
+          Terminé
+        </div>
+        <div class="text-sm font-medium text-gray-900 mt-1">
+          @if (exec.completedAt) {
+          {{ exec.completedAt | date : 'dd/MM/yyyy HH:mm' }}
+          } @else {
+          <span class="text-gray-400">-</span>
+          }
+        </div>
+      </div>
+    </tas-card>
+    <tas-card>
+      <div class="p-4">
+        <div
+          class="text-xs text-gray-400 uppercase tracking-wide font-semibold"
+        >
+          Version
+        </div>
+        <div class="text-sm font-medium text-gray-900 mt-1 font-mono">
+          v{{ exec.workflowVersion }}
+        </div>
+      </div>
+    </tas-card>
+    <tas-card>
+      <div class="p-4">
+        <div
+          class="text-xs text-gray-400 uppercase tracking-wide font-semibold"
+        >
+          Entité cible
+        </div>
+        <div class="text-sm font-medium text-gray-900 mt-1 font-mono truncate">
+          {{ exec.targetEntityId }}
+        </div>
+      </div>
+    </tas-card>
   </div>
 
+  <!-- Step timeline -->
+  <tas-card>
+    <card-header>
+      <div class="flex items-center gap-2">
+        <tas-icon iconName="feather:list" class="text-gray-400"></tas-icon>
+        <tas-title>Étapes d'exécution</tas-title>
+      </div>
+    </card-header>
+
+    @if (exec.stepLogs.length === 0) {
+    <div class="flex flex-col items-center justify-center py-12 gap-3">
+      <tas-icon
+        iconName="feather:inbox"
+        class="text-gray-300 text-2xl"
+      ></tas-icon>
+      <span class="text-sm text-gray-400">Aucune étape exécutée</span>
+    </div>
+    } @else {
+    <div class="p-5 flex flex-col gap-3">
+      @for (step of exec.stepLogs; track step.nodeId; let last = $last) {
+      <div class="flex gap-4">
+        <!-- Timeline icon -->
+        <div class="flex flex-col items-center">
+          <div
+            class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 border"
+            [class]="getStepBgClass(step.status)"
+          >
+            <tas-icon
+              [iconName]="getStepIcon(step.status)"
+              [class]="getStepIconColor(step.status)"
+              class="text-sm"
+            ></tas-icon>
+          </div>
+          @if (!last) {
+          <div class="w-0.5 flex-1 bg-gray-200 my-1 min-h-[16px]"></div>
+          }
+        </div>
+
+        <!-- Step content -->
+        <div class="flex-1 pb-4">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="font-medium text-gray-900 text-sm">
+                {{ step.nodeLabel }}
+              </div>
+              <div class="text-xs text-gray-400 mt-0.5">
+                {{ step.startedAt | date : 'HH:mm:ss' }}
+                @if (step.completedAt) { —
+                {{ step.completedAt | date : 'HH:mm:ss' }}
+                } @else { — En cours }
+              </div>
+            </div>
+            @if (step.status === 'failed') {
+            <div class="flex gap-2">
+              <button
+                tas-outlined-button
+                color="primary"
+                size="small"
+                (click)="retryStep(step.nodeId)"
+              >
+                <tas-icon
+                  iconName="feather:refresh-cw"
+                  class="text-xs"
+                ></tas-icon>
+                Relancer
+              </button>
+              <button
+                tas-outlined-button
+                color="neutral"
+                size="small"
+                (click)="skipStep(step.nodeId)"
+              >
+                <tas-icon
+                  iconName="feather:skip-forward"
+                  class="text-xs"
+                ></tas-icon>
+                Ignorer
+              </button>
+            </div>
+            }
+          </div>
+
+          @if (step.errorMessage) {
+          <div
+            class="mt-2 text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 flex items-start gap-2"
+          >
+            <tas-icon
+              iconName="feather:alert-triangle"
+              class="text-red-400 shrink-0 mt-0.5"
+            ></tas-icon>
+            <span>{{ step.errorMessage }}</span>
+          </div>
+          } @if (step.retryCount > 0) {
+          <div class="text-xs text-gray-400 mt-1">
+            {{ step.retryCount }} tentative(s)
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </tas-card>
+</div>
+} @else {
+<div class="flex flex-col items-center justify-center py-24 gap-4">
   <div
-    *ngIf="!execution() && !isLoading()"
-    class="p-8 text-center text-gray-500"
+    class="flex items-center justify-center w-16 h-16 rounded-full bg-gray-100"
   >
-    Exécution introuvable.
+    <tas-icon
+      iconName="feather:search"
+      class="text-gray-400 text-2xl"
+    ></tas-icon>
   </div>
+  <p class="text-gray-500">Exécution introuvable.</p>
+  <button tas-outlined-button color="neutral" size="small" (click)="goBack()">
+    <tas-icon iconName="feather:arrow-left"></tas-icon>
+    Retour
+  </button>
 </div>
-
-<div *ngIf="isLoading()" class="p-8 text-center text-gray-500">
-  Chargement...
-</div>
+}

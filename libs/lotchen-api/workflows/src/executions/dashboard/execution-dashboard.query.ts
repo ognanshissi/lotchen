@@ -2,15 +2,21 @@ import { QueryHandler } from '@lotchen/api/core';
 import { Injectable } from '@nestjs/common';
 import { WorkflowsProvider } from '../../workflows.provider';
 import { ExecutionStatusEnum } from '../../common/workflow.enums';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ExecutionDashboardQuery {}
 
-export interface ExecutionDashboardResponse {
-  activeInstances: number;
-  completedLast30Days: number;
-  failedLast30Days: number;
-  completionRate: number;
-  averageDurationMs: number;
+export class ExecutionDashboardResponse {
+  @ApiProperty({ description: 'Execution activeInstances' })
+  activeInstances!: number;
+  @ApiProperty({ description: 'Execution completedLast30Days' })
+  completedLast30Days!: number;
+  @ApiProperty({ description: 'Execution failed last 30 days' })
+  failedLast30Days!: number;
+  @ApiProperty({ description: 'Execution completed last30Days' })
+  completionRate!: number;
+  @ApiProperty({ description: 'Execution average duration in milliseconds' })
+  averageDurationMs!: number;
 }
 
 @Injectable()
@@ -78,6 +84,6 @@ export class ExecutionDashboardQueryHandler
       failedLast30Days,
       completionRate,
       averageDurationMs,
-    };
+    } as ExecutionDashboardResponse;
   }
 }

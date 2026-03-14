@@ -1,61 +1,71 @@
-<div class="flex flex-col h-full" *ngIf="!isLoading(); else loadingTpl">
+@if (!isLoading()) {
+<div class="flex flex-col h-full">
   <!-- Toolbar -->
   <div
-    class="flex items-center justify-between px-6 py-3 border-b border-gray-200 bg-white shrink-0"
+    class="flex items-center justify-between px-5 py-3 border-b border-gray-200 bg-white shrink-0"
   >
     <div class="flex items-center gap-3">
       <button
-        class="text-gray-500 hover:text-gray-700 text-sm"
+        tas-button
+        iconButton
+        color="neutral"
+        size="small"
         (click)="goBack()"
       >
-        ← Retour
+        <tas-icon
+          iconName="feather:arrow-left"
+          class="text-gray-500"
+        ></tas-icon>
       </button>
-      <input
-        class="text-lg font-semibold text-gray-900 border-0 border-b-2 border-transparent focus:border-primary focus:outline-none bg-transparent px-1"
-        type="text"
-        [value]="workflowName()"
-        (input)="workflowName.set($any($event.target).value)"
-      />
-      <span
-        class="text-md px-3 py-1 rounded-full font-medium"
-        [ngClass]="
-          workflowStatus() === 'active'
-            ? 'bg-green-100 text-green-700'
-            : workflowStatus() === 'archived'
-            ? 'bg-gray-100 text-gray-500'
-            : 'bg-yellow-100 text-yellow-700'
-        "
-      >
-        {{
-          workflowStatus() === 'active'
-            ? 'Actif'
-            : workflowStatus() === 'archived'
-            ? 'Archivé'
-            : 'Brouillon'
-        }}
-      </span>
+
+      <div class="flex items-center gap-2">
+        <input
+          class="text-lg font-semibold text-gray-900 border-0 border-b-2 border-transparent focus:border-primary focus:outline-none bg-transparent px-1 min-w-[200px]"
+          type="text"
+          [value]="workflowName()"
+          (input)="workflowName.set($any($event.target).value)"
+        />
+        <span
+          class="text-xs px-2.5 py-1 rounded-full font-medium"
+          [class]="statusClass()"
+        >
+          {{ statusLabel() }}
+        </span>
+      </div>
     </div>
+
     <div class="flex items-center gap-2">
-      <button tas-raised-button color="accent" (click)="testRun()">
+      <button
+        tas-outlined-button
+        color="neutral"
+        size="small"
+        (click)="testRun()"
+      >
+        <tas-icon iconName="feather:play"></tas-icon>
         Test Run
       </button>
       <button
         tas-raised-button
         color="primary"
+        size="small"
+        [isLoading]="isSaving()"
         [disabled]="isSaving()"
         (click)="save()"
       >
-        <tas-icon iconName="feather:check"></tas-icon>
-        {{ isSaving() ? 'Sauvegarde...' : 'Sauvegarder' }}
+        <tas-icon iconName="feather:save"></tas-icon>
+        Sauvegarder
       </button>
+      @if (workflowStatus() !== 'active') {
       <button
-        *ngIf="workflowStatus() !== 'active'"
         tas-raised-button
-        color="primary"
+        color="accent"
+        size="small"
         (click)="activate()"
       >
+        <tas-icon iconName="feather:check-circle"></tas-icon>
         Activer
       </button>
+      }
     </div>
   </div>
 
@@ -67,7 +77,13 @@
     ></workflow-node-palette>
 
     <!-- Flow canvas -->
-    <div class="flex-1 overflow-y-auto bg-gray-50 p-8">
+    <div
+      class="flex-1 overflow-y-auto bg-gray-50 p-8"
+      style="
+        background-image: radial-gradient(circle, #e5e7eb 1px, transparent 1px);
+        background-size: 20px 20px;
+      "
+    >
       <div class="max-w-lg mx-auto flex flex-col gap-0">
         <!-- Trigger node -->
         <workflow-trigger-config
@@ -76,39 +92,43 @@
         ></workflow-trigger-config>
 
         <!-- Connector line -->
-        <div *ngIf="nodes().length > 0" class="flex justify-center my-1">
-          <div class="w-0.5 h-6 bg-gray-300"></div>
+        @if (nodes().length > 0) {
+        <div class="flex justify-center my-1">
+          <div class="w-0.5 h-8 bg-gray-300 rounded-full"></div>
         </div>
+        }
 
         <!-- Action nodes (drag-sortable) -->
         <div
           cdkDropList
           [cdkDropListData]="nodes()"
           (cdkDropListDropped)="onDrop($event)"
-          class="flex flex-col gap-0 p-8"
+          class="flex flex-col gap-0"
         >
-          <ng-container *ngFor="let node of nodes(); let i = index">
-            <workflow-node
-              [node]="node"
-              [selected]="isNodeSelected(node)"
-              (nodeClick)="onNodeClick($event)"
-              (nodeDelete)="onNodeDelete($event)"
-            ></workflow-node>
-            <!-- Connector between nodes -->
-            <div
-              *ngIf="i < nodes().length - 1"
-              class="flex justify-center my-1"
-            >
-              <div class="w-0.5 h-6 bg-gray-300"></div>
-            </div>
-          </ng-container>
+          @for (node of nodes(); track node.nodeId; let i = $index) {
+          <workflow-node
+            [node]="node"
+            [selected]="isNodeSelected(node)"
+            (nodeClick)="onNodeClick($event)"
+            (nodeDelete)="onNodeDelete($event)"
+          ></workflow-node>
+          <!-- Connector between nodes -->
+          @if (i < nodes().length - 1) {
+          <div class="flex justify-center my-1">
+            <div class="w-0.5 h-8 bg-gray-300 rounded-full"></div>
+          </div>
+          } }
         </div>
 
-        <!-- Add step button -->
-        <div class="flex justify-center mt-4">
+        <!-- Add step hint -->
+        <div class="flex justify-center mt-6">
           <div
-            class="text-center text-sm text-gray-400 border-2 border-dashed border-gray-300 rounded-xl px-6 py-4 w-full"
+            class="text-center text-sm text-gray-400 border-2 border-dashed border-gray-300 rounded-xl px-6 py-5 w-full flex flex-col items-center gap-2"
           >
+            <tas-icon
+              iconName="feather:plus-circle"
+              class="text-gray-300 text-xl"
+            ></tas-icon>
             Glissez un composant depuis la palette ou cliquez dessus pour
             ajouter une étape
           </div>
@@ -117,7 +137,11 @@
     </div>
   </div>
 </div>
-
-<ng-template #loadingTpl>
-  <div class="p-8 text-center text-gray-500">Chargement du workflow...</div>
-</ng-template>
+} @else {
+<div class="flex items-center justify-center h-full">
+  <div class="flex flex-col items-center gap-3">
+    <tas-spinner size="8"></tas-spinner>
+    <span class="text-sm text-gray-500">Chargement du workflow...</span>
+  </div>
+</div>
+}

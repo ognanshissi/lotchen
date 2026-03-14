@@ -1,14 +1,39 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, RouterLink } from '@angular/router';
-import { NgFor, NgIf, NgClass, DatePipe, SlicePipe } from '@angular/common';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+  inject,
+  signal,
+  OnInit,
+} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DatePipe, SlicePipe } from '@angular/common';
 import { WorkflowExecutionsApiService } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';
+import { TasCard, TasCardHeader } from '@talisoft/ui/card';
+import { TasTitle } from '@talisoft/ui/title';
+import { TasText } from '@talisoft/ui/text';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasIcon } from '@talisoft/ui/icon';
+import { TasSpinner } from '@talisoft/ui/spinner';
 
 @Component({
   selector: 'workflow-execution-list',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './workflow-execution-list.component.html',
-  imports: [NgFor, NgIf, NgClass, DatePipe, RouterLink, SlicePipe],
+  imports: [
+    DatePipe,
+    SlicePipe,
+    TasCard,
+    TasCardHeader,
+    TasTitle,
+    TasText,
+    ButtonModule,
+    TasIcon,
+    TasSpinner,
+  ],
 })
 export class WorkflowExecutionListComponent implements OnInit {
   private readonly _executionsApi = inject(WorkflowExecutionsApiService);
@@ -20,6 +45,13 @@ export class WorkflowExecutionListComponent implements OnInit {
   isLoading = signal(false);
   workflowId = signal<string | null>(null);
   filterStatus = signal<string | undefined>(undefined);
+
+  filters = [
+    { label: 'Toutes', value: undefined as string | undefined },
+    { label: 'En cours', value: 'running' as string | undefined },
+    { label: 'Terminées', value: 'completed' as string | undefined },
+    { label: 'Échouées', value: 'failed' as string | undefined },
+  ];
 
   ngOnInit(): void {
     const id = this._route.snapshot.paramMap.get('id');
@@ -69,15 +101,30 @@ export class WorkflowExecutionListComponent implements OnInit {
   getStatusClass(status: string): string {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800';
+        return 'bg-emerald-100 text-emerald-700';
       case 'running':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-100 text-blue-700';
       case 'failed':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-100 text-red-700';
       case 'cancelled':
         return 'bg-gray-100 text-gray-600';
       default:
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-amber-100 text-amber-700';
+    }
+  }
+
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'completed':
+        return 'feather:check-circle';
+      case 'running':
+        return 'feather:loader';
+      case 'failed':
+        return 'feather:x-circle';
+      case 'cancelled':
+        return 'feather:slash';
+      default:
+        return 'feather:clock';
     }
   }
 

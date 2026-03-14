@@ -6,18 +6,13 @@ import {
   signal,
   OnInit,
 } from '@angular/core';
-import {
-  NgIf,
-  NgFor,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { WorkflowNodeDto } from '@talisoft/api/lotchen-client-api';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
+import { TasInput } from '@talisoft/ui/input';
 import { ButtonModule } from '@talisoft/ui/button';
+import { TasIcon } from '@talisoft/ui/icon';
 
 export interface NodeConfigDialogData {
   node: WorkflowNodeDto;
@@ -29,17 +24,7 @@ export interface NodeConfigDialogData {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   templateUrl: './workflow-node-config-drawer.component.html',
-  imports: [
-    NgIf,
-    NgFor,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
-    FormsModule,
-    FormField,
-    TasLabel,
-    ButtonModule,
-  ],
+  imports: [FormsModule, FormField, TasLabel, TasInput, ButtonModule, TasIcon],
 })
 export class WorkflowNodeConfigDrawerComponent implements OnInit {
   private readonly _dialogRef = inject<DialogRef<WorkflowNodeDto>>(DialogRef);
@@ -77,5 +62,47 @@ export class WorkflowNodeConfigDrawerComponent implements OnInit {
 
   get actionType(): string {
     return this.node().actionType || this.node().type || '';
+  }
+
+  getActionIcon(): string {
+    const icons: Record<string, string> = {
+      assign_user: 'feather:user',
+      assign_team: 'feather:users',
+      send_email: 'feather:mail',
+      send_sms: 'feather:message-circle',
+      create_task: 'feather:check-square',
+      update_field: 'feather:edit-3',
+      wait_duration: 'feather:clock',
+      conditional_branch: 'feather:git-branch',
+    };
+    return icons[this.actionType] || 'feather:settings';
+  }
+
+  getActionLabel(): string {
+    const labels: Record<string, string> = {
+      assign_user: 'Assigner utilisateur',
+      assign_team: 'Assigner équipe',
+      send_email: 'Envoyer email',
+      send_sms: 'Envoyer SMS',
+      create_task: 'Créer tâche',
+      update_field: 'Modifier champ',
+      wait_duration: 'Attendre',
+      conditional_branch: 'Condition',
+    };
+    return labels[this.actionType] || 'Configuration';
+  }
+
+  getAccentColor(): string {
+    const colors: Record<string, string> = {
+      assign_user: 'bg-blue-100 text-blue-600',
+      assign_team: 'bg-indigo-100 text-indigo-600',
+      send_email: 'bg-emerald-100 text-emerald-600',
+      send_sms: 'bg-teal-100 text-teal-600',
+      create_task: 'bg-violet-100 text-violet-600',
+      update_field: 'bg-orange-100 text-orange-600',
+      wait_duration: 'bg-gray-100 text-gray-600',
+      conditional_branch: 'bg-rose-100 text-rose-600',
+    };
+    return colors[this.actionType] || 'bg-gray-100 text-gray-600';
   }
 }

@@ -1,23 +1,62 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { NgClass, NgFor, NgIf, DatePipe } from '@angular/common';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+  inject,
+  signal,
+  OnInit,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { WorkflowTemplatesApiService } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';
+import { TasCard, TasCardHeader } from '@talisoft/ui/card';
+import { TasTitle } from '@talisoft/ui/title';
+import { TasText } from '@talisoft/ui/text';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasIcon } from '@talisoft/ui/icon';
+import { TasSpinner } from '@talisoft/ui/spinner';
+import { Menu, MenuItem, TasMenuTrigger } from '@talisoft/ui/menu';
+import { ConfirmationService } from 'primeng/api';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'workflows-listing',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './workflow-listing.component.html',
-  imports: [NgFor, NgIf, NgClass, RouterLink, DatePipe],
+  imports: [
+    DatePipe,
+    TasCard,
+    TasCardHeader,
+    TasTitle,
+    TasText,
+    ButtonModule,
+    TasIcon,
+    TasSpinner,
+    Menu,
+    MenuItem,
+    TasMenuTrigger,
+  ],
+  providers: [ConfirmationService],
 })
 export class WorkflowListingComponent implements OnInit {
   private readonly _workflowsApi = inject(WorkflowTemplatesApiService);
   private readonly _router = inject(Router);
   private readonly _snackbar = inject(SnackbarService);
+  private readonly _confirmationService = inject(ConfirmationService);
 
-  public workflows = signal<any[]>([]);
-  public isLoading = signal(false);
-  public filterStatus = signal<string | undefined>(undefined);
+  workflows = signal<any[]>([]);
+  isLoading = signal(false);
+  filterStatus = signal<string | undefined>(undefined);
+
+  readonly filters = [
+    { value: undefined, label: 'Tous' },
+    { value: 'active', label: 'Actifs' },
+    { value: 'draft', label: 'Brouillons' },
+    { value: 'archived', label: 'Archivés' },
+  ];
 
   ngOnInit(): void {
     this.loadWorkflows();
@@ -57,6 +96,10 @@ export class WorkflowListingComponent implements OnInit {
 
   viewExecutions(id: string): void {
     this._router.navigate([`/portal/automation-workflows/${id}/executions`]);
+  }
+
+  goToDashboard(): void {
+    this._router.navigate(['/portal/automation-workflows/dashboard']);
   }
 
   activate(id: string): void {
@@ -99,25 +142,34 @@ export class WorkflowListingComponent implements OnInit {
   }
 
   delete(id: string): void {
-    this._workflowsApi.workflowTemplatesControllerDeleteV1(id).subscribe({
-      next: () => {
-        this._snackbar.success('Succès', 'Workflow supprimé');
-        this.loadWorkflows();
-      },
-      error: () => {
-        this._snackbar.error('Erreur', 'Erreur lors de la suppression');
-      },
-    });
+    this._confirmationService
+      .confirm({
+        message: 'Voulez-vous vraiment supprimer ce workflow ?',
+      })
+      .accept.pipe(
+        switchMap(() =>
+          this._workflowsApi.workflowTemplatesControllerDeleteV1(id)
+        )
+      )
+      .subscribe({
+        next: () => {
+          this._snackbar.success('Succès', 'Workflow supprimé');
+          this.loadWorkflows();
+        },
+        error: () => {
+          this._snackbar.error('Erreur', 'Erreur lors de la suppression');
+        },
+      });
   }
 
   getStatusClass(status: string): string {
     switch (status) {
       case 'active':
-        return 'bg-green-100 text-green-800';
+        return 'bg-functional-success/10 text-functional-success';
       case 'archived':
-        return 'bg-gray-100 text-gray-600';
+        return 'bg-gray-100 text-gray-500';
       default:
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-amber-50 text-amber-700';
     }
   }
 
@@ -129,6 +181,17 @@ export class WorkflowListingComponent implements OnInit {
         return 'Archivé';
       default:
         return 'Brouillon';
+    }
+  }
+
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'active':
+        return 'feather:check-circle';
+      case 'archived':
+        return 'feather:archive';
+      default:
+        return 'feather:edit-3';
     }
   }
 
@@ -144,6 +207,21 @@ export class WorkflowListingComponent implements OnInit {
         return 'Basé sur date';
       default:
         return 'Manuel';
+    }
+  }
+
+  getTriggerIcon(type: string): string {
+    switch (type) {
+      case 'status_change':
+        return 'feather:refresh-cw';
+      case 'new_lead':
+        return 'feather:user-plus';
+      case 'form_submission':
+        return 'feather:file-text';
+      case 'date_based':
+        return 'feather:calendar';
+      default:
+        return 'feather:play';
     }
   }
 }

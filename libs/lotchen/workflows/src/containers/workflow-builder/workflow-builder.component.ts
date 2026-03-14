@@ -1,6 +1,13 @@
-import { Component, inject, signal, OnInit, computed } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+  inject,
+  signal,
+  OnInit,
+  computed,
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgIf, NgFor, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Dialog } from '@angular/cdk/dialog';
 import {
@@ -17,6 +24,11 @@ import {
   WorkflowTriggerDtoTypeEnum,
 } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasIcon } from '@talisoft/ui/icon';
+import { FormField, TasLabel } from '@talisoft/ui/form-field';
+import { TasInput } from '@talisoft/ui/input';
+import { TasSpinner } from '@talisoft/ui/spinner';
 import { WorkflowNodeComponent } from '../../components/workflow-node/workflow-node.component';
 import { WorkflowNodePaletteComponent } from '../../components/workflow-node-palette/workflow-node-palette.component';
 import { WorkflowTriggerConfigComponent } from '../../components/workflow-trigger-config/workflow-trigger-config.component';
@@ -25,17 +37,14 @@ import {
   NodeConfigDialogData,
 } from '../../components/workflow-node-config-drawer/workflow-node-config-drawer.component';
 import { randomUUID } from '../../utils/uuid.util';
-import { ButtonModule } from '@talisoft/ui/button';
-import { TasIcon } from '@talisoft/ui/icon';
 
 @Component({
   selector: 'workflow-builder',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './workflow-builder.component.html',
   imports: [
-    NgIf,
-    NgFor,
-    NgClass,
     FormsModule,
     CdkDropList,
     WorkflowNodeComponent,
@@ -43,6 +52,10 @@ import { TasIcon } from '@talisoft/ui/icon';
     WorkflowTriggerConfigComponent,
     ButtonModule,
     TasIcon,
+    FormField,
+    TasLabel,
+    TasInput,
+    TasSpinner,
   ],
 })
 export class WorkflowBuilderComponent implements OnInit {
@@ -66,6 +79,28 @@ export class WorkflowBuilderComponent implements OnInit {
   isLoading = signal(false);
 
   isEditing = computed(() => !!this.workflowId());
+
+  statusLabel = computed(() => {
+    switch (this.workflowStatus()) {
+      case 'active':
+        return 'Actif';
+      case 'archived':
+        return 'Archivé';
+      default:
+        return 'Brouillon';
+    }
+  });
+
+  statusClass = computed(() => {
+    switch (this.workflowStatus()) {
+      case 'active':
+        return 'bg-emerald-100 text-emerald-700';
+      case 'archived':
+        return 'bg-gray-100 text-gray-500';
+      default:
+        return 'bg-amber-100 text-amber-700';
+    }
+  });
 
   ngOnInit(): void {
     const id = this._route.snapshot.paramMap.get('id');
@@ -117,6 +152,7 @@ export class WorkflowBuilderComponent implements OnInit {
       {
         data: { node },
         panelClass: 'node-config-panel',
+        width: '600px',
       }
     );
     ref.closed.subscribe((updated) => {

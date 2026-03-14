@@ -28,11 +28,15 @@ import {
   TriggerManualWorkflowCommand,
   TriggerManualWorkflowCommandHandler,
 } from './trigger-manual/trigger-manual-workflow.command';
-import { ExecutionDashboardQueryHandler } from './dashboard/execution-dashboard.query';
+import {
+  ExecutionDashboardQueryHandler,
+  ExecutionDashboardResponse,
+} from './dashboard/execution-dashboard.query';
 import {
   TestRunWorkflowCommand,
   TestRunWorkflowCommandHandler,
 } from './test-run/test-run-workflow.command';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { ImportContactsExcelCommandResponse } from '../../../contact/src/contacts/import-contacts-excel/import-contacts-excel.command';
 
 @Controller({ path: 'workflow-executions', version: '1' })
@@ -50,7 +54,12 @@ export class WorkflowExecutionsController {
   ) {}
 
   @Get('dashboard')
-  public async getDashboard(): Promise<any> {
+  @ApiResponse({
+    type: ExecutionDashboardResponse,
+    status: HttpStatus.OK,
+    description: 'Execution dashboard',
+  })
+  public async getDashboard(): Promise<ExecutionDashboardResponse> {
     return this._dashboardHandler.handlerAsync({});
   }
 

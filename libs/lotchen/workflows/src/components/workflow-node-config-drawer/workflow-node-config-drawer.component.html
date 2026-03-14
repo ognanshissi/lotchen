@@ -1,20 +1,40 @@
-<div class="bg-white rounded-lg p-6 w-[450px]">
+<div class="bg-white rounded-xl shadow-xl w-[660px] flex flex-col max-h-[85vh]">
   <!-- Header -->
-  <div class="flex items-center justify-between px-5">
-    <h2 class="font-semibold text-gray-900 text-lg">Configurer l'étape</h2>
+  <div
+    class="px-6 py-4 border-b border-gray-100 flex items-center gap-3 shrink-0"
+  >
+    <div
+      class="flex items-center justify-center w-9 h-9 rounded-lg"
+      [class]="getAccentColor()"
+    >
+      <tas-icon [iconName]="getActionIcon()" class="text-sm"></tas-icon>
+    </div>
+    <div class="flex-1 min-w-0">
+      <div
+        class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider"
+      >
+        {{ getActionLabel() }}
+      </div>
+      <div class="text-sm font-semibold text-gray-900 truncate">
+        Configurer l'étape
+      </div>
+    </div>
     <button
-      class="text-gray-400 hover:text-gray-700 text-xl"
+      tas-button
+      iconButton
+      color="neutral"
+      size="small"
       (click)="cancel()"
     >
-      &times;
+      <tas-icon iconName="feather:x" class="text-gray-400"></tas-icon>
     </button>
   </div>
 
   <!-- Body -->
-  <div class="flex-1 overflow-y-auto p-5 flex flex-col gap-4">
+  <div class="flex-1 overflow-y-auto px-6 py-5 flex flex-col gap-4">
     <!-- Label -->
     <tas-form-field>
-      <tas-label>Nom de l'étape </tas-label>
+      <tas-label>Nom de l'étape</tas-label>
       <input
         tasInput
         type="text"
@@ -24,189 +44,173 @@
     </tas-form-field>
 
     <!-- Dynamic config by actionType -->
-    <ng-container [ngSwitch]="actionType">
-      <!-- assign_user -->
-      <ng-container *ngSwitchCase="'assign_user'">
-        <tas-form-field>
-          <tas-label>ID Utilisateur</tas-label>
-          <input
-            tasInput
-            type="text"
-            [value]="getConfig('userId') || ''"
-            (input)="setConfig('userId', $any($event.target).value)"
-            placeholder="UUID de l'utilisateur"
-          />
-        </tas-form-field>
-      </ng-container>
-
-      <!-- assign_team -->
-      <ng-container *ngSwitchCase="'assign_team'">
-        <tas-form-field>
-          <tas-label>ID Équipe</tas-label>
-          <input
-            tasInput
-            type="text"
-            [value]="getConfig('teamId') || ''"
-            (input)="setConfig('teamId', $any($event.target).value)"
-            placeholder="UUID de l'équipe"
-          />
-        </tas-form-field>
-      </ng-container>
-
-      <!-- send_email -->
-      <ng-container *ngSwitchCase="'send_email'">
-        <tas-form-field>
-          <tas-label>Sujet</tas-label>
-          <input
-            tasInput
-            type="text"
-            [value]="getConfig('subject') || ''"
-            (input)="setConfig('subject', $any($event.target).value)"
-          />
-        </tas-form-field>
-
-        <tas-form-field>
-          <tas-label>Corps du message</tas-label>
-          <textarea
-            tasInput
-            [value]="getConfig('body') || ''"
-            (input)="setConfig('body', $any($event.target).value)"
-          ></textarea>
-        </tas-form-field>
-      </ng-container>
-
-      <!-- send_sms -->
-      <ng-container *ngSwitchCase="'send_sms'">
-        <tas-form-field>
-          <tas-label>Message</tas-label>
-          <textarea
-            tasInput
-            [value]="getConfig('message') || ''"
-            (input)="setConfig('message', $any($event.target).value)"
-          ></textarea>
-        </tas-form-field>
-      </ng-container>
-
-      <!-- create_task -->
-      <ng-container *ngSwitchCase="'create_task'">
-        <tas-form-field>
-          <tas-label>Titre de la tâche</tas-label>
-          <input
-            tasInput
-            type="text"
-            [value]="getConfig('title') || ''"
-            (input)="setConfig('title', $any($event.target).value)"
-          />
-        </tas-form-field>
-
-        <tas-form-field>
-          <tas-label>Délai (jours)</tas-label>
-          <input
-            tasInput
-            type="number"
-            [value]="getConfig('dueDateOffsetDays') || 0"
-            (input)="setConfig('dueDateOffsetDays', +$any($event.target).value)"
-          />
-        </tas-form-field>
-      </ng-container>
-
-      <!-- update_field -->
-      <ng-container *ngSwitchCase="'update_field'">
-        <tas-form-field>
-          <tas-label>Nom du champ</tas-label>
-          <input
-            tasInput
-            type="text"
-            [value]="getConfig('fieldName') || ''"
-            (input)="setConfig('fieldName', $any($event.target).value)"
-          />
-        </tas-form-field>
-
-        <tas-form-field>
-          <tas-label>Valeur</tas-label>
-          <input
-            tasInput
-            type="text"
-            [value]="getConfig('value') || ''"
-            (input)="setConfig('value', $any($event.target).value)"
-          />
-        </tas-form-field>
-      </ng-container>
-
-      <!-- wait_duration -->
-      <ng-container *ngSwitchCase="'wait_duration'">
-        <div class="flex gap-2">
-          <div class="flex flex-col gap-1 flex-1">
-            <label class="text-xs font-medium text-gray-600">Durée</label>
-            <input
-              class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
-              type="number"
-              min="1"
-              [value]="getConfig('duration') || 1"
-              (input)="setConfig('duration', +$any($event.target).value)"
-            />
-          </div>
-          <div class="flex flex-col gap-1 w-28">
-            <label class="text-xs font-medium text-gray-600">Unité</label>
-            <select
-              class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
-              [value]="getConfig('unit') || 'hours'"
-              (change)="setConfig('unit', $any($event.target).value)"
-            >
-              <option value="hours">Heures</option>
-              <option value="days">Jours</option>
-            </select>
-          </div>
-        </div>
-      </ng-container>
-
-      <!-- conditional_branch -->
-      <ng-container *ngSwitchCase="'conditional_branch'">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600">Champ</label>
-          <input
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
-            type="text"
-            [value]="getConfig('fieldName') || ''"
-            (input)="setConfig('fieldName', $any($event.target).value)"
-          />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600">Opérateur</label>
-          <select
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
-            [value]="getConfig('operator') || 'equals'"
-            (change)="setConfig('operator', $any($event.target).value)"
-          >
-            <option value="equals">Égal à</option>
-            <option value="not_equals">Différent de</option>
-            <option value="contains">Contient</option>
-            <option value="greater_than">Supérieur à</option>
-          </select>
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600">Valeur</label>
-          <input
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
-            type="text"
-            [value]="getConfig('value') || ''"
-            (input)="setConfig('value', $any($event.target).value)"
-          />
-        </div>
-      </ng-container>
-
-      <ng-container *ngSwitchDefault>
-        <p class="text-sm text-gray-400 italic">
-          Aucune configuration requise pour ce type.
-        </p>
-      </ng-container>
-    </ng-container>
+    @switch (actionType) { @case ('assign_user') {
+    <tas-form-field>
+      <tas-label>ID Utilisateur</tas-label>
+      <input
+        tasInput
+        type="text"
+        [value]="getConfig('userId') || ''"
+        (input)="setConfig('userId', $any($event.target).value)"
+        placeholder="UUID de l'utilisateur"
+      />
+    </tas-form-field>
+    } @case ('assign_team') {
+    <tas-form-field>
+      <tas-label>ID Équipe</tas-label>
+      <input
+        tasInput
+        type="text"
+        [value]="getConfig('teamId') || ''"
+        (input)="setConfig('teamId', $any($event.target).value)"
+        placeholder="UUID de l'équipe"
+      />
+    </tas-form-field>
+    } @case ('send_email') {
+    <tas-form-field>
+      <tas-label>Sujet</tas-label>
+      <input
+        tasInput
+        type="text"
+        [value]="getConfig('subject') || ''"
+        (input)="setConfig('subject', $any($event.target).value)"
+      />
+    </tas-form-field>
+    <tas-form-field>
+      <tas-label>Corps du message</tas-label>
+      <textarea
+        tasInput
+        [value]="getConfig('body') || ''"
+        (input)="setConfig('body', $any($event.target).value)"
+        rows="4"
+      ></textarea>
+    </tas-form-field>
+    } @case ('send_sms') {
+    <tas-form-field>
+      <tas-label>Message</tas-label>
+      <textarea
+        tasInput
+        [value]="getConfig('message') || ''"
+        (input)="setConfig('message', $any($event.target).value)"
+        rows="3"
+      ></textarea>
+    </tas-form-field>
+    } @case ('create_task') {
+    <tas-form-field>
+      <tas-label>Titre de la tâche</tas-label>
+      <input
+        tasInput
+        type="text"
+        [value]="getConfig('title') || ''"
+        (input)="setConfig('title', $any($event.target).value)"
+      />
+    </tas-form-field>
+    <tas-form-field>
+      <tas-label>Délai (jours)</tas-label>
+      <input
+        tasInput
+        type="number"
+        [value]="getConfig('dueDateOffsetDays') || 0"
+        (input)="setConfig('dueDateOffsetDays', +$any($event.target).value)"
+      />
+    </tas-form-field>
+    } @case ('update_field') {
+    <tas-form-field>
+      <tas-label>Nom du champ</tas-label>
+      <input
+        tasInput
+        type="text"
+        [value]="getConfig('fieldName') || ''"
+        (input)="setConfig('fieldName', $any($event.target).value)"
+      />
+    </tas-form-field>
+    <tas-form-field>
+      <tas-label>Valeur</tas-label>
+      <input
+        tasInput
+        type="text"
+        [value]="getConfig('value') || ''"
+        (input)="setConfig('value', $any($event.target).value)"
+      />
+    </tas-form-field>
+    } @case ('wait_duration') {
+    <div class="flex gap-3">
+      <tas-form-field class="flex-1">
+        <tas-label>Durée</tas-label>
+        <input
+          tasInput
+          type="number"
+          min="1"
+          [value]="getConfig('duration') || 1"
+          (input)="setConfig('duration', +$any($event.target).value)"
+        />
+      </tas-form-field>
+      <tas-form-field class="w-32">
+        <tas-label>Unité</tas-label>
+        <select
+          class="w-full h-[38px] border border-gray-300 rounded-[var(--tas-field-border-radius)] px-3 text-sm bg-white focus:border-primary focus:outline-none transition-colors"
+          [value]="getConfig('unit') || 'hours'"
+          (change)="setConfig('unit', $any($event.target).value)"
+        >
+          <option value="hours">Heures</option>
+          <option value="days">Jours</option>
+        </select>
+      </tas-form-field>
+    </div>
+    } @case ('conditional_branch') {
+    <tas-form-field>
+      <tas-label>Champ</tas-label>
+      <input
+        tasInput
+        type="text"
+        [value]="getConfig('fieldName') || ''"
+        (input)="setConfig('fieldName', $any($event.target).value)"
+      />
+    </tas-form-field>
+    <tas-form-field>
+      <tas-label>Opérateur</tas-label>
+      <select
+        class="w-full h-[38px] border border-gray-300 rounded-[var(--tas-field-border-radius)] px-3 text-sm bg-white focus:border-primary focus:outline-none transition-colors"
+        [value]="getConfig('operator') || 'equals'"
+        (change)="setConfig('operator', $any($event.target).value)"
+      >
+        <option value="equals">Égal à</option>
+        <option value="not_equals">Différent de</option>
+        <option value="contains">Contient</option>
+        <option value="greater_than">Supérieur à</option>
+      </select>
+    </tas-form-field>
+    <tas-form-field>
+      <tas-label>Valeur</tas-label>
+      <input
+        tasInput
+        type="text"
+        [value]="getConfig('value') || ''"
+        (input)="setConfig('value', $any($event.target).value)"
+      />
+    </tas-form-field>
+    } @default {
+    <div class="flex items-center gap-2 px-3 py-4 bg-gray-50 rounded-lg">
+      <tas-icon
+        iconName="feather:info"
+        class="text-gray-400 text-sm"
+      ></tas-icon>
+      <span class="text-sm text-gray-400"
+        >Aucune configuration requise pour ce type.</span
+      >
+    </div>
+    } }
   </div>
 
   <!-- Footer -->
-  <div class="px-5 py-4 border-t border-gray-200 flex gap-3">
-    <button tas-outlined-button (click)="cancel()">Annuler</button>
+  <div
+    class="px-6 py-4 border-t border-gray-100 flex justify-end gap-3 shrink-0"
+  >
+    <button tas-outlined-button color="neutral" (click)="cancel()">
+      Annuler
+    </button>
     <button tas-raised-button color="primary" (click)="save()">
+      <tas-icon iconName="feather:check" class="text-xs"></tas-icon>
       Enregistrer
     </button>
   </div>

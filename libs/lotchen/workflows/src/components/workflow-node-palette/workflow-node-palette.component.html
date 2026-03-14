@@ -1,20 +1,42 @@
 <div
-  class="w-60 h-full bg-gray-50 border-r border-gray-200 p-4 flex flex-col gap-4 overflow-y-auto"
+  class="w-60 h-full bg-white border-r border-gray-200 flex flex-col overflow-y-auto"
 >
-  <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-    Composants
-  </h3>
-
-  <div *ngFor="let group of paletteGroups" class="flex flex-col gap-2">
-    <div class="text-xs font-medium text-gray-500 mb-1">{{ group.title }}</div>
+  <div class="px-4 py-3 border-b border-gray-100">
     <div
-      *ngFor="let item of group.items"
-      class="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg cursor-grab hover:border-gray-400 hover:shadow-sm transition-all text-sm"
-      (click)="addNode($any(item), 0)"
-      cdkDrag
+      class="flex items-center gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider"
     >
-      <span>{{ item.icon }}</span>
-      <span class="text-gray-700 font-medium">{{ item.label }}</span>
+      <tas-icon iconName="feather:layers" class="text-gray-400"></tas-icon>
+      Composants
     </div>
+  </div>
+
+  <div class="p-3 flex flex-col gap-4">
+    @for (group of paletteGroups; track group.title) {
+    <div class="flex flex-col gap-1.5">
+      <div
+        class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider px-1"
+      >
+        {{ group.title }}
+      </div>
+      @for (item of group.items; track item.actionType) {
+      <div
+        class="flex items-center gap-2.5 px-3 py-2 bg-gray-50 border border-transparent rounded-lg cursor-grab hover:bg-white hover:border-gray-200 hover:shadow-sm active:shadow-none transition-all duration-150 text-sm group"
+        (click)="addNode($any(item))"
+        cdkDrag
+      >
+        <tas-icon
+          [iconName]="item.icon"
+          [class]="item.color"
+          class="text-sm"
+        ></tas-icon>
+        <span class="text-gray-700 font-medium">{{ item.label }}</span>
+        <tas-icon
+          iconName="feather:plus"
+          class="ml-auto text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+        ></tas-icon>
+      </div>
+      }
+    </div>
+    }
   </div>
 </div>

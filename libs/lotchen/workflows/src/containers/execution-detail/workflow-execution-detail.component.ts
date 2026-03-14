@@ -1,14 +1,36 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+  inject,
+  signal,
+  OnInit,
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgFor, NgIf, NgClass, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { WorkflowExecutionsApiService } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';
+import { TasCard, TasCardHeader } from '@talisoft/ui/card';
+import { TasTitle } from '@talisoft/ui/title';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasIcon } from '@talisoft/ui/icon';
+import { TasSpinner } from '@talisoft/ui/spinner';
 
 @Component({
   selector: 'workflow-execution-detail',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './workflow-execution-detail.component.html',
-  imports: [NgFor, NgIf, NgClass, DatePipe],
+  imports: [
+    DatePipe,
+    TasCard,
+    TasCardHeader,
+    TasTitle,
+    ButtonModule,
+    TasIcon,
+    TasSpinner,
+  ],
 })
 export class WorkflowExecutionDetailComponent implements OnInit {
   private readonly _executionsApi = inject(WorkflowExecutionsApiService);
@@ -95,46 +117,72 @@ export class WorkflowExecutionDetailComponent implements OnInit {
   getStepIcon(status: string): string {
     switch (status) {
       case 'completed':
-        return '✓';
+        return 'feather:check-circle';
       case 'failed':
-        return '✗';
+        return 'feather:x-circle';
       case 'running':
-        return '●';
+        return 'feather:loader';
       case 'skipped':
-        return '→';
+        return 'feather:skip-forward';
       default:
-        return '○';
+        return 'feather:circle';
     }
   }
 
-  getStepClass(status: string): string {
+  getStepIconColor(status: string): string {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-700 border-green-200';
+        return 'text-emerald-500';
       case 'failed':
-        return 'bg-red-100 text-red-700 border-red-200';
+        return 'text-red-500';
       case 'running':
-        return 'bg-blue-100 text-blue-700 border-blue-200';
+        return 'text-blue-500';
       case 'skipped':
-        return 'bg-gray-100 text-gray-500 border-gray-200';
+        return 'text-gray-400';
       default:
-        return 'bg-gray-50 text-gray-400 border-gray-100';
+        return 'text-gray-300';
+    }
+  }
+
+  getStepBgClass(status: string): string {
+    switch (status) {
+      case 'completed':
+        return 'bg-emerald-50 border-emerald-200';
+      case 'failed':
+        return 'bg-red-50 border-red-200';
+      case 'running':
+        return 'bg-blue-50 border-blue-200';
+      case 'skipped':
+        return 'bg-gray-50 border-gray-200';
+      default:
+        return 'bg-gray-50 border-gray-100';
     }
   }
 
   getStatusClass(status: string): string {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800';
+        return 'bg-emerald-100 text-emerald-700';
       case 'running':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-100 text-blue-700';
       case 'failed':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-100 text-red-700';
       case 'cancelled':
         return 'bg-gray-100 text-gray-600';
       default:
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-amber-100 text-amber-700';
     }
+  }
+
+  getStatusLabel(status: string): string {
+    const labels: Record<string, string> = {
+      running: 'En cours',
+      completed: 'Terminé',
+      failed: 'Échoué',
+      cancelled: 'Annulé',
+      paused: 'En pause',
+    };
+    return labels[status] || status;
   }
 }
 
