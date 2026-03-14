@@ -1,11 +1,7 @@
-<div
-  class="fixed inset-y-0 right-0 w-96 bg-white shadow-xl border-l border-gray-200 flex flex-col z-50"
->
+<div class="bg-white rounded-lg p-6 w-[450px]">
   <!-- Header -->
-  <div
-    class="flex items-center justify-between px-5 py-4 border-b border-gray-200"
-  >
-    <h2 class="font-semibold text-gray-900">Configurer l'étape</h2>
+  <div class="flex items-center justify-between px-5">
+    <h2 class="font-semibold text-gray-900 text-lg">Configurer l'étape</h2>
     <button
       class="text-gray-400 hover:text-gray-700 text-xl"
       (click)="cancel()"
@@ -17,130 +13,124 @@
   <!-- Body -->
   <div class="flex-1 overflow-y-auto p-5 flex flex-col gap-4">
     <!-- Label -->
-    <div class="flex flex-col gap-1">
-      <label class="text-xs font-medium text-gray-600">Nom de l'étape</label>
+    <tas-form-field>
+      <tas-label>Nom de l'étape </tas-label>
       <input
-        class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+        tasInput
         type="text"
         [value]="node().label"
         (input)="setLabel($any($event.target).value)"
       />
-    </div>
+    </tas-form-field>
 
     <!-- Dynamic config by actionType -->
     <ng-container [ngSwitch]="actionType">
       <!-- assign_user -->
       <ng-container *ngSwitchCase="'assign_user'">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600"
-            >ID Utilisateur</label
-          >
+        <tas-form-field>
+          <tas-label>ID Utilisateur</tas-label>
           <input
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            tasInput
             type="text"
             [value]="getConfig('userId') || ''"
             (input)="setConfig('userId', $any($event.target).value)"
             placeholder="UUID de l'utilisateur"
           />
-        </div>
+        </tas-form-field>
       </ng-container>
 
       <!-- assign_team -->
       <ng-container *ngSwitchCase="'assign_team'">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600">ID Équipe</label>
+        <tas-form-field>
+          <tas-label>ID Équipe</tas-label>
           <input
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            tasInput
             type="text"
             [value]="getConfig('teamId') || ''"
             (input)="setConfig('teamId', $any($event.target).value)"
             placeholder="UUID de l'équipe"
           />
-        </div>
+        </tas-form-field>
       </ng-container>
 
       <!-- send_email -->
       <ng-container *ngSwitchCase="'send_email'">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600">Sujet</label>
+        <tas-form-field>
+          <tas-label>Sujet</tas-label>
           <input
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            tasInput
             type="text"
             [value]="getConfig('subject') || ''"
             (input)="setConfig('subject', $any($event.target).value)"
           />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600"
-            >Corps du message</label
-          >
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Corps du message</tas-label>
           <textarea
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
-            rows="4"
+            tasInput
             [value]="getConfig('body') || ''"
             (input)="setConfig('body', $any($event.target).value)"
           ></textarea>
-        </div>
+        </tas-form-field>
       </ng-container>
 
       <!-- send_sms -->
       <ng-container *ngSwitchCase="'send_sms'">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600">Message</label>
+        <tas-form-field>
+          <tas-label>Message</tas-label>
           <textarea
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
-            rows="3"
+            tasInput
             [value]="getConfig('message') || ''"
             (input)="setConfig('message', $any($event.target).value)"
           ></textarea>
-        </div>
+        </tas-form-field>
       </ng-container>
 
       <!-- create_task -->
       <ng-container *ngSwitchCase="'create_task'">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600"
-            >Titre de la tâche</label
-          >
+        <tas-form-field>
+          <tas-label>Titre de la tâche</tas-label>
           <input
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            tasInput
             type="text"
             [value]="getConfig('title') || ''"
             (input)="setConfig('title', $any($event.target).value)"
           />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600">Délai (jours)</label>
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Délai (jours)</tas-label>
           <input
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            tasInput
             type="number"
-            min="0"
             [value]="getConfig('dueDateOffsetDays') || 0"
             (input)="setConfig('dueDateOffsetDays', +$any($event.target).value)"
           />
-        </div>
+        </tas-form-field>
       </ng-container>
 
       <!-- update_field -->
       <ng-container *ngSwitchCase="'update_field'">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600">Nom du champ</label>
+        <tas-form-field>
+          <tas-label>Nom du champ</tas-label>
           <input
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            tasInput
             type="text"
             [value]="getConfig('fieldName') || ''"
             (input)="setConfig('fieldName', $any($event.target).value)"
           />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium text-gray-600">Valeur</label>
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Valeur</tas-label>
           <input
-            class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+            tasInput
             type="text"
             [value]="getConfig('value') || ''"
             (input)="setConfig('value', $any($event.target).value)"
           />
-        </div>
+        </tas-form-field>
       </ng-container>
 
       <!-- wait_duration -->
@@ -215,17 +205,8 @@
 
   <!-- Footer -->
   <div class="px-5 py-4 border-t border-gray-200 flex gap-3">
-    <button
-      class="flex-1 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
-      (click)="cancel()"
-    >
-      Annuler
-    </button>
-    <button
-      class="flex-1 py-2 rounded-lg text-sm text-white font-medium"
-      style="background-color: rgb(var(--tas-color-primary))"
-      (click)="save()"
-    >
+    <button tas-outlined-button (click)="cancel()">Annuler</button>
+    <button tas-raised-button color="primary" (click)="save()">
       Enregistrer
     </button>
   </div>

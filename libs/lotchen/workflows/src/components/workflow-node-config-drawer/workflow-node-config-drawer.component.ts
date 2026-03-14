@@ -16,6 +16,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { WorkflowNodeDto } from '@talisoft/api/lotchen-client-api';
+import { FormField, TasLabel } from '@talisoft/ui/form-field';
+import { ButtonModule } from '@talisoft/ui/button';
 
 export interface NodeConfigDialogData {
   node: WorkflowNodeDto;
@@ -27,7 +29,17 @@ export interface NodeConfigDialogData {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   templateUrl: './workflow-node-config-drawer.component.html',
-  imports: [NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, FormsModule],
+  imports: [
+    NgIf,
+    NgFor,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    FormsModule,
+    FormField,
+    TasLabel,
+    ButtonModule,
+  ],
 })
 export class WorkflowNodeConfigDrawerComponent implements OnInit {
   private readonly _dialogRef = inject<DialogRef<WorkflowNodeDto>>(DialogRef);

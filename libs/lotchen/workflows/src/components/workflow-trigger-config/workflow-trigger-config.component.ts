@@ -13,6 +13,8 @@ import {
   WorkflowTriggerDto,
   WorkflowTriggerDtoTypeEnum,
 } from '@talisoft/api/lotchen-client-api';
+import { FormField, TasLabel } from '@talisoft/ui/form-field';
+import { TasSelect } from '@talisoft/ui/select';
 
 @Component({
   selector: 'workflow-trigger-config',
@@ -20,7 +22,15 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   templateUrl: './workflow-trigger-config.component.html',
-  imports: [NgFor, NgSwitch, NgSwitchCase, FormsModule],
+  imports: [
+    NgFor,
+    NgSwitch,
+    NgSwitchCase,
+    FormsModule,
+    FormField,
+    TasLabel,
+    TasSelect,
+  ],
 })
 export class WorkflowTriggerConfigComponent implements OnInit {
   trigger = input<WorkflowTriggerDto | undefined>();
@@ -63,9 +73,9 @@ export class WorkflowTriggerConfigComponent implements OnInit {
   }
 
   setConfig(key: string, value: string): void {
-    this.localTrigger.update((t) => ({
-      ...t,
-      config: { ...(t.config || {}), [key]: value },
+    this.localTrigger.update((trigger) => ({
+      ...trigger,
+      config: { ...(trigger.config || {}), [key]: value },
     }));
     this.triggerChange.emit(this.localTrigger());
   }

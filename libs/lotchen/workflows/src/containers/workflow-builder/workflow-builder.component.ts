@@ -25,6 +25,8 @@ import {
   NodeConfigDialogData,
 } from '../../components/workflow-node-config-drawer/workflow-node-config-drawer.component';
 import { randomUUID } from '../../utils/uuid.util';
+import { ButtonModule } from '@talisoft/ui/button';
+import { TasIcon } from '@talisoft/ui/icon';
 
 @Component({
   selector: 'workflow-builder',
@@ -39,6 +41,8 @@ import { randomUUID } from '../../utils/uuid.util';
     WorkflowNodeComponent,
     WorkflowNodePaletteComponent,
     WorkflowTriggerConfigComponent,
+    ButtonModule,
+    TasIcon,
   ],
 })
 export class WorkflowBuilderComponent implements OnInit {

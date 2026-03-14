@@ -17,7 +17,7 @@
         (input)="workflowName.set($any($event.target).value)"
       />
       <span
-        class="text-xs px-2 py-0.5 rounded-full font-medium"
+        class="text-md px-3 py-1 rounded-full font-medium"
         [ngClass]="
           workflowStatus() === 'active'
             ? 'bg-green-100 text-green-700'
@@ -36,23 +36,22 @@
       </span>
     </div>
     <div class="flex items-center gap-2">
-      <button
-        class="px-3 py-1.5 text-sm text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
-        (click)="testRun()"
-      >
+      <button tas-raised-button color="accent" (click)="testRun()">
         Test Run
       </button>
       <button
-        class="px-3 py-1.5 text-sm text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+        tas-raised-button
+        color="primary"
         [disabled]="isSaving()"
         (click)="save()"
       >
+        <tas-icon iconName="feather:check"></tas-icon>
         {{ isSaving() ? 'Sauvegarde...' : 'Sauvegarder' }}
       </button>
       <button
         *ngIf="workflowStatus() !== 'active'"
-        class="px-3 py-1.5 text-sm text-white rounded-lg font-medium"
-        style="background-color: rgb(var(--tas-color-primary))"
+        tas-raised-button
+        color="primary"
         (click)="activate()"
       >
         Activer
@@ -86,7 +85,7 @@
           cdkDropList
           [cdkDropListData]="nodes()"
           (cdkDropListDropped)="onDrop($event)"
-          class="flex flex-col gap-0"
+          class="flex flex-col gap-0 p-8"
         >
           <ng-container *ngFor="let node of nodes(); let i = index">
             <workflow-node
