@@ -16,6 +16,7 @@ import { TasText } from '@talisoft/ui/text';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasSpinner } from '@talisoft/ui/spinner';
+import { DashboardWidgetComponent } from '../../components/dashboard-widget/dashboard-widget.component';
 
 @Component({
   selector: 'workflow-dashboard',
@@ -32,6 +33,7 @@ import { TasSpinner } from '@talisoft/ui/spinner';
     ButtonModule,
     TasIcon,
     TasSpinner,
+    DashboardWidgetComponent,
   ],
 })
 export class WorkflowDashboardComponent implements OnInit {

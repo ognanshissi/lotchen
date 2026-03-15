@@ -34,102 +34,49 @@
   </tas-card>
 
   <!-- Stats cards -->
-  @if (stats(); as s) {
+  @if (stats(); as statistic) {
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <tas-card>
-      <div class="p-5 flex flex-col items-center">
-        <div class="flex items-center gap-2 mb-3">
-          <div
-            class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100"
-          >
-            <tas-icon
-              iconName="feather:loader"
-              class="text-blue-600 text-sm"
-            ></tas-icon>
-          </div>
-        </div>
-        <div class="text-3xl font-bold text-gray-900">
-          {{ s.activeInstances }}
-        </div>
-        <div
-          class="text-xs text-gray-400 uppercase tracking-wide font-semibold mt-1"
-        >
-          En cours
-        </div>
-      </div>
-    </tas-card>
+    <workflows-dashboard-widget
+      [data]="statistic.activeInstances"
+      [title]="'En cours'"
+      [iconColorClass]="'text-blue-600'"
+      [icon]="'feather:loader'"
+    />
 
-    <tas-card>
-      <div class="flex flex-col items-center p-5">
-        <div class="flex items-center gap-2 mb-3">
-          <div
-            class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100"
-          >
-            <tas-icon
-              iconName="feather:check-circle"
-              class="text-emerald-600 text-sm"
-            ></tas-icon>
-          </div>
-        </div>
-        <div class="text-3xl font-bold text-gray-900">
-          {{ s.completedLast30Days }}
-        </div>
-        <div
-          class="text-xs text-gray-400 uppercase tracking-wide font-semibold mt-1"
-        >
-          Complétés (30j)
-        </div>
-      </div>
-    </tas-card>
+    <workflows-dashboard-widget
+      [data]="statistic.completedLast30Days"
+      [title]="'Complétés (30j)'"
+      [iconColorClass]="'text-green-600'"
+      [icon]="'feather:check-circle'"
+    />
 
-    <tas-card>
-      <div class="flex flex-col items-center p-5">
-        <div class="flex items-center gap-2 mb-3">
-          <div
-            class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100"
-          >
-            <tas-icon
-              iconName="feather:x-circle"
-              class="text-red-600 text-sm"
-            ></tas-icon>
-          </div>
-        </div>
-        <div class="text-3xl font-bold text-gray-900">
-          {{ s.failedLast30Days }}
-        </div>
-        <div
-          class="text-xs text-gray-400 uppercase tracking-wide font-semibold mt-1"
-        >
-          Échoués (30j)
-        </div>
-      </div>
-    </tas-card>
+    <workflows-dashboard-widget
+      [data]="statistic.failedLast30Days"
+      iconColorClass="text-red-600"
+      icon="feather:x-circle"
+      title="Échoués (30j)"
+    />
 
-    <tas-card>
-      <div class="flex flex-col items-center p-5">
-        <div class="flex items-center gap-2 mb-3">
-          <div
-            class="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-100"
-          >
-            <tas-icon
-              iconName="feather:trending-up"
-              class="text-amber-600 text-sm"
-            ></tas-icon>
-          </div>
-        </div>
-        <div class="text-3xl font-bold text-gray-900">
-          {{ s.completionRate }}%
-        </div>
-        <div
-          class="text-xs text-gray-400 uppercase tracking-wide font-semibold mt-1"
-        >
-          Taux de succès
-        </div>
+    <workflows-dashboard-widget
+      [data]="statistic.activeInstances"
+      iconColorClass="text-yellow-600"
+      icon="feather:alert-triangle"
+      title="En attente"
+    />
+
+    @let completedRate = statistic.completionRate + '%';
+    <workflows-dashboard-widget
+      [data]="completedRate"
+      title="Taux de succès"
+      iconColorClass="text-amber-600"
+      icon="feather:trending-up"
+    >
+      <div widgetSubtitle>
         <div class="text-xs text-gray-400 mt-1">
-          Durée moy: {{ formatDuration(s.averageDurationMs) }}
+          Durée moy: {{ formatDuration(statistic.averageDurationMs) }}
         </div>
       </div>
-    </tas-card>
+    </workflows-dashboard-widget>
   </div>
   }
 
