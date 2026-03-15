@@ -90,6 +90,13 @@ export class PortalLayoutComponent implements OnInit {
         link: '/portal/products',
       },
       {
+        id: 'pipelines',
+        icon: 'feather:trello',
+        title: 'Pipelines de vente',
+        type: 'basic',
+        link: '/portal/pipelines',
+      },
+      {
         id: 'workflows',
         icon: 'feather:sliders',
         title: 'Automatisation et workflows',

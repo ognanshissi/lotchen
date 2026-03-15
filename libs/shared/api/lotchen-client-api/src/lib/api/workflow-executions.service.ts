@@ -19,6 +19,10 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { ExecutionDashboardResponse } from '../model/execution-dashboard-response.interface';
+// @ts-ignore
+import { ImportContactsExcelCommandResponse } from '../model/import-contacts-excel-command-response.interface';
+// @ts-ignore
 import { RetryExecutionStepCommandRequest } from '../model/retry-execution-step-command-request.interface';
 // @ts-ignore
 import { SkipExecutionStepCommandRequest } from '../model/skip-execution-step-command-request.interface';
@@ -302,10 +306,10 @@ export class WorkflowExecutionsApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public workflowExecutionsControllerGetDashboardV1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public workflowExecutionsControllerGetDashboardV1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public workflowExecutionsControllerGetDashboardV1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public workflowExecutionsControllerGetDashboardV1(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public workflowExecutionsControllerGetDashboardV1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ExecutionDashboardResponse>;
+    public workflowExecutionsControllerGetDashboardV1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ExecutionDashboardResponse>>;
+    public workflowExecutionsControllerGetDashboardV1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ExecutionDashboardResponse>>;
+    public workflowExecutionsControllerGetDashboardV1(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -313,6 +317,7 @@ export class WorkflowExecutionsApiService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -343,7 +348,7 @@ export class WorkflowExecutionsApiService {
         }
 
         let localVarPath = `/api/v1/workflow-executions/dashboard`;
-        return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ExecutionDashboardResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -513,10 +518,10 @@ export class WorkflowExecutionsApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public workflowExecutionsControllerTestRunV1(testRunWorkflowCommand: TestRunWorkflowCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public workflowExecutionsControllerTestRunV1(testRunWorkflowCommand: TestRunWorkflowCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public workflowExecutionsControllerTestRunV1(testRunWorkflowCommand: TestRunWorkflowCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public workflowExecutionsControllerTestRunV1(testRunWorkflowCommand: TestRunWorkflowCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public workflowExecutionsControllerTestRunV1(testRunWorkflowCommand: TestRunWorkflowCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ImportContactsExcelCommandResponse>;
+    public workflowExecutionsControllerTestRunV1(testRunWorkflowCommand: TestRunWorkflowCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ImportContactsExcelCommandResponse>>;
+    public workflowExecutionsControllerTestRunV1(testRunWorkflowCommand: TestRunWorkflowCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ImportContactsExcelCommandResponse>>;
+    public workflowExecutionsControllerTestRunV1(testRunWorkflowCommand: TestRunWorkflowCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (testRunWorkflowCommand === null || testRunWorkflowCommand === undefined) {
             throw new Error('Required parameter testRunWorkflowCommand was null or undefined when calling workflowExecutionsControllerTestRunV1.');
         }
@@ -527,6 +532,7 @@ export class WorkflowExecutionsApiService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -566,7 +572,7 @@ export class WorkflowExecutionsApiService {
         }
 
         let localVarPath = `/api/v1/workflow-executions/test-run`;
-        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ImportContactsExcelCommandResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: testRunWorkflowCommand,

@@ -30,6 +30,9 @@
       "@lotchen/lotchen-api/workflows": [
         "libs/lotchen-api/workflows/src/index.ts"
       ],
+      "@lotchen/lotchen-api/pipelines": [
+        "libs/lotchen-api/pipelines/src/index.ts"
+      ],
       "@lotchen/lotchen/auth": ["libs/lotchen/auth/src/index.ts"],
       "@lotchen/lotchen/clients": ["libs/lotchen/clients/src/index.ts"],
       "@lotchen/lotchen/common/*": ["libs/lotchen/common/src/*"],
@@ -39,6 +42,7 @@
       "@lotchen/lotchen/events": ["libs/lotchen/events/src/index.ts"],
       "@lotchen/lotchen/settings": ["libs/lotchen/settings/src/index.ts"],
       "@lotchen/lotchen/workflows": ["libs/lotchen/workflows/src/index.ts"],
+      "@lotchen/lotchen/pipelines": ["libs/lotchen/pipelines/src/index.ts"],
       "@talisoft/api/lotchen-client-api": [
         "libs/shared/api/lotchen-client-api/src/index.ts"
       ],

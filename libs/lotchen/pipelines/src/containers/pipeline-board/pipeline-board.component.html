@@ -1,0 +1,60 @@
+<div class="p-6 space-y-4">
+  <!-- Header -->
+  <tas-card>
+    <card-header>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <button
+            tas-outlined-button
+            color="neutral"
+            size="small"
+            (click)="goBack()"
+          >
+            <tas-icon iconName="feather:arrow-left"></tas-icon>
+          </button>
+          <div>
+            <tas-title>{{ pipeline()?.name || 'Pipeline' }}</tas-title>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button
+            tas-outlined-button
+            color="neutral"
+            size="small"
+            (click)="goToAnalytics()"
+          >
+            <tas-icon iconName="feather:bar-chart-2"></tas-icon>
+            Analytiques
+          </button>
+          <button tas-raised-button color="primary" (click)="addDeal()">
+            <tas-icon iconName="feather:plus"></tas-icon>
+            Nouveau Deal
+          </button>
+        </div>
+      </div>
+    </card-header>
+  </tas-card>
+
+  @if (isLoading()) {
+  <div class="flex items-center justify-center py-12">
+    <tas-spinner></tas-spinner>
+  </div>
+  } @else {
+  <!-- Kanban board -->
+  <div class="overflow-x-auto pb-4" cdkDropListGroup>
+    <div class="flex gap-4 min-w-max">
+      @for (stage of stages(); track stage.stageId) {
+      <pipeline-column
+        [stage]="stage"
+        [deals]="getDealsForStage(stage.stageId)"
+        [currency]="pipeline()?.currency || 'XOF'"
+        (dropped)="onDrop($event)"
+        (dealClicked)="openDealDetail($event)"
+        (winClicked)="winDeal($event)"
+        (loseClicked)="loseDeal($event)"
+      ></pipeline-column>
+      }
+    </div>
+  </div>
+  }
+</div>

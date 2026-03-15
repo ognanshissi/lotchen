@@ -1,0 +1,8 @@
+{
+  "name": "pipelines",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/lotchen-api/pipelines/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}

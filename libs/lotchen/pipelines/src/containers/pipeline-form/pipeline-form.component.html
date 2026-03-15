@@ -1,0 +1,182 @@
+<div class="p-6 space-y-4">
+  <!-- Header -->
+  <tas-card>
+    <card-header>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <button
+            tas-outlined-button
+            color="neutral"
+            size="small"
+            (click)="cancel()"
+          >
+            <tas-icon iconName="feather:arrow-left"></tas-icon>
+          </button>
+          <div>
+            <tas-title>{{
+              isEditMode() ? 'Modifier le pipeline' : 'Nouveau pipeline'
+            }}</tas-title>
+            <tas-text
+              >Configurez les étapes de votre pipeline de vente</tas-text
+            >
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button
+            tas-outlined-button
+            color="neutral"
+            size="small"
+            (click)="cancel()"
+          >
+            Annuler
+          </button>
+          <button
+            tas-raised-button
+            color="primary"
+            [disabled]="form.invalid || isSaving()"
+            (click)="save()"
+          >
+            @if (isSaving()) {
+            <tas-spinner></tas-spinner>
+            } @else {
+            <tas-icon iconName="feather:save"></tas-icon>
+            {{ isEditMode() ? 'Enregistrer' : 'Créer' }}
+            }
+          </button>
+        </div>
+      </div>
+    </card-header>
+  </tas-card>
+
+  @if (isLoading()) {
+  <div class="flex items-center justify-center py-8">
+    <tas-spinner></tas-spinner>
+  </div>
+  } @else {
+
+  <form [formGroup]="form">
+    <!-- Pipeline info -->
+    <tas-card>
+      <card-header>
+        <tas-title>Informations</tas-title>
+      </card-header>
+      <div class="p-4 space-y-4">
+        <tas-form-field>
+          <tas-label>Nom du pipeline</tas-label>
+          <input tasInput type="text" formControlName="name" />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Description</tas-label>
+          <input tasInput type="text" formControlName="description" />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Devise</tas-label>
+          <input tasInput type="text" formControlName="currency" />
+        </tas-form-field>
+      </div>
+    </tas-card>
+
+    <!-- Stages -->
+    <tas-card>
+      <card-header>
+        <div class="flex items-center justify-between">
+          <tas-title>Étapes du pipeline</tas-title>
+          <button
+            tas-outlined-button
+            color="primary"
+            size="small"
+            (click)="addStage()"
+          >
+            <tas-icon iconName="feather:plus"></tas-icon>
+            Ajouter une étape
+          </button>
+        </div>
+      </card-header>
+      <div class="p-4">
+        <div
+          formArrayName="stages"
+          cdkDropList
+          (cdkDropListDropped)="dropStage($event)"
+        >
+          @for (ctrl of stagesArray.controls; track ctrl; let i = $index) {
+          <div
+            [formGroup]="asFormGroup(ctrl)"
+            cdkDrag
+            class="flex items-center gap-3 p-3 mb-2 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors"
+          >
+            <div
+              cdkDragHandle
+              class="cursor-grab text-gray-400 hover:text-gray-600"
+            >
+              <tas-icon iconName="feather:menu"></tas-icon>
+            </div>
+            <input
+              type="color"
+              class="w-8 h-8 rounded border-0 cursor-pointer"
+              formControlName="color"
+            />
+
+            <div class="flex-1">
+              <input
+                class="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-md focus:outline-none focus:border-primary"
+                placeholder="Nom de l'étape"
+                formControlName="name"
+              />
+            </div>
+
+            <div class="flex items-center gap-1 w-24">
+              <input
+                class="w-14 px-2 py-1.5 text-sm text-center border border-gray-200 rounded-md focus:outline-none focus:border-primary"
+                type="number"
+                min="0"
+                max="100"
+                formControlName="winProbability"
+              />
+              <span class="text-xs text-gray-500">%</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              @if (asFormGroup(ctrl).get('isWon')?.value) {
+              <span
+                class="px-2 py-0.5 text-xs font-medium rounded bg-functional-success/10 text-functional-success"
+                >Gagné</span
+              >
+              } @if (asFormGroup(ctrl).get('isLost')?.value) {
+              <span
+                class="px-2 py-0.5 text-xs font-medium rounded bg-functional-error/10 text-functional-error"
+                >Perdu</span
+              >
+              }
+            </div>
+
+            <button
+              tas-button
+              iconButton
+              color="neutral"
+              size="small"
+              (click)="removeStage(i)"
+            >
+              <tas-icon
+                iconName="feather:trash-2"
+                class="text-gray-400 hover:text-functional-error"
+              ></tas-icon>
+            </button>
+          </div>
+          }
+        </div>
+        @if (stagesArray.length === 0) {
+        <div class="text-center py-8 text-gray-500">
+          <p>Aucune étape configurée</p>
+          <p class="text-sm mt-1">
+            Ajoutez des étapes pour définir votre processus de vente
+          </p>
+        </div>
+        }
+      </div>
+    </tas-card>
+  </form>
+
+  }
+</div>

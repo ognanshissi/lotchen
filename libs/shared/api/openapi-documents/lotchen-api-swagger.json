@@ -3044,7 +3044,14 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "FindWorkflow Template By",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindWorkflowTemplateByIdQueryResponse"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -3179,7 +3186,14 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Execution dashboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionDashboardResponse"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -3226,8 +3240,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Import summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportContactsExcelCommandResponse"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -3383,6 +3404,436 @@
         },
         "tags": [
           "Workflow Executions"
+        ]
+      }
+    },
+    "/api/v1/sales-pipelines": {
+      "post": {
+        "operationId": "SalesPipelinesController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePipelineCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sales Pipelines"
+        ]
+      },
+      "get": {
+        "operationId": "SalesPipelinesController_findAll_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sales Pipelines"
+        ]
+      }
+    },
+    "/api/v1/sales-pipelines/{id}": {
+      "get": {
+        "operationId": "SalesPipelinesController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sales Pipelines"
+        ]
+      },
+      "patch": {
+        "operationId": "SalesPipelinesController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePipelineCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sales Pipelines"
+        ]
+      },
+      "delete": {
+        "operationId": "SalesPipelinesController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sales Pipelines"
+        ]
+      }
+    },
+    "/api/v1/sales-pipelines/{id}/set-default": {
+      "patch": {
+        "operationId": "SalesPipelinesController_setDefault_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sales Pipelines"
+        ]
+      }
+    },
+    "/api/v1/sales-pipelines/{id}/analytics": {
+      "get": {
+        "operationId": "SalesPipelinesController_analytics_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dateFrom",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dateTo",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sales Pipelines"
+        ]
+      }
+    },
+    "/api/v1/deals": {
+      "post": {
+        "operationId": "DealsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDealCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deals"
+        ]
+      },
+      "get": {
+        "operationId": "DealsController_findAll_v1",
+        "parameters": [
+          {
+            "name": "pipelineId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stageId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "outcome",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assignedTo",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deals"
+        ]
+      }
+    },
+    "/api/v1/deals/{id}": {
+      "get": {
+        "operationId": "DealsController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deals"
+        ]
+      },
+      "patch": {
+        "operationId": "DealsController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDealCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deals"
+        ]
+      },
+      "delete": {
+        "operationId": "DealsController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deals"
+        ]
+      }
+    },
+    "/api/v1/deals/{id}/move-stage": {
+      "patch": {
+        "operationId": "DealsController_moveStage_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveDealStageCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deals"
+        ]
+      }
+    },
+    "/api/v1/deals/{id}/win": {
+      "patch": {
+        "operationId": "DealsController_win_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deals"
+        ]
+      }
+    },
+    "/api/v1/deals/{id}/lose": {
+      "patch": {
+        "operationId": "DealsController_lose_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoseDealCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deals"
+        ]
+      }
+    },
+    "/api/v1/deals/reorder": {
+      "patch": {
+        "operationId": "DealsController_reorder_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderDealsCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deals"
         ]
       }
     }
@@ -6953,6 +7404,10 @@
           "name"
         ]
       },
+      "FindWorkflowTemplateByIdQueryResponse": {
+        "type": "object",
+        "properties": {}
+      },
       "UpdateWorkflowTemplateCommandRequest": {
         "type": "object",
         "properties": {
@@ -6984,6 +7439,38 @@
             "type": "string"
           }
         }
+      },
+      "ExecutionDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "activeInstances": {
+            "type": "number",
+            "description": "Execution activeInstances"
+          },
+          "completedLast30Days": {
+            "type": "number",
+            "description": "Execution completedLast30Days"
+          },
+          "failedLast30Days": {
+            "type": "number",
+            "description": "Execution failed last 30 days"
+          },
+          "completionRate": {
+            "type": "number",
+            "description": "Execution completed last30Days"
+          },
+          "averageDurationMs": {
+            "type": "number",
+            "description": "Execution average duration in milliseconds"
+          }
+        },
+        "required": [
+          "activeInstances",
+          "completedLast30Days",
+          "failedLast30Days",
+          "completionRate",
+          "averageDurationMs"
+        ]
       },
       "TriggerManualWorkflowCommand": {
         "type": "object",
@@ -7049,6 +7536,209 @@
         },
         "required": [
           "nodeId"
+        ]
+      },
+      "PipelineStageDto": {
+        "type": "object",
+        "properties": {
+          "stageId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "number"
+          },
+          "color": {
+            "type": "string"
+          },
+          "winProbability": {
+            "type": "number"
+          },
+          "requiredFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isWon": {
+            "type": "boolean"
+          },
+          "isLost": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "order"
+        ]
+      },
+      "CreatePipelineCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PipelineStageDto"
+            }
+          },
+          "currency": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdatePipelineCommandRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PipelineStageDto"
+            }
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateDealCommand": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "pipelineId": {
+            "type": "string"
+          },
+          "stageId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "contactId": {
+            "type": "string"
+          },
+          "contactName": {
+            "type": "string"
+          },
+          "leadId": {
+            "type": "string"
+          },
+          "assignedTo": {
+            "type": "string"
+          },
+          "assignedToName": {
+            "type": "string"
+          },
+          "expectedCloseDate": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "title",
+          "pipelineId"
+        ]
+      },
+      "UpdateDealCommandRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "contactId": {
+            "type": "string"
+          },
+          "contactName": {
+            "type": "string"
+          },
+          "assignedTo": {
+            "type": "string"
+          },
+          "assignedToName": {
+            "type": "string"
+          },
+          "expectedCloseDate": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "MoveDealStageCommandRequest": {
+        "type": "object",
+        "properties": {
+          "targetStageId": {
+            "type": "string"
+          },
+          "order": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "targetStageId",
+          "order"
+        ]
+      },
+      "LoseDealCommandRequest": {
+        "type": "object",
+        "properties": {
+          "lostReason": {
+            "type": "string"
+          }
+        }
+      },
+      "ReorderDealsCommand": {
+        "type": "object",
+        "properties": {
+          "dealIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "stageId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "dealIds",
+          "stageId"
         ]
       }
     }

@@ -1,0 +1,353 @@
+<div class="p-6 space-y-4">
+  <!-- Header -->
+  <tas-card>
+    <card-header>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <button
+            tas-outlined-button
+            color="neutral"
+            size="small"
+            (click)="goBack()"
+          >
+            <tas-icon iconName="feather:arrow-left"></tas-icon>
+          </button>
+          <div>
+            <tas-title
+              >Analytiques — {{ pipeline()?.name || 'Pipeline' }}</tas-title
+            >
+            <tas-text>Vue d'ensemble des performances</tas-text>
+          </div>
+        </div>
+        <button
+          tas-outlined-button
+          color="neutral"
+          size="small"
+          (click)="goToBoard()"
+        >
+          <tas-icon iconName="feather:columns"></tas-icon>
+          Tableau Kanban
+        </button>
+      </div>
+    </card-header>
+  </tas-card>
+
+  @if (isLoading()) {
+  <div class="flex items-center justify-center py-12">
+    <tas-spinner></tas-spinner>
+  </div>
+  } @else if (analytics()) {
+  <!-- Stat cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <tas-card>
+      <div class="p-4">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-50"
+          >
+            <tas-icon
+              iconName="feather:layers"
+              class="text-blue-600"
+            ></tas-icon>
+          </div>
+          <div>
+            <div class="text-xs text-gray-500">Total deals</div>
+            <div class="text-2xl font-bold text-gray-900">
+              {{ analytics().winLossStats.totalDeals }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </tas-card>
+
+    <tas-card>
+      <div class="p-4">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="flex items-center justify-center w-10 h-10 rounded-lg bg-functional-success/10"
+          >
+            <tas-icon
+              iconName="feather:trending-up"
+              class="text-functional-success"
+            ></tas-icon>
+          </div>
+          <div>
+            <div class="text-xs text-gray-500">Taux de conversion</div>
+            <div class="text-2xl font-bold text-gray-900">
+              {{ analytics().winLossStats.winRate }}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </tas-card>
+
+    <tas-card>
+      <div class="p-4">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10"
+          >
+            <tas-icon
+              iconName="feather:dollar-sign"
+              class="text-primary"
+            ></tas-icon>
+          </div>
+          <div>
+            <div class="text-xs text-gray-500">Valeur gagnée</div>
+            <div class="text-2xl font-bold text-gray-900">
+              {{
+                analytics().winLossStats.totalWonValue
+                  | currency
+                    : pipeline()?.currency || 'XOF'
+                    : 'symbol-narrow'
+                    : '1.0-0'
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </tas-card>
+
+    <tas-card>
+      <div class="p-4">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="flex items-center justify-center w-10 h-10 rounded-lg bg-amber-50"
+          >
+            <tas-icon
+              iconName="feather:clock"
+              class="text-amber-600"
+            ></tas-icon>
+          </div>
+          <div>
+            <div class="text-xs text-gray-500">Deals en cours</div>
+            <div class="text-2xl font-bold text-gray-900">
+              {{ analytics().winLossStats.openDeals }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </tas-card>
+  </div>
+
+  <!-- Stage funnel -->
+  <tas-card>
+    <card-header>
+      <tas-title>Entonnoir par étape</tas-title>
+    </card-header>
+    <div class="p-4 space-y-3">
+      @for (stage of analytics().stageStats; track stage.stageId) {
+      <div class="flex items-center gap-4">
+        <div class="w-32 text-sm text-gray-700 truncate">
+          {{ stage.stageName }}
+        </div>
+        <div class="flex-1">
+          <div
+            class="h-8 rounded flex items-center px-3"
+            [style.width.%]="getBarWidth(stage.count)"
+            [style.background-color]="stage.color + '20'"
+            [style.border-left]="'3px solid ' + stage.color"
+          >
+            <span class="text-xs font-medium text-gray-700"
+              >{{ stage.count }} deals</span
+            >
+          </div>
+        </div>
+        <div class="w-32 text-right text-sm text-gray-500">
+          {{
+            stage.totalValue
+              | currency
+                : pipeline()?.currency || 'XOF'
+                : 'symbol-narrow'
+                : '1.0-0'
+          }}
+        </div>
+        <div class="w-24 text-right text-xs text-gray-400">
+          ~{{ stage.avgDaysInStage }}j
+        </div>
+      </div>
+      }
+    </div>
+  </tas-card>
+
+  <!-- Conversion rates -->
+  @if (analytics().conversionRates?.length) {
+  <tas-card>
+    <card-header>
+      <tas-title>Taux de conversion entre étapes</tas-title>
+    </card-header>
+    <div class="p-4">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-gray-200 bg-gray-50/50">
+            <th
+              class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase"
+            >
+              De
+            </th>
+            <th
+              class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase"
+            >
+              Vers
+            </th>
+            <th
+              class="px-4 py-2 text-right text-xs font-semibold text-gray-500 uppercase"
+            >
+              Taux
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          @for (rate of analytics().conversionRates; track rate.fromStage) {
+          <tr>
+            <td class="px-4 py-2 text-sm text-gray-700">
+              {{ rate.fromStage }}
+            </td>
+            <td class="px-4 py-2 text-sm text-gray-700">
+              {{ rate.toStage }}
+            </td>
+            <td class="px-4 py-2 text-sm text-right font-medium">
+              <span
+                [class]="
+                  rate.rate >= 50
+                    ? 'text-functional-success'
+                    : rate.rate >= 25
+                    ? 'text-amber-600'
+                    : 'text-functional-error'
+                "
+              >
+                {{ rate.rate }}%
+              </span>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </tas-card>
+  }
+
+  <!-- Win/Loss breakdown -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <tas-card>
+      <card-header>
+        <tas-title>Deals gagnés vs perdus</tas-title>
+      </card-header>
+      <div class="p-4">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-1">
+              <div class="w-3 h-3 rounded-full bg-functional-success"></div>
+              <span class="text-sm text-gray-600">Gagnés</span>
+            </div>
+            <div class="text-2xl font-bold text-gray-900">
+              {{ analytics().winLossStats.wonDeals }}
+            </div>
+            <div class="text-sm text-gray-500">
+              {{
+                analytics().winLossStats.totalWonValue
+                  | currency
+                    : pipeline()?.currency || 'XOF'
+                    : 'symbol-narrow'
+                    : '1.0-0'
+              }}
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-1">
+              <div class="w-3 h-3 rounded-full bg-functional-error"></div>
+              <span class="text-sm text-gray-600">Perdus</span>
+            </div>
+            <div class="text-2xl font-bold text-gray-900">
+              {{ analytics().winLossStats.lostDeals }}
+            </div>
+            <div class="text-sm text-gray-500">
+              {{
+                analytics().winLossStats.totalLostValue
+                  | currency
+                    : pipeline()?.currency || 'XOF'
+                    : 'symbol-narrow'
+                    : '1.0-0'
+              }}
+            </div>
+          </div>
+        </div>
+        @if ( analytics().winLossStats.wonDeals +
+        analytics().winLossStats.lostDeals > 0 ) {
+        <div class="h-3 rounded-full overflow-hidden flex bg-gray-100">
+          <div
+            class="bg-functional-success"
+            [style.width.%]="analytics().winLossStats.winRate"
+          ></div>
+          <div
+            class="bg-functional-error"
+            [style.width.%]="100 - analytics().winLossStats.winRate"
+          ></div>
+        </div>
+        }
+      </div>
+    </tas-card>
+
+    <!-- Per-agent performance -->
+    @if (analytics().byAgent?.length) {
+    <tas-card>
+      <card-header>
+        <tas-title>Performance par agent</tas-title>
+      </card-header>
+      <div class="p-4">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th
+                class="pb-2 text-left text-xs font-semibold text-gray-500 uppercase"
+              >
+                Agent
+              </th>
+              <th
+                class="pb-2 text-center text-xs font-semibold text-gray-500 uppercase"
+              >
+                Deals
+              </th>
+              <th
+                class="pb-2 text-center text-xs font-semibold text-gray-500 uppercase"
+              >
+                Gagnés
+              </th>
+              <th
+                class="pb-2 text-right text-xs font-semibold text-gray-500 uppercase"
+              >
+                Valeur
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            @for (agent of analytics().byAgent; track agent.agentId) {
+            <tr>
+              <td class="py-2 text-sm text-gray-700">
+                {{ agent.agentName }}
+              </td>
+              <td class="py-2 text-sm text-center text-gray-600">
+                {{ agent.dealsCount }}
+              </td>
+              <td class="py-2 text-sm text-center text-functional-success">
+                {{ agent.wonCount }}
+              </td>
+              <td class="py-2 text-sm text-right text-gray-600">
+                {{
+                  agent.totalValue
+                    | currency
+                      : pipeline()?.currency || 'XOF'
+                      : 'symbol-narrow'
+                      : '1.0-0'
+                }}
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </tas-card>
+    }
+  </div>
+  }
+</div>
