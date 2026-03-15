@@ -17,12 +17,8 @@ import {
   ContactsApiService,
   PaginateAllContactsCommandDto,
   PaginateAllContactsCommandRequest,
-  TerritoriesApiService,
-  TeamsApiService,
-  UsersApiService,
   ContactsControllerPaginateAllTerritoriesV1200Response,
 } from '@talisoft/api/lotchen-client-api';
-import { apiResources } from '@talisoft/ui/api-resources';
 import { TimeagoPipe } from '@talisoft/ui/timeago';
 import { RouterLink } from '@angular/router';
 import { ImportContactDialogComponent } from '../../components/import-contact-dialog/import-contact-dialog.component';
@@ -38,6 +34,8 @@ import {
   ContactFilterData,
   ContactSearchComponent,
 } from '../../components/contact-search/contact-search.component';
+
+import { ConfirmDialogService } from '@talisoft/ui/confirm-dialog';
 
 @Component({
   selector: 'prospects-contact-listing',
@@ -70,6 +68,7 @@ export class ContactListingComponent implements OnInit {
   private readonly _addTaskDialogService = inject(AddTaskDialogService);
   private readonly _dialog = inject(Dialog);
   private readonly _snackbar = inject(SnackbarService);
+  private readonly _confirmDialogService = inject(ConfirmDialogService);
 
   private filterData = {} as ContactFilterData;
 
@@ -208,15 +207,16 @@ export class ContactListingComponent implements OnInit {
   }
 
   public deleteContact(item: PaginateAllContactsCommandDto): void {
-    const dialogRef = this._dialog.open(ConfirmDeleteDialogComponent, {
-      data: {
-        title: 'Supprimer le contact',
-        message: `Êtes-vous sûr de vouloir supprimer ${item.firstName} ${item.lastName} ? Cette action est irréversible.`,
+    this._confirmDialogService.confirm({
+      title: 'Supprimer le contact',
+      message: `Êtes-vous sûr de vouloir supprimer ${item.firstName} ${item.lastName} ? Cette action est irréversible.`,
+      closable: true,
+      showCancelButton: true,
+      acceptButtonProps: {
+        label: 'Oui, Supprimer le contact',
+        icon: 'delete',
       },
-    });
-
-    dialogRef.closed.subscribe((confirmed) => {
-      if (confirmed) {
+      accept: () => {
         this._contactsApiService
           .contactsControllerDeleteContactV1(item.id!)
           .subscribe({
@@ -231,7 +231,7 @@ export class ContactListingComponent implements OnInit {
               );
             },
           });
-      }
+      },
     });
   }
 

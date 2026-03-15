@@ -14,7 +14,9 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'tas-confirmation-dialog',
   template: `
-    <div class="flex justify-between items-center py-2">
+    <div
+      class="flex justify-between items-center py-2 border-b border-gray-300"
+    >
       <tas-title>{{ config.title }}</tas-title>
       <button
         tas-button
@@ -28,28 +30,34 @@ import { NgIf } from '@angular/common';
 
     <div class="py-8 flex space-x-2 ">
       <div>
-        <tas-icon iconName="exclamation" iconClass="text-red-600"></tas-icon>
+        <tas-icon iconName="question" iconClass="text-red-600"></tas-icon>
       </div>
       <div>{{ config.message }}</div>
     </div>
 
-    <div class="flex space-x-3 justify-end">
+    <div class="flex space-x-3 justify-end border-t border-gray-300 pt-4">
       <button
         *ngIf="config.showCancelButton"
         tas-outlined-button
-        color="neutral"
+        [color]="config?.rejectButtonProps?.theme ?? 'neutral'"
         (click)="close(); reject.emit()"
       >
-        <tas-icon iconName="close"></tas-icon> &nbsp;
+        <tas-icon
+          [iconName]="config?.rejectButtonProps?.icon ?? 'close'"
+        ></tas-icon>
+        &nbsp;
         {{ config.rejectButtonProps?.label ?? 'Annuler' }}
       </button>
       <button
         tas-raised-button
-        color="primary"
+        [color]="config?.acceptButtonProps?.theme ?? 'warn'"
         (click)="accept.emit(); close()"
       >
-        <tas-icon iconName="check"></tas-icon> &nbsp;
-        {{ config.acceptButtonProps?.label ?? 'Supprimer' }}
+        <tas-icon
+          [iconName]="config.acceptButtonProps?.icon ?? 'check'"
+        ></tas-icon>
+        &nbsp;
+        {{ config.acceptButtonProps?.label ?? 'Oui, Supprimer' }}
       </button>
     </div>
   `,

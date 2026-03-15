@@ -30,6 +30,7 @@ import {
   LeadsApiService,
   PaginateAllLeadsCommandDto,
 } from '@talisoft/api/lotchen-client-api';
+import { ConfirmDialogService } from '@talisoft/ui/confirm-dialog';
 
 interface LeadDto {
   id: string;
@@ -81,6 +82,7 @@ export class LeadListingComponent implements OnInit {
   private readonly _dialog = inject(Dialog);
   private readonly _snackbar = inject(SnackbarService);
   private readonly _leadsApiService = inject(LeadsApiService);
+  private readonly _confirmDialogService = inject(ConfirmDialogService);
 
   public pageIndex = signal(0);
   public pageSize = signal(10);
@@ -247,15 +249,25 @@ export class LeadListingComponent implements OnInit {
   }
 
   public deleteLead(item: LeadDto): void {
-    if (!confirm(`Supprimer ${item.firstName} ${item.lastName} ?`)) return;
-
-    this._leadsApiService.leadsControllerDeleteLeadV1(item.id).subscribe({
-      next: () => {
-        this._snackbar.success('Succès', 'Lead supprimé avec succès');
-        this.loadLeads();
+    this._confirmDialogService.confirm({
+      title: 'Supprimer le lead',
+      showCancelButton: true,
+      acceptButtonProps: {
+        label: 'Oui, Supprimer le lead',
+        icon: 'delete',
       },
-      error: () => {
-        this._snackbar.error('Erreur', 'Impossible de supprimer le lead');
+      message: `Êtes-vous sûr de vouloir supprimer ${item.firstName} ${item.lastName} ?`,
+      closable: true,
+      accept: () => {
+        this._leadsApiService.leadsControllerDeleteLeadV1(item.id).subscribe({
+          next: () => {
+            this._snackbar.success('Succès', 'Lead supprimé avec succès');
+            this.loadLeads();
+          },
+          error: () => {
+            this._snackbar.error('Erreur', 'Impossible de supprimer le lead');
+          },
+        });
       },
     });
   }

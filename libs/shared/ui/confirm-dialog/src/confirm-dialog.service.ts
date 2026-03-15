@@ -16,11 +16,13 @@ export interface ConfirmationDialogProps {
   rejectButtonProps?: {
     label: string;
     icon?: string;
+    theme?: 'primary' | 'accent' | 'warn';
   };
 
   acceptButtonProps?: {
     label: string;
     icon?: string;
+    theme?: 'primary' | 'accent' | 'warn';
   };
 
   accept?: () => void;
@@ -33,7 +35,7 @@ export class ConfirmDialogService {
 
   public confirm(config: ConfirmationDialogProps) {
     const confirmationDialog = this._dialog.open(TasConfirmationDialog, {
-      width: config.width ?? '300px',
+      width: config.width ?? '500px',
       disableClose: true,
     });
 
