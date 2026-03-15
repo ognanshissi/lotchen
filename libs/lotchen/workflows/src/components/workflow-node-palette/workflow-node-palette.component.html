@@ -1,5 +1,5 @@
 <div
-  class="w-60 h-full bg-white border-r border-gray-200 flex flex-col overflow-y-auto"
+  class="w-[200px] z-40 h-full bg-white border-r border-gray-200 flex flex-col overflow-y-auto"
 >
   <div class="px-4 py-3 border-b border-gray-100">
     <div
@@ -19,8 +19,8 @@
         {{ group.title }}
       </div>
       @for (item of group.items; track item.actionType) {
-      <div
-        class="flex items-center gap-2.5 px-3 py-2 bg-gray-50 border border-transparent rounded-lg cursor-grab hover:bg-white hover:border-gray-200 hover:shadow-sm active:shadow-none transition-all duration-150 text-sm group"
+      <button
+        class="flex items-center gap-2.5 px-3 py-4 mt-3 bg-gray-50 border border-gray-200 rounded-lg cursor-grab hover:bg-white hover:border-primary hover:shadow-sm active:shadow-none transition-all duration-150 text-sm group"
         (click)="addNode($any(item))"
         cdkDrag
       >
@@ -34,7 +34,7 @@
           iconName="feather:plus"
           class="ml-auto text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity text-xs"
         ></tas-icon>
-      </div>
+      </button>
       }
     </div>
     }

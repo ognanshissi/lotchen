@@ -38,5 +38,4 @@ export class DashboardWidgetComponent {
   public title = input<string>();
   public icon = input<string>();
   public iconColorClass = input<string>();
-  public subtitle = input<string>();
 }

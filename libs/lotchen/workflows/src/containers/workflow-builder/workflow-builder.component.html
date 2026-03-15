@@ -20,7 +20,7 @@
 
       <div class="flex items-center gap-2">
         <input
-          class="text-lg font-semibold text-gray-900 border-0 border-b-2 border-transparent focus:border-primary focus:outline-none bg-transparent px-1 min-w-[200px]"
+          class="text-lg font-semibold text-gray-900 border-0 border-b-2 border-transparent focus:border-primary focus:outline-none bg-transparent px-1 min-w-[300px]"
           type="text"
           [value]="workflowName()"
           (input)="workflowName.set($any($event.target).value)"
@@ -78,7 +78,7 @@
 
     <!-- Flow canvas -->
     <div
-      class="flex-1 overflow-y-auto bg-gray-50 p-8"
+      class="flex-1 overflow-y-auto bg-gray-50 p-4 h-[calc(100vh_-_130px)]"
       style="
         background-image: radial-gradient(circle, #e5e7eb 1px, transparent 1px);
         background-size: 20px 20px;
@@ -94,7 +94,7 @@
         <!-- Connector line -->
         @if (nodes().length > 0) {
         <div class="flex justify-center my-1">
-          <div class="w-0.5 h-8 bg-gray-300 rounded-full"></div>
+          <div class="w-0.5 h-8 bg-gray-300 rounded-full">AND</div>
         </div>
         }
 
@@ -103,7 +103,7 @@
           cdkDropList
           [cdkDropListData]="nodes()"
           (cdkDropListDropped)="onDrop($event)"
-          class="flex flex-col gap-0"
+          class="flex flex-col gap-0 space-y-6"
         >
           @for (node of nodes(); track node.nodeId; let i = $index) {
           <workflow-node
@@ -115,7 +115,7 @@
           <!-- Connector between nodes -->
           @if (i < nodes().length - 1) {
           <div class="flex justify-center my-1">
-            <div class="w-0.5 h-8 bg-gray-300 rounded-full"></div>
+            <div class="w-0.5 h-[100px] bg-gray-300 rounded-full">AND</div>
           </div>
           } }
         </div>
@@ -123,7 +123,7 @@
         <!-- Add step hint -->
         <div class="flex justify-center mt-6">
           <div
-            class="text-center text-sm text-gray-400 border-2 border-dashed border-gray-300 rounded-xl px-6 py-5 w-full flex flex-col items-center gap-2"
+            class="text-center text-sm text-gray-400 border-2 p-4 border-dashed border-gray-300 rounded-xl px-6 py-5 w-full flex flex-col items-center gap-2"
           >
             <tas-icon
               iconName="feather:plus-circle"
@@ -140,7 +140,7 @@
 } @else {
 <div class="flex items-center justify-center h-full">
   <div class="flex flex-col items-center gap-3">
-    <tas-spinner size="8"></tas-spinner>
+    <tas-spinner></tas-spinner>
     <span class="text-sm text-gray-500">Chargement du workflow...</span>
   </div>
 </div>
