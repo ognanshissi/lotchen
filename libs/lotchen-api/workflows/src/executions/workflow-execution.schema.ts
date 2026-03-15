@@ -60,6 +60,7 @@ export class WorkflowExecution extends AggregateRoot {
   @Prop({ required: true, type: 'UUID' })
   targetEntityId!: string;
 
+  // Entity type of the target entity
   @Prop({ required: true, type: String })
   targetEntityType!: string;
 
