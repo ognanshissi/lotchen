@@ -45,6 +45,10 @@ export const appRoutes: Route[] = [
         path: 'pipelines',
         loadChildren: () => import('@lotchen/lotchen/pipelines'),
       },
+      {
+        path: 'campaigns',
+        loadChildren: () => import('@lotchen/lotchen/campaigns'),
+      },
     ],
   },
   {

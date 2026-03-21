@@ -1,0 +1,281 @@
+@if (analytics(); as data) {
+<!-- Header -->
+<tas-card>
+  <card-header>
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="flex items-center space-x-3">
+          <tas-title>{{ data.campaign.name }}</tas-title>
+          <span
+            class="inline-flex items-center space-x-1 px-2 py-1 text-xs rounded-full bg-gray-100"
+          >
+            <tas-icon
+              [iconName]="getChannelIcon(data.campaign.channel)"
+              iconSize="sm"
+            ></tas-icon>
+            <span>{{ getChannelLabel(data.campaign.channel) }}</span>
+          </span>
+          <span
+            class="px-2 py-1 text-xs rounded-full"
+            [class.bg-green-100]="data.campaign.status === 'sent'"
+            [class.text-green-800]="data.campaign.status === 'sent'"
+            [class.bg-amber-100]="data.campaign.status === 'sending'"
+            [class.text-amber-800]="data.campaign.status === 'sending'"
+            [class.bg-gray-100]="
+              data.campaign.status !== 'sent' &&
+              data.campaign.status !== 'sending'
+            "
+          >
+            {{ getStatusLabel(data.campaign.status) }}
+          </span>
+        </div>
+        @if (data.campaign.sentAt) {
+        <tas-text>Envoyée {{ data.campaign.sentAt | dateTimeAgo }}</tas-text>
+        }
+      </div>
+      <a tas-outlined-button color="accent" routerLink="/portal/campaigns">
+        <tas-icon iconName="feather:arrow-left"></tas-icon>
+        Retour
+      </a>
+    </div>
+  </card-header>
+</tas-card>
+
+<!-- Stat cards -->
+<div class="mt-4 grid grid-cols-4 gap-4">
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-2xl font-bold text-primary">
+        {{ data.summary.total }}
+      </div>
+      <div class="text-sm text-gray-500">Total envoyé</div>
+    </div>
+  </tas-card>
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-2xl font-bold text-green-600">
+        {{ data.summary.delivered }}
+      </div>
+      <div class="text-sm text-gray-500">Livrés</div>
+    </div>
+  </tas-card>
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-2xl font-bold text-blue-600">
+        {{ data.summary.opened }}
+      </div>
+      <div class="text-sm text-gray-500">Ouverts</div>
+    </div>
+  </tas-card>
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-2xl font-bold text-indigo-600">
+        {{ data.summary.clicked }}
+      </div>
+      <div class="text-sm text-gray-500">Cliqués</div>
+    </div>
+  </tas-card>
+</div>
+
+<div class="mt-4 grid grid-cols-4 gap-4">
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-2xl font-bold text-red-600">
+        {{ data.summary.bounced }}
+      </div>
+      <div class="text-sm text-gray-500">Rebonds</div>
+    </div>
+  </tas-card>
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-2xl font-bold text-orange-600">
+        {{ data.summary.unsubscribed }}
+      </div>
+      <div class="text-sm text-gray-500">Désabonnements</div>
+    </div>
+  </tas-card>
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-2xl font-bold text-red-500">
+        {{ data.summary.failed }}
+      </div>
+      <div class="text-sm text-gray-500">Échecs</div>
+    </div>
+  </tas-card>
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-2xl font-bold text-gray-600">
+        {{ data.summary.sent }}
+      </div>
+      <div class="text-sm text-gray-500">Envoyés</div>
+    </div>
+  </tas-card>
+</div>
+
+<!-- Rate cards -->
+<div class="mt-4 grid grid-cols-4 gap-4">
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-xl font-bold text-green-600">
+        {{ data.deliveryRate * 100 | number : '1.1-1' }}%
+      </div>
+      <div class="text-sm text-gray-500">Taux de livraison</div>
+    </div>
+  </tas-card>
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-xl font-bold text-blue-600">
+        {{ data.openRate * 100 | number : '1.1-1' }}%
+      </div>
+      <div class="text-sm text-gray-500">Taux d'ouverture</div>
+    </div>
+  </tas-card>
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-xl font-bold text-indigo-600">
+        {{ data.clickRate * 100 | number : '1.1-1' }}%
+      </div>
+      <div class="text-sm text-gray-500">Taux de clic</div>
+    </div>
+  </tas-card>
+  <tas-card>
+    <div class="p-4 text-center">
+      <div class="text-xl font-bold text-red-600">
+        {{ data.bounceRate * 100 | number : '1.1-1' }}%
+      </div>
+      <div class="text-sm text-gray-500">Taux de rebond</div>
+    </div>
+  </tas-card>
+</div>
+
+<!-- Delivery funnel -->
+<tas-card class="mt-4">
+  <card-header>
+    <tas-title class="text-lg">Entonnoir de livraison</tas-title>
+  </card-header>
+  <div class="p-4 space-y-3">
+    <div class="flex items-center space-x-3">
+      <span class="w-24 text-sm text-gray-500">Envoyés</span>
+      <div class="flex-1 bg-gray-100 rounded-full h-6">
+        <div
+          class="bg-primary h-6 rounded-full flex items-center justify-end pr-2 text-xs text-white"
+          [style.width]="getFunnelWidth(data.summary.total)"
+        >
+          {{ data.summary.total }}
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center space-x-3">
+      <span class="w-24 text-sm text-gray-500">Livrés</span>
+      <div class="flex-1 bg-gray-100 rounded-full h-6">
+        <div
+          class="bg-green-500 h-6 rounded-full flex items-center justify-end pr-2 text-xs text-white"
+          [style.width]="getFunnelWidth(data.summary.delivered)"
+        >
+          {{ data.summary.delivered }}
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center space-x-3">
+      <span class="w-24 text-sm text-gray-500">Ouverts</span>
+      <div class="flex-1 bg-gray-100 rounded-full h-6">
+        <div
+          class="bg-blue-500 h-6 rounded-full flex items-center justify-end pr-2 text-xs text-white"
+          [style.width]="getFunnelWidth(data.summary.opened)"
+        >
+          {{ data.summary.opened }}
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center space-x-3">
+      <span class="w-24 text-sm text-gray-500">Cliqués</span>
+      <div class="flex-1 bg-gray-100 rounded-full h-6">
+        <div
+          class="bg-indigo-500 h-6 rounded-full flex items-center justify-end pr-2 text-xs text-white"
+          [style.width]="getFunnelWidth(data.summary.clicked)"
+        >
+          {{ data.summary.clicked }}
+        </div>
+      </div>
+    </div>
+  </div>
+</tas-card>
+
+<!-- Per-contact status table -->
+<tas-card class="mt-4">
+  <tas-table
+    [title]="'Détail par contact'"
+    [data]="data.messages"
+    [isLoading]="isLoading()"
+  >
+    <ng-template #header>
+      <tr>
+        <th class="w-[250px]">Contact</th>
+        <th>Email / Téléphone</th>
+        <th>Statut</th>
+        <th>Envoyé</th>
+        <th>Livré</th>
+        <th>Ouvert</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item>
+      <tr class="row-hover">
+        <td class="font-medium">{{ item.contactName || '-' }}</td>
+        <td class="text-gray-500">
+          {{ item.contactEmail || item.contactPhone || '-' }}
+        </td>
+        <td>
+          <span
+            class="px-2 py-1 text-xs rounded-full"
+            [class.bg-gray-100]="item.status === 'pending'"
+            [class.bg-blue-100]="item.status === 'sent'"
+            [class.text-blue-800]="item.status === 'sent'"
+            [class.bg-green-100]="
+              item.status === 'delivered' ||
+              item.status === 'opened' ||
+              item.status === 'clicked'
+            "
+            [class.text-green-800]="
+              item.status === 'delivered' ||
+              item.status === 'opened' ||
+              item.status === 'clicked'
+            "
+            [class.bg-red-100]="
+              item.status === 'bounced' || item.status === 'failed'
+            "
+            [class.text-red-800]="
+              item.status === 'bounced' || item.status === 'failed'
+            "
+            [class.bg-orange-100]="item.status === 'unsubscribed'"
+            [class.text-orange-800]="item.status === 'unsubscribed'"
+          >
+            {{ getMessageStatusLabel(item.status) }}
+          </span>
+        </td>
+        <td>
+          @if (item.sentAt) {
+          {{ item.sentAt | dateTimeAgo }}
+          } @else { - }
+        </td>
+        <td>
+          @if (item.deliveredAt) {
+          {{ item.deliveredAt | dateTimeAgo }}
+          } @else { - }
+        </td>
+        <td>
+          @if (item.openedAt) {
+          {{ item.openedAt | dateTimeAgo }}
+          } @else { - }
+        </td>
+      </tr>
+    </ng-template>
+  </tas-table>
+</tas-card>
+} @else {
+<tas-card>
+  <div class="p-8 text-center text-gray-400">
+    @if (isLoading()) { Chargement des analytics... } @else { Aucune donnée
+    disponible. }
+  </div>
+</tas-card>
+}

@@ -1,0 +1,244 @@
+<tas-card>
+  <card-header>
+    <div class="flex items-center justify-between">
+      <div>
+        <tas-title>{{
+          isEditMode() ? 'Modifier la campagne' : 'Nouvelle Campagne'
+        }}</tas-title>
+        <tas-text
+          >Configurez les paramètres de votre campagne marketing.</tas-text
+        >
+      </div>
+      <a tas-outlined-button color="accent" routerLink="/portal/campaigns">
+        <tas-icon iconName="feather:arrow-left"></tas-icon>
+        Retour
+      </a>
+    </div>
+  </card-header>
+</tas-card>
+
+<form [formGroup]="form">
+  <!-- Section 1: Info -->
+  <tas-card class="mt-4">
+    <card-header>
+      <tas-title class="text-lg">Informations</tas-title>
+    </card-header>
+    <div class="p-4 space-y-4">
+      <tas-form-field>
+        <tas-label>Nom de la campagne</tas-label>
+        <input
+          tasInput
+          type="text"
+          formControlName="name"
+          placeholder="Ex: Promotion Printemps 2026"
+        />
+      </tas-form-field>
+
+      <tas-form-field>
+        <tas-label>Canal</tas-label>
+        <tas-select
+          [options]="channelOptions"
+          formControlName="channel"
+        ></tas-select>
+      </tas-form-field>
+
+      <tas-form-field>
+        <tas-label>Template (optionnel)</tas-label>
+        <tas-select
+          [options]="getTemplateSelectOptions()"
+          formControlName="templateId"
+          placeholder="Sélectionner un template"
+        ></tas-select>
+      </tas-form-field>
+    </div>
+  </tas-card>
+
+  <!-- Section 2: Message -->
+  <tas-card class="mt-4">
+    <card-header>
+      <tas-title class="text-lg">Message</tas-title>
+    </card-header>
+    <div class="p-4 space-y-4">
+      @if (form.get('channel')?.value === 'email') {
+      <tas-form-field>
+        <tas-label>Objet</tas-label>
+        <input
+          tasInput
+          type="text"
+          formControlName="subject"
+          placeholder="Objet de l'email"
+        />
+      </tas-form-field>
+      }
+
+      <tas-form-field>
+        <tas-label>Contenu du message</tas-label>
+        <textarea
+          tasInput
+          type="text"
+          formControlName="body"
+          rows="8"
+          placeholder="Rédigez votre message ici..."
+        ></textarea>
+      </tas-form-field>
+
+      @if (form.get('channel')?.value === 'sms') {
+      <div class="text-sm text-gray-500">
+        {{ (form.get('body')?.value || '').length }} caractères —
+        {{ getSmsSegmentCount() }} segment(s) SMS
+      </div>
+      }
+
+      <div class="flex space-x-2">
+        <span class="text-sm text-gray-500 mr-2">Champs de fusion :</span>
+        @for (field of mergeFields; track field) {
+        <button
+          tas-outlined-button
+          color="accent"
+          type="button"
+          (click)="insertMergeField(field)"
+          class="text-xs"
+        >
+          {{ field }}
+        </button>
+        }
+      </div>
+    </div>
+  </tas-card>
+
+  <!-- Section 3: Audience -->
+  <tas-card class="mt-4">
+    <card-header>
+      <div class="flex items-center justify-between">
+        <tas-title class="text-lg">Audience</tas-title>
+        <button
+          tas-outlined-button
+          color="accent"
+          type="button"
+          (click)="addFilter()"
+        >
+          <tas-icon iconName="feather:plus"></tas-icon>
+          Ajouter un filtre
+        </button>
+      </div>
+    </card-header>
+    <div class="p-4 space-y-4">
+      @for (filter of audienceFilters.controls; track $index; let i = $index) {
+      <div class="flex items-end space-x-2" [formGroup]="$any(filter)">
+        <tas-form-field class="flex-1">
+          <tas-label>Champ</tas-label>
+          <tas-select
+            [options]="filterFieldOptions"
+            formControlName="field"
+          ></tas-select>
+        </tas-form-field>
+        <tas-form-field class="flex-1">
+          <tas-label>Opérateur</tas-label>
+          <tas-select
+            [options]="filterOperatorOptions"
+            formControlName="operator"
+          ></tas-select>
+        </tas-form-field>
+        <tas-form-field class="flex-1">
+          <tas-label>Valeur</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="value"
+            placeholder="Valeur"
+          />
+        </tas-form-field>
+        <button
+          tas-button
+          iconButton
+          color="warn"
+          type="button"
+          (click)="removeFilter(i)"
+        >
+          <tas-icon
+            iconName="feather:trash"
+            iconClass="text-functional-error"
+          ></tas-icon>
+        </button>
+      </div>
+      } @if (audienceFilters.length === 0) {
+      <div class="text-center text-gray-400 py-4">
+        Aucun filtre — tous les contacts seront ciblés.
+      </div>
+      }
+
+      <div class="flex items-center space-x-4">
+        <button
+          tas-outlined-button
+          color="primary"
+          type="button"
+          (click)="estimateAudience()"
+          [disabled]="isEstimating()"
+        >
+          <tas-icon iconName="feather:users"></tas-icon>
+          Estimer l'audience
+        </button>
+        @if (audienceCount() !== null) {
+        <span class="text-sm font-medium">
+          {{ audienceCount() }} contact(s) correspondant(s)
+        </span>
+        }
+      </div>
+    </div>
+  </tas-card>
+
+  <!-- Section 4: Planning -->
+  <tas-card class="mt-4">
+    <card-header>
+      <tas-title class="text-lg">Planification</tas-title>
+    </card-header>
+    <div class="p-4 space-y-4">
+      <div class="flex space-x-4">
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input
+            type="radio"
+            name="sendMode"
+            [checked]="sendMode() === 'now'"
+            (change)="sendMode.set('now')"
+          />
+          <span>Envoyer maintenant</span>
+        </label>
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input
+            type="radio"
+            name="sendMode"
+            [checked]="sendMode() === 'schedule'"
+            (change)="sendMode.set('schedule')"
+          />
+          <span>Planifier</span>
+        </label>
+      </div>
+
+      @if (sendMode() === 'schedule') {
+      <tas-form-field>
+        <tas-label>Date et heure d'envoi</tas-label>
+        <tas-date-picker
+          mode="datetime"
+          formControlName="scheduledAt"
+          placeholder="Sélectionner la date d'envoi"
+        ></tas-date-picker>
+      </tas-form-field>
+      }
+    </div>
+  </tas-card>
+</form>
+
+<!-- Actions -->
+<div class="mt-4 flex justify-end space-x-2">
+  <a tas-outlined-button color="accent" routerLink="/portal/campaigns">
+    Annuler
+  </a>
+  <button
+    tas-raised-button
+    color="primary"
+    [disabled]="form.invalid || isLoading()"
+    (click)="submit()"
+  >
+    {{ isEditMode() ? 'Enregistrer' : 'Créer la campagne' }}
+  </button>
+</div>

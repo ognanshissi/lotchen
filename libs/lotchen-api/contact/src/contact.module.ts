@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ContactsController } from './contacts/contacts.controller';
-import { contactProviders } from './contacts/contact.provider';
+import { ContactProvider, contactProviders } from './contacts/contact.provider';
 import { CreateContactCommandHandler } from './contacts/create/create-contact.command';
 import { FindAllContactsQueryHandler } from './contacts/find-all/find-all-contacts.query';
 import { FindContactByQueryHandler } from './contacts/find-by-id/find-contact-by-id.query';
@@ -70,6 +70,6 @@ import { EnrichLeadCommandHandler } from './leads/enrich/enrich-lead.command';
     WebhookLeadCommandHandler,
     EnrichLeadCommandHandler,
   ],
-  exports: [],
+  exports: [ContactProvider],
 })
 export class ContactModule {}

@@ -103,6 +103,13 @@ export class PortalLayoutComponent implements OnInit {
         type: 'basic',
         link: '/portal/automation-workflows',
       },
+      {
+        id: 'campaigns',
+        icon: 'feather:send',
+        title: 'Campagnes',
+        type: 'basic',
+        link: '/portal/campaigns',
+      },
     ];
   }
 }

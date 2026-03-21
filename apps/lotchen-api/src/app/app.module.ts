@@ -12,6 +12,7 @@ import { CallerController } from './caller.controller';
 import { ActivitiesModule } from '@lotchen/lotchen-api/activities';
 import { WorkflowsModule } from '@lotchen/lotchen-api/workflows';
 import { PipelinesModule } from '@lotchen/lotchen-api/pipelines';
+import { CampaignsModule } from '@lotchen/lotchen-api/campaigns';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { PipelinesModule } from '@lotchen/lotchen-api/pipelines';
     ActivitiesModule,
     WorkflowsModule,
     PipelinesModule,
+    CampaignsModule,
   ],
   controllers: [CallerController],
   providers: [

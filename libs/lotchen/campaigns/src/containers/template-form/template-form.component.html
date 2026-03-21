@@ -1,0 +1,171 @@
+<tas-card>
+  <card-header>
+    <div class="flex items-center justify-between">
+      <div>
+        <tas-title>{{
+          isEditMode() ? 'Modifier le template' : 'Nouveau Template'
+        }}</tas-title>
+        <tas-text
+          >Créez ou modifiez un modèle de message pour vos campagnes.</tas-text
+        >
+      </div>
+      <a
+        tas-outlined-button
+        color="accent"
+        routerLink="/portal/campaigns/templates"
+      >
+        <tas-icon iconName="feather:arrow-left"></tas-icon>
+        Retour
+      </a>
+    </div>
+  </card-header>
+</tas-card>
+
+<div class="mt-4 grid grid-cols-2 gap-4">
+  <!-- Left: Form -->
+  <form [formGroup]="form" class="space-y-4">
+    <tas-card>
+      <card-header>
+        <tas-title class="text-lg">Configuration</tas-title>
+      </card-header>
+      <div class="p-4 space-y-4">
+        <tas-form-field>
+          <tas-label>Nom du template</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="name"
+            placeholder="Ex: Bienvenue nouveau client"
+          />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Canal</tas-label>
+          <tas-select
+            [options]="channelOptions"
+            formControlName="channel"
+          ></tas-select>
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Catégorie (optionnel)</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="category"
+            placeholder="Ex: Promotion, Notification, Onboarding"
+          />
+        </tas-form-field>
+
+        @if (form.get('channel')?.value === 'email') {
+        <tas-form-field>
+          <tas-label>Objet de l'email</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="subject"
+            placeholder="Objet"
+          />
+        </tas-form-field>
+        } @if (form.get('channel')?.value === 'whatsapp') {
+        <tas-form-field>
+          <tas-label>ID du template WhatsApp</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="whatsAppTemplateId"
+            placeholder="ID du template approuvé"
+          />
+        </tas-form-field>
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" formControlName="isWhatsAppApproved" />
+          <span>Template approuvé par WhatsApp</span>
+        </label>
+        }
+      </div>
+    </tas-card>
+
+    <tas-card>
+      <card-header>
+        <tas-title class="text-lg">Contenu du message</tas-title>
+      </card-header>
+      <div class="p-4 space-y-4">
+        <tas-form-field>
+          <tas-label>Corps du message</tas-label>
+          <textarea
+            tasInput
+            type="text"
+            formControlName="body"
+            rows="10"
+            placeholder="Rédigez votre message ici..."
+          ></textarea>
+        </tas-form-field>
+
+        @if (form.get('channel')?.value === 'sms') {
+        <div class="text-sm text-gray-500">
+          {{ (form.get('body')?.value || '').length }} caractères —
+          {{ getSmsSegmentCount() }} segment(s) SMS
+        </div>
+        }
+
+        <div class="flex flex-wrap gap-2">
+          <span class="text-sm text-gray-500 self-center"
+            >Champs de fusion :</span
+          >
+          @for (field of mergeFields; track field) {
+          <button
+            tas-outlined-button
+            color="accent"
+            type="button"
+            (click)="insertMergeField(field)"
+            class="text-xs"
+          >
+            {{ field }}
+          </button>
+          }
+        </div>
+      </div>
+    </tas-card>
+  </form>
+
+  <!-- Right: Preview -->
+  <div>
+    <tas-card>
+      <card-header>
+        <tas-title class="text-lg">Aperçu</tas-title>
+      </card-header>
+      <div class="p-4">
+        @if (form.get('channel')?.value === 'email' &&
+        form.get('subject')?.value) {
+        <div class="mb-2 font-semibold text-gray-700">
+          Objet : {{ form.get('subject')?.value }}
+        </div>
+        }
+        <div
+          class="p-4 bg-gray-50 border border-gray-200 rounded-lg whitespace-pre-wrap text-sm min-h-[200px]"
+        >
+          {{ getPreview() || 'Votre message apparaîtra ici...' }}
+        </div>
+      </div>
+    </tas-card>
+  </div>
+</div>
+
+<!-- Actions -->
+<div class="mt-4 flex justify-end space-x-2">
+  <a
+    tas-outlined-button
+    color="accent"
+    routerLink="/portal/campaigns/templates"
+  >
+    Annuler
+  </a>
+  <button
+    tas-raised-button
+    color="primary"
+    [disabled]="form.invalid || isLoading()"
+    (click)="submit()"
+  >
+    {{ isEditMode() ? 'Enregistrer' : 'Créer le template' }}
+  </button>
+</div>

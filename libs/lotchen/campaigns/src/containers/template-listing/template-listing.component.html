@@ -1,0 +1,137 @@
+<tas-card>
+  <card-header>
+    <div class="flex">
+      <div class="w-2/3">
+        <tas-title>Templates de messages</tas-title>
+        <tas-text>
+          Gérez vos modèles de messages pour vos campagnes Email, SMS et
+          WhatsApp.
+        </tas-text>
+      </div>
+      <div class="flex justify-end space-x-2 w-1/3">
+        <div>
+          <a tas-outlined-button color="accent" routerLink="/portal/campaigns">
+            <tas-icon iconName="feather:arrow-left"></tas-icon>
+            Campagnes
+          </a>
+        </div>
+        <div>
+          <a tas-raised-button color="primary" routerLink="create">
+            <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
+            Nouveau Template
+          </a>
+        </div>
+      </div>
+    </div>
+  </card-header>
+</tas-card>
+
+<!-- Channel filter tabs -->
+<div class="mt-4 flex space-x-2">
+  <button
+    tas-outlined-button
+    [color]="activeChannel() === undefined ? 'primary' : 'accent'"
+    (click)="filterByChannel(undefined)"
+  >
+    Tous
+  </button>
+  <button
+    tas-outlined-button
+    [color]="activeChannel() === 'email' ? 'primary' : 'accent'"
+    (click)="filterByChannel('email')"
+  >
+    <tas-icon iconName="feather:mail" iconSize="sm"></tas-icon>
+    Email
+  </button>
+  <button
+    tas-outlined-button
+    [color]="activeChannel() === 'sms' ? 'primary' : 'accent'"
+    (click)="filterByChannel('sms')"
+  >
+    <tas-icon iconName="feather:message-square" iconSize="sm"></tas-icon>
+    SMS
+  </button>
+  <button
+    tas-outlined-button
+    [color]="activeChannel() === 'whatsapp' ? 'primary' : 'accent'"
+    (click)="filterByChannel('whatsapp')"
+  >
+    <tas-icon iconName="feather:message-circle" iconSize="sm"></tas-icon>
+    WhatsApp
+  </button>
+</div>
+
+<tas-card class="mt-4">
+  <tas-table
+    [title]="'Liste des templates'"
+    [data]="templates()"
+    [isLoading]="isLoading()"
+  >
+    <ng-template #header>
+      <tr>
+        <th class="w-[300px]">Nom</th>
+        <th>Canal</th>
+        <th>Catégorie</th>
+        <th>Dernière modification</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item>
+      <tr class="row-hover">
+        <td>
+          <span class="font-semibold text-primary">{{ item.name }}</span>
+        </td>
+        <td>
+          <span
+            class="inline-flex items-center space-x-1 px-2 py-1 text-xs rounded-full bg-gray-100"
+          >
+            <tas-icon
+              [iconName]="getChannelIcon(item.channel)"
+              iconSize="sm"
+            ></tas-icon>
+            <span>{{ getChannelLabel(item.channel) }}</span>
+          </span>
+        </td>
+        <td>{{ item.category || '-' }}</td>
+        <td>{{ item.updatedAt | dateTimeAgo }}</td>
+        <td>
+          <div class="flex space-x-1">
+            <a
+              tas-button
+              iconButton
+              [routerLink]="[item._id, 'edit']"
+              title="Modifier"
+            >
+              <tas-icon
+                iconName="feather:edit"
+                iconClass="text-gray-500"
+              ></tas-icon>
+            </a>
+            <button tas-button iconButton TasMenuTrigger [panel]="menu">
+              <tas-icon iconName="feather:more-vertical"></tas-icon>
+            </button>
+
+            <ng-template #menu>
+              <tas-menu>
+                <tas-menu-item
+                  class="flex space-x-2"
+                  (click)="duplicateTemplate(item)"
+                >
+                  <tas-icon iconName="feather:copy"></tas-icon>
+                  <span>Dupliquer</span>
+                </tas-menu-item>
+                <tas-menu-item
+                  class="flex space-x-2 text-functional-error"
+                  (click)="deleteTemplate(item)"
+                >
+                  <tas-icon iconName="feather:trash"></tas-icon>
+                  <span>Supprimer</span>
+                </tas-menu-item>
+              </tas-menu>
+            </ng-template>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </tas-table>
+</tas-card>
