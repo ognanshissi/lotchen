@@ -57,5 +57,29 @@ export interface FindAllCallLogsQueryResponse {
      * Created date
      */
     createdAt: string;
+    /**
+     * Call direction (inbound/outbound)
+     */
+    direction?: string;
+    /**
+     * Telephony provider
+     */
+    provider?: string;
+    /**
+     * Call disposition
+     */
+    disposition?: string;
+    /**
+     * Follow-up date
+     */
+    followUpDate?: string;
+    /**
+     * Follow-up action
+     */
+    followUpAction?: string;
+    /**
+     * Recording URL
+     */
+    recordingUrl?: string;
 }
 

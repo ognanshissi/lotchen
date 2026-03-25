@@ -50,4 +50,9 @@ export const settingsRoutes: Routes = [
     loadComponent: () =>
       import('./containers/event-types/event-types.component'),
   },
+  {
+    path: 'telephony',
+    loadComponent: () =>
+      import('./containers/telephony/telephony-settings.component'),
+  },
 ];

@@ -10,23 +10,46 @@
     <table class="w-full text-sm text-left">
       <thead class="text-xs text-gray-500 uppercase border-b border-gray-200">
         <tr>
-          <th class="py-3 px-4">Date</th>
-          <th class="py-3 px-4">Destinataire</th>
-          <th class="py-3 px-4">Durée</th>
-          <th class="py-3 px-4">Statut</th>
-          <th class="py-3 px-4">Agent</th>
-          <th class="py-3 px-4">Note</th>
+          <th class="py-3 px-3 w-10"></th>
+          <th class="py-3 px-3">Date</th>
+          <th class="py-3 px-3">Destinataire</th>
+          <th class="py-3 px-3">Durée</th>
+          <th class="py-3 px-3">Statut</th>
+          <th class="py-3 px-3">Disposition</th>
+          <th class="py-3 px-3">Enregistrement</th>
+          <th class="py-3 px-3">Note</th>
+          <th class="py-3 px-3">Agent</th>
         </tr>
       </thead>
       <tbody>
         @for (log of callLogs(); track log.id) {
         <tr class="border-b border-gray-100 hover:bg-gray-50">
-          <td class="py-3 px-4 whitespace-nowrap">
+          <!-- Direction icon -->
+          <td class="py-3 px-3">
+            @if (log['direction'] === 'inbound') {
+            <tas-icon
+              iconName="feather:phone-incoming"
+              iconClass="text-blue-500"
+              iconSize="sm"
+            ></tas-icon>
+            } @else {
+            <tas-icon
+              iconName="feather:phone-outgoing"
+              iconClass="text-green-500"
+              iconSize="sm"
+            ></tas-icon>
+            }
+          </td>
+          <!-- Date -->
+          <td class="py-3 px-3 whitespace-nowrap">
             {{ log.createdAt | date : 'dd/MM/yyyy HH:mm' }}
           </td>
-          <td class="py-3 px-4">{{ log.recipientContact }}</td>
-          <td class="py-3 px-4">{{ formatDuration(log.duration) }}</td>
-          <td class="py-3 px-4">
+          <!-- Recipient -->
+          <td class="py-3 px-3">{{ log.recipientContact }}</td>
+          <!-- Duration -->
+          <td class="py-3 px-3">{{ formatDuration(log.duration) }}</td>
+          <!-- Status -->
+          <td class="py-3 px-3">
             <span
               class="px-2 py-0.5 rounded-full text-xs text-white"
               [class.bg-green-500]="
@@ -39,13 +62,54 @@
               >{{ log.status }}</span
             >
           </td>
-          <td class="py-3 px-4">
+          <!-- Disposition -->
+          <td class="py-3 px-3">
+            @if (log['disposition']) {
+            <span
+              class="px-2 py-0.5 rounded-full text-xs bg-gray-200 text-gray-700"
+            >
+              {{ getDispositionLabel(log['disposition']) }}
+            </span>
+            }
+          </td>
+          <!-- Recording -->
+          <td class="py-3 px-3">
+            @if (log['recordingUrl']) {
+            <common-call-recording-player
+              [recordingUrl]="log['recordingUrl']"
+            ></common-call-recording-player>
+            }
+          </td>
+          <!-- Note (editable) -->
+          <td class="py-3 px-3 max-w-[200px]">
+            @if (editingNoteId() === log.id) {
+            <div class="flex items-center space-x-1">
+              <input
+                type="text"
+                class="border border-gray-300 rounded px-2 py-1 text-sm flex-1"
+                [(ngModel)]="editingNoteText"
+                (keyup.enter)="saveNote(log.id)"
+                (keyup.escape)="cancelEditNote()"
+              />
+              <button class="text-xs text-blue-500" (click)="saveNote(log.id)">
+                OK
+              </button>
+            </div>
+            } @else {
+            <span
+              class="text-gray-500 italic truncate block cursor-pointer hover:text-gray-700"
+              (click)="startEditNote(log)"
+              title="Cliquer pour modifier"
+            >
+              {{ log.note || '—' }}
+            </span>
+            }
+          </td>
+          <!-- Agent -->
+          <td class="py-3 px-3">
             @if (log.fromAgentLite) {
             {{ log.fromAgentLite.firstName }} {{ log.fromAgentLite.lastName }}
             }
-          </td>
-          <td class="py-3 px-4 text-gray-500 italic max-w-[200px] truncate">
-            {{ log.note }}
           </td>
         </tr>
         }

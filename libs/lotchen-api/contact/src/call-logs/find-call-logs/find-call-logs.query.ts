@@ -63,6 +63,24 @@ export class FindAllCallLogsQueryResponse {
 
   @ApiProperty({ type: Date, description: 'Created date' })
   public createdAt!: Date;
+
+  @ApiPropertyOptional({ description: 'Call direction (inbound/outbound)' })
+  public direction!: string;
+
+  @ApiPropertyOptional({ description: 'Telephony provider' })
+  public provider!: string;
+
+  @ApiPropertyOptional({ description: 'Call disposition' })
+  public disposition!: string;
+
+  @ApiPropertyOptional({ type: Date, description: 'Follow-up date' })
+  public followUpDate!: Date | null;
+
+  @ApiPropertyOptional({ description: 'Follow-up action' })
+  public followUpAction!: string;
+
+  @ApiPropertyOptional({ description: 'Recording URL' })
+  public recordingUrl!: string;
 }
 
 @Injectable()
@@ -78,7 +96,7 @@ export class FindAllCallLogsQueryHandler
       {
         relatedToId: query?.entityId,
       },
-      'id relatedToId callSid recipientContact duration status note startDate endDate fromAgentLite createdAt'
+      'id relatedToId callSid recipientContact duration status note startDate endDate fromAgentLite createdAt direction provider disposition followUpDate followUpAction recordingUrl'
     )
       .sort({ createdAt: -1 })
       .limit(100)
@@ -98,6 +116,12 @@ export class FindAllCallLogsQueryHandler
       endDate: callLog.endDate ?? null,
       fromAgentLite: callLog.fromAgentLite ?? null,
       createdAt: callLog.createdAt,
+      direction: callLog.direction ?? 'outbound',
+      provider: callLog.provider ?? 'twilio',
+      disposition: callLog.disposition ?? '',
+      followUpDate: callLog.followUpDate ?? null,
+      followUpAction: callLog.followUpAction ?? 'none',
+      recordingUrl: callLog.recordingUrl ?? '',
     }));
   }
 }

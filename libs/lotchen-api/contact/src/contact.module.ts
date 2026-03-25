@@ -35,6 +35,8 @@ import { ConvertLeadCommandHandler } from './leads/convert/convert-lead.command'
 import { CaptureLeadCommandHandler } from './leads/capture/capture-lead.command';
 import { WebhookLeadCommandHandler } from './leads/capture/webhook-lead.command';
 import { EnrichLeadCommandHandler } from './leads/enrich/enrich-lead.command';
+import { UpdateCallLogCommandHandler } from './call-logs/update-call-log/update-call-log.command';
+import { RecordingCallbackCommandHandler } from './call-logs/recording-callback/recording-callback.command';
 
 @Module({
   imports: [],
@@ -50,6 +52,8 @@ import { EnrichLeadCommandHandler } from './leads/enrich/enrich-lead.command';
     CreateCallLogCommandHandler,
     ContactCreatedListener,
     FindAllCallLogsQueryHandler,
+    UpdateCallLogCommandHandler,
+    RecordingCallbackCommandHandler,
     PatchDataCommandHandler,
     DeleteContactCommandHandler,
     BulkDeleteContactsCommandHandler,

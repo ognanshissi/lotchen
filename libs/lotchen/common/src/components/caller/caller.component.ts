@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   CallerApiService,
   CallLogsApiService,
@@ -18,6 +18,7 @@ export enum CallingStatusEnum {
   Calling = 'Appel en cours...',
   Online = 'En ligne',
   End = 'Appel terminé',
+  IncomingCall = 'Appel entrant',
 }
 
 @Component({
@@ -36,10 +37,38 @@ export class CallerComponent implements OnInit {
   public entityId: string = this._dialogData['id'];
   public clientName: string = this._dialogData['clientName'];
   public contactNumber: string = this._dialogData['mobileNumber'];
+  public mode: 'inbound' | 'outbound' = this._dialogData['mode'] ?? 'outbound';
 
   public callingStatus = signal<CallingStatusEnum>(CallingStatusEnum.Call);
-
   public callingStatusEnum = CallingStatusEnum;
+
+  public direction = signal<'inbound' | 'outbound'>('outbound');
+  public showDisposition = signal(false);
+
+  // Disposition form
+  public dispositionForm = new FormGroup({
+    note: new FormControl(''),
+    disposition: new FormControl(''),
+    followUpDate: new FormControl(''),
+    followUpAction: new FormControl('none'),
+  });
+
+  public dispositionOptions = [
+    { value: 'interested', label: 'Intéressé' },
+    { value: 'not-interested', label: 'Pas intéressé' },
+    { value: 'callback', label: 'Rappel' },
+    { value: 'voicemail', label: 'Messagerie vocale' },
+    { value: 'wrong-number', label: 'Mauvais numéro' },
+    { value: 'no-answer', label: 'Pas de réponse' },
+    { value: 'busy', label: 'Occupé' },
+  ];
+
+  public followUpOptions = [
+    { value: 'none', label: 'Aucune' },
+    { value: 'call-back', label: 'Rappeler' },
+    { value: 'send-email', label: 'Envoyer email' },
+    { value: 'schedule-meeting', label: 'Planifier réunion' },
+  ];
 
   public isCalling = computed(() => {
     return [CallingStatusEnum.Calling, CallingStatusEnum.Online].includes(
@@ -48,7 +77,6 @@ export class CallerComponent implements OnInit {
   });
 
   public isSettingOpened = signal(false);
-
   public minimized = signal(false);
 
   // Call timer
@@ -78,7 +106,14 @@ export class CallerComponent implements OnInit {
 
   public audioSpeakerList = signal<{ id: string; label: string }[]>([]);
 
+  // Recording & provider info from token
+  private recordingEnabled = false;
+
+  // Store final call status for logging
+  private finalCallStatus = 'completed';
+
   public ngOnInit(): void {
+    this.direction.set(this.mode);
     this.setup();
     this.getAudioDevices();
 
@@ -108,9 +143,9 @@ export class CallerComponent implements OnInit {
   private setup() {
     console.log('Requesting access token');
     this.isGettingDeviceReadyLoading.set(true);
-    this._callerApiService.callerControllerTokenV1().subscribe({
-      next: (response) => {
-        // this.token = response.token;
+    this._callerApiService.callerTokenControllerTokenV1().subscribe({
+      next: (response: any) => {
+        this.recordingEnabled = response.recordingEnabled ?? false;
         this.initializeDevice(response.token);
       },
       error: (err) => {
@@ -122,7 +157,7 @@ export class CallerComponent implements OnInit {
 
   private initializeDevice(token: string) {
     this.device = new Device(token, {
-      logLevel: 4, // 1 for development
+      logLevel: 4,
       codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
     });
 
@@ -139,7 +174,11 @@ export class CallerComponent implements OnInit {
       console.log('Twilio.Device Ready to make and receive calls!');
       this.twilioDeviceReady.set(true);
       this.isGettingDeviceReadyLoading.set(false);
-      //   callControlsDiv.classList.remove('hide');
+
+      // If opened in inbound mode with a pending incoming call, handle it
+      if (this.mode === 'inbound') {
+        this.callingStatus.set(CallingStatusEnum.IncomingCall);
+      }
     });
 
     device.on('error', (error) => {
@@ -148,13 +187,17 @@ export class CallerComponent implements OnInit {
       console.log('Twilio.Device Error: ' + error.message);
     });
 
-    device.on('incoming', this.handleIncomingCall);
+    device.on('incoming', (incomingCall: Call) => {
+      this.handleIncomingCall(incomingCall);
+    });
 
-    this.device?.audio?.on('deviceChange', this.updateAllAudioDevices);
+    this.device?.audio?.on(
+      'deviceChange',
+      this.updateAllAudioDevices.bind(this)
+    );
 
-    // Show audio selection UI if it is supported by the browser.
     if (this.device?.audio?.isOutputSelectionSupported) {
-      //   audioSelectionDiv.classList.remove('hide');
+      // Audio selection UI available
     }
   }
 
@@ -172,77 +215,85 @@ export class CallerComponent implements OnInit {
     }
   }
 
-  private handleIncomingCall() {
-    console.log('Handle Incomming Call');
+  private handleIncomingCall(incomingCall: Call) {
+    this.call = incomingCall;
+    this.direction.set('inbound');
+    this.callingStatus.set(CallingStatusEnum.IncomingCall);
+
+    // Listen for call cancel (caller hung up before answer)
+    this.call.on('cancel', () => {
+      this.callingStatus.set(CallingStatusEnum.End);
+      this.finalCallStatus = 'cancelled';
+      this.showDispositionAfterCall();
+    });
+
+    this.call.on('disconnect', () => {
+      this.finalCallStatus = 'completed';
+      clearInterval(this.timerInterval);
+      this.callingStatus.set(CallingStatusEnum.End);
+      this.showDispositionAfterCall();
+    });
+  }
+
+  public acceptIncomingCall() {
+    if (this.call) {
+      this.call.accept();
+      this.callingStatus.set(CallingStatusEnum.Online);
+      this.startDate = new Date();
+      this.timerInterval = setInterval(() => {
+        this.timer.set(this.timer() + 1);
+      }, 1000);
+    }
+  }
+
+  public rejectIncomingCall() {
+    if (this.call) {
+      this.call.reject();
+      this.finalCallStatus = 'no-reply';
+      this.callingStatus.set(CallingStatusEnum.End);
+      this.showDispositionAfterCall();
+    }
   }
 
   public async makeOutgoingCall() {
-    const params = {
-      // get the phone number to call from the DOM
+    const params: Record<string, string> = {
       To: this.contactNumber,
     };
 
-    if (this.device) {
-      console.log(`Attempting to call ${params.To} ...`);
-      this.callingStatus.set(CallingStatusEnum.Calling);
+    if (this.recordingEnabled) {
+      params['enableRecording'] = 'true';
+    }
 
-      // Twilio.Device.connect() returns a Call object
+    if (this.device) {
+      console.log(`Attempting to call ${params['To']} ...`);
+      this.callingStatus.set(CallingStatusEnum.Calling);
+      this.direction.set('outbound');
+
       this.call = await this.device.connect({ params });
 
-      // add listeners to the Call
-      // "accepted" means the call has finished connecting and the state is now "open"
       this.call.on('accept', () => {
         this.callingStatus.set(CallingStatusEnum.Online);
         this.startDate = new Date();
         this.timerInterval = setInterval(() => {
           this.timer.set(this.timer() + 1);
         }, 1000);
-        // Set call started time
         console.log('Calling in progress...');
-        this.call?.on('volume', (inputVolume, outputVolume) => {
-          console.log({ inputVolume, outputVolume });
-        });
       });
-      //   Disconnected event
-      this.call.on('disconnect', () => {
-        // save to call logs;
-        this._callLogApiService
-          .callLogsControllerCreateCallLogV1({
-            startDate: this.startDate?.toISOString() ?? '',
-            endDate: new Date().toISOString(),
-            callSid: this.call?.parameters?.['CallSid'] ?? '',
-            duration: this.timer(),
-            toId: this.entityId,
-            entityType: CreateCallLogCommandEntityTypeEnum.Contact,
-            toContact: params.To,
-            status: 'completed',
-          })
-          .subscribe({
-            next: () => {
-              // Wait 2 seconds and close the caller dialog
-              setTimeout(() => {
-                this.closeCaller();
-              }, 2000);
-            },
-          });
 
+      this.call.on('disconnect', () => {
+        this.finalCallStatus = 'completed';
         this.callingStatus.set(CallingStatusEnum.End);
         clearInterval(this.timerInterval);
-        this.timer.set(0);
-        this.startDate = undefined;
-        setTimeout(() => {
-          this.callingStatus.set(CallingStatusEnum.Call);
-        }, 1000);
+        this.showDispositionAfterCall();
       });
-      //   Canceled
+
       this.call.on('cancel', () => {
         if (this.timerInterval) {
           clearInterval(this.timerInterval);
         }
+        this.finalCallStatus = 'cancelled';
         this.callingStatus.set(CallingStatusEnum.End);
-        setTimeout(() => {
-          this.callingStatus.set(CallingStatusEnum.Call);
-        }, 2000);
+        this.showDispositionAfterCall();
       });
     } else {
       console.log('Unable to make call.');
@@ -252,13 +303,64 @@ export class CallerComponent implements OnInit {
   public outgoingCallHangupButton() {
     console.log('Hanging up ...');
     this.call?.disconnect();
-    // this.callingStatus.set(CallingStatusEnum.End);
+  }
+
+  private showDispositionAfterCall() {
+    this.showDisposition.set(true);
+  }
+
+  public saveDisposition() {
+    const formVal = this.dispositionForm.value;
+    this._callLogApiService
+      .callLogsControllerCreateCallLogV1({
+        startDate: this.startDate?.toISOString() ?? new Date().toISOString(),
+        endDate: new Date().toISOString(),
+        callSid: this.call?.parameters?.['CallSid'] ?? '',
+        duration: this.timer(),
+        toId: this.entityId,
+        entityType: CreateCallLogCommandEntityTypeEnum.Contact,
+        toContact: this.contactNumber,
+        status: this.finalCallStatus,
+        direction: this.direction() as any,
+        disposition: formVal.disposition ?? undefined,
+        note: formVal.note ?? undefined,
+        followUpDate: formVal.followUpDate ? formVal.followUpDate : undefined,
+        followUpAction: formVal.followUpAction ?? undefined,
+      } as any)
+      .subscribe({
+        next: () => this.closeCaller(),
+        error: () => this.closeCaller(),
+      });
+  }
+
+  public skipDisposition() {
+    this._callLogApiService
+      .callLogsControllerCreateCallLogV1({
+        startDate: this.startDate?.toISOString() ?? new Date().toISOString(),
+        endDate: new Date().toISOString(),
+        callSid: this.call?.parameters?.['CallSid'] ?? '',
+        duration: this.timer(),
+        toId: this.entityId,
+        entityType: CreateCallLogCommandEntityTypeEnum.Contact,
+        toContact: this.contactNumber,
+        status: this.finalCallStatus,
+        direction: this.direction() as any,
+      } as any)
+      .subscribe({
+        next: () => this.closeCaller(),
+        error: () => this.closeCaller(),
+      });
   }
 
   /**
    * Close the caller box
    */
   public closeCaller() {
+    this.timer.set(0);
+    this.startDate = undefined;
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
     this._dialogRef.close();
   }
 }

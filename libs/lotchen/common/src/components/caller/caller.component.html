@@ -1,10 +1,8 @@
 @if (!minimized()) {
 <div
-  class="h-[450px] w-[300px] bg-gray-700 rounded-2xl p-4 border border-gray-700 absolute bottom-10 right-5 shadow-2xl"
+  class="h-[500px] w-[320px] bg-gray-700 rounded-2xl p-4 border border-gray-700 absolute bottom-10 right-5 shadow-2xl"
 >
   <div class="flex flex-col justify-between h-full">
-    <!-- Header - minimize caller zone -->
-
     <!-- Show loading while getting the device ready  -->
     @if (isGettingDeviceReadyLoading()) {
     <div class="h-full flex space-y-4 flex-col justify-center items-center">
@@ -15,6 +13,96 @@
 
     <!-- Twilio.Device is ready to make and receive calls -->
     @if (!isGettingDeviceReadyLoading() && twilioDeviceReady()) {
+
+    <!-- Post-call disposition form -->
+    @if (showDisposition()) {
+    <div class="flex flex-col h-full overflow-y-auto">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-gray-50 font-semibold text-lg">Résumé d'appel</h3>
+        <button tas-text-button iconButton (click)="closeCaller()">
+          <tas-icon iconName="feather:x" iconClass="text-gray-400"></tas-icon>
+        </button>
+      </div>
+
+      <div class="text-sm text-gray-300 mb-3">
+        {{ clientName }} &mdash; {{ callDuration() }}
+      </div>
+
+      <form
+        [formGroup]="dispositionForm"
+        class="flex flex-col space-y-3 flex-1"
+      >
+        <!-- Disposition -->
+        <div>
+          <label class="text-gray-300 text-xs block mb-1">Résultat</label>
+          <select
+            formControlName="disposition"
+            class="w-full bg-gray-600 rounded-lg text-gray-200 text-sm p-2"
+          >
+            <option value="">-- Sélectionner --</option>
+            @for (opt of dispositionOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Notes -->
+        <div>
+          <label class="text-gray-300 text-xs block mb-1">Notes</label>
+          <textarea
+            formControlName="note"
+            rows="3"
+            class="w-full bg-gray-600 rounded-lg text-gray-200 text-sm p-2 resize-none"
+            placeholder="Ajouter une note..."
+          ></textarea>
+        </div>
+
+        <!-- Follow-up date -->
+        <div>
+          <label class="text-gray-300 text-xs block mb-1">Date de suivi</label>
+          <input
+            type="datetime-local"
+            formControlName="followUpDate"
+            class="w-full bg-gray-600 rounded-lg text-gray-200 text-sm p-2"
+          />
+        </div>
+
+        <!-- Follow-up action -->
+        <div>
+          <label class="text-gray-300 text-xs block mb-1"
+            >Action de suivi</label
+          >
+          <select
+            formControlName="followUpAction"
+            class="w-full bg-gray-600 rounded-lg text-gray-200 text-sm p-2"
+          >
+            @for (opt of followUpOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex space-x-2 pt-2">
+          <button
+            tas-raised-button
+            class="flex-1 !bg-functional-success-100 text-white text-sm"
+            (click)="saveDisposition()"
+          >
+            Enregistrer
+          </button>
+          <button
+            tas-outlined-button
+            class="flex-1 text-sm"
+            (click)="skipDisposition()"
+          >
+            Passer
+          </button>
+        </div>
+      </form>
+    </div>
+
+    } @else {
 
     <!-- Header  -->
     <div class="flex flex-col items-center">
@@ -27,13 +115,28 @@
           ></tas-icon>
         </button>
 
-        <!-- Manage the calling status: Appeler, Appel en cours ..., Connecté-->
-        <div class="text-lg font-bold text-gray-400 text-center">
-          @if (callingStatus() === callingStatusEnum.Online) {
-          {{ callDuration() }}
+        <!-- Direction indicator + calling status -->
+        <div class="flex items-center space-x-2">
+          @if (direction() === 'inbound') {
+          <tas-icon
+            iconName="feather:phone-incoming"
+            iconClass="text-blue-400"
+            iconSize="sm"
+          ></tas-icon>
           } @else {
-          {{ callingStatus() }}
+          <tas-icon
+            iconName="feather:phone-outgoing"
+            iconClass="text-green-400"
+            iconSize="sm"
+          ></tas-icon>
           }
+          <div class="text-lg font-bold text-gray-400 text-center">
+            @if (callingStatus() === callingStatusEnum.Online) {
+            {{ callDuration() }}
+            } @else {
+            {{ callingStatus() }}
+            }
+          </div>
         </div>
 
         <button
@@ -58,7 +161,10 @@
 
       <div
         class="h-[80px] w-[80px] rounded-full bg-gray-600 flex items-center justify-center mt-4"
-        [ngClass]="{ 'animate-pulse': isCalling() }"
+        [ngClass]="{
+          'animate-pulse':
+            isCalling() || callingStatus() === callingStatusEnum.IncomingCall
+        }"
       >
         <tas-icon
           iconName="feather:user"
@@ -70,6 +176,27 @@
 
     <!-- Content -->
     <div class="flex flex-col space-y-4 items-center">
+      <!-- Incoming call controls -->
+      @if (callingStatus() === callingStatusEnum.IncomingCall) {
+      <div class="text-gray-300 text-sm text-center mb-2">
+        Appel entrant de {{ clientName }}
+      </div>
+      <div class="flex space-x-6">
+        <button
+          (click)="acceptIncomingCall()"
+          class="rounded-full bg-functional-success-100 text-white p-4"
+        >
+          <tas-icon iconName="feather:phone"></tas-icon>
+        </button>
+        <button
+          (click)="rejectIncomingCall()"
+          class="rounded-full bg-red-500 text-white p-4"
+        >
+          <tas-icon iconName="feather:phone-off"></tas-icon>
+        </button>
+      </div>
+      } @else {
+
       <!-- Call control -->
       <div class="flex space-x-12">
         <button
@@ -110,19 +237,21 @@
           <span>Appeler</span>
         </button>
         }
-
-        <!-- Hangup button -->
       </div>
+
+      }
     </div>
 
     }
 
     <!-- Setting -->
+    @if (!showDisposition()) {
     <div class="flex justify-end">
       <button tas-text-button iconButton (click)="toggleSettingOpen()">
         <tas-icon iconName="settings" iconClass="text-gray-50"></tas-icon>
       </button>
     </div>
+    }
 
     <!-- Setting zone -->
     @if ( isSettingOpened() ) {
@@ -166,7 +295,7 @@
         </select>
       </div>
     </div>
-    }
+    } }
   </div>
 </div>
 } @else {
@@ -176,6 +305,20 @@
 >
   <div class="flex space-x-1 h-full items-center justify-between">
     <div class="flex space-x-2 items-center">
+      <!-- Direction icon -->
+      @if (direction() === 'inbound') {
+      <tas-icon
+        iconName="feather:phone-incoming"
+        iconClass="text-blue-400"
+        iconSize="sm"
+      ></tas-icon>
+      } @else {
+      <tas-icon
+        iconName="feather:phone-outgoing"
+        iconClass="text-green-400"
+        iconSize="sm"
+      ></tas-icon>
+      }
       <!-- Icon -->
       <button tas-outlined-button iconButton>
         <tas-icon iconName="feather:user" iconClass="text-gray-50"></tas-icon>
@@ -188,8 +331,25 @@
 
     <!-- left -->
     <div class="flex space-x-2 items-center">
-      <!-- Hang up button -->
-      @if (isCalling()) {
+      <!-- Incoming controls in minimized -->
+      @if (callingStatus() === callingStatusEnum.IncomingCall) {
+      <button
+        tas-raised-button
+        iconButton
+        (click)="acceptIncomingCall()"
+        class="!bg-functional-success-100"
+      >
+        <tas-icon iconName="feather:phone"></tas-icon>
+      </button>
+      <button
+        tas-raised-button
+        iconButton
+        color="warn"
+        (click)="rejectIncomingCall()"
+      >
+        <tas-icon iconName="feather:phone-off"></tas-icon>
+      </button>
+      } @else if (isCalling()) {
       <button
         tas-raised-button
         iconButton
@@ -220,18 +380,3 @@
   </div>
 </div>
 }
-
-<!--
-
-Call process definition
-
-- User click on the call button
-- Check if the user is already in call
-- If not, check if the device is ready to make a call
-
- 
-
-
-
-
--->

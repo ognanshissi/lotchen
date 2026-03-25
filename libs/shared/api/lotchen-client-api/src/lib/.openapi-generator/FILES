@@ -21,6 +21,7 @@ api/roles.service.ts
 api/sales-pipelines.service.ts
 api/tasks.service.ts
 api/teams.service.ts
+api/telephony-config.service.ts
 api/territories.service.ts
 api/users.service.ts
 api/workflow-executions.service.ts
@@ -34,10 +35,12 @@ model/address-dto.interface.ts
 model/assign-contact-command-request.interface.ts
 model/assign-permissions-command-request.interface.ts
 model/assign-roles-command-request.interface.ts
+model/asterisk-config-dto.interface.ts
 model/audience-filter-dto.interface.ts
 model/audit-user-info-dto.interface.ts
 model/bulk-assign-contacts-command-request.interface.ts
 model/bulk-delete-contacts-command.interface.ts
+model/caller-token-response.interface.ts
 model/capture-lead-command.interface.ts
 model/conflicting-meeting-response.interface.ts
 model/contact-info-dto.interface.ts
@@ -94,6 +97,7 @@ model/find-lead-by-id-query-response.interface.ts
 model/find-meeting-by-id-query-response.interface.ts
 model/find-meetings-by-range-response.interface.ts
 model/find-role-by-id-query-response.interface.ts
+model/find-telephony-config-response.interface.ts
 model/find-user-by-id-query-response.interface.ts
 model/find-user-by-id-query-role-dto.interface.ts
 model/forgot-password-command-response.interface.ts
@@ -125,11 +129,13 @@ model/phone-number-dto.interface.ts
 model/phone-numbers-dto.interface.ts
 model/pipeline-stage-dto.interface.ts
 model/qualify-lead-command-request.interface.ts
+model/recording-callback-command.interface.ts
 model/refresh-token-command.interface.ts
 model/reorder-deals-command.interface.ts
 model/reset-password-command-response.interface.ts
 model/reset-password-command.interface.ts
 model/retry-execution-step-command-request.interface.ts
+model/ring-over-config-dto.interface.ts
 model/set-meeting-outcome-command.interface.ts
 model/skip-execution-step-command-request.interface.ts
 model/status-history-dto.interface.ts
@@ -138,7 +144,8 @@ model/territories-query-user-dto.interface.ts
 model/territory-lite-dto.interface.ts
 model/test-run-workflow-command.interface.ts
 model/trigger-manual-workflow-command.interface.ts
-model/twilio-access-token-response.interface.ts
+model/twilio-config-dto.interface.ts
+model/update-call-log-command.interface.ts
 model/update-campaign-command-request.interface.ts
 model/update-contact-command-request.interface.ts
 model/update-contact-status-command-request.interface.ts
@@ -150,7 +157,9 @@ model/update-message-template-command-request.interface.ts
 model/update-pipeline-command-request.interface.ts
 model/update-role-permissions-command-response.interface.ts
 model/update-team-command-request.interface.ts
+model/update-telephony-config-command.interface.ts
 model/update-workflow-template-command-request.interface.ts
+model/upsert-telephony-config-command.interface.ts
 model/users-controller-search-user-paginate-v1200-response.interface.ts
 model/verify-token-query-response.interface.ts
 model/webhook-lead-command-request.interface.ts

@@ -9,6 +9,13 @@ export interface CallerData {
   mobileNumber: string;
 }
 
+export interface IncomingCallerData {
+  callerNumber: string;
+  callSid: string;
+  contactId?: string;
+  contactName?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -23,8 +30,7 @@ export class CallerService {
   public readonly isCallerOpened = this._isCallerOpened$.asReadonly();
 
   /**
-   * Handle caller dialog state
-   * @param data
+   * Handle caller dialog state for outgoing calls
    */
   public openCaller(data: CallerData) {
     if (!data.mobileNumber) {
@@ -44,7 +50,39 @@ export class CallerService {
 
     this.callerDialogRef = this._dialog.open(CallerComponent, {
       hasBackdrop: false,
-      data,
+      data: { ...data, mode: 'outbound' },
+    });
+
+    this.callerDialogRef.closed.subscribe({
+      next: () => {
+        this._isCallerOpened$.set(false);
+      },
+    });
+  }
+
+  /**
+   * Handle caller dialog state for incoming calls
+   */
+  public openIncomingCaller(data: IncomingCallerData) {
+    this._isCallerOpened$.set(true);
+
+    if (data.contactId) {
+      this._currentClientId.set(data.contactId);
+    }
+
+    if (this.callerDialogRef) {
+      this.callerDialogRef.close();
+    }
+
+    this.callerDialogRef = this._dialog.open(CallerComponent, {
+      hasBackdrop: false,
+      data: {
+        id: data.contactId ?? '',
+        clientName: data.contactName ?? data.callerNumber,
+        mobileNumber: data.callerNumber,
+        callSid: data.callSid,
+        mode: 'inbound',
+      },
     });
 
     this.callerDialogRef.closed.subscribe({

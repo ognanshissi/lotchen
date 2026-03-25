@@ -65,8 +65,27 @@ export class CallLog extends SchemaIdentifier {
 
   @Prop({ type: String, default: '' })
   callError!: string;
+
+  @Prop({ type: String, enum: ['inbound', 'outbound'], default: 'outbound' })
+  direction!: string;
+
+  @Prop({
+    type: String,
+    enum: ['twilio', 'ringover', 'asterisk'],
+    default: 'twilio',
+  })
+  provider!: string;
+
+  @Prop({ type: String, default: '' })
+  disposition!: string;
+
+  @Prop({ type: Date })
+  followUpDate?: Date;
+
+  @Prop({ type: String, default: 'none' })
+  followUpAction!: string;
 }
 
 export const CallLogSchema = SchemaFactory.createForClass(CallLog);
 
-CallLogSchema.index({ toId: 1, fromId: 1, entityType: 1 });
+CallLogSchema.index({ relatedToId: 1, entityType: 1, direction: 1 });

@@ -1,0 +1,212 @@
+<div class="max-w-3xl mx-auto p-6">
+  <tas-title level="h2">Configuration Téléphonie</tas-title>
+  <p class="text-gray-500 mb-6">
+    Configurer votre système de téléphonie (Twilio, RingOver, Asterisk).
+  </p>
+
+  @if (loading()) {
+  <p class="text-gray-500">Chargement...</p>
+  } @else {
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <tas-card class="p-6 mb-6">
+      <h3 class="text-lg font-semibold mb-4">Fournisseur</h3>
+      <div class="flex space-x-6 mb-4">
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input
+            type="radio"
+            formControlName="provider"
+            value="twilio"
+            class="accent-primary-500"
+          />
+          <span>Twilio</span>
+        </label>
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input
+            type="radio"
+            formControlName="provider"
+            value="ringover"
+            class="accent-primary-500"
+          />
+          <span>RingOver</span>
+        </label>
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input
+            type="radio"
+            formControlName="provider"
+            value="asterisk"
+            class="accent-primary-500"
+          />
+          <span>Asterisk</span>
+        </label>
+      </div>
+    </tas-card>
+
+    <!-- Twilio Config -->
+    @if (form.value.provider === 'twilio') {
+    <tas-card class="p-6 mb-6">
+      <h3 class="text-lg font-semibold mb-4">Configuration Twilio</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <tas-form-field>
+          <tas-label>Account SID</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="twilioAccountSid"
+            placeholder="ACxxxxxxx"
+          />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>API Key</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="twilioApiKey"
+            placeholder="SKxxxxxxx"
+          />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>API Secret</tas-label>
+          <input tasInput type="password" formControlName="twilioApiSecret" />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>TwiML App SID</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="twilioTwimlAppSid"
+            placeholder="APxxxxxxx"
+          />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>Caller ID</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="twilioCallerId"
+            placeholder="+1234567890"
+          />
+        </tas-form-field>
+      </div>
+    </tas-card>
+    }
+
+    <!-- RingOver Config -->
+    @if (form.value.provider === 'ringover') {
+    <tas-card class="p-6 mb-6">
+      <h3 class="text-lg font-semibold mb-4">Configuration RingOver</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <tas-form-field>
+          <tas-label>API Key</tas-label>
+          <input tasInput type="text" formControlName="ringoverApiKey" />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>Team ID</tas-label>
+          <input tasInput type="text" formControlName="ringoverTeamId" />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>Webhook Secret</tas-label>
+          <input
+            tasInput
+            type="password"
+            formControlName="ringoverWebhookSecret"
+          />
+        </tas-form-field>
+      </div>
+    </tas-card>
+    }
+
+    <!-- Asterisk Config -->
+    @if (form.value.provider === 'asterisk') {
+    <tas-card class="p-6 mb-6">
+      <h3 class="text-lg font-semibold mb-4">Configuration Asterisk</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <tas-form-field>
+          <tas-label>Server Host</tas-label>
+          <input tasInput type="text" formControlName="asteriskServerHost" />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>Server Port</tas-label>
+          <input tasInput type="text" formControlName="asteriskServerPort" />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>WebSocket URL</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="asteriskWsUrl"
+            placeholder="wss://..."
+          />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>SIP Domain</tas-label>
+          <input tasInput type="text" formControlName="asteriskSipDomain" />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>STUN Server</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="asteriskStunServer"
+            placeholder="stun:stun.l.google.com:19302"
+          />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>TURN Server</tas-label>
+          <input tasInput type="text" formControlName="asteriskTurnServer" />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>TURN Username</tas-label>
+          <input tasInput type="text" formControlName="asteriskTurnUsername" />
+        </tas-form-field>
+        <tas-form-field>
+          <tas-label>TURN Password</tas-label>
+          <input
+            tasInput
+            type="password"
+            formControlName="asteriskTurnPassword"
+          />
+        </tas-form-field>
+      </div>
+    </tas-card>
+    }
+
+    <!-- Recording Settings -->
+    <tas-card class="p-6 mb-6">
+      <h3 class="text-lg font-semibold mb-4">Enregistrement des appels</h3>
+      <div class="flex flex-col space-y-4">
+        <label class="flex items-center space-x-3 cursor-pointer">
+          <input
+            type="checkbox"
+            formControlName="recordingEnabled"
+            class="accent-primary-500 w-5 h-5"
+          />
+          <span>Activer l'enregistrement des appels</span>
+        </label>
+
+        @if (form.value.recordingEnabled) {
+        <div class="max-w-sm">
+          <label class="text-sm text-gray-600 block mb-1"
+            >Mode de consentement</label
+          >
+          <select
+            formControlName="recordingConsent"
+            class="w-full border border-gray-300 rounded-lg p-2 text-sm"
+          >
+            <option value="disabled">Désactivé</option>
+            <option value="auto-announce">Annonce automatique</option>
+            <option value="manual">Manuel</option>
+          </select>
+        </div>
+        }
+      </div>
+    </tas-card>
+
+    <!-- Save button -->
+    <div class="flex justify-end">
+      <button tas-raised-button type="submit" [disabled]="saving()">
+        @if (saving()) { Enregistrement... } @else { Enregistrer }
+      </button>
+    </div>
+  </form>
+  }
+</div>

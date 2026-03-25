@@ -1,27 +1,6 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/v1/caller/token": {
-      "post": {
-        "operationId": "CallerController_token_v1",
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TwilioAccessTokenResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Caller"
-        ]
-      }
-    },
     "/api/v1/users": {
       "post": {
         "operationId": "UsersController_createUser_v1",
@@ -1919,7 +1898,64 @@
         },
         "responses": {
           "201": {
-            "description": "Contact created"
+            "description": "Call log created"
+          }
+        },
+        "tags": [
+          "Call Logs"
+        ]
+      }
+    },
+    "/api/v1/call-logs/recording-callback": {
+      "post": {
+        "operationId": "CallLogsController_recordingCallback_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordingCallbackCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Recording callback received"
+          }
+        },
+        "tags": [
+          "Call Logs"
+        ]
+      }
+    },
+    "/api/v1/call-logs/{id}": {
+      "patch": {
+        "operationId": "CallLogsController_updateCallLog_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCallLogCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Call log updated"
           }
         },
         "tags": [
@@ -2613,6 +2649,7 @@
             "name": "ownerId",
             "required": true,
             "in": "query",
+            "description": "ID of the user who owns the meeting",
             "schema": {
               "type": "string"
             }
@@ -2621,6 +2658,7 @@
             "name": "startDate",
             "required": true,
             "in": "query",
+            "description": "Start date of the new meeting",
             "schema": {
               "type": "string"
             }
@@ -2629,6 +2667,7 @@
             "name": "startTime",
             "required": true,
             "in": "query",
+            "description": "Start time of the new meeting",
             "schema": {
               "type": "string"
             }
@@ -2637,6 +2676,7 @@
             "name": "endDate",
             "required": true,
             "in": "query",
+            "description": "End date of the new meeting",
             "schema": {
               "type": "string"
             }
@@ -2645,6 +2685,7 @@
             "name": "endTime",
             "required": true,
             "in": "query",
+            "description": "End time of the new meeting",
             "schema": {
               "type": "string"
             }
@@ -2653,6 +2694,7 @@
             "name": "excludeMeetingId",
             "required": false,
             "in": "query",
+            "description": "ID of the meeting to exclude from conflict checking",
             "schema": {
               "type": "string"
             }
@@ -4137,6 +4179,103 @@
           "Campaigns"
         ]
       }
+    },
+    "/api/v1/telephony-config": {
+      "post": {
+        "operationId": "TelephonyConfigController_upsert_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertTelephonyConfigCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Telephony config upserted"
+          }
+        },
+        "tags": [
+          "Telephony Config"
+        ]
+      },
+      "get": {
+        "operationId": "TelephonyConfigController_find_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Active telephony config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindTelephonyConfigResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Telephony Config"
+        ]
+      }
+    },
+    "/api/v1/telephony-config/{id}": {
+      "patch": {
+        "operationId": "TelephonyConfigController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTelephonyConfigCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Telephony config updated"
+          }
+        },
+        "tags": [
+          "Telephony Config"
+        ]
+      }
+    },
+    "/api/v1/caller/token": {
+      "post": {
+        "operationId": "CallerTokenController_token_v1",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallerTokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Caller"
+        ]
+      }
     }
   },
   "info": {
@@ -4154,23 +4293,6 @@
   "servers": [],
   "components": {
     "schemas": {
-      "TwilioAccessTokenResponse": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "description": "Toke"
-          },
-          "identity": {
-            "type": "string",
-            "description": "The connected Agent name"
-          }
-        },
-        "required": [
-          "token",
-          "identity"
-        ]
-      },
       "CreateUserCommand": {
         "type": "object",
         "properties": {
@@ -6275,6 +6397,48 @@
           "status": {
             "type": "string",
             "description": "Call Status"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Call direction",
+            "enum": [
+              "inbound",
+              "outbound"
+            ]
+          },
+          "provider": {
+            "type": "string",
+            "description": "Telephony provider",
+            "enum": [
+              "twilio",
+              "ringover",
+              "asterisk"
+            ]
+          },
+          "recordingUrl": {
+            "type": "string",
+            "description": "Recording URL"
+          },
+          "recordingSid": {
+            "type": "string",
+            "description": "Recording SID"
+          },
+          "disposition": {
+            "type": "string",
+            "description": "Call disposition"
+          },
+          "note": {
+            "type": "string",
+            "description": "Call note"
+          },
+          "followUpDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Follow-up date"
+          },
+          "followUpAction": {
+            "type": "string",
+            "description": "Follow-up action"
           }
         },
         "required": [
@@ -6287,6 +6451,58 @@
           "endDate",
           "status"
         ]
+      },
+      "RecordingCallbackCommand": {
+        "type": "object",
+        "properties": {
+          "callSid": {
+            "type": "string",
+            "description": "Twilio Call SID"
+          },
+          "recordingUrl": {
+            "type": "string",
+            "description": "Recording URL"
+          },
+          "recordingSid": {
+            "type": "string",
+            "description": "Recording SID"
+          }
+        },
+        "required": [
+          "callSid",
+          "recordingUrl",
+          "recordingSid"
+        ]
+      },
+      "UpdateCallLogCommand": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "description": "Call note"
+          },
+          "disposition": {
+            "type": "string",
+            "description": "Call disposition"
+          },
+          "followUpDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Follow-up date"
+          },
+          "followUpAction": {
+            "type": "string",
+            "description": "Follow-up action"
+          },
+          "recordingUrl": {
+            "type": "string",
+            "description": "Recording URL"
+          },
+          "recordingSid": {
+            "type": "string",
+            "description": "Recording SID"
+          }
+        }
       },
       "FromAgentLiteDto": {
         "type": "object",
@@ -6364,6 +6580,31 @@
             "format": "date-time",
             "type": "string",
             "description": "Created date"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Call direction (inbound/outbound)"
+          },
+          "provider": {
+            "type": "string",
+            "description": "Telephony provider"
+          },
+          "disposition": {
+            "type": "string",
+            "description": "Call disposition"
+          },
+          "followUpDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Follow-up date"
+          },
+          "followUpAction": {
+            "type": "string",
+            "description": "Follow-up action"
+          },
+          "recordingUrl": {
+            "type": "string",
+            "description": "Recording URL"
           }
         },
         "required": [
@@ -7198,16 +7439,20 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "ID of the conflicting meeting"
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Title of the conflicting meeting"
           },
           "startAt": {
-            "type": "object"
+            "type": "object",
+            "description": "Start date and time of the conflicting meeting"
           },
           "endAt": {
-            "type": "object"
+            "type": "object",
+            "description": "End date and time of the conflicting meeting"
           }
         },
         "required": [
@@ -8125,13 +8370,16 @@
         "type": "object",
         "properties": {
           "field": {
-            "type": "string"
+            "type": "string",
+            "description": "Field name to filter on, e.g. \"country\", \"age\", \"tags\""
           },
           "operator": {
-            "type": "string"
+            "type": "string",
+            "description": "Supported operators: eq, in, contains"
           },
           "value": {
-            "type": "object"
+            "type": "object",
+            "description": "Value can be string, number, boolean or array depending on operator"
           }
         },
         "required": [
@@ -8144,7 +8392,8 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the campaign"
           },
           "channel": {
             "type": "string",
@@ -8152,25 +8401,31 @@
               "email",
               "sms",
               "whatsapp"
-            ]
+            ],
+            "description": "Channel to send the campaign, e.g. Email, SMS, Push"
           },
           "templateId": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional message template ID to use for this campaign"
           },
           "subject": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional subject for the campaign (used for email)"
           },
           "body": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional body for the campaign"
           },
           "audienceFilters": {
+            "description": "Optional filters for the campaign audience",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AudienceFilterDto"
             }
           },
           "scheduledAt": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional date and time to schedule the campaign"
           }
         },
         "required": [
@@ -8216,6 +8471,7 @@
         "type": "object",
         "properties": {
           "filters": {
+            "description": "Filters to apply to the contact list to estimate the audience size",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AudienceFilterDto"
@@ -8224,6 +8480,208 @@
         },
         "required": [
           "filters"
+        ]
+      },
+      "TwilioConfigDto": {
+        "type": "object",
+        "properties": {
+          "accountSid": {
+            "type": "string"
+          },
+          "apiKey": {
+            "type": "string"
+          },
+          "apiSecret": {
+            "type": "string"
+          },
+          "twimlAppSid": {
+            "type": "string"
+          },
+          "callerId": {
+            "type": "string"
+          }
+        }
+      },
+      "RingOverConfigDto": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "webhookSecret": {
+            "type": "string"
+          }
+        }
+      },
+      "AsteriskConfigDto": {
+        "type": "object",
+        "properties": {
+          "serverHost": {
+            "type": "string"
+          },
+          "serverPort": {
+            "type": "number"
+          },
+          "wsUrl": {
+            "type": "string"
+          },
+          "sipDomain": {
+            "type": "string"
+          },
+          "sipTrunkProvider": {
+            "type": "string"
+          },
+          "stunServer": {
+            "type": "string"
+          },
+          "turnServer": {
+            "type": "string"
+          },
+          "turnUsername": {
+            "type": "string"
+          },
+          "turnPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "UpsertTelephonyConfigCommand": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "Telephony provider",
+            "enum": [
+              "twilio",
+              "ringover",
+              "asterisk"
+            ]
+          },
+          "twilioConfig": {
+            "$ref": "#/components/schemas/TwilioConfigDto"
+          },
+          "ringoverConfig": {
+            "$ref": "#/components/schemas/RingOverConfigDto"
+          },
+          "asteriskConfig": {
+            "$ref": "#/components/schemas/AsteriskConfigDto"
+          },
+          "recordingEnabled": {
+            "type": "boolean"
+          },
+          "recordingConsent": {
+            "type": "string",
+            "enum": [
+              "auto-announce",
+              "manual",
+              "disabled"
+            ]
+          }
+        },
+        "required": [
+          "provider"
+        ]
+      },
+      "FindTelephonyConfigResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "twilioConfig": {
+            "type": "object"
+          },
+          "ringoverConfig": {
+            "type": "object"
+          },
+          "asteriskConfig": {
+            "type": "object"
+          },
+          "recordingEnabled": {
+            "type": "boolean"
+          },
+          "recordingConsent": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "provider",
+          "isActive",
+          "recordingEnabled",
+          "recordingConsent"
+        ]
+      },
+      "UpdateTelephonyConfigCommand": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string"
+          },
+          "twilioConfig": {
+            "type": "object"
+          },
+          "ringoverConfig": {
+            "type": "object"
+          },
+          "asteriskConfig": {
+            "type": "object"
+          },
+          "recordingEnabled": {
+            "type": "boolean"
+          },
+          "recordingConsent": {
+            "type": "string"
+          }
+        }
+      },
+      "CallerTokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "identity": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "wsUrl": {
+            "type": "string"
+          },
+          "sipDomain": {
+            "type": "string"
+          },
+          "stunServer": {
+            "type": "string"
+          },
+          "turnServer": {
+            "type": "string"
+          },
+          "turnUsername": {
+            "type": "string"
+          },
+          "turnPassword": {
+            "type": "string"
+          },
+          "recordingEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "token",
+          "identity",
+          "provider"
         ]
       }
     }

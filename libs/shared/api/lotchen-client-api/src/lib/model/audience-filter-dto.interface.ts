@@ -12,8 +12,17 @@
 
 
 export interface AudienceFilterDto { 
+    /**
+     * Field name to filter on, e.g. \"country\", \"age\", \"tags\"
+     */
     field: string;
+    /**
+     * Supported operators: eq, in, contains
+     */
     operator: string;
+    /**
+     * Value can be string, number, boolean or array depending on operator
+     */
     value: object;
 }
 

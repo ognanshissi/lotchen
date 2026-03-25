@@ -105,12 +105,12 @@ export class MeetingsApiService {
     }
 
     /**
-     * @param ownerId 
-     * @param startDate 
-     * @param startTime 
-     * @param endDate 
-     * @param endTime 
-     * @param excludeMeetingId 
+     * @param ownerId ID of the user who owns the meeting
+     * @param startDate Start date of the new meeting
+     * @param startTime Start time of the new meeting
+     * @param endDate End date of the new meeting
+     * @param endTime End time of the new meeting
+     * @param excludeMeetingId ID of the meeting to exclude from conflict checking
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

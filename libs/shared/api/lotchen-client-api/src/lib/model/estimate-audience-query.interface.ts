@@ -13,6 +13,9 @@ import { AudienceFilterDto } from './audience-filter-dto.interface';
 
 
 export interface EstimateAudienceQuery { 
+    /**
+     * Filters to apply to the contact list to estimate the audience size
+     */
     filters: Array<AudienceFilterDto>;
 }
 

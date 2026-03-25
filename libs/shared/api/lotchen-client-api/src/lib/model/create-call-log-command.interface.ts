@@ -44,10 +44,51 @@ export interface CreateCallLogCommand {
      * Call Status
      */
     status: string;
+    /**
+     * Call direction
+     */
+    direction?: CreateCallLogCommandDirectionEnum;
+    /**
+     * Telephony provider
+     */
+    provider?: CreateCallLogCommandProviderEnum;
+    /**
+     * Recording URL
+     */
+    recordingUrl?: string;
+    /**
+     * Recording SID
+     */
+    recordingSid?: string;
+    /**
+     * Call disposition
+     */
+    disposition?: string;
+    /**
+     * Call note
+     */
+    note?: string;
+    /**
+     * Follow-up date
+     */
+    followUpDate?: string;
+    /**
+     * Follow-up action
+     */
+    followUpAction?: string;
 }
 export enum CreateCallLogCommandEntityTypeEnum {
     Contact = 'Contact',
     Client = 'Client'
+};
+export enum CreateCallLogCommandDirectionEnum {
+    Inbound = 'inbound',
+    Outbound = 'outbound'
+};
+export enum CreateCallLogCommandProviderEnum {
+    Twilio = 'twilio',
+    Ringover = 'ringover',
+    Asterisk = 'asterisk'
 };
 
 

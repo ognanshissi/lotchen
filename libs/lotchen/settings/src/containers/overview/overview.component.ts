@@ -172,6 +172,14 @@ export class OverviewComponent {
           link: '/settings/webiste-configuration',
           description: 'Créer des formulaires et les intégrer sur votre site.',
         },
+        {
+          title: 'Téléphonie',
+          type: 'basic',
+          id: 'communication_channels_telephony',
+          link: '/settings/telephony',
+          description:
+            'Configurer votre système de téléphonie (Twilio, RingOver, Asterisk).',
+        },
       ],
     },
     {

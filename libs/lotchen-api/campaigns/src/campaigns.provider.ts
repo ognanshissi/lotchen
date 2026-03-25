@@ -9,8 +9,12 @@ import {
   MessageTemplate,
   MessageTemplateDocument,
   MessageTemplateSchema,
-} from './templates';
-import { Campaign, CampaignDocument, CampaignSchema } from './campaigns';
+} from './templates/message-template.schema';
+import {
+  Campaign,
+  CampaignDocument,
+  CampaignSchema,
+} from './campaigns/campaign.schema';
 import {
   CampaignMessage,
   CampaignMessageDocument,

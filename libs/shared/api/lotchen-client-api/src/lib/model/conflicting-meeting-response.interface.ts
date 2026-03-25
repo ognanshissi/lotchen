@@ -12,9 +12,21 @@
 
 
 export interface ConflictingMeetingResponse { 
+    /**
+     * ID of the conflicting meeting
+     */
     id: string;
+    /**
+     * Title of the conflicting meeting
+     */
     title: string;
+    /**
+     * Start date and time of the conflicting meeting
+     */
     startAt: object;
+    /**
+     * End date and time of the conflicting meeting
+     */
     endAt: object;
 }
 

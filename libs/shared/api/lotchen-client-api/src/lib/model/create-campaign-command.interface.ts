@@ -13,12 +13,33 @@ import { AudienceFilterDto } from './audience-filter-dto.interface';
 
 
 export interface CreateCampaignCommand { 
+    /**
+     * Name of the campaign
+     */
     name: string;
+    /**
+     * Channel to send the campaign, e.g. Email, SMS, Push
+     */
     channel: CreateCampaignCommandChannelEnum;
+    /**
+     * Optional message template ID to use for this campaign
+     */
     templateId?: string;
+    /**
+     * Optional subject for the campaign (used for email)
+     */
     subject?: string;
+    /**
+     * Optional body for the campaign
+     */
     body?: string;
+    /**
+     * Optional filters for the campaign audience
+     */
     audienceFilters?: Array<AudienceFilterDto>;
+    /**
+     * Optional date and time to schedule the campaign
+     */
     scheduledAt?: string;
 }
 export enum CreateCampaignCommandChannelEnum {

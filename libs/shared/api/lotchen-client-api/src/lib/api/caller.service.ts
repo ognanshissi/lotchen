@@ -19,7 +19,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { TwilioAccessTokenResponse } from '../model/twilio-access-token-response.interface';
+import { CallerTokenResponse } from '../model/caller-token-response.interface';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -96,10 +96,10 @@ export class CallerApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public callerControllerTokenV1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<TwilioAccessTokenResponse>;
-    public callerControllerTokenV1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TwilioAccessTokenResponse>>;
-    public callerControllerTokenV1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TwilioAccessTokenResponse>>;
-    public callerControllerTokenV1(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public callerTokenControllerTokenV1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CallerTokenResponse>;
+    public callerTokenControllerTokenV1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CallerTokenResponse>>;
+    public callerTokenControllerTokenV1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CallerTokenResponse>>;
+    public callerTokenControllerTokenV1(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -138,7 +138,7 @@ export class CallerApiService {
         }
 
         let localVarPath = `/api/v1/caller/token`;
-        return this.httpClient.request<TwilioAccessTokenResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CallerTokenResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

@@ -5,19 +5,39 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 import { ActivitiesProvider } from '../../activities.provider';
 
 export class CheckMeetingConflictsQuery {
-  @ApiProperty() @IsNotEmpty() ownerId!: string;
-  @ApiProperty() @IsNotEmpty() startDate!: string;
-  @ApiProperty() @IsNotEmpty() startTime!: string;
-  @ApiProperty() @IsNotEmpty() endDate!: string;
-  @ApiProperty() @IsNotEmpty() endTime!: string;
-  @ApiProperty({ required: false }) @IsOptional() excludeMeetingId?: string;
+  @ApiProperty({ description: 'ID of the user who owns the meeting' })
+  @IsNotEmpty()
+  ownerId!: string;
+  @ApiProperty({ description: 'Start date of the new meeting' })
+  @IsNotEmpty()
+  startDate!: string;
+  @ApiProperty({ description: 'Start time of the new meeting' })
+  @IsNotEmpty()
+  startTime!: string;
+  @ApiProperty({ description: 'End date of the new meeting' })
+  @IsNotEmpty()
+  endDate!: string;
+  @ApiProperty({ description: 'End time of the new meeting' })
+  @IsNotEmpty()
+  endTime!: string;
+  @ApiProperty({
+    required: false,
+    description: 'ID of the meeting to exclude from conflict checking',
+  })
+  @IsOptional()
+  excludeMeetingId?: string;
 }
 
 export class ConflictingMeetingResponse {
-  @ApiProperty() id!: string;
-  @ApiProperty() title!: string;
-  @ApiProperty() startAt!: any;
-  @ApiProperty() endAt!: any;
+  @ApiProperty({ description: 'ID of the conflicting meeting' }) id!: string;
+  @ApiProperty({ description: 'Title of the conflicting meeting' })
+  title!: string;
+  @ApiProperty({
+    description: 'Start date and time of the conflicting meeting',
+  })
+  startAt!: any;
+  @ApiProperty({ description: 'End date and time of the conflicting meeting' })
+  endAt!: any;
 }
 
 @Injectable()

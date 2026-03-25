@@ -6,9 +6,11 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from '@lotchen/api/core';
 import {
   CreateCallLogCommand,
   CreateCallLogCommandHandler,
@@ -17,6 +19,14 @@ import {
   FindAllCallLogsQueryHandler,
   FindAllCallLogsQueryResponse,
 } from './find-call-logs/find-call-logs.query';
+import {
+  UpdateCallLogCommand,
+  UpdateCallLogCommandHandler,
+} from './update-call-log/update-call-log.command';
+import {
+  RecordingCallbackCommand,
+  RecordingCallbackCommandHandler,
+} from './recording-callback/recording-callback.command';
 
 @Controller({
   path: 'call-logs',
@@ -26,19 +36,42 @@ import {
 export class CallLogsController {
   constructor(
     private readonly _createCallLogCommandHandler: CreateCallLogCommandHandler,
-    private readonly _findAllCallLogsQueryHandler: FindAllCallLogsQueryHandler
+    private readonly _findAllCallLogsQueryHandler: FindAllCallLogsQueryHandler,
+    private readonly _updateCallLogCommandHandler: UpdateCallLogCommandHandler,
+    private readonly _recordingCallbackCommandHandler: RecordingCallbackCommandHandler
   ) {}
 
   @HttpCode(HttpStatus.CREATED)
   @ApiResponse({
     status: 201,
-    description: 'Contact created',
+    description: 'Call log created',
   })
   @Post()
   public async createCallLog(
     @Body() request: CreateCallLogCommand
   ): Promise<void> {
     await this._createCallLogCommandHandler.handlerAsync(request);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({ status: 200, description: 'Recording callback received' })
+  @Post('recording-callback')
+  public async recordingCallback(
+    @Body() command: RecordingCallbackCommand
+  ): Promise<void> {
+    await this._recordingCallbackCommandHandler.handlerAsync(command);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({ status: 200, description: 'Call log updated' })
+  @Patch(':id')
+  public async updateCallLog(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() command: UpdateCallLogCommand
+  ): Promise<void> {
+    command.id = id;
+    await this._updateCallLogCommandHandler.handlerAsync(command);
   }
 
   @HttpCode(HttpStatus.OK)
