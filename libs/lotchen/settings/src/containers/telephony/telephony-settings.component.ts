@@ -16,6 +16,7 @@ import { TasInput } from '@talisoft/ui/input';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
 import { SnackbarService } from '@talisoft/ui/snackbar';
+import { TelephonyConfigApiService } from '@talisoft/api/lotchen-client-api';
 
 @Component({
   selector: 'settings-telephony',
@@ -37,6 +38,9 @@ import { SnackbarService } from '@talisoft/ui/snackbar';
 export class TelephonySettingsComponent implements OnInit {
   private readonly _http = inject(HttpClient);
   private readonly _snackbar = inject(SnackbarService);
+  private readonly _telephonyConfigApiService = inject(
+    TelephonyConfigApiService
+  );
 
   public loading = signal(true);
   public saving = signal(false);
@@ -69,37 +73,39 @@ export class TelephonySettingsComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this._http.get<any>('/api/v1/telephony-config').subscribe({
-      next: (config) => {
-        if (config) {
-          this.configId.set(config.id);
-          this.form.patchValue({
-            provider: config.provider ?? 'twilio',
-            twilioAccountSid: config.twilioConfig?.accountSid ?? '',
-            twilioApiKey: config.twilioConfig?.apiKey ?? '',
-            twilioApiSecret: config.twilioConfig?.apiSecret ?? '',
-            twilioTwimlAppSid: config.twilioConfig?.twimlAppSid ?? '',
-            twilioCallerId: config.twilioConfig?.callerId ?? '',
-            ringoverApiKey: config.ringoverConfig?.apiKey ?? '',
-            ringoverTeamId: config.ringoverConfig?.teamId ?? '',
-            ringoverWebhookSecret: config.ringoverConfig?.webhookSecret ?? '',
-            asteriskServerHost: config.asteriskConfig?.serverHost ?? '',
-            asteriskServerPort:
-              config.asteriskConfig?.serverPort?.toString() ?? '5060',
-            asteriskWsUrl: config.asteriskConfig?.wsUrl ?? '',
-            asteriskSipDomain: config.asteriskConfig?.sipDomain ?? '',
-            asteriskStunServer: config.asteriskConfig?.stunServer ?? '',
-            asteriskTurnServer: config.asteriskConfig?.turnServer ?? '',
-            asteriskTurnUsername: config.asteriskConfig?.turnUsername ?? '',
-            asteriskTurnPassword: config.asteriskConfig?.turnPassword ?? '',
-            recordingEnabled: config.recordingEnabled ?? false,
-            recordingConsent: config.recordingConsent ?? 'disabled',
-          });
-        }
-        this.loading.set(false);
-      },
-      error: () => this.loading.set(false),
-    });
+    this._telephonyConfigApiService
+      .telephonyConfigControllerFindV1()
+      .subscribe({
+        next: (config) => {
+          if (config) {
+            this.configId.set(config.id);
+            this.form.patchValue({
+              provider: config.provider ?? 'twilio',
+              twilioAccountSid: config.twilioConfig?.accountSid ?? '',
+              twilioApiKey: config.twilioConfig?.apiKey ?? '',
+              twilioApiSecret: config.twilioConfig?.apiSecret ?? '',
+              twilioTwimlAppSid: config.twilioConfig?.twimlAppSid ?? '',
+              twilioCallerId: config.twilioConfig?.callerId ?? '',
+              ringoverApiKey: config.ringoverConfig?.apiKey ?? '',
+              ringoverTeamId: config.ringoverConfig?.teamId ?? '',
+              ringoverWebhookSecret: config.ringoverConfig?.webhookSecret ?? '',
+              asteriskServerHost: config.asteriskConfig?.serverHost ?? '',
+              asteriskServerPort:
+                config.asteriskConfig?.serverPort?.toString() ?? '5060',
+              asteriskWsUrl: config.asteriskConfig?.wsUrl ?? '',
+              asteriskSipDomain: config.asteriskConfig?.sipDomain ?? '',
+              asteriskStunServer: config.asteriskConfig?.stunServer ?? '',
+              asteriskTurnServer: config.asteriskConfig?.turnServer ?? '',
+              asteriskTurnUsername: config.asteriskConfig?.turnUsername ?? '',
+              asteriskTurnPassword: config.asteriskConfig?.turnPassword ?? '',
+              recordingEnabled: config.recordingEnabled ?? false,
+              recordingConsent: config.recordingConsent ?? 'disabled',
+            });
+          }
+          this.loading.set(false);
+        },
+        error: () => this.loading.set(false),
+      });
   }
 
   public save(): void {

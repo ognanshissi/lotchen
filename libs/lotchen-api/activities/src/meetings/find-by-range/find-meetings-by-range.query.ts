@@ -36,6 +36,7 @@ export class FindMeetingsByRangeQueryHandler
   ): Promise<FindMeetingsByRangeResponse[]> {
     try {
       // TODO: Implement date range filtering logic based on startAt and endAt fields
+
       const filter: any = {
         deletedAt: null,
       };

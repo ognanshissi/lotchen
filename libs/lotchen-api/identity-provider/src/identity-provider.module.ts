@@ -17,6 +17,7 @@ import { PermissionsController } from './permissions';
 import { TeamsController, teamsHandlers } from './teams';
 import { organizationsHandlers } from './organizations';
 import { OrganizationsController } from './organizations/organizations.controller';
+import { CurrenciesController, currenciesHandlers } from './currencies';
 
 @Module({
   imports: [],
@@ -30,6 +31,7 @@ import { OrganizationsController } from './organizations/organizations.controlle
     AgenciesController,
     TeamsController,
     OrganizationsController,
+    CurrenciesController,
   ],
   providers: [
     ...organizationsHandlers,
@@ -40,6 +42,7 @@ import { OrganizationsController } from './organizations/organizations.controlle
     ...usersHandlers,
     ...profileHandlers,
     ...teamsHandlers,
+    ...currenciesHandlers,
     CreateRoleCommandHandler,
     UpdateRolePermissionsCommandHandler,
     FindRoleByIdQueryHandler,

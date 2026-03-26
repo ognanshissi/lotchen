@@ -5,13 +5,50 @@ import { CallingProvider } from '../../calling.provider';
 
 export class FindTelephonyConfigQuery {}
 
+export class TwilioConfigDto {
+  @ApiProperty() accountSid!: string;
+  @ApiProperty() apiSecret!: string;
+  @ApiProperty() twimlAppSid!: string;
+  @ApiProperty() apiKey!: string;
+  @ApiProperty() callerId!: string;
+}
+
+export class RingoverConfigDto {
+  @ApiProperty() apiKey!: string;
+  @ApiProperty() teamId!: string;
+  @ApiProperty() webhookSecret!: string;
+}
+
+export class AsteriskConfigDto {
+  @ApiProperty() serverHost!: string;
+  @ApiProperty() stunServer!: string;
+  @ApiProperty() sipDomain!: string;
+  @ApiProperty() wsUrl!: string;
+  @ApiProperty() serverPort!: number;
+  @ApiProperty() turnServer!: string;
+  @ApiProperty() turnUsername!: string;
+  @ApiProperty() turnPassword!: string;
+  @ApiProperty() sipTrunkProvider!: string;
+}
+
 export class FindTelephonyConfigResponse {
   @ApiProperty() id!: string;
   @ApiProperty() provider!: string;
   @ApiProperty() isActive!: boolean;
-  @ApiPropertyOptional() twilioConfig?: any;
-  @ApiPropertyOptional() ringoverConfig?: any;
-  @ApiPropertyOptional() asteriskConfig?: any;
+  @ApiPropertyOptional({
+    description: 'Twilio configuration details, if provider is Twilio',
+  })
+  twilioConfig?: TwilioConfigDto | null;
+  @ApiPropertyOptional({
+    type: RingoverConfigDto,
+    description: 'RingOver configuration details, if provider is RingOver',
+  })
+  ringoverConfig?: RingoverConfigDto | null;
+  @ApiPropertyOptional({
+    type: AsteriskConfigDto,
+    description: 'Asterisk configuration details, if provider is Asterisk',
+  })
+  asteriskConfig?: AsteriskConfigDto | null;
   @ApiProperty() recordingEnabled!: boolean;
   @ApiProperty() recordingConsent!: string;
 }

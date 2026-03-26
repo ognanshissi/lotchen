@@ -41,6 +41,9 @@ export enum PermissionsAction {
   permissionUpdate = 'permission_update',
   permissionRead = 'permission_read',
 
+  // currencies
+  currencyManage = 'currency_manage',
+
   // super admin permission
   allRecordManage = 'all_records_manage',
 }
@@ -79,6 +82,16 @@ export const permissionsActions: PermissionGroup[] = [
       {
         code: PermissionsAction.userManage,
         name: { fr: 'Gere un utilisateur', en: 'Manage user' },
+      },
+    ],
+  },
+  {
+    title: { fr: 'Devises', en: 'Currencies' },
+    code: 'currencies',
+    permissions: [
+      {
+        code: PermissionsAction.currencyManage,
+        name: { fr: 'Gérer les devises', en: 'Manage currencies' },
       },
     ],
   },

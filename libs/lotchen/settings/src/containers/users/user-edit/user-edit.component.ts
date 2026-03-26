@@ -11,7 +11,7 @@ import { TasCard } from '@talisoft/ui/card';
 import { JsonPipe, NgFor, NgIf } from '@angular/common';
 
 import { TasTable } from '@talisoft/ui/table';
-import { AssignPermissionDialogComponent } from '../../../components/assign-permission-dialog.component';
+import { AssignPermissionDialogComponent } from '../../../components/assign-permission-dialog/assign-permission-dialog.component';
 import { SideDrawerService } from '@talisoft/ui/side-drawer';
 import { UsersApiService } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';

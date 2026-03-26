@@ -55,4 +55,9 @@ export const settingsRoutes: Routes = [
     loadComponent: () =>
       import('./containers/telephony/telephony-settings.component'),
   },
+  {
+    path: 'currency',
+    loadComponent: () =>
+      import('./containers/currency/currency-settings.component'),
+  },
 ];

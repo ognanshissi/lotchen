@@ -9,15 +9,27 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RingoverConfigDto } from './ringover-config-dto.interface';
+import { TwilioConfigDto } from './twilio-config-dto.interface';
+import { AsteriskConfigDto } from './asterisk-config-dto.interface';
 
 
 export interface FindTelephonyConfigResponse { 
     id: string;
     provider: string;
     isActive: boolean;
-    twilioConfig?: object;
-    ringoverConfig?: object;
-    asteriskConfig?: object;
+    /**
+     * Twilio configuration details, if provider is Twilio
+     */
+    twilioConfig?: TwilioConfigDto;
+    /**
+     * RingOver configuration details, if provider is RingOver
+     */
+    ringoverConfig?: RingoverConfigDto;
+    /**
+     * Asterisk configuration details, if provider is Asterisk
+     */
+    asteriskConfig?: AsteriskConfigDto;
     recordingEnabled: boolean;
     recordingConsent: string;
 }

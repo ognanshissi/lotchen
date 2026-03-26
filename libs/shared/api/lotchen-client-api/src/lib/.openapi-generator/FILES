@@ -8,6 +8,7 @@ api/call-logs.service.ts
 api/caller.service.ts
 api/campaigns.service.ts
 api/contacts.service.ts
+api/currencies.service.ts
 api/deals.service.ts
 api/event-types.service.ts
 api/leads.service.ts
@@ -51,6 +52,8 @@ model/create-agency-command.interface.ts
 model/create-call-log-command.interface.ts
 model/create-campaign-command.interface.ts
 model/create-contact-command.interface.ts
+model/create-currency-command-response.interface.ts
+model/create-currency-command.interface.ts
 model/create-deal-command.interface.ts
 model/create-event-type-command.interface.ts
 model/create-lead-command.interface.ts
@@ -81,6 +84,7 @@ model/find-all-agencies-address-dto.interface.ts
 model/find-all-agencies-query-response.interface.ts
 model/find-all-call-logs-query-response.interface.ts
 model/find-all-contacts-query-response.interface.ts
+model/find-all-currencies-query-response.interface.ts
 model/find-all-event-types-query-response.interface.ts
 model/find-all-meetings-query-response.interface.ts
 model/find-all-notes-query-response.interface.ts
@@ -136,6 +140,7 @@ model/reset-password-command-response.interface.ts
 model/reset-password-command.interface.ts
 model/retry-execution-step-command-request.interface.ts
 model/ring-over-config-dto.interface.ts
+model/ringover-config-dto.interface.ts
 model/set-meeting-outcome-command.interface.ts
 model/skip-execution-step-command-request.interface.ts
 model/status-history-dto.interface.ts

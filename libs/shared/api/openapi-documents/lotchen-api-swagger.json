@@ -1471,6 +1471,168 @@
         ]
       }
     },
+    "/api/v1/currencies": {
+      "post": {
+        "operationId": "CurrenciesController_create_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCurrencyCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCurrencyCommandResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Currencies"
+        ]
+      },
+      "get": {
+        "operationId": "CurrenciesController_findAll_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllCurrenciesQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Currencies"
+        ]
+      }
+    },
+    "/api/v1/currencies/{id}": {
+      "patch": {
+        "operationId": "CurrenciesController_update_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Currencies"
+        ]
+      },
+      "delete": {
+        "operationId": "CurrenciesController_delete_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Currencies"
+        ]
+      }
+    },
+    "/api/v1/currencies/{id}/set-default": {
+      "patch": {
+        "operationId": "CurrenciesController_setDefault_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Currencies"
+        ]
+      }
+    },
     "/api/v1/contacts": {
       "post": {
         "operationId": "ContactsController_createContact_v1",
@@ -5547,6 +5709,87 @@
           "description"
         ]
       },
+      "CreateCurrencyCommand": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "ISO 4217 currency code",
+            "example": "XOF"
+          },
+          "name": {
+            "type": "string",
+            "description": "Currency display name",
+            "example": "Franc CFA"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Currency symbol",
+            "example": "FCFA"
+          },
+          "rate": {
+            "type": "number",
+            "description": "Currency exchange rate to default currency",
+            "example": 1
+          },
+          "isDefault": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "symbol",
+          "rate"
+        ]
+      },
+      "CreateCurrencyCommandResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "FindAllCurrenciesQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "rate": {
+            "type": "number"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "name",
+          "rate",
+          "symbol",
+          "isDefault",
+          "isActive"
+        ]
+      },
       "LocationDto": {
         "type": "object",
         "properties": {
@@ -8585,6 +8828,25 @@
           "provider"
         ]
       },
+      "RingoverConfigDto": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "webhookSecret": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "apiKey",
+          "teamId",
+          "webhookSecret"
+        ]
+      },
       "FindTelephonyConfigResponse": {
         "type": "object",
         "properties": {
@@ -8598,13 +8860,28 @@
             "type": "boolean"
           },
           "twilioConfig": {
-            "type": "object"
+            "description": "Twilio configuration details, if provider is Twilio",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TwilioConfigDto"
+              }
+            ]
           },
           "ringoverConfig": {
-            "type": "object"
+            "description": "RingOver configuration details, if provider is RingOver",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RingoverConfigDto"
+              }
+            ]
           },
           "asteriskConfig": {
-            "type": "object"
+            "description": "Asterisk configuration details, if provider is Asterisk",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AsteriskConfigDto"
+              }
+            ]
           },
           "recordingEnabled": {
             "type": "boolean"
