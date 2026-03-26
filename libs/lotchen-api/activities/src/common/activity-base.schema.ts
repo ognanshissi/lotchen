@@ -12,6 +12,6 @@ export class ActivityBase extends AggregateRoot {
   })
   relatedToType!: string;
 
-  @Prop({ type: 'UUID', required: false })
+  @Prop({ type: String, required: false, default: null })
   relatedToId!: string;
 }

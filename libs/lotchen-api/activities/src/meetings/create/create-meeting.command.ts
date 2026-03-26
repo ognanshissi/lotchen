@@ -91,6 +91,8 @@ export class CreateMeetingCommandHandler
   ) {}
 
   public async handlerAsync(command: CreateMeetingCommand): Promise<void> {
+    console.log(command);
+
     try {
       const meeting = new this._activivitiesProvider.MeetingModel({
         title: command.title,
@@ -108,7 +110,7 @@ export class CreateMeetingCommandHandler
         createdByInfo: this._activivitiesProvider.user(),
         attendees: command.attendees, // list of user ids
         ownerId: command.ownerId,
-        relatedToId: command.relatedToId,
+        relatedToId: command.relatedToId ?? null,
         relatedToType: 'Meeting',
         meetingTimeZone: command.meetingTimeZone,
         eventTypeId: command.eventTypeId,
