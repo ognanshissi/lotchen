@@ -35,17 +35,20 @@ export class FindMeetingsByRangeQueryHandler
     query: FindMeetingsByRangeQuery
   ): Promise<FindMeetingsByRangeResponse[]> {
     try {
+      // TODO: Implement date range filtering logic based on startAt and endAt fields
       const filter: any = {
         deletedAt: null,
-        'startAt.date': {
-          $gte: new Date(query.startDate),
-          $lte: new Date(query.endDate),
-        },
       };
 
+      // 'startAt.date': {
+      //     $gte: new Date(query.startDate),
+      //     $lte: new Date(query.endDate),
+      //   },
       if (query.ownerId) {
         filter.ownerId = query.ownerId;
       }
+
+      console.log('Querying meetings with filter:', JSON.stringify(filter));
 
       const meetings = await this._activitiesProvider.MeetingModel.find(
         filter,
