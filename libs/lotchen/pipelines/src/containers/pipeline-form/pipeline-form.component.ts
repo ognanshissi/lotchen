@@ -24,6 +24,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { SalesPipelinesApiService } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';
+import { CurrencyService } from '@lotchen/lotchen/common/services';
 import { TasCard, TasCardHeader } from '@talisoft/ui/card';
 import { TasTitle } from '@talisoft/ui/title';
 import { TasText } from '@talisoft/ui/text';
@@ -61,6 +62,7 @@ export class PipelineFormComponent implements OnInit {
   private readonly _route = inject(ActivatedRoute);
   private readonly _pipelinesApi = inject(SalesPipelinesApiService);
   private readonly _snackbar = inject(SnackbarService);
+  private readonly _currencyService = inject(CurrencyService);
 
   isLoading = signal(false);
   isSaving = signal(false);
@@ -71,7 +73,7 @@ export class PipelineFormComponent implements OnInit {
   public form = new FormGroup({
     name: new FormControl('', Validators.required),
     description: new FormControl(''),
-    currency: new FormControl('XOF'),
+    currency: new FormControl(this._currencyService.defaultCurrencyCode()),
     stages: this._fb.array([]),
   });
 
@@ -191,7 +193,7 @@ export class PipelineFormComponent implements OnInit {
     const payload = {
       name: value.name!,
       description: value.description || '',
-      currency: value.currency || 'XOF',
+      currency: value.currency || this._currencyService.defaultCurrencyCode(),
       stages: value.stages.map((s: any, i: number) => ({
         stageId: s.stageId || undefined,
         name: s.name,

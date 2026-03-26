@@ -5,7 +5,8 @@ import {
   input,
   output,
 } from '@angular/core';
-import { DatePipe, CurrencyPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
+import { TasCurrencyPipe } from '@talisoft/ui/currency-pipe';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { TasIcon } from '@talisoft/ui/icon';
 
@@ -14,7 +15,7 @@ import { TasIcon } from '@talisoft/ui/icon';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [DatePipe, CurrencyPipe, CdkDrag, TasIcon],
+  imports: [DatePipe, TasCurrencyPipe, CdkDrag, TasIcon],
   template: `
     <div
       cdkDrag
@@ -30,10 +31,7 @@ import { TasIcon } from '@talisoft/ui/icon';
 
       @if (deal().amount) {
       <div class="text-sm font-semibold text-primary mb-2">
-        {{
-          deal().amount
-            | currency : deal().currency || 'XOF' : 'symbol-narrow' : '1.0-0'
-        }}
+        {{ deal().amount | tasCurrency : deal().currency }}
       </div>
       } @if (deal().contactName) {
       <div class="flex items-center gap-1.5 text-xs text-gray-500 mb-1">

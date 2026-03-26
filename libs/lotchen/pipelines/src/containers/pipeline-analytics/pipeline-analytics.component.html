@@ -97,10 +97,7 @@
             <div class="text-2xl font-bold text-gray-900">
               {{
                 analytics().winLossStats.totalWonValue
-                  | currency
-                    : pipeline()?.currency || 'XOF'
-                    : 'symbol-narrow'
-                    : '1.0-0'
+                  | tasCurrency : pipeline()?.currency
               }}
             </div>
           </div>
@@ -154,13 +151,7 @@
           </div>
         </div>
         <div class="w-32 text-right text-sm text-gray-500">
-          {{
-            stage.totalValue
-              | currency
-                : pipeline()?.currency || 'XOF'
-                : 'symbol-narrow'
-                : '1.0-0'
-          }}
+          {{ stage.totalValue | tasCurrency : pipeline()?.currency }}
         </div>
         <div class="w-24 text-right text-xs text-gray-400">
           ~{{ stage.avgDaysInStage }}j
@@ -246,10 +237,7 @@
             <div class="text-sm text-gray-500">
               {{
                 analytics().winLossStats.totalWonValue
-                  | currency
-                    : pipeline()?.currency || 'XOF'
-                    : 'symbol-narrow'
-                    : '1.0-0'
+                  | tasCurrency : pipeline()?.currency
               }}
             </div>
           </div>
@@ -264,10 +252,7 @@
             <div class="text-sm text-gray-500">
               {{
                 analytics().winLossStats.totalLostValue
-                  | currency
-                    : pipeline()?.currency || 'XOF'
-                    : 'symbol-narrow'
-                    : '1.0-0'
+                  | tasCurrency : pipeline()?.currency
               }}
             </div>
           </div>
@@ -333,13 +318,7 @@
                 {{ agent.wonCount }}
               </td>
               <td class="py-2 text-sm text-right text-gray-600">
-                {{
-                  agent.totalValue
-                    | currency
-                      : pipeline()?.currency || 'XOF'
-                      : 'symbol-narrow'
-                      : '1.0-0'
-                }}
+                {{ agent.totalValue | tasCurrency : pipeline()?.currency }}
               </td>
             </tr>
             }

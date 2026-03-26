@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
@@ -11,6 +11,7 @@ import {
   TasNavigationSidebar,
 } from '@talisoft/ui/layouts';
 import { UserMenuComponent } from '../../user-menu/user-menu.component';
+import { CurrencyService } from '../../../services/currency.service';
 
 @Component({
   selector: 'common-portal-layout',
@@ -29,9 +30,12 @@ import { UserMenuComponent } from '../../user-menu/user-menu.component';
   ],
 })
 export class PortalLayoutComponent implements OnInit {
+  private readonly _currencyService = inject(CurrencyService);
+
   public navigationItems: NavigationItem[] = [];
 
   public ngOnInit() {
+    this._currencyService.loadCurrencies();
     this.navigationItems = [
       {
         id: 'dashboard',

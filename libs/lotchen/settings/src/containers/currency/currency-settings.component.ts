@@ -6,22 +6,12 @@ import { ButtonModule } from '@talisoft/ui/button';
 import { TasText } from '@talisoft/ui/text';
 import { Dialog } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
-import { HttpClient } from '@angular/common/http';
 import { AddCurrencyDialogComponent } from '../../components/add-currency-dialog/add-currency-dialog.component';
 import {
   CurrenciesApiService,
   FindAllCurrenciesQueryResponse,
 } from '@talisoft/api/lotchen-client-api';
-
-export interface CurrencyResponse {
-  id: string;
-  code: string;
-  name: string;
-  rate: number;
-  symbol: string;
-  isDefault: boolean;
-  isActive: boolean;
-}
+import { CurrencyService } from '@lotchen/lotchen/common/services';
 
 @Component({
   selector: 'settings-currency',
@@ -72,7 +62,7 @@ export interface CurrencyResponse {
               <td class="py-3 px-4 font-medium">{{ currency.code }}</td>
               <td class="py-3 px-4">{{ currency.name }}</td>
               <td class="py-3 px-4">{{ currency.symbol }}</td>
-              <td class="py-3 px-4">{{ '' }}</td>
+              <td class="py-3 px-4">{{ currency.rate }}</td>
               <td class="py-3 px-4">
                 @if (currency.isDefault) {
                 <span
@@ -115,10 +105,10 @@ export interface CurrencyResponse {
   `,
 })
 export class CurrencySettingsComponent implements OnInit {
-  private readonly _http = inject(HttpClient);
   private readonly _dialog = inject(Dialog);
   private readonly _snackbar = inject(SnackbarService);
   private readonly _currenciesApiService = inject(CurrenciesApiService);
+  private readonly _currencyService = inject(CurrencyService);
 
   public currencies = signal<FindAllCurrenciesQueryResponse[]>([]);
 
@@ -128,7 +118,10 @@ export class CurrencySettingsComponent implements OnInit {
 
   public loadCurrencies(): void {
     this._currenciesApiService.currenciesControllerFindAllV1().subscribe({
-      next: (data) => this.currencies.set(data),
+      next: (data) => {
+        this.currencies.set(data);
+        this._currencyService.refresh();
+      },
     });
   }
 

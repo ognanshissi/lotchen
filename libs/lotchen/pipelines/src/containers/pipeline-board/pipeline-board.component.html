@@ -47,7 +47,7 @@
       <pipeline-column
         [stage]="stage"
         [deals]="getDealsForStage(stage.stageId)"
-        [currency]="pipeline()?.currency || 'XOF'"
+        [currency]="pipeline()?.currency"
         (dropped)="onDrop($event)"
         (dealClicked)="openDealDetail($event)"
         (winClicked)="winDeal($event)"

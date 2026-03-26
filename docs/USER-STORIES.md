@@ -810,6 +810,28 @@ Acceptance Criteria:
 
 ---
 
+## Module 17: Settings & Configuration
+
+### Epic 17.1 — Currency Management
+
+**US-17.1.1** — Configure currencies
+
+> As an **admin**, I want to manage currencies used across the platform (deals, products, payments), so that the system reflects the correct monetary units.
+
+Acceptance Criteria:
+
+- [x] CRUD for currencies: code (ISO 4217), name, symbol, exchange rate, active status
+- [x] Only one currency can be set as default per tenant
+- [x] Soft delete prevents deleting the default currency
+- [x] Duplicate code detection on create/update
+- [x] Mutation endpoints restricted to `currency_manage` permission
+- [x] Settings > Monnaie page displays currencies in a table (code, name, symbol, rate, default badge)
+- [x] Add/Edit currency via side drawer dialog with form validation
+- [x] "Set as default" action on non-default currencies
+- [x] Permission group "Devises" added to role configuration
+
+---
+
 ## Cross-Cutting Concerns
 
 ### Security & Compliance

@@ -6,7 +6,7 @@ import {
   output,
   computed,
 } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { TasCurrencyPipe } from '@talisoft/ui/currency-pipe';
 import { CdkDropList } from '@angular/cdk/drag-drop';
 import { DealCardComponent } from '../deal-card/deal-card.component';
 
@@ -15,7 +15,7 @@ import { DealCardComponent } from '../deal-card/deal-card.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [CurrencyPipe, CdkDropList, DealCardComponent],
+  imports: [TasCurrencyPipe, CdkDropList, DealCardComponent],
   template: `
     <div class="flex flex-col h-full min-w-[280px] max-w-[320px]">
       <!-- Column header -->
@@ -40,7 +40,7 @@ import { DealCardComponent } from '../deal-card/deal-card.component';
           </span>
         </div>
         <div class="text-xs text-gray-500">
-          {{ totalValue() | currency : currency() : 'symbol-narrow' : '1.0-0' }}
+          {{ totalValue() | tasCurrency : currency() }}
         </div>
       </div>
 
@@ -67,7 +67,7 @@ import { DealCardComponent } from '../deal-card/deal-card.component';
 export class PipelineColumnComponent {
   stage = input.required<any>();
   deals = input.required<any[]>();
-  currency = input<string>('XOF');
+  currency = input<string>();
 
   dropped = output<any>();
   dealClicked = output<any>();

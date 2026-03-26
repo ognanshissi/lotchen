@@ -1,9 +1,10 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasTitle } from '@talisoft/ui/title';
 import { TasIcon } from '@talisoft/ui/icon';
 import { Chart } from 'chart.js/auto';
 import { TasCard } from '@talisoft/ui/card';
+import { CurrencyService } from '@lotchen/lotchen/common/services';
 
 @Component({
   selector: 'dashboard-home',
@@ -12,6 +13,8 @@ import { TasCard } from '@talisoft/ui/card';
   imports: [ButtonModule, TasTitle, TasIcon, TasCard],
 })
 export class HomeComponent implements AfterViewInit {
+  private readonly _currencyService = inject(CurrencyService);
+
   public ngAfterViewInit() {
     setTimeout(() => {
       this.createLoanChart();
@@ -56,7 +59,10 @@ export class HomeComponent implements AfterViewInit {
           y: {
             beginAtZero: true,
             ticks: {
-              callback: (value) => value.toLocaleString() + ' FCFA',
+              callback: (value) =>
+                value.toLocaleString() +
+                ' ' +
+                this._currencyService.defaultCurrencySymbol(),
             },
           },
         },

@@ -36,7 +36,6 @@ export class CurrenciesController {
   ) {}
 
   @Post()
-  @Permissions(PermissionsAction.currencyManage)
   @ApiResponse({
     status: HttpStatus.CREATED,
     type: CreateCurrencyCommandResponse,
@@ -54,7 +53,6 @@ export class CurrenciesController {
   }
 
   @Patch(':id')
-  @Permissions(PermissionsAction.currencyManage)
   async update(
     @Param('id') id: string,
     @Body() payload: Omit<CreateCurrencyCommand, 'code'> & { code?: string }

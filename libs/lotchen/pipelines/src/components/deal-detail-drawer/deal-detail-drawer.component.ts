@@ -6,7 +6,8 @@ import {
   signal,
   OnInit,
 } from '@angular/core';
-import { DatePipe, CurrencyPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
+import { TasCurrencyPipe } from '@talisoft/ui/currency-pipe';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { DealsApiService } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';
@@ -19,7 +20,7 @@ import { TasSpinner } from '@talisoft/ui/spinner';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [DatePipe, CurrencyPipe, TasIcon, ButtonModule, TasSpinner],
+  imports: [DatePipe, TasCurrencyPipe, TasIcon, ButtonModule, TasSpinner],
   template: `
     <div
       class="bg-white rounded-xl shadow-xl w-[560px] max-h-[90vh] overflow-y-auto"
@@ -48,13 +49,7 @@ import { TasSpinner } from '@talisoft/ui/spinner';
         <div class="flex items-center gap-3">
           @if (deal().amount) {
           <span class="text-lg font-bold text-primary">
-            {{
-              deal().amount
-                | currency
-                  : deal().currency || 'XOF'
-                  : 'symbol-narrow'
-                  : '1.0-0'
-            }}
+            {{ deal().amount | tasCurrency : deal().currency }}
           </span>
           }
           <span
