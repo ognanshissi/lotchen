@@ -37,7 +37,16 @@ export class OverviewComponent {
       type: 'group',
       description: 'Gestion des personnes et vos différents clients',
       id: 'leads_contacts_compte',
-      children: [],
+      children: [
+        {
+          title: 'Capture de leads',
+          type: 'basic',
+          id: 'leads_contacts_capture',
+          link: '/settings/lead-capture',
+          description:
+            'Configurer les intégrations pour capturer des leads (site web, LinkedIn, etc.)',
+        },
+      ],
     },
     {
       title: 'Equipes & Territoires',
@@ -162,14 +171,14 @@ export class OverviewComponent {
           title: 'LinkedIn',
           type: 'basic',
           id: 'communication_channels_linkedin',
-          link: '/settings/linkedin-configuration',
+          link: '/settings/lead-capture',
           description: 'Récuperer les leads depuis vos posts LinkedIn.',
         },
         {
           title: 'Site internet',
           type: 'basic',
           id: 'communication_channels_website',
-          link: '/settings/webiste-configuration',
+          link: '/settings/lead-capture',
           description: 'Créer des formulaires et les intégrer sur votre site.',
         },
         {

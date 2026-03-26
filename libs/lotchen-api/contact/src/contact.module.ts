@@ -37,12 +37,30 @@ import { WebhookLeadCommandHandler } from './leads/capture/webhook-lead.command'
 import { EnrichLeadCommandHandler } from './leads/enrich/enrich-lead.command';
 import { UpdateCallLogCommandHandler } from './call-logs/update-call-log/update-call-log.command';
 import { RecordingCallbackCommandHandler } from './call-logs/recording-callback/recording-callback.command';
+// Capture Config
+import {
+  CaptureConfigController,
+  CaptureConfigProvider,
+  captureConfigProviders,
+  CreateCaptureConfigCommandHandler,
+  FindAllCaptureConfigsQueryHandler,
+  UpdateCaptureConfigCommandHandler,
+  DeleteCaptureConfigCommandHandler,
+  GenerateScriptQueryHandler,
+} from './leads/capture-config';
+import { ImportLinkedInPostCommandHandler } from './leads/capture/import-linkedin-post.command';
 
 @Module({
   imports: [],
-  controllers: [ContactsController, CallLogsController, LeadsController],
+  controllers: [
+    ContactsController,
+    CallLogsController,
+    LeadsController,
+    CaptureConfigController,
+  ],
   providers: [
     ...contactProviders,
+    ...captureConfigProviders,
     CreateContactCommandHandler,
     FindAllContactsQueryHandler,
     FindContactByQueryHandler,
@@ -73,6 +91,14 @@ import { RecordingCallbackCommandHandler } from './call-logs/recording-callback/
     CaptureLeadCommandHandler,
     WebhookLeadCommandHandler,
     EnrichLeadCommandHandler,
+    // Capture Config
+    CaptureConfigProvider,
+    CreateCaptureConfigCommandHandler,
+    FindAllCaptureConfigsQueryHandler,
+    UpdateCaptureConfigCommandHandler,
+    DeleteCaptureConfigCommandHandler,
+    GenerateScriptQueryHandler,
+    ImportLinkedInPostCommandHandler,
   ],
   exports: [ContactProvider],
 })

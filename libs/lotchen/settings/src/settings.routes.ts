@@ -60,4 +60,9 @@ export const settingsRoutes: Routes = [
     loadComponent: () =>
       import('./containers/currency/currency-settings.component'),
   },
+  {
+    path: 'lead-capture',
+    loadComponent: () =>
+      import('./containers/lead-capture/lead-capture-settings.component'),
+  },
 ];

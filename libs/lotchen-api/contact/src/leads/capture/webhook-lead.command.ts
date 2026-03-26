@@ -53,6 +53,7 @@ export class WebhookLeadCommandHandler
       mobileNumber: normalized.mobileNumber,
       source: this.platformToSource(command.platform),
       formData: normalized.formData,
+      apiKey: command.apiKey,
     });
   }
 

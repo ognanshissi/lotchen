@@ -149,10 +149,11 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Auto-generated JavaScript snippet per tenant
-- [ ] Snippet sends form data to `POST /api/v1/leads/capture` endpoint
-- [ ] Captured lead enters predefined workflow (assigned to territory/team/agent)
-- [ ] Snippet configuration UI: map form fields to CRM fields
+- [x] Auto-generated JavaScript snippet per capture config (tenant-scoped with API key)
+- [x] Snippet sends form data to `POST /api/v1/leads/capture` endpoint
+- [x] Captured lead assigned to territory/team/agent via routing rule (fixed or round-robin)
+- [x] Snippet configuration UI: map form fields to CRM fields via `fieldMapping`
+- [x] Settings > Capture de leads page with listing, add/edit, script preview, delete
 
 **US-2.2.2** — Import leads from platforms (Google Forms, LinkedIn, Facebook, Website)
 
@@ -160,10 +161,12 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Integration configuration per platform (API key, webhook URL, field mapping)
-- [ ] Incoming leads deduplicated against existing contacts
-- [ ] Source tracked (Google Form, LinkedIn, Facebook, Website, etc.)
-- [ ] Real-time or near real-time sync (webhook preferred)
+- [x] Integration configuration per platform (API key, field mapping, routing rule) via CaptureConfig
+- [x] Incoming leads deduplicated against existing contacts (email/mobile)
+- [x] Source tracked (Google Form, LinkedIn, Facebook, Website, etc.)
+- [x] Webhook endpoint `POST /api/v1/leads/webhook/:platform` passes API key for validation
+- [x] LinkedIn post commenter import via dedicated endpoint + frontend dialog
+- [ ] Real-time or near real-time sync with native platform APIs (OAuth-based)
 
 **US-2.2.3** — Lead enrichment from comments and interests
 
@@ -652,7 +655,7 @@ Acceptance Criteria:
 
 ---
 
-## Module 14: Lead Capture Script Generator
+## Module 14: Lead Capture Script Generator + LinkedIn Capture
 
 ### Epic 14.1 — Embeddable Capture Script
 
@@ -662,10 +665,15 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Configuration UI: select target form fields, map to CRM fields, choose workflow/pipeline
-- [ ] Generated script is tenant-scoped (includes API key / tenant identifier)
-- [ ] Script captures form submit event and POSTs to CRM API
-- [ ] CORS policy: whitelist allowed domains per tenant
+- [x] Configuration UI: select target form fields, map to CRM fields, choose routing rule
+- [x] Generated script is tenant-scoped (includes API key / tenant identifier)
+- [x] Script captures form submit event and POSTs to CRM API
+- [x] CORS policy: whitelist allowed domains per capture config
+- [x] CaptureConfig CRUD (`POST/GET/PATCH/DELETE /api/v1/lead-capture-configs`)
+- [x] Auto-generated UUID API key per configuration
+- [x] Script preview dialog with copy-to-clipboard
+- [x] API key validation on `POST /api/v1/leads/capture` (invalid key → 401)
+- [x] Backward compatible: requests without API key still accepted
 
 **US-14.1.2** — Lead routing rules
 
@@ -673,10 +681,29 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Routing rules: by source URL, by form field value, round-robin, fixed assignment
-- [ ] Rule priority ordering
+- [x] Routing rules: round-robin (team rotation) and fixed assignment (specific user)
+- [x] Routing rule configured per capture config via add/edit dialog
+- [x] Round-robin increments `lastAssignedIndex` atomically on each capture
+- [x] Captured leads auto-assigned `assignedToUserId` / `assignedToTeamId` based on rule
+- [ ] Rule priority ordering (multiple rules per config)
 - [ ] Fallback: unmatched leads go to a default queue
 - [ ] Rule testing: simulate a lead submission and show routing result
+
+### Epic 14.2 — LinkedIn Post Capture
+
+**US-14.2.1** — Import leads from LinkedIn post commenters
+
+> As a **marketing manager**, I want to import commenters from a LinkedIn post as leads, so that I capture engaged prospects.
+
+Acceptance Criteria:
+
+- [x] LinkedIn-type capture config with dedicated import endpoint (`POST /api/v1/lead-capture-configs/:id/import-linkedin-post`)
+- [x] Input: post URL + array of commenters (firstName, lastName, profileUrl, headline)
+- [x] Deduplication by `customFields.capture_linkedin_profile_url`
+- [x] Each commenter creates a lead via the existing capture pipeline (with routing rule applied)
+- [x] Response returns `{ imported, skipped }` counts
+- [x] Frontend dialog for manual commenter entry with add/remove rows
+- [ ] Browser extension for auto-extracting commenters from LinkedIn DOM
 
 ---
 
@@ -813,6 +840,22 @@ Acceptance Criteria:
 ## Module 17: Settings & Configuration
 
 ### Epic 17.1 — Currency Management
+
+### Epic 17.2 — Lead Capture Settings
+
+**US-17.2.1** — Lead capture settings page
+
+> As an **admin**, I want a centralized settings page for lead capture integrations, so that I manage all capture sources in one place.
+
+Acceptance Criteria:
+
+- [x] Settings > Capture de leads menu item in "Leads, Contacts & Compte" group
+- [x] LinkedIn and Site internet menu items in "Canaux de communication" link to lead-capture page
+- [x] Table listing all capture configs (name, platform, masked API key, status, domains, actions)
+- [x] Add/edit via side drawer dialog (name, platform, domains, routing rule, field mapping)
+- [x] Script preview dialog for website configs
+- [x] LinkedIn import dialog for LinkedIn configs
+- [x] `lead_capture_manage` permission added to RBAC system
 
 **US-17.1.1** — Configure currencies
 

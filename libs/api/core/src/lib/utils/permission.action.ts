@@ -44,6 +44,9 @@ export enum PermissionsAction {
   // currencies
   currencyManage = 'currency_manage',
 
+  // lead capture
+  leadCaptureManage = 'lead_capture_manage',
+
   // super admin permission
   allRecordManage = 'all_records_manage',
 }
@@ -92,6 +95,19 @@ export const permissionsActions: PermissionGroup[] = [
       {
         code: PermissionsAction.currencyManage,
         name: { fr: 'Gérer les devises', en: 'Manage currencies' },
+      },
+    ],
+  },
+  {
+    title: { fr: 'Capture de leads', en: 'Lead Capture' },
+    code: 'lead_capture',
+    permissions: [
+      {
+        code: PermissionsAction.leadCaptureManage,
+        name: {
+          fr: 'Gérer les configurations de capture',
+          en: 'Manage capture configurations',
+        },
       },
     ],
   },
