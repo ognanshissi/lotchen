@@ -604,7 +604,7 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Product fields: name, type (loan, savings, insurance), interest rate, duration, fees, eligibility criteria
+- [ ] Product fields: name, type (loan, savings, insurance), interest rate, duration, fees, eligibility criteria, metadata
 - [ ] Product variants (e.g., different loan tiers)
 - [ ] Product status: Draft, Active, Deprecated
 

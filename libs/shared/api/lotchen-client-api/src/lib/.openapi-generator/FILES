@@ -11,6 +11,7 @@ api/contacts.service.ts
 api/currencies.service.ts
 api/deals.service.ts
 api/event-types.service.ts
+api/lead-capture-configs.service.ts
 api/leads.service.ts
 api/meetings.service.ts
 api/message-templates.service.ts
@@ -42,6 +43,7 @@ model/audit-user-info-dto.interface.ts
 model/bulk-assign-contacts-command-request.interface.ts
 model/bulk-delete-contacts-command.interface.ts
 model/caller-token-response.interface.ts
+model/capture-config-dto.interface.ts
 model/capture-lead-command.interface.ts
 model/conflicting-meeting-response.interface.ts
 model/contact-info-dto.interface.ts
@@ -51,6 +53,7 @@ model/create-agency-address-dto.interface.ts
 model/create-agency-command.interface.ts
 model/create-call-log-command.interface.ts
 model/create-campaign-command.interface.ts
+model/create-capture-config-command.interface.ts
 model/create-contact-command.interface.ts
 model/create-currency-command-response.interface.ts
 model/create-currency-command.interface.ts
@@ -107,12 +110,16 @@ model/find-user-by-id-query-role-dto.interface.ts
 model/forgot-password-command-response.interface.ts
 model/forgot-password-command.interface.ts
 model/from-agent-lite-dto.interface.ts
+model/generate-script-response.interface.ts
 model/get-me-query-response.interface.ts
 model/get-user-profile-query-response.interface.ts
 model/import-contacts-excel-command-response.interface.ts
 model/import-contacts-excel-error-detail.interface.ts
+model/import-linked-in-post-command-request.interface.ts
+model/import-linked-in-post-response.interface.ts
 model/invite-user-command.interface.ts
 model/leads-controller-paginate-all-leads-v1200-response.interface.ts
+model/linked-in-commenter.interface.ts
 model/location-dto.interface.ts
 model/login-command.interface.ts
 model/lose-deal-command-request.interface.ts
@@ -141,6 +148,8 @@ model/reset-password-command.interface.ts
 model/retry-execution-step-command-request.interface.ts
 model/ring-over-config-dto.interface.ts
 model/ringover-config-dto.interface.ts
+model/routing-rule-dto.interface.ts
+model/routing-rule-response.interface.ts
 model/set-meeting-outcome-command.interface.ts
 model/skip-execution-step-command-request.interface.ts
 model/status-history-dto.interface.ts
@@ -152,6 +161,7 @@ model/trigger-manual-workflow-command.interface.ts
 model/twilio-config-dto.interface.ts
 model/update-call-log-command.interface.ts
 model/update-campaign-command-request.interface.ts
+model/update-capture-config-command-request.interface.ts
 model/update-contact-command-request.interface.ts
 model/update-contact-status-command-request.interface.ts
 model/update-deal-command-request.interface.ts

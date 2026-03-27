@@ -2508,6 +2508,176 @@
         ]
       }
     },
+    "/api/v1/lead-capture-configs": {
+      "post": {
+        "operationId": "CaptureConfigController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCaptureConfigCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Capture config created"
+          }
+        },
+        "tags": [
+          "Lead Capture Configs"
+        ]
+      },
+      "get": {
+        "operationId": "CaptureConfigController_findAll_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "All capture configs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CaptureConfigDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Lead Capture Configs"
+        ]
+      }
+    },
+    "/api/v1/lead-capture-configs/{id}": {
+      "patch": {
+        "operationId": "CaptureConfigController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCaptureConfigCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Capture config updated"
+          }
+        },
+        "tags": [
+          "Lead Capture Configs"
+        ]
+      },
+      "delete": {
+        "operationId": "CaptureConfigController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Capture config deleted (soft)"
+          }
+        },
+        "tags": [
+          "Lead Capture Configs"
+        ]
+      }
+    },
+    "/api/v1/lead-capture-configs/{id}/script": {
+      "get": {
+        "operationId": "CaptureConfigController_generateScript_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generated JS capture script",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateScriptResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Lead Capture Configs"
+        ]
+      }
+    },
+    "/api/v1/lead-capture-configs/{id}/import-linkedin-post": {
+      "post": {
+        "operationId": "CaptureConfigController_importLinkedInPost_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportLinkedInPostCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "LinkedIn post commenters imported as leads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportLinkedInPostResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Lead Capture Configs"
+        ]
+      }
+    },
     "/api/v1/tasks": {
       "post": {
         "operationId": "TasksController_createTask_v1",
@@ -7384,6 +7554,9 @@
           },
           "formData": {
             "type": "object"
+          },
+          "apiKey": {
+            "type": "string"
           }
         },
         "required": [
@@ -7416,6 +7589,211 @@
             }
           }
         }
+      },
+      "RoutingRuleDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "round-robin"
+            ]
+          },
+          "assignToUserId": {
+            "type": "string"
+          },
+          "assignToTeamId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "CreateCaptureConfigCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "website",
+              "linkedin",
+              "facebook",
+              "google-forms"
+            ]
+          },
+          "allowedDomains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fieldMapping": {
+            "type": "object"
+          },
+          "routingRule": {
+            "$ref": "#/components/schemas/RoutingRuleDto"
+          }
+        },
+        "required": [
+          "name",
+          "platform"
+        ]
+      },
+      "RoutingRuleResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "object"
+          },
+          "assignToUserId": {
+            "type": "string"
+          },
+          "assignToTeamId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "CaptureConfigDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "object"
+          },
+          "apiKey": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "allowedDomains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fieldMapping": {
+            "type": "object"
+          },
+          "routingRule": {
+            "$ref": "#/components/schemas/RoutingRuleResponse"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "platform",
+          "apiKey",
+          "isActive",
+          "allowedDomains",
+          "createdAt"
+        ]
+      },
+      "UpdateCaptureConfigCommandRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "allowedDomains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fieldMapping": {
+            "type": "object"
+          },
+          "routingRule": {
+            "$ref": "#/components/schemas/RoutingRuleDto"
+          }
+        }
+      },
+      "GenerateScriptResponse": {
+        "type": "object",
+        "properties": {
+          "script": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "script"
+        ]
+      },
+      "LinkedInCommenter": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "profileUrl": {
+            "type": "string"
+          },
+          "headline": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "profileUrl"
+        ]
+      },
+      "ImportLinkedInPostCommandRequest": {
+        "type": "object",
+        "properties": {
+          "postUrl": {
+            "type": "string"
+          },
+          "commenters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkedInCommenter"
+            }
+          }
+        },
+        "required": [
+          "postUrl",
+          "commenters"
+        ]
+      },
+      "ImportLinkedInPostResponse": {
+        "type": "object",
+        "properties": {
+          "imported": {
+            "type": "number"
+          },
+          "skipped": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "imported",
+          "skipped"
+        ]
       },
       "CreateTaskCommand": {
         "type": "object",

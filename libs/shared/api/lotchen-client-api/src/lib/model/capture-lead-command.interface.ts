@@ -18,5 +18,6 @@ export interface CaptureLeadCommand {
     mobileNumber?: string;
     source: string;
     formData?: object;
+    apiKey?: string;
 }
 
