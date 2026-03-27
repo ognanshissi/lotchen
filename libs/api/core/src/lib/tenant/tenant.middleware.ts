@@ -12,7 +12,8 @@ export class TenantMiddleware implements NestMiddleware {
     res: Response,
     next: (error?: Error | any) => void
   ) {
-    const tenantHeader = req.headers['x-tenant-fqdn'] as string;
+    // const tenantHeader = req.headers['x-tenant-fqdn'] as string;
+    const tenantHeader = process.env['X_TENANT_FQDN'];
 
     if (!tenantHeader) {
       throw new BadRequestException('X-TENANT-FQDN not provided');
