@@ -184,8 +184,6 @@ export class CreateContactCommandHandler
     let assignedToTeamId: string | undefined;
     let territoryId: string | undefined;
 
-    console.log('userId', userId);
-
     if (userId) {
       const creator = await this.contactProvider.UserModel.findById(userId)
         .lean()
@@ -230,7 +228,6 @@ export class CreateContactCommandHandler
     this.eventEmitter.emit(
       CONTACT_CREATED,
       new ContactCreatedEvent(
-        this.contactProvider.request.tenant_fqdn,
         contact.id,
         userId ?? '',
         contact.email,

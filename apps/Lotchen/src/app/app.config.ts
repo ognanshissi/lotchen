@@ -16,7 +16,6 @@ import { TasIconRegistry } from '@talisoft/ui/icon';
 import { BASE_PATH as BASE_PATH_LOTCHEN_API } from '@talisoft/api/lotchen-client-api';
 import { environment } from '../environments/environment';
 import { accessTokenInterceptor } from '@lotchen/lotchen/common/interceptors/access-token.interceptor';
-import { tenantInterceptor } from '@lotchen/lotchen/common/interceptors/tenant.interceptor';
 import { ENVIRONMENT_CONFIG } from '@lotchen/lotchen/common/utils';
 
 export const appConfig: ApplicationConfig = {
@@ -25,10 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes, withComponentInputBinding()),
     provideAnimationsAsync(),
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([accessTokenInterceptor, tenantInterceptor])
-    ),
+    provideHttpClient(withFetch(), withInterceptors([accessTokenInterceptor])),
     importProvidersFrom(TasIconRegistry),
     {
       provide: BASE_PATH_LOTCHEN_API,

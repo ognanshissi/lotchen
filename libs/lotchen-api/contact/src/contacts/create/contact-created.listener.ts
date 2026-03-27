@@ -1,27 +1,21 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CONTACT_CREATED, ContactCreatedEvent } from './contact-created.event';
-import { TenantDatabaseService } from '@lotchen/api/core';
 import { OnEvent } from '@nestjs/event-emitter';
+import { ContactProvider } from '../contact.provider';
+import { ContactStatus } from '../contact-status.enum';
 
 @Injectable()
 export class ContactCreatedListener {
   private readonly _logger = new Logger(ContactCreatedListener.name);
 
-  public constructor(
-    private readonly _tenantDatabaseService: TenantDatabaseService
-  ) {}
+  public constructor(private readonly contactProvider: ContactProvider) {}
 
   @OnEvent(CONTACT_CREATED, { async: true })
   public async handleContactCreatedEvent(payload: ContactCreatedEvent) {
     try {
-      const db = await this._tenantDatabaseService.getTenantDatabase(
-        payload.tenantId
-      );
-      const contactCollection = db.collection('contact_contacts');
-
       this._logger.log(`Event payload: ${JSON.stringify(payload)}`);
 
-      const contact = await contactCollection.findOne({
+      const contact = await this.contactProvider.ContactModel.findOne({
         _id: payload.contactId.toString() as any,
       });
 
@@ -35,13 +29,13 @@ export class ContactCreatedListener {
       }
 
       const contactHistory = {
-        previousStatus: '',
+        previousStatus: ContactStatus.New,
         changedAt: new Date(),
         changedBy: payload.actionAuthorId,
         status: payload.status,
       };
 
-      await contactCollection.updateOne(
+      const updated = await this.contactProvider.ContactModel.updateOne(
         { _id: payload.contactId.toString() as any },
         {
           $addToSet: {
@@ -52,12 +46,9 @@ export class ContactCreatedListener {
 
       // contact.statusHistory.push(contactHistory);
       this._logger.log(
-        `Contact ${payload.contactId} status updated to ${payload.status} for Tenant ${payload.tenantId}`
+        `Contact ${payload.contactId} status updated to ${payload.status}`
       );
     } catch (error) {
-      await (
-        await this._tenantDatabaseService.getTenantDatabase(payload.tenantId)
-      ).close();
       this._logger.log(
         `Error while handling contact status change event: ${error}`
       );

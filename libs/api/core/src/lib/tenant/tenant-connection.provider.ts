@@ -10,12 +10,8 @@ export const TenantConnectionProvider: Provider = {
     request: Request & { tenant_fqdn: string },
     connection: Connection
   ) => {
-    if (!request.tenant_fqdn) {
-      throw new InternalServerErrorException(
-        'Make sur the tenant middleware is provided'
-      );
-    }
-    return connection.useDb(`lotchen_${request.tenant_fqdn}`);
+    const tenant = request.tenant_fqdn ?? process.env['X_TENANT_FQDN'];
+    return connection.useDb(`lotchen_${tenant}`);
   },
   inject: [REQUEST, getConnectionToken()],
 };
