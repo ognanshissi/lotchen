@@ -145,20 +145,22 @@ export class TelephonySettingsComponent implements OnInit {
       };
     }
 
-    this._http.post<any>('/api/v1/telephony-config', body).subscribe({
-      next: (res) => {
-        this.configId.set(res?.id ?? this.configId());
-        this.saving.set(false);
-        this._snackbar.success(
-          'Succès',
-          'Configuration téléphonie enregistrée'
-        );
-      },
-      error: () => {
-        this.saving.set(false);
-        this._snackbar.error('Erreur', "Échec de l'enregistrement");
-      },
-    });
+    this._telephonyConfigApiService
+      .telephonyConfigControllerUpsertV1(body)
+      .subscribe({
+        next: (res) => {
+          this.configId.set(res?.id ?? this.configId());
+          this.saving.set(false);
+          this._snackbar.success(
+            'Succès',
+            'Configuration téléphonie enregistrée'
+          );
+        },
+        error: () => {
+          this.saving.set(false);
+          this._snackbar.error('Erreur', "Échec de l'enregistrement");
+        },
+      });
   }
 }
 

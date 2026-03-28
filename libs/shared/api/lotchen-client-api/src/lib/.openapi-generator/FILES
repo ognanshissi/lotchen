@@ -18,6 +18,8 @@ api/message-templates.service.ts
 api/notes.service.ts
 api/organizations.service.ts
 api/permissions.service.ts
+api/policies.service.ts
+api/products.service.ts
 api/profile.service.ts
 api/roles.service.ts
 api/sales-pipelines.service.ts
@@ -33,6 +35,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/access-token-response.interface.ts
+model/add-claim-command-response.interface.ts
 model/address-dto.interface.ts
 model/assign-contact-command-request.interface.ts
 model/assign-permissions-command-request.interface.ts
@@ -40,6 +43,7 @@ model/assign-roles-command-request.interface.ts
 model/asterisk-config-dto.interface.ts
 model/audience-filter-dto.interface.ts
 model/audit-user-info-dto.interface.ts
+model/beneficiary-dto.interface.ts
 model/bulk-assign-contacts-command-request.interface.ts
 model/bulk-delete-contacts-command.interface.ts
 model/caller-token-response.interface.ts
@@ -65,6 +69,10 @@ model/create-message-template-command.interface.ts
 model/create-note-command.interface.ts
 model/create-organization-command.interface.ts
 model/create-pipeline-command.interface.ts
+model/create-policy-command-response.interface.ts
+model/create-policy-command.interface.ts
+model/create-product-command-response.interface.ts
+model/create-product-command.interface.ts
 model/create-role-command-response.interface.ts
 model/create-role-command.interface.ts
 model/create-task-command.interface.ts
@@ -93,6 +101,8 @@ model/find-all-meetings-query-response.interface.ts
 model/find-all-notes-query-response.interface.ts
 model/find-all-organization-query-response.interface.ts
 model/find-all-permission-query.interface.ts
+model/find-all-policies-query-response.interface.ts
+model/find-all-products-query-response.interface.ts
 model/find-all-tasks-query-response.interface.ts
 model/find-all-teams-query-response.interface.ts
 model/find-all-teams-query-user-dto.interface.ts
@@ -103,6 +113,8 @@ model/find-event-type-by-id-query-response.interface.ts
 model/find-lead-by-id-query-response.interface.ts
 model/find-meeting-by-id-query-response.interface.ts
 model/find-meetings-by-range-response.interface.ts
+model/find-policy-by-id-query-response.interface.ts
+model/find-product-by-id-query-response.interface.ts
 model/find-role-by-id-query-response.interface.ts
 model/find-telephony-config-response.interface.ts
 model/find-user-by-id-query-response.interface.ts
@@ -139,6 +151,9 @@ model/patch-data-command-request.interface.ts
 model/phone-number-dto.interface.ts
 model/phone-numbers-dto.interface.ts
 model/pipeline-stage-dto.interface.ts
+model/premium-structure-dto.interface.ts
+model/product-fee-dto.interface.ts
+model/product-variant-dto.interface.ts
 model/qualify-lead-command-request.interface.ts
 model/recording-callback-command.interface.ts
 model/refresh-token-command.interface.ts

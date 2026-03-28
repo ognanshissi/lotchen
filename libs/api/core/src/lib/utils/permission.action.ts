@@ -47,6 +47,9 @@ export enum PermissionsAction {
   // lead capture
   leadCaptureManage = 'lead_capture_manage',
 
+  // products & services
+  productManage = 'product_manage',
+
   // super admin permission
   allRecordManage = 'all_records_manage',
 }
@@ -107,6 +110,19 @@ export const permissionsActions: PermissionGroup[] = [
         name: {
           fr: 'Gérer les configurations de capture',
           en: 'Manage capture configurations',
+        },
+      },
+    ],
+  },
+  {
+    title: { fr: 'Produits & Services', en: 'Products & Services' },
+    code: 'products',
+    permissions: [
+      {
+        code: PermissionsAction.productManage,
+        name: {
+          fr: 'Gérer les produits et services',
+          en: 'Manage products and services',
         },
       },
     ],

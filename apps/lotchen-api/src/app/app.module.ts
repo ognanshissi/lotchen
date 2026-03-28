@@ -13,6 +13,7 @@ import { WorkflowsModule } from '@lotchen/lotchen-api/workflows';
 import { PipelinesModule } from '@lotchen/lotchen-api/pipelines';
 import { CampaignsModule } from '@lotchen/lotchen-api/campaigns';
 import { CallingModule } from '@lotchen/lotchen-api/calling';
+import { ProductsModule } from '@lotchen/lotchen-api/products';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CallingModule } from '@lotchen/lotchen-api/calling';
     PipelinesModule,
     CampaignsModule,
     CallingModule,
+    ProductsModule,
   ],
   controllers: [],
   providers: [

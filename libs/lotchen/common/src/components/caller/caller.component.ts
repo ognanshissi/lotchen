@@ -43,7 +43,7 @@ export class CallerComponent implements OnInit {
   public callingStatusEnum = CallingStatusEnum;
 
   public direction = signal<'inbound' | 'outbound'>('outbound');
-  public showDisposition = signal(false);
+  public showDisposition = signal(true);
 
   // Disposition form
   public dispositionForm = new FormGroup({
@@ -145,6 +145,7 @@ export class CallerComponent implements OnInit {
     this.isGettingDeviceReadyLoading.set(true);
     this._callerApiService.callerTokenControllerTokenV1().subscribe({
       next: (response: any) => {
+        console.log(response);
         this.recordingEnabled = response.recordingEnabled ?? false;
         this.initializeDevice(response.token);
       },
@@ -156,8 +157,9 @@ export class CallerComponent implements OnInit {
   }
 
   private initializeDevice(token: string) {
+    console.log({ token });
     this.device = new Device(token, {
-      logLevel: 4,
+      logLevel: 1,
       codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
     });
 

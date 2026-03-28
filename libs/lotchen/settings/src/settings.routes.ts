@@ -65,4 +65,9 @@ export const settingsRoutes: Routes = [
     loadComponent: () =>
       import('./containers/lead-capture/lead-capture-settings.component'),
   },
+  {
+    path: 'products',
+    loadComponent: () =>
+      import('./containers/products/products-settings.component'),
+  },
 ];

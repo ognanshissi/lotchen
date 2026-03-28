@@ -37,6 +37,9 @@
         "libs/lotchen-api/campaigns/src/index.ts"
       ],
       "@lotchen/lotchen-api/calling": ["libs/lotchen-api/calling/src/index.ts"],
+      "@lotchen/lotchen-api/products": [
+        "libs/lotchen-api/products/src/index.ts"
+      ],
       "@lotchen/lotchen/auth": ["libs/lotchen/auth/src/index.ts"],
       "@lotchen/lotchen/clients": ["libs/lotchen/clients/src/index.ts"],
       "@lotchen/lotchen/common/*": ["libs/lotchen/common/src/*"],
