@@ -8,7 +8,9 @@ export const mongooseModuleAsyncOptions: MongooseModuleAsyncOptions = {
   imports: [ConfigModule],
   useFactory: (config: ConfigService) => {
     const uri = config.get<string>('MONGO_URI');
-    return { uri } as MongooseModuleOptions;
+    return {
+      uri,
+    } as MongooseModuleOptions;
   },
   inject: [ConfigService],
 };

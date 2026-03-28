@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CommandHandler } from '@lotchen/api/core';
 import { CallingProvider } from '../calling.provider';
@@ -22,6 +22,8 @@ export class CallerTokenResponse {
 export class GenerateCallerTokenCommandHandler
   implements CommandHandler<GenerateCallerTokenCommand, CallerTokenResponse>
 {
+  logger = new Logger(GenerateCallerTokenCommandHandler.name);
+
   constructor(private readonly _callingProvider: CallingProvider) {}
 
   public async handlerAsync(): Promise<CallerTokenResponse> {
@@ -42,6 +44,9 @@ export class GenerateCallerTokenCommandHandler
         twilio.twimlAppSid,
         identity
       );
+
+      this.logger.debug(`Generated Twilio token for identity ${identity}`);
+
       return {
         token,
         identity,

@@ -11,6 +11,8 @@ import { TasIcon } from '@talisoft/ui/icon';
 import { TasSpinner } from '@talisoft/ui/spinner';
 import { Call, Device } from '@twilio/voice-sdk';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { finalize } from 'rxjs';
+import { SnackbarService } from '@talisoft/ui/snackbar';
 
 export enum CallingStatusEnum {
   Waiting = 'Chargement...',
@@ -32,6 +34,7 @@ export class CallerComponent implements OnInit {
   private readonly _callerApiService = inject(CallerApiService);
   private readonly _dialogData = inject(DIALOG_DATA);
   private readonly _callLogApiService = inject(CallLogsApiService);
+  private readonly _snackbar = inject(SnackbarService);
 
   // Inputs
   public entityId: string = this._dialogData['id'];
@@ -143,21 +146,27 @@ export class CallerComponent implements OnInit {
   private setup() {
     console.log('Requesting access token');
     this.isGettingDeviceReadyLoading.set(true);
-    this._callerApiService.callerTokenControllerTokenV1().subscribe({
-      next: (response: any) => {
-        console.log(response);
-        this.recordingEnabled = response.recordingEnabled ?? false;
-        this.initializeDevice(response.token);
-      },
-      error: (err) => {
-        this.isGettingDeviceReadyLoading.set(false);
-        console.log(err);
-      },
-    });
+    this._callerApiService
+      .callerTokenControllerTokenV1()
+      .pipe(finalize(() => this.isGettingDeviceReadyLoading.set(false)))
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.recordingEnabled = response.recordingEnabled ?? false;
+          this.initializeDevice(response.token);
+        },
+        error: (err) => {
+          this.closeCaller();
+          this._snackbar.error(
+            'Oops',
+            "Impossible de se connecter, veuillez contacter l'administrateur."
+          );
+          console.log(err);
+        },
+      });
   }
 
   private initializeDevice(token: string) {
-    console.log({ token });
     this.device = new Device(token, {
       logLevel: 1,
       codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
@@ -186,7 +195,12 @@ export class CallerComponent implements OnInit {
     device.on('error', (error) => {
       this.twilioDeviceReady.set(false);
       this.isGettingDeviceReadyLoading.set(false);
+      this.closeCaller();
       console.log('Twilio.Device Error: ' + error.message);
+      this._snackbar.error(
+        'Oops',
+        "Impossible de se connecter, veuillez contacter l'administrateur."
+      );
     });
 
     device.on('incoming', (incomingCall: Call) => {
@@ -260,6 +274,7 @@ export class CallerComponent implements OnInit {
   public async makeOutgoingCall() {
     const params: Record<string, string> = {
       To: this.contactNumber,
+      agent: 'Ambroise BAZIE',
     };
 
     if (this.recordingEnabled) {
@@ -304,7 +319,7 @@ export class CallerComponent implements OnInit {
 
   public outgoingCallHangupButton() {
     console.log('Hanging up ...');
-    this.call?.disconnect();
+    this.device?.disconnectAll();
   }
 
   private showDispositionAfterCall() {
