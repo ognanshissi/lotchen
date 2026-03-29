@@ -22,6 +22,7 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { HttpClient } from '@angular/common/http';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { ProductResponse } from '../../containers/products/products.interfaces';
+import { ProductsApiService } from '@talisoft/api/lotchen-client-api';
 
 export interface AddProductDialogData {
   mode: 'create' | 'edit';
@@ -47,141 +48,13 @@ export interface AddProductDialogData {
     TasLabel,
     ReactiveFormsModule,
   ],
-  template: `
-    <tas-side-drawer>
-      <tas-drawer-title>
-        <tas-title
-          >{{ data.mode === 'create' ? 'Ajouter' : 'Modifier' }} un
-          produit</tas-title
-        >
-      </tas-drawer-title>
-      <tas-drawer-content>
-        <form [formGroup]="form">
-          <div class="flex flex-col space-y-4">
-            <tas-form-field>
-              <tas-label>Nom</tas-label>
-              <input
-                tasInput
-                type="text"
-                formControlName="name"
-                placeholder="Nom du produit"
-              />
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Type</tas-label>
-              <select
-                formControlName="type"
-                class="w-full border rounded px-3 py-2 text-sm"
-              >
-                <option value="loan">Prêt</option>
-                <option value="savings">Épargne</option>
-                <option value="insurance">Assurance</option>
-              </select>
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Description</tas-label>
-              <textarea
-                formControlName="description"
-                class="w-full border rounded px-3 py-2 text-sm"
-                rows="3"
-                placeholder="Description du produit"
-              ></textarea>
-            </tas-form-field>
-
-            <!-- Financial fields -->
-            @if (form.get('type')?.value === 'loan' || form.get('type')?.value
-            === 'savings') {
-            <tas-form-field>
-              <tas-label>Taux d'intérêt (%)</tas-label>
-              <input
-                tasInput
-                type="number"
-                formControlName="interestRate"
-                placeholder="Ex: 5.5"
-                step="0.1"
-              />
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Durée (mois)</tas-label>
-              <input
-                tasInput
-                type="number"
-                formControlName="duration"
-                placeholder="Ex: 12"
-              />
-            </tas-form-field>
-            }
-
-            <!-- Insurance fields -->
-            @if (form.get('type')?.value === 'insurance') {
-            <tas-form-field>
-              <tas-label>Type d'assurance</tas-label>
-              <select
-                formControlName="insuranceType"
-                class="w-full border rounded px-3 py-2 text-sm"
-              >
-                <option value="">Sélectionner</option>
-                <option value="life">Vie</option>
-                <option value="health">Santé</option>
-                <option value="property">Biens</option>
-              </select>
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Couverture</tas-label>
-              <textarea
-                formControlName="coverage"
-                class="w-full border rounded px-3 py-2 text-sm"
-                rows="2"
-                placeholder="Description de la couverture"
-              ></textarea>
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Franchise</tas-label>
-              <input
-                tasInput
-                type="number"
-                formControlName="deductible"
-                placeholder="Montant de la franchise"
-              />
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Conditions</tas-label>
-              <textarea
-                formControlName="terms"
-                class="w-full border rounded px-3 py-2 text-sm"
-                rows="3"
-                placeholder="Conditions de la police"
-              ></textarea>
-            </tas-form-field>
-            }
-          </div>
-        </form>
-      </tas-drawer-content>
-
-      <tas-drawer-action>
-        <button tas-outlined-button closable-drawer>
-          <tas-icon iconName="close"></tas-icon>
-          Fermer
-        </button>
-        <button tas-raised-button color="primary" (click)="handleSubmit()">
-          <tas-icon iconName="feather:check"></tas-icon>
-          Sauvegarder
-        </button>
-      </tas-drawer-action>
-    </tas-side-drawer>
-  `,
+  templateUrl: './add-product-dialog.component.html',
 })
 export class AddProductDialogComponent implements OnInit {
   private readonly _dialogRef = inject(DialogRef);
   private readonly _snackbar = inject(SnackbarService);
   public readonly data: AddProductDialogData = inject(DIALOG_DATA);
-  private readonly _http = inject(HttpClient);
+  private readonly _productsApiService = inject(ProductsApiService);
 
   public form!: FormGroup;
 
@@ -225,8 +98,8 @@ export class AddProductDialogComponent implements OnInit {
     });
 
     if (this.data.mode === 'edit' && this.data.product) {
-      this._http
-        .patch(`/api/v1/products/${this.data.product.id}`, payload)
+      this._productsApiService
+        .productControllerUpdateV1(this.data.product.id, payload)
         .subscribe({
           next: () => {
             this._dialogRef.close(true);
@@ -237,7 +110,7 @@ export class AddProductDialogComponent implements OnInit {
           },
         });
     } else {
-      this._http.post('/api/v1/products', payload).subscribe({
+      this._productsApiService.productControllerCreateV1(payload).subscribe({
         next: () => {
           this._dialogRef.close(true);
           this._snackbar.success('Succès', 'Produit créé');

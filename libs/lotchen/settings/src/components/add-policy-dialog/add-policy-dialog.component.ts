@@ -25,6 +25,7 @@ import {
   ProductResponse,
   PolicyResponse,
 } from '../../containers/products/products.interfaces';
+import { PoliciesApiService } from '@talisoft/api/lotchen-client-api';
 
 export interface AddPolicyDialogData {
   mode: 'create' | 'edit';
@@ -167,7 +168,7 @@ export class AddPolicyDialogComponent implements OnInit {
   private readonly _dialogRef = inject(DialogRef);
   private readonly _snackbar = inject(SnackbarService);
   public readonly data: AddPolicyDialogData = inject(DIALOG_DATA);
-  private readonly _http = inject(HttpClient);
+  private readonly _policiesApiService = inject(PoliciesApiService);
 
   public form!: FormGroup;
 
@@ -206,8 +207,8 @@ export class AddPolicyDialogComponent implements OnInit {
     if (this.data.mode === 'edit' && this.data.policy) {
       delete payload.productId;
       delete payload.contactId;
-      this._http
-        .patch(`/api/v1/policies/${this.data.policy.id}`, payload)
+      this._policiesApiService
+        .policyControllerUpdateV1(this.data.policy.id, payload)
         .subscribe({
           next: () => {
             this._dialogRef.close(true);
@@ -218,7 +219,7 @@ export class AddPolicyDialogComponent implements OnInit {
           },
         });
     } else {
-      this._http.post('/api/v1/policies', payload).subscribe({
+      this._policiesApiService.policyControllerCreateV1(payload).subscribe({
         next: () => {
           this._dialogRef.close(true);
           this._snackbar.success('Succès', 'Police créée');
