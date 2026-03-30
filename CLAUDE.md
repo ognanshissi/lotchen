@@ -16,11 +16,18 @@ Lotchen is a SaaS CRM for microfinance and insurance, built as an **Nx monorepo*
 # Frontend dev server
 npm start                          # npx nx run Lotchen:serve:development
 
+# Frontend SSR dev server
+npm run ssr:dev
+
 # Backend dev server
 npm run api:start                  # npx nx run lotchen-api:serve
 
 # Build frontend (production)
 npm run build                      # npx nx run Lotchen:build:production
+
+# Build & watch UI library during development
+npm run ui:build
+npm run ui:watch
 
 # Run all tests
 npx nx run-many --target=test
@@ -37,6 +44,10 @@ npm run openapi-generator
 
 # Generate docs (Compodoc)
 npm run doc
+
+# Twilio voice webhook API
+npm run start:voice-api
+npm run build:voice-api:prod
 ```
 
 ## Monorepo Structure
@@ -50,18 +61,29 @@ apps/
 libs/
   lotchen-api/           Backend feature libraries
     identity-provider/   Auth, users, roles, permissions, teams, agencies, territories
-    contact/             Contacts + call logs
+    contact/             Contacts + call logs + lead capture/qualify/convert/enrich
     activities/          Activity tracking
+    calling/             Telephony config + token management
+    campaigns/           Campaigns, messages, templates
     dynamic-form/        Dynamic form engine
     leads/               Leads management
+    pipelines/           Pipelines, deals, analytics
+    products/            Products + policies
+    workflows/           Workflow templates, engine, executions
   api/
     core/                Shared backend utilities (guards, schemas, DTOs, base classes)
   lotchen/               Frontend feature libraries
     common/              Shared Angular services, guards, interceptors, components
     auth/                Login, forgot/reset password flows
+    campaigns/           Campaign management
+    clients/             Client/company management
     dashboard/           Dashboard feature
+    events/              Event management
+    leads/               Leads feature
+    pipelines/           Pipeline/deal management
     prospects/           Contacts/prospects feature
     settings/            Settings feature
+    workflows/           Workflow automation
   shared/
     api/lotchen-client-api/  Auto-generated OpenAPI Angular HTTP client
     ui/                      @talisoft/ui/* design system (secondary entry points)
@@ -200,8 +222,28 @@ Provide `NG_VALUE_ACCESSOR` with `forwardRef` (do **not** rely on the parent cla
 `@talisoft/ui/alert` → `<tas-alert type="success|error|info">`
 `@talisoft/ui/form-field` → `<tas-form-field>`, `<tas-label>`, `TasPrefix`, `TasSuffix`
 `@talisoft/ui/input` → `input[tasInput][type=text|email|…]`
+`@talisoft/ui/input-email` → email-specific input
+`@talisoft/ui/input-password` → password input with toggle
+`@talisoft/ui/select` → `<tas-select>`
+`@talisoft/ui/multi-select` → `<tas-multi-select>`
+`@talisoft/ui/checkbox` → `<tas-checkbox>`
 `@talisoft/ui/date-picker` → `<tas-date-picker>` (modes: `date|time|datetime|daterange`)
 `@talisoft/ui/file-uploader` → `<tas-file-uploader accept=".xlsx">` (ControlValueAccessor, `File | null`)
+`@talisoft/ui/table` → `<tas-table>`
+`@talisoft/ui/menu` → `<tas-menu>`
+`@talisoft/ui/tag` → `<tas-tag>`
+`@talisoft/ui/spinner` → `<tas-spinner>`
+`@talisoft/ui/snackbar` → snackbar notifications
+`@talisoft/ui/confirm-dialog` → confirmation dialogs
+`@talisoft/ui/navigation` → navigation components
+`@talisoft/ui/layouts` → layout components
+`@talisoft/ui/container` → `<tas-container>`
+`@talisoft/ui/title` → `<tas-title>`
+`@talisoft/ui/text` → `<tas-text>`
+`@talisoft/ui/summary-data` → summary display
+`@talisoft/ui/summary-field` → summary field display
+`@talisoft/ui/timeago` → relative time display
+`@talisoft/ui/currency-pipe` → currency formatting pipe
 
 ## Known Architecture Issues
 

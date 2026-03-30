@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   TasClosableDrawer,
@@ -26,6 +26,7 @@ import {
   PolicyResponse,
 } from '../../containers/products/products.interfaces';
 import { PoliciesApiService } from '@talisoft/api/lotchen-client-api';
+import { TasSelect } from '@talisoft/ui/select';
 
 export interface AddPolicyDialogData {
   mode: 'create' | 'edit';
@@ -50,119 +51,9 @@ export interface AddPolicyDialogData {
     TasInput,
     TasLabel,
     ReactiveFormsModule,
+    TasSelect,
   ],
-  template: `
-    <tas-side-drawer>
-      <tas-drawer-title>
-        <tas-title
-          >{{ data.mode === 'create' ? 'Ajouter' : 'Modifier' }} une
-          police</tas-title
-        >
-      </tas-drawer-title>
-      <tas-drawer-content>
-        <form [formGroup]="form">
-          <div class="flex flex-col space-y-4">
-            @if (data.mode === 'create') {
-            <tas-form-field>
-              <tas-label>Produit</tas-label>
-              <select
-                formControlName="productId"
-                class="w-full border rounded px-3 py-2 text-sm"
-              >
-                <option value="">Sélectionner un produit</option>
-                @for (product of data.products; track product.id) {
-                <option [value]="product.id">{{ product.name }}</option>
-                }
-              </select>
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Contact ID</tas-label>
-              <input
-                tasInput
-                type="text"
-                formControlName="contactId"
-                placeholder="Identifiant du contact"
-              />
-            </tas-form-field>
-            }
-
-            <tas-form-field>
-              <tas-label>Date de début</tas-label>
-              <input tasInput type="date" formControlName="startDate" />
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Date de fin</tas-label>
-              <input tasInput type="date" formControlName="endDate" />
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Montant de la prime</tas-label>
-              <input
-                tasInput
-                type="number"
-                formControlName="premiumAmount"
-                placeholder="Montant"
-              />
-            </tas-form-field>
-
-            <tas-form-field>
-              <tas-label>Fréquence de paiement</tas-label>
-              <select
-                formControlName="paymentFrequency"
-                class="w-full border rounded px-3 py-2 text-sm"
-              >
-                <option value="">Sélectionner</option>
-                <option value="monthly">Mensuel</option>
-                <option value="quarterly">Trimestriel</option>
-                <option value="semi_annual">Semestriel</option>
-                <option value="annual">Annuel</option>
-              </select>
-            </tas-form-field>
-
-            @if (data.mode === 'edit') {
-            <tas-form-field>
-              <tas-label>Statut</tas-label>
-              <select
-                formControlName="status"
-                class="w-full border rounded px-3 py-2 text-sm"
-              >
-                <option value="quote">Devis</option>
-                <option value="application">Demande</option>
-                <option value="underwriting">Souscription</option>
-                <option value="active">Active</option>
-                <option value="renewal">Renouvellement</option>
-                <option value="lapsed">Expirée</option>
-              </select>
-            </tas-form-field>
-            }
-
-            <tas-form-field>
-              <tas-label>Notes</tas-label>
-              <textarea
-                formControlName="notes"
-                class="w-full border rounded px-3 py-2 text-sm"
-                rows="3"
-                placeholder="Notes additionnelles"
-              ></textarea>
-            </tas-form-field>
-          </div>
-        </form>
-      </tas-drawer-content>
-
-      <tas-drawer-action>
-        <button tas-outlined-button closable-drawer>
-          <tas-icon iconName="close"></tas-icon>
-          Fermer
-        </button>
-        <button tas-raised-button color="primary" (click)="handleSubmit()">
-          <tas-icon iconName="feather:check"></tas-icon>
-          Sauvegarder
-        </button>
-      </tas-drawer-action>
-    </tas-side-drawer>
-  `,
+  templateUrl: './add-policy-dialog.component.html',
 })
 export class AddPolicyDialogComponent implements OnInit {
   private readonly _dialogRef = inject(DialogRef);
@@ -172,6 +63,21 @@ export class AddPolicyDialogComponent implements OnInit {
 
   public form!: FormGroup;
 
+  public paymentFrequencyOptions = signal([
+    { label: 'Mensuelle', value: 'monthly' },
+    { label: 'Trimestrielle', value: 'quarterly' },
+    { label: 'Semestrielle', value: 'semiannually' },
+    { label: 'Annuelle', value: 'annually' },
+  ]);
+
+  public statusOptions = signal([
+    { label: 'Devis', value: 'quote' },
+    { label: 'Demande', value: 'application' },
+    { label: 'Souscription', value: 'underwriting' },
+    { label: 'Active', value: 'active' },
+    { label: 'Renouvellement', value: 'renewal' },
+    { label: 'Expirée', value: 'lapsed' },
+  ]);
   public ngOnInit(): void {
     const p = this.data.policy;
     this.form = new FormGroup({

@@ -11,6 +11,7 @@ import {
   TasDrawerTitle,
   TasDrawerContent,
   TasDrawerAction,
+  TasClosableDrawer,
 } from '@talisoft/ui/side-drawer';
 import { TasTitle } from '@talisoft/ui/title';
 import { TasText } from '@talisoft/ui/text';
@@ -45,6 +46,7 @@ import { apiResources } from '@talisoft/ui/api-resources';
     ReactiveFormsModule,
     TasInput,
     TasMultiSelect,
+    TasClosableDrawer,
   ],
   templateUrl: './assign-permission-dialog.component.html',
   styleUrl: './assign-permission-dialog.component.scss',

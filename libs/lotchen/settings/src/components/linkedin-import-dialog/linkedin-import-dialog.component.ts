@@ -16,6 +16,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { HttpClient } from '@angular/common/http';
+import { LeadCaptureConfigsApiService } from '@talisoft/api/lotchen-client-api';
 
 export interface LinkedInImportDialogData {
   configId: string;
@@ -181,10 +182,12 @@ interface Commenter {
   `,
 })
 export class LinkedInImportDialogComponent {
-  private readonly _http = inject(HttpClient);
   private readonly _dialogRef = inject(DialogRef);
   private readonly _snackbar = inject(SnackbarService);
   public readonly data: LinkedInImportDialogData = inject(DIALOG_DATA);
+  private readonly _leadCaptureConfigsApi = inject(
+    LeadCaptureConfigsApiService
+  );
 
   public postUrlControl = new FormControl('');
   public commenters = signal<Commenter[]>([
@@ -234,11 +237,11 @@ export class LinkedInImportDialogComponent {
 
     this.importing.set(true);
 
-    this._http
-      .post<{ imported: number; skipped: number }>(
-        `/api/v1/lead-capture-configs/${this.data.configId}/import-linkedin-post`,
-        { postUrl, commenters: validCommenters }
-      )
+    this._leadCaptureConfigsApi
+      .captureConfigControllerImportLinkedInPostV1(this.data.configId, {
+        postUrl,
+        commenters: validCommenters,
+      })
       .subscribe({
         next: (res) => {
           this.importing.set(false);

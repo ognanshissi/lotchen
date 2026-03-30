@@ -1,0 +1,102 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title
+      >{{ data.mode === 'create' ? 'Ajouter' : 'Modifier' }} une
+      police</tas-title
+    >
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <form [formGroup]="form">
+      <div class="flex flex-col space-y-4">
+        @if (data.mode === 'create') {
+        <tas-form-field>
+          <tas-label>Produit</tas-label>
+          <tas-select
+            formControlName="productId"
+            class="w-full border rounded px-3 py-2 text-sm"
+            [options]="data.products"
+            optionLabel="name"
+            optionValue="id"
+          >
+          </tas-select>
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Contact ID</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="contactId"
+            placeholder="Identifiant du contact"
+          />
+        </tas-form-field>
+        }
+
+        <tas-form-field>
+          <tas-label>Date de début</tas-label>
+          <input tasInput type="date" formControlName="startDate" />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Date de fin</tas-label>
+          <input tasInput type="date" formControlName="endDate" />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Montant de la prime</tas-label>
+          <input
+            tasInput
+            type="number"
+            formControlName="premiumAmount"
+            placeholder="Montant"
+          />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Fréquence de paiement</tas-label>
+          <tas-select
+            formControlName="paymentFrequency"
+            class="w-full border rounded px-3 py-2 text-sm"
+            [options]="paymentFrequencyOptions()"
+          >
+          </tas-select>
+        </tas-form-field>
+
+        @if (data.mode === 'edit') {
+        <tas-form-field>
+          <tas-label>Statut</tas-label>
+          <tas-select
+            formControlName="status"
+            [options]="statusOptions()"
+            class="w-full border rounded px-3 py-2 text-sm"
+          >
+            <option value="lapsed">Expirée</option>
+          </tas-select>
+        </tas-form-field>
+        }
+
+        <tas-form-field>
+          <tas-label>Notes</tas-label>
+          <textarea
+            tasInput
+            formControlName="notes"
+            class="w-full border rounded px-3 py-2 text-sm"
+            rows="3"
+            placeholder="Notes additionnelles"
+          ></textarea>
+        </tas-form-field>
+      </div>
+    </form>
+  </tas-drawer-content>
+
+  <tas-drawer-action>
+    <button tas-outlined-button closable-drawer>
+      <tas-icon iconName="close"></tas-icon>
+      Fermer
+    </button>
+    <button tas-raised-button color="primary" (click)="handleSubmit()">
+      <tas-icon iconName="feather:check"></tas-icon>
+      Sauvegarder
+    </button>
+  </tas-drawer-action>
+</tas-side-drawer>

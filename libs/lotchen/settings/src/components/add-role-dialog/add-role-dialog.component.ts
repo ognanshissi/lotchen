@@ -10,6 +10,7 @@ import {
   TasDrawerTitle,
   TasDrawerContent,
   TasDrawerAction,
+  TasClosableDrawer,
 } from '@talisoft/ui/side-drawer';
 import { TasTitle } from '@talisoft/ui/title';
 import { TasText } from '@talisoft/ui/text';
@@ -44,6 +45,7 @@ import { DialogRef } from '@angular/cdk/dialog';
     ButtonModule,
     ReactiveFormsModule,
     TasInput,
+    TasClosableDrawer,
   ],
 })
 export class AddRoleDialogComponent {

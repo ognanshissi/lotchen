@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   TasClosableDrawer,
   TasDrawerAction,
@@ -21,6 +21,7 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { CaptureConfigItem } from '../../containers/lead-capture/lead-capture-settings.component';
 import { LeadCaptureConfigsApiService } from '@talisoft/api/lotchen-client-api';
+import { TasSelect } from '@talisoft/ui/select';
 
 export interface AddCaptureConfigDialogData {
   mode: 'create' | 'edit';
@@ -43,6 +44,7 @@ export interface AddCaptureConfigDialogData {
     TasInput,
     TasLabel,
     ReactiveFormsModule,
+    TasSelect,
   ],
   templateUrl: './add-capture-config-dialog.component.html',
 })
@@ -53,6 +55,19 @@ export class AddCaptureConfigDialogComponent implements OnInit {
   private readonly _leadCaptureConfigApiService = inject(
     LeadCaptureConfigsApiService
   );
+
+  public platformOptions = signal([
+    { label: 'Site web', value: 'website' },
+    { label: 'LinkedIn', value: 'linkedin' },
+    { label: 'Facebook', value: 'facebook' },
+    { label: 'Google Forms', value: 'google-forms' },
+  ]);
+
+  public routingTypeOptions = signal([
+    { label: 'Aucun', value: '' },
+    { label: 'Assignation fixe', value: 'fixed' },
+    { label: 'Round-robin', value: 'round-robin' },
+  ]);
 
   public form!: FormGroup;
 

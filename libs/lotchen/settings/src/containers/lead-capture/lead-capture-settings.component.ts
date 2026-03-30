@@ -18,6 +18,11 @@ import { AddCaptureConfigDialogComponent } from '../../components/add-capture-co
 import { CaptureScriptDialogComponent } from '../../components/capture-script-dialog/capture-script-dialog.component';
 import { LinkedInImportDialogComponent } from '../../components/linkedin-import-dialog/linkedin-import-dialog.component';
 import { Clipboard } from '@angular/cdk/clipboard';
+import {
+  CaptureConfigDto,
+  LeadCaptureConfigsApiService,
+} from '@talisoft/api/lotchen-client-api';
+import { ConfirmDialogService } from '@talisoft/ui/confirm-dialog';
 
 export interface CaptureConfigItem {
   id: string;
@@ -166,20 +171,23 @@ const PLATFORM_LABELS: Record<string, string> = {
   `,
 })
 export class LeadCaptureSettingsComponent implements OnInit {
-  private readonly _http = inject(HttpClient);
   private readonly _dialog = inject(Dialog);
   private readonly _snackbar = inject(SnackbarService);
   private readonly _clipboard = inject(Clipboard);
+  private readonly _leadCaptureConfigApiService = inject(
+    LeadCaptureConfigsApiService
+  );
+  private readonly _confirmDialogService = inject(ConfirmDialogService);
 
-  public configs = signal<CaptureConfigItem[]>([]);
+  public configs = signal<CaptureConfigDto[]>([]);
 
   public ngOnInit(): void {
     this.loadConfigs();
   }
 
   public loadConfigs(): void {
-    this._http
-      .get<CaptureConfigItem[]>('/api/v1/lead-capture-configs')
+    this._leadCaptureConfigApiService
+      .captureConfigControllerFindAllV1()
       .subscribe({
         next: (data) => this.configs.set(data),
       });
@@ -209,7 +217,7 @@ export class LeadCaptureSettingsComponent implements OnInit {
     });
   }
 
-  public openEditDialog(config: CaptureConfigItem): void {
+  public openEditDialog(config: CaptureConfigDto): void {
     const ref = this._dialog.open(AddCaptureConfigDialogComponent, {
       width: '600px',
       data: { mode: 'edit', config },
@@ -219,14 +227,14 @@ export class LeadCaptureSettingsComponent implements OnInit {
     });
   }
 
-  public openScriptDialog(config: CaptureConfigItem): void {
+  public openScriptDialog(config: CaptureConfigDto): void {
     this._dialog.open(CaptureScriptDialogComponent, {
       width: '700px',
       data: { configId: config.id, configName: config.name },
     });
   }
 
-  public openLinkedInImportDialog(config: CaptureConfigItem): void {
+  public openLinkedInImportDialog(config: CaptureConfigDto): void {
     const ref = this._dialog.open(LinkedInImportDialogComponent, {
       width: '800px',
       data: { configId: config.id, configName: config.name },
@@ -236,15 +244,30 @@ export class LeadCaptureSettingsComponent implements OnInit {
     });
   }
 
-  public deleteConfig(config: CaptureConfigItem): void {
-    if (!confirm(`Supprimer l'intégration "${config.name}" ?`)) return;
-    this._http.delete(`/api/v1/lead-capture-configs/${config.id}`).subscribe({
-      next: () => {
-        this._snackbar.success('Succès', 'Intégration supprimée');
-        this.loadConfigs();
+  public deleteConfig(config: CaptureConfigDto): void {
+    this._confirmDialogService.confirm({
+      title: 'Confirmation',
+      message: `Supprimer l'intégration "${config.name}" ?`,
+      closable: false,
+      acceptButtonProps: {
+        label: 'Supprimer',
+        theme: 'warn',
       },
-      error: () => {
-        this._snackbar.error('Erreur', "Impossible de supprimer l'intégration");
+      accept: () => {
+        this._leadCaptureConfigApiService
+          .captureConfigControllerDeleteV1(config.id)
+          .subscribe({
+            next: () => {
+              this._snackbar.success('Succès', 'Intégration supprimée');
+              this.loadConfigs();
+            },
+            error: () => {
+              this._snackbar.error(
+                'Erreur',
+                "Impossible de supprimer l'intégration"
+              );
+            },
+          });
       },
     });
   }

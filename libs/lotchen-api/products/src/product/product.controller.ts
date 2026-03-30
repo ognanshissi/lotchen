@@ -45,7 +45,7 @@ export class ProductController {
   ) {}
 
   @Post()
-  @Permissions(PermissionsAction.productManage)
+  // @Permissions(PermissionsAction.productManage)
   @ApiResponse({
     status: HttpStatus.CREATED,
     type: CreateProductCommandResponse,
@@ -57,7 +57,7 @@ export class ProductController {
   }
 
   @Get()
-  @Permissions(PermissionsAction.productManage)
+  // @Permissions(PermissionsAction.productManage)
   @ApiResponse({ type: [FindAllProductsQueryResponse] })
   async findAll(
     @Query() query: FindAllProductsQuery
@@ -66,7 +66,7 @@ export class ProductController {
   }
 
   @Get(':id')
-  @Permissions(PermissionsAction.productManage)
+  // @Permissions(PermissionsAction.productManage)
   @ApiResponse({ type: FindProductByIdQueryResponse })
   async findById(
     @Param('id') id: string
@@ -75,7 +75,7 @@ export class ProductController {
   }
 
   @Patch(':id')
-  @Permissions(PermissionsAction.productManage)
+  // @Permissions(PermissionsAction.productManage)
   async update(
     @Param('id') id: string,
     @Body() payload: Omit<CreateProductCommand, 'name' | 'type'>
@@ -84,19 +84,19 @@ export class ProductController {
   }
 
   @Delete(':id')
-  @Permissions(PermissionsAction.productManage)
+  // @Permissions(PermissionsAction.productManage)
   async delete(@Param('id') id: string): Promise<void> {
     return this._deleteHandler.handlerAsync({ id });
   }
 
   @Patch(':id/promote')
-  @Permissions(PermissionsAction.productManage)
+  // @Permissions(PermissionsAction.productManage)
   async promote(@Param('id') id: string): Promise<void> {
     return this._promoteHandler.handlerAsync({ id });
   }
 
   @Patch(':id/demote')
-  @Permissions(PermissionsAction.productManage)
+  // @Permissions(PermissionsAction.productManage)
   async demote(@Param('id') id: string): Promise<void> {
     return this._demoteHandler.handlerAsync({ id });
   }

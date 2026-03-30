@@ -2,12 +2,17 @@ import { QueryHandler } from '@lotchen/api/core';
 import { Injectable } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CaptureConfigProvider } from '../capture-config.provider';
-import {
-  RoutingRuleType,
-  CaptureConfigPlatform,
-} from '../capture-config.schema';
+import { RoutingRuleType } from '../capture-config.schema';
+import { IsEnum } from 'class-validator';
 
 export class FindAllCaptureConfigsQuery {}
+
+export enum CaptureConfigPlatformEnum {
+  WEBSITE = 'website',
+  LINKEDIN = 'linkedin',
+  FACEBOOK = 'facebook',
+  GOOGLE_FORMS = 'google-forms',
+}
 
 class RoutingRuleResponse {
   @ApiProperty()
@@ -27,8 +32,12 @@ export class CaptureConfigDto {
   @ApiProperty()
   name!: string;
 
-  @ApiProperty()
-  platform!: CaptureConfigPlatform;
+  @ApiProperty({
+    enum: CaptureConfigPlatformEnum,
+    description: 'Platform of the capture config, e.g. LinkedIn, Email, etc.',
+  })
+  @IsEnum(CaptureConfigPlatformEnum)
+  platform!: CaptureConfigPlatformEnum;
 
   @ApiProperty()
   apiKey!: string;

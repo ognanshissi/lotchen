@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   TasClosableDrawer,
@@ -19,10 +19,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { HttpClient } from '@angular/common/http';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { ProductResponse } from '../../containers/products/products.interfaces';
 import { ProductsApiService } from '@talisoft/api/lotchen-client-api';
+import { TasSelect } from '@talisoft/ui/select';
 
 export interface AddProductDialogData {
   mode: 'create' | 'edit';
@@ -47,6 +47,7 @@ export interface AddProductDialogData {
     TasInput,
     TasLabel,
     ReactiveFormsModule,
+    TasSelect,
   ],
   templateUrl: './add-product-dialog.component.html',
 })
@@ -57,6 +58,18 @@ export class AddProductDialogComponent implements OnInit {
   private readonly _productsApiService = inject(ProductsApiService);
 
   public form!: FormGroup;
+
+  public typeList = signal([
+    { label: 'Prêt', value: 'loan' },
+    { label: 'Assurance', value: 'insurance' },
+    { label: 'Epargne', value: 'savings' },
+  ]);
+
+  public insuranceTypelist = signal([
+    { label: 'Vie', value: 'life' },
+    { label: 'Santé', value: 'health' },
+    { label: 'Biens', value: 'property' },
+  ]);
 
   public ngOnInit(): void {
     const p = this.data.product;

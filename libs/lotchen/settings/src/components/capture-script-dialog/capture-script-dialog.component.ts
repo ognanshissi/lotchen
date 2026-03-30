@@ -14,6 +14,7 @@ import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { HttpClient } from '@angular/common/http';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { SnackbarService } from '@talisoft/ui/snackbar';
+import { LeadCaptureConfigsApiService } from '@talisoft/api/lotchen-client-api';
 
 export interface CaptureScriptDialogData {
   configId: string;
@@ -67,14 +68,15 @@ export class CaptureScriptDialogComponent implements OnInit {
   private readonly _clipboard = inject(Clipboard);
   private readonly _snackbar = inject(SnackbarService);
   public readonly data: CaptureScriptDialogData = inject(DIALOG_DATA);
+  private readonly _leadCaptureConfigsApiService = inject(
+    LeadCaptureConfigsApiService
+  );
 
   public script = signal('Chargement...');
 
   public ngOnInit(): void {
-    this._http
-      .get<{ script: string }>(
-        `/api/v1/lead-capture-configs/${this.data.configId}/script`
-      )
+    this._leadCaptureConfigsApiService
+      .captureConfigControllerGenerateScriptV1(this.data.configId)
       .subscribe({
         next: (res) => this.script.set(res.script),
         error: () => this.script.set('Erreur lors du chargement du script'),
