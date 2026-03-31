@@ -46,6 +46,13 @@ export class OverviewComponent {
           description:
             'Configurer les intégrations pour capturer des leads (site web, LinkedIn, etc.)',
         },
+        {
+          title: 'Formulaires dynamiques',
+          type: 'basic',
+          id: 'leads_contacts_dynamic_forms',
+          link: '/settings/dynamic-forms',
+          description: 'Personnaliser les champs des formulaires par entité',
+        },
       ],
     },
     {

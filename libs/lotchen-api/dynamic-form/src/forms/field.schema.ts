@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 export enum FieldType {
   Section = 'section', // a block of fields
@@ -59,6 +60,9 @@ export class FieldConfigurationOptions {
 
 @Schema({ timestamps: false })
 export class Field {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, auto: true })
+  _id!: string;
+
   @Prop({ type: 'UUID', ref: 'Field', default: null })
   parentId!: string | null;
 

@@ -19,9 +19,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CaptureConfigDto } from '../model/capture-config-dto.interface';
-// @ts-ignore
 import { CreateCaptureConfigCommand } from '../model/create-capture-config-command.interface';
+// @ts-ignore
+import { FindAllCaptureConfigsQueryResponse } from '../model/find-all-capture-configs-query-response.interface';
 // @ts-ignore
 import { GenerateScriptResponse } from '../model/generate-script-response.interface';
 // @ts-ignore
@@ -240,9 +240,9 @@ export class LeadCaptureConfigsApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public captureConfigControllerFindAllV1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<CaptureConfigDto>>;
-    public captureConfigControllerFindAllV1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<CaptureConfigDto>>>;
-    public captureConfigControllerFindAllV1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<CaptureConfigDto>>>;
+    public captureConfigControllerFindAllV1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllCaptureConfigsQueryResponse>>;
+    public captureConfigControllerFindAllV1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllCaptureConfigsQueryResponse>>>;
+    public captureConfigControllerFindAllV1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllCaptureConfigsQueryResponse>>>;
     public captureConfigControllerFindAllV1(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -282,7 +282,7 @@ export class LeadCaptureConfigsApiService {
         }
 
         let localVarPath = `/api/v1/lead-capture-configs`;
-        return this.httpClient.request<Array<CaptureConfigDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<FindAllCaptureConfigsQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

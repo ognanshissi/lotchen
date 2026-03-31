@@ -70,4 +70,14 @@ export const settingsRoutes: Routes = [
     loadComponent: () =>
       import('./containers/products/products-settings.component'),
   },
+  {
+    path: 'dynamic-forms',
+    loadComponent: () =>
+      import('./containers/dynamic-forms/dynamic-forms-settings.component'),
+  },
+  {
+    path: 'dynamic-forms/:id',
+    loadComponent: () =>
+      import('./containers/dynamic-forms/form-detail/form-detail.component'),
+  },
 ];

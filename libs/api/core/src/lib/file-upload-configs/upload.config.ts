@@ -11,7 +11,7 @@ export const uploadConfig = {
       cb(null, fileName);
     },
   }),
-  fileFilter: (req: Request, file: any, cb) => {
+  fileFilter: (req: Request, file: any, cb: any) => {
     if (!file.originalname.match(/\.(xlsx|csv|xls)$/)) {
       return cb(new Error('Only Excel files are allowed!'), false);
     }

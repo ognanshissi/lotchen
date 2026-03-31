@@ -14,6 +14,7 @@ import { PipelinesModule } from '@lotchen/lotchen-api/pipelines';
 import { CampaignsModule } from '@lotchen/lotchen-api/campaigns';
 import { CallingModule } from '@lotchen/lotchen-api/calling';
 import { ProductsModule } from '@lotchen/lotchen-api/products';
+import { DynamicFormModule } from '@lotchen/lotchen-api/dynamic-form';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ProductsModule } from '@lotchen/lotchen-api/products';
     CampaignsModule,
     CallingModule,
     ProductsModule,
+    DynamicFormModule,
   ],
   controllers: [],
   providers: [

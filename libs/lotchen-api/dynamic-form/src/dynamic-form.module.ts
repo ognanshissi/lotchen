@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { FormsProvider } from './forms';
+import { CoreModule } from '@lotchen/api/core';
+import { formsProviders, FormController, formHandlers } from './forms';
 
 @Module({
-  controllers: [],
-  providers: [FormsProvider],
-  exports: [FormsProvider],
+  imports: [CoreModule],
+  controllers: [FormController],
+  providers: [...formsProviders, ...formHandlers],
 })
 export class DynamicFormModule {}

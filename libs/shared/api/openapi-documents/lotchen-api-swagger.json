@@ -2542,7 +2542,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CaptureConfigDto"
+                    "$ref": "#/components/schemas/FindAllCaptureConfigsQueryResponse"
                   }
                 }
               }
@@ -5098,6 +5098,309 @@
         },
         "tags": [
           "Policies"
+        ]
+      }
+    },
+    "/api/v1/dynamic-forms": {
+      "post": {
+        "operationId": "FormController_create_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFormCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateFormCommandResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dynamic Forms"
+        ]
+      },
+      "get": {
+        "operationId": "FormController_findAll_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllFormsQueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dynamic Forms"
+        ]
+      }
+    },
+    "/api/v1/dynamic-forms/{id}": {
+      "get": {
+        "operationId": "FormController_findById_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindFormByIdQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dynamic Forms"
+        ]
+      },
+      "patch": {
+        "operationId": "FormController_update_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dynamic Forms"
+        ]
+      }
+    },
+    "/api/v1/dynamic-forms/{id}/fields": {
+      "post": {
+        "operationId": "FormController_addField_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddFieldCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddFieldCommandResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dynamic Forms"
+        ]
+      }
+    },
+    "/api/v1/dynamic-forms/{id}/fields/reorder": {
+      "patch": {
+        "operationId": "FormController_reorderFields_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderFieldsCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dynamic Forms"
+        ]
+      }
+    },
+    "/api/v1/dynamic-forms/{id}/fields/{fieldId}": {
+      "patch": {
+        "operationId": "FormController_updateField_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fieldId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dynamic Forms"
+        ]
+      },
+      "delete": {
+        "operationId": "FormController_removeField_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fieldId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dynamic Forms"
         ]
       }
     }
@@ -8153,7 +8456,7 @@
           "type"
         ]
       },
-      "CaptureConfigDto": {
+      "FindAllCaptureConfigsQueryResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -8163,7 +8466,8 @@
             "type": "string"
           },
           "platform": {
-            "type": "object"
+            "type": "string",
+            "description": "Platform of the capture config, e.g. LinkedIn, Email, etc."
           },
           "apiKey": {
             "type": "string"
@@ -10335,6 +10639,283 @@
         },
         "required": [
           "claimNumber"
+        ]
+      },
+      "CreateFormCommand": {
+        "type": "object",
+        "properties": {
+          "formClass": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "formClass",
+          "name"
+        ]
+      },
+      "CreateFormCommandResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "FindAllFormsQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "formClass": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "fieldCount": {
+            "type": "number"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "formClass",
+          "name",
+          "isActive",
+          "fieldCount",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "FieldResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "section",
+              "text",
+              "dropdown",
+              "date",
+              "datetime",
+              "time",
+              "checkbox",
+              "radio",
+              "textarea",
+              "number",
+              "email",
+              "phone",
+              "url",
+              "color",
+              "file",
+              "image",
+              "autocomplete",
+              "rating",
+              "tags",
+              "currency",
+              "formula"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "custom": {
+            "type": "boolean"
+          },
+          "position": {
+            "type": "number"
+          },
+          "internal": {
+            "type": "boolean"
+          },
+          "editable": {
+            "type": "boolean"
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "label",
+          "type",
+          "required",
+          "visible",
+          "custom",
+          "position"
+        ]
+      },
+      "FindFormByIdQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "formClass": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldResponse"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "formClass",
+          "name",
+          "isActive",
+          "fields",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "AddFieldCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "section",
+              "text",
+              "dropdown",
+              "date",
+              "datetime",
+              "time",
+              "checkbox",
+              "radio",
+              "textarea",
+              "number",
+              "email",
+              "phone",
+              "url",
+              "color",
+              "file",
+              "image",
+              "autocomplete",
+              "rating",
+              "tags",
+              "currency",
+              "formula"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "label",
+          "type"
+        ]
+      },
+      "AddFieldCommandResponse": {
+        "type": "object",
+        "properties": {
+          "fieldId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fieldId"
+        ]
+      },
+      "ReorderFieldsCommand": {
+        "type": "object",
+        "properties": {
+          "fieldIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "fieldIds"
         ]
       }
     }

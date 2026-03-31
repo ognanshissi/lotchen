@@ -19,10 +19,11 @@ import { CaptureScriptDialogComponent } from '../../components/capture-script-di
 import { LinkedInImportDialogComponent } from '../../components/linkedin-import-dialog/linkedin-import-dialog.component';
 import { Clipboard } from '@angular/cdk/clipboard';
 import {
-  CaptureConfigDto,
+  FindAllCaptureConfigsQueryResponse,
   LeadCaptureConfigsApiService,
 } from '@talisoft/api/lotchen-client-api';
 import { ConfirmDialogService } from '@talisoft/ui/confirm-dialog';
+import { FindAllCaptureConfigsQuery } from 'libs/lotchen-api/contact/src/leads/capture-config/find-all/find-all-capture-configs.query';
 
 export interface CaptureConfigItem {
   id: string;
@@ -179,7 +180,7 @@ export class LeadCaptureSettingsComponent implements OnInit {
   );
   private readonly _confirmDialogService = inject(ConfirmDialogService);
 
-  public configs = signal<CaptureConfigDto[]>([]);
+  public configs = signal<FindAllCaptureConfigsQueryResponse[]>([]);
 
   public ngOnInit(): void {
     this.loadConfigs();
@@ -217,7 +218,7 @@ export class LeadCaptureSettingsComponent implements OnInit {
     });
   }
 
-  public openEditDialog(config: CaptureConfigDto): void {
+  public openEditDialog(config: FindAllCaptureConfigsQueryResponse): void {
     const ref = this._dialog.open(AddCaptureConfigDialogComponent, {
       width: '600px',
       data: { mode: 'edit', config },
@@ -227,14 +228,16 @@ export class LeadCaptureSettingsComponent implements OnInit {
     });
   }
 
-  public openScriptDialog(config: CaptureConfigDto): void {
+  public openScriptDialog(config: FindAllCaptureConfigsQueryResponse): void {
     this._dialog.open(CaptureScriptDialogComponent, {
       width: '700px',
       data: { configId: config.id, configName: config.name },
     });
   }
 
-  public openLinkedInImportDialog(config: CaptureConfigDto): void {
+  public openLinkedInImportDialog(
+    config: FindAllCaptureConfigsQueryResponse
+  ): void {
     const ref = this._dialog.open(LinkedInImportDialogComponent, {
       width: '800px',
       data: { configId: config.id, configName: config.name },
@@ -244,7 +247,7 @@ export class LeadCaptureSettingsComponent implements OnInit {
     });
   }
 
-  public deleteConfig(config: CaptureConfigDto): void {
+  public deleteConfig(config: FindAllCaptureConfigsQueryResponse): void {
     this._confirmDialogService.confirm({
       title: 'Confirmation',
       message: `Supprimer l'intégration "${config.name}" ?`,

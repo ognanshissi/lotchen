@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CaptureConfigProvider } from '../capture-config.provider';
 import { RoutingRuleType } from '../capture-config.schema';
-import { IsEnum } from 'class-validator';
+import { Request } from 'express';
 
 export class FindAllCaptureConfigsQuery {}
 
@@ -25,7 +25,7 @@ class RoutingRuleResponse {
   assignToTeamId?: string | null;
 }
 
-export class CaptureConfigDto {
+export class FindAllCaptureConfigsQueryResponse {
   @ApiProperty()
   id!: string;
 
@@ -33,11 +33,9 @@ export class CaptureConfigDto {
   name!: string;
 
   @ApiProperty({
-    enum: CaptureConfigPlatformEnum,
     description: 'Platform of the capture config, e.g. LinkedIn, Email, etc.',
   })
-  @IsEnum(CaptureConfigPlatformEnum)
-  platform!: CaptureConfigPlatformEnum;
+  platform!: string;
 
   @ApiProperty()
   apiKey!: string;
@@ -60,11 +58,18 @@ export class CaptureConfigDto {
 
 @Injectable()
 export class FindAllCaptureConfigsQueryHandler
-  implements QueryHandler<FindAllCaptureConfigsQuery, CaptureConfigDto[]>
+  implements
+    QueryHandler<
+      FindAllCaptureConfigsQuery,
+      FindAllCaptureConfigsQueryResponse[]
+    >
 {
   constructor(private readonly provider: CaptureConfigProvider) {}
 
-  async handlerAsync(): Promise<CaptureConfigDto[]> {
+  public async handlerAsync(
+    query?: FindAllCaptureConfigsQuery | undefined,
+    req?: Request
+  ): Promise<FindAllCaptureConfigsQueryResponse[]> {
     const configs = await this.provider.CaptureConfigModel.find({
       deletedAt: null,
     })
@@ -90,4 +95,5 @@ export class FindAllCaptureConfigsQueryHandler
       createdAt: c.createdAt,
     }));
   }
+  // constructor(private readonly provider: CaptureConfigProvider) {}
 }

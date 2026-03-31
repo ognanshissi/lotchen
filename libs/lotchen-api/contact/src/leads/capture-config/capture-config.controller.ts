@@ -17,8 +17,8 @@ import {
   CreateCaptureConfigResponse,
 } from './create/create-capture-config.command';
 import {
-  CaptureConfigDto,
   FindAllCaptureConfigsQueryHandler,
+  FindAllCaptureConfigsQueryResponse,
 } from './find-all/find-all-capture-configs.query';
 import {
   UpdateCaptureConfigCommandHandler,
@@ -59,9 +59,9 @@ export class CaptureConfigController {
   @ApiResponse({
     status: 200,
     description: 'All capture configs',
-    type: [CaptureConfigDto],
+    type: [FindAllCaptureConfigsQueryResponse],
   })
-  public async findAll(): Promise<CaptureConfigDto[]> {
+  public async findAll(): Promise<FindAllCaptureConfigsQueryResponse[]> {
     return await this._findAllHandler.handlerAsync();
   }
 

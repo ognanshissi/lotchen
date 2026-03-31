@@ -1,0 +1,65 @@
+<div class="py-8 px-6 bg-white">
+  <div class="flex justify-between items-center">
+    <div>
+      <tas-title>Formulaires dynamiques</tas-title>
+      <tas-text
+        >Personnaliser les champs des formulaires par entité (contacts, leads,
+        clients, produits)</tas-text
+      >
+    </div>
+    <button tas-raised-button color="primary" (click)="openCreateFormDialog()">
+      <tas-icon iconName="feather:plus"></tas-icon>
+      Nouveau formulaire
+    </button>
+  </div>
+</div>
+
+<div class="p-6">
+  <tas-card>
+    <table class="w-full text-left">
+      <thead>
+        <tr class="border-b border-gray-200">
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Nom</th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Entité</th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Champs</th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Statut</th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (form of forms(); track form.id) {
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-3 px-4 font-medium">{{ form.name }}</td>
+          <td class="py-3 px-4">{{ getFormClassLabel(form.formClass) }}</td>
+          <td class="py-3 px-4">{{ form.fieldCount }}</td>
+          <td class="py-3 px-4">
+            <span
+              class="text-xs px-2 py-1 rounded-full"
+              [class.bg-green-100]="form.isActive"
+              [class.text-green-800]="form.isActive"
+              [class.bg-gray-100]="!form.isActive"
+              [class.text-gray-600]="!form.isActive"
+              >{{ form.isActive ? 'Actif' : 'Inactif' }}</span
+            >
+          </td>
+          <td class="py-3 px-4 flex gap-2">
+            <a
+              tas-outlined-button
+              class="!p-1 !min-w-0"
+              [routerLink]="['/settings/dynamic-forms', form.id]"
+            >
+              <tas-icon iconName="feather:eye"></tas-icon>
+            </a>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="5" class="py-8 text-center text-gray-400">
+            Aucun formulaire configuré
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </tas-card>
+</div>

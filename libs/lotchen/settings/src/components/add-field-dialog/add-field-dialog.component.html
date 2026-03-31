@@ -1,0 +1,86 @@
+<tas-side-drawer>
+  <tas-drawer-title>
+    <tas-title
+      >{{ data.mode === 'create' ? 'Ajouter' : 'Modifier' }} un champ</tas-title
+    >
+  </tas-drawer-title>
+  <tas-drawer-content>
+    <form [formGroup]="form">
+      <div class="flex flex-col space-y-4">
+        <tas-form-field>
+          <tas-label>Nom technique</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="name"
+            placeholder="Ex: custom_field_1"
+          />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Label</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="label"
+            placeholder="Ex: Numéro de compte"
+          />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Type</tas-label>
+          <tas-select formControlName="type" [options]="typeList"> </tas-select>
+        </tas-form-field>
+
+        <div class="flex gap-6">
+          <tas-checkbox formControlName="required">Obligatoire</tas-checkbox>
+          <tas-checkbox formControlName="visible">Visible</tas-checkbox>
+        </div>
+
+        <tas-form-field>
+          <tas-label>Placeholder</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="placeholder"
+            placeholder="Texte indicatif"
+          />
+        </tas-form-field>
+
+        <tas-form-field>
+          <tas-label>Aide</tas-label>
+          <input
+            tasInput
+            type="text"
+            formControlName="hint"
+            placeholder="Texte d'aide pour l'utilisateur"
+          />
+        </tas-form-field>
+
+        @if (showOptions()) {
+        <tas-form-field>
+          <tas-label>Options (une par ligne)</tas-label>
+          <textarea
+            tasInput
+            formControlName="optionsText"
+            class="w-full border rounded px-3 py-2 text-sm"
+            rows="5"
+            placeholder="Option 1&#10;Option 2&#10;Option 3"
+          ></textarea>
+        </tas-form-field>
+        }
+      </div>
+    </form>
+  </tas-drawer-content>
+
+  <tas-drawer-action>
+    <button tas-outlined-button closable-drawer>
+      <tas-icon iconName="close"></tas-icon>
+      Fermer
+    </button>
+    <button tas-raised-button color="primary" (click)="handleSubmit()">
+      <tas-icon iconName="feather:check"></tas-icon>
+      Sauvegarder
+    </button>
+  </tas-drawer-action>
+</tas-side-drawer>

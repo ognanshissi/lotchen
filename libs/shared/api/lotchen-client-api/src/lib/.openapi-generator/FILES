@@ -10,6 +10,7 @@ api/campaigns.service.ts
 api/contacts.service.ts
 api/currencies.service.ts
 api/deals.service.ts
+api/dynamic-forms.service.ts
 api/event-types.service.ts
 api/lead-capture-configs.service.ts
 api/leads.service.ts
@@ -36,6 +37,8 @@ git_push.sh
 index.ts
 model/access-token-response.interface.ts
 model/add-claim-command-response.interface.ts
+model/add-field-command-response.interface.ts
+model/add-field-command.interface.ts
 model/address-dto.interface.ts
 model/assign-contact-command-request.interface.ts
 model/assign-permissions-command-request.interface.ts
@@ -47,7 +50,6 @@ model/beneficiary-dto.interface.ts
 model/bulk-assign-contacts-command-request.interface.ts
 model/bulk-delete-contacts-command.interface.ts
 model/caller-token-response.interface.ts
-model/capture-config-dto.interface.ts
 model/capture-lead-command.interface.ts
 model/conflicting-meeting-response.interface.ts
 model/contact-info-dto.interface.ts
@@ -63,6 +65,8 @@ model/create-currency-command-response.interface.ts
 model/create-currency-command.interface.ts
 model/create-deal-command.interface.ts
 model/create-event-type-command.interface.ts
+model/create-form-command-response.interface.ts
+model/create-form-command.interface.ts
 model/create-lead-command.interface.ts
 model/create-meeting-command.interface.ts
 model/create-message-template-command.interface.ts
@@ -87,6 +91,7 @@ model/enrich-lead-command-request.interface.ts
 model/estimate-audience-query.interface.ts
 model/execution-dashboard-response.interface.ts
 model/field-dto.interface.ts
+model/field-response.interface.ts
 model/filter-all-contacts-command.interface.ts
 model/filter-all-leads-command.interface.ts
 model/filter-all-territories-command.interface.ts
@@ -94,9 +99,11 @@ model/filter-dto.interface.ts
 model/find-all-agencies-address-dto.interface.ts
 model/find-all-agencies-query-response.interface.ts
 model/find-all-call-logs-query-response.interface.ts
+model/find-all-capture-configs-query-response.interface.ts
 model/find-all-contacts-query-response.interface.ts
 model/find-all-currencies-query-response.interface.ts
 model/find-all-event-types-query-response.interface.ts
+model/find-all-forms-query-response.interface.ts
 model/find-all-meetings-query-response.interface.ts
 model/find-all-notes-query-response.interface.ts
 model/find-all-organization-query-response.interface.ts
@@ -110,6 +117,7 @@ model/find-all-territories-query-response.interface.ts
 model/find-all-user-query-response.interface.ts
 model/find-contact-by-id-query-response.interface.ts
 model/find-event-type-by-id-query-response.interface.ts
+model/find-form-by-id-query-response.interface.ts
 model/find-lead-by-id-query-response.interface.ts
 model/find-meeting-by-id-query-response.interface.ts
 model/find-meetings-by-range-response.interface.ts
@@ -158,6 +166,7 @@ model/qualify-lead-command-request.interface.ts
 model/recording-callback-command.interface.ts
 model/refresh-token-command.interface.ts
 model/reorder-deals-command.interface.ts
+model/reorder-fields-command.interface.ts
 model/reset-password-command-response.interface.ts
 model/reset-password-command.interface.ts
 model/retry-execution-step-command-request.interface.ts

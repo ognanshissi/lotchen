@@ -1,0 +1,151 @@
+<div class="py-8 px-6 bg-white">
+  <div class="flex justify-between items-center">
+    <div class="flex items-center gap-4">
+      <a
+        tas-outlined-button
+        class="!p-1 !min-w-0"
+        routerLink="/settings/dynamic-forms"
+      >
+        <tas-icon iconName="feather:arrow-left"></tas-icon>
+      </a>
+      <div>
+        <tas-title>{{ form()?.name || 'Chargement...' }}</tas-title>
+        <tas-text>Gérer les champs du formulaire</tas-text>
+      </div>
+    </div>
+    @if (form()) {
+    <button tas-raised-button color="primary" (click)="openAddFieldDialog()">
+      <tas-icon iconName="feather:plus"></tas-icon>
+      Ajouter un champ
+    </button>
+    }
+  </div>
+</div>
+
+@if (form(); as f) {
+<div class="p-6">
+  <tas-card>
+    <table class="w-full text-left">
+      <thead>
+        <tr class="border-b border-gray-200">
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600 w-10">
+            Pos.
+          </th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Label</th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Nom</th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Type</th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">
+            Obligatoire
+          </th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Visible</th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Origine</th>
+          <th class="py-3 px-4 font-semibold text-sm text-gray-600">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (field of f.fields; track field._id) {
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-3 px-4 text-gray-400 text-sm">{{ field.position }}</td>
+          <td class="py-3 px-4 font-medium">{{ field.label }}</td>
+          <td class="py-3 px-4 text-gray-500 text-sm font-mono">
+            {{ field.name }}
+          </td>
+          <td class="py-3 px-4">
+            <span
+              class="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700"
+            >
+              {{ getFieldTypeLabel(field.type) }}
+            </span>
+          </td>
+          <td class="py-3 px-4">
+            @if (field.required) {
+            <span class="text-xs px-2 py-1 rounded-full bg-red-50 text-red-700"
+              >Requis</span
+            >
+            } @else {
+            <span
+              class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-500"
+              >Optionnel</span
+            >
+            }
+          </td>
+          <td class="py-3 px-4">
+            @if (field.visible) {
+            <span
+              class="text-xs px-2 py-1 rounded-full bg-green-50 text-green-700"
+              >Visible</span
+            >
+            } @else {
+            <span
+              class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-500"
+              >Masqué</span
+            >
+            }
+          </td>
+          <td class="py-3 px-4">
+            @if (field.custom) {
+            <span
+              class="text-xs px-2 py-1 rounded-full bg-purple-50 text-purple-700"
+              >Personnalisé</span
+            >
+            } @else {
+            <span
+              class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600"
+              >Système</span
+            >
+            }
+          </td>
+          <td class="py-3 px-4 flex gap-1">
+            <button
+              tas-outlined-button
+              class="!p-1 !min-w-0"
+              (click)="moveField(field, 'up')"
+            >
+              <tas-icon iconName="feather:arrow-up"></tas-icon>
+            </button>
+            <button
+              tas-outlined-button
+              class="!p-1 !min-w-0"
+              (click)="moveField(field, 'down')"
+            >
+              <tas-icon iconName="feather:arrow-down"></tas-icon>
+            </button>
+            <button
+              tas-outlined-button
+              class="!p-1 !min-w-0"
+              (click)="toggleVisibility(field)"
+            >
+              <tas-icon
+                [iconName]="field.visible ? 'feather:eye-off' : 'feather:eye'"
+              ></tas-icon>
+            </button>
+            <button
+              tas-outlined-button
+              class="!p-1 !min-w-0"
+              (click)="openEditFieldDialog(field)"
+            >
+              <tas-icon iconName="feather:edit-2"></tas-icon>
+            </button>
+            @if (field.custom) {
+            <button
+              tas-outlined-button
+              class="!p-1 !min-w-0 !text-red-500"
+              (click)="removeField(field)"
+            >
+              <tas-icon iconName="feather:trash-2"></tas-icon>
+            </button>
+            }
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="8" class="py-8 text-center text-gray-400">
+            Aucun champ configuré
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </tas-card>
+</div>
+}
