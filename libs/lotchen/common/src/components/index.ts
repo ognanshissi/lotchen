@@ -7,3 +7,4 @@ export * from './add-task-dialog';
 export * from './add-meeting-dialog';
 export * from './user-menu/user-menu.component';
 export * from './call-recording-player/call-recording-player.component';
+export * from './dynamic-fields';

@@ -29,6 +29,8 @@ import { CreateFormCommandResponse } from '../model/create-form-command-response
 // @ts-ignore
 import { FindAllFormsQueryResponse } from '../model/find-all-forms-query-response.interface';
 // @ts-ignore
+import { FindByClassNameQueryResponse } from '../model/find-by-class-name-query-response.interface';
+// @ts-ignore
 import { FindFormByIdQueryResponse } from '../model/find-form-by-id-query-response.interface';
 // @ts-ignore
 import { ReorderFieldsCommand } from '../model/reorder-fields-command.interface';
@@ -264,13 +266,20 @@ export class DynamicFormsApiService {
 
     /**
      * @param xTenantFqdn The Tenant Fqdn
+     * @param formClass 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public formControllerFindAllV1(xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllFormsQueryResponse>>;
-    public formControllerFindAllV1(xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllFormsQueryResponse>>>;
-    public formControllerFindAllV1(xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllFormsQueryResponse>>>;
-    public formControllerFindAllV1(xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public formControllerFindAllV1(xTenantFqdn?: string, formClass?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllFormsQueryResponse>>;
+    public formControllerFindAllV1(xTenantFqdn?: string, formClass?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllFormsQueryResponse>>>;
+    public formControllerFindAllV1(xTenantFqdn?: string, formClass?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllFormsQueryResponse>>>;
+    public formControllerFindAllV1(xTenantFqdn?: string, formClass?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (formClass !== undefined && formClass !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>formClass, 'formClass');
+        }
 
         let localVarHeaders = this.defaultHeaders;
         if (xTenantFqdn !== undefined && xTenantFqdn !== null) {
@@ -315,6 +324,81 @@ export class DynamicFormsApiService {
         return this.httpClient.request<Array<FindAllFormsQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param className The class name of the form to find
+     * @param xTenantFqdn The Tenant Fqdn
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public formControllerFindByClassNameV1(className: string, xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<FindByClassNameQueryResponse>;
+    public formControllerFindByClassNameV1(className: string, xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<FindByClassNameQueryResponse>>;
+    public formControllerFindByClassNameV1(className: string, xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<FindByClassNameQueryResponse>>;
+    public formControllerFindByClassNameV1(className: string, xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (className === null || className === undefined) {
+            throw new Error('Required parameter className was null or undefined when calling formControllerFindByClassNameV1.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (className !== undefined && className !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>className, 'className');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+        if (xTenantFqdn !== undefined && xTenantFqdn !== null) {
+            localVarHeaders = localVarHeaders.set('x-tenant-fqdn', String(xTenantFqdn));
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+        let localVarTransferCache: boolean | undefined = options && options.transferCache;
+        if (localVarTransferCache === undefined) {
+            localVarTransferCache = true;
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/dynamic-forms/class-name`;
+        return this.httpClient.request<FindByClassNameQueryResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -5150,6 +5150,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "formClass",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -5162,6 +5170,46 @@
                   "items": {
                     "$ref": "#/components/schemas/FindAllFormsQueryResponse"
                   }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dynamic Forms"
+        ]
+      }
+    },
+    "/api/v1/dynamic-forms/class-name": {
+      "get": {
+        "operationId": "FormController_findByClassName_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqdn",
+            "in": "header",
+            "description": "The Tenant Fqdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "className",
+            "required": true,
+            "in": "query",
+            "description": "The class name of the form to find",
+            "schema": {
+              "example": "Contact",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindByClassNameQueryResponse"
                 }
               }
             }
@@ -10705,6 +10753,90 @@
           "fieldCount",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "FindByClassNameFieldDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether the field is required or not"
+          },
+          "custom": {
+            "type": "boolean",
+            "description": "Whether the field is a custom field or not"
+          },
+          "position": {
+            "type": "number",
+            "description": "The position of the field in the form"
+          },
+          "label": {
+            "type": "string",
+            "description": "The label of the field"
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "The placeholder of the field"
+          },
+          "hint": {
+            "type": "string",
+            "description": "The hint of the field"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "visible",
+          "required",
+          "custom",
+          "position",
+          "label"
+        ]
+      },
+      "FindByClassNameQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "formClass": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "fields": {
+            "description": "The fields of the form",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FindByClassNameFieldDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "formClass",
+          "name",
+          "fields"
         ]
       },
       "FieldResponse": {

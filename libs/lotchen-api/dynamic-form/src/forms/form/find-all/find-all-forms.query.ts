@@ -1,7 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 import { QueryHandler } from '@lotchen/api/core';
 import { FormsProvider } from '../../forms.provider';
+
+export class FindAllFormsQuery {
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  formClass?: string;
+}
 
 export class FindAllFormsQueryResponse {
   @ApiProperty() id!: string;
@@ -15,12 +23,17 @@ export class FindAllFormsQueryResponse {
 
 @Injectable()
 export class FindAllFormsQueryHandler
-  implements QueryHandler<void, FindAllFormsQueryResponse[]>
+  implements QueryHandler<FindAllFormsQuery, FindAllFormsQueryResponse[]>
 {
   constructor(private readonly formsProvider: FormsProvider) {}
 
-  async handlerAsync(): Promise<FindAllFormsQueryResponse[]> {
-    const forms = await this.formsProvider.FormModel.find({ deletedAt: null })
+  async handlerAsync(
+    query?: FindAllFormsQuery
+  ): Promise<FindAllFormsQueryResponse[]> {
+    const filter: Record<string, unknown> = { deletedAt: null };
+    if (query?.formClass) filter['formClass'] = query.formClass;
+
+    const forms = await this.formsProvider.FormModel.find(filter)
       .sort({ createdAt: -1 })
       .lean()
       .exec();

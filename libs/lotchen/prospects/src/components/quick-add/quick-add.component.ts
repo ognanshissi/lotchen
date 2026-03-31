@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import {
   TasClosableDrawer,
   TasDrawerAction,
@@ -25,6 +25,7 @@ import { finalize } from 'rxjs';
 import { DialogRef } from '@angular/cdk/dialog';
 import { TasCard, TasCardHeader } from '@talisoft/ui/card';
 import { TasDatePicker } from '@talisoft/ui/date-picker';
+import { DynamicFieldsComponent } from '@lotchen/lotchen/common/components';
 
 @Component({
   selector: 'prospects-quick-add',
@@ -47,10 +48,14 @@ import { TasDatePicker } from '@talisoft/ui/date-picker';
     TasCard,
     TasCardHeader,
     TasDatePicker,
+    DynamicFieldsComponent,
   ],
   standalone: true,
 })
 export class QuickAddComponent implements OnInit {
+  @ViewChild(DynamicFieldsComponent)
+  dynamicFields?: DynamicFieldsComponent;
+
   private readonly _contactApiService = inject(ContactsApiService);
   private readonly _snackbarService = inject(SnackbarService);
   private readonly _dialogRef = inject(DialogRef);
@@ -107,6 +112,11 @@ export class QuickAddComponent implements OnInit {
         .split(',')
         .map((t: string) => t.trim())
         .filter(Boolean);
+    }
+
+    const customFieldValues = this.dynamicFields?.getValues();
+    if (customFieldValues && Object.keys(customFieldValues).length > 0) {
+      payload.customFields = customFieldValues;
     }
 
     this._contactApiService

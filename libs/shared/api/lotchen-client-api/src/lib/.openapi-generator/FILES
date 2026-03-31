@@ -115,6 +115,8 @@ model/find-all-teams-query-response.interface.ts
 model/find-all-teams-query-user-dto.interface.ts
 model/find-all-territories-query-response.interface.ts
 model/find-all-user-query-response.interface.ts
+model/find-by-class-name-field-dto.interface.ts
+model/find-by-class-name-query-response.interface.ts
 model/find-contact-by-id-query-response.interface.ts
 model/find-event-type-by-id-query-response.interface.ts
 model/find-form-by-id-query-response.interface.ts

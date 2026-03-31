@@ -10,6 +10,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { TasCard } from '@talisoft/ui/card';
 import { TasSummaryField } from '@talisoft/ui/summary-field';
+import { DynamicFieldsSummaryComponent } from '@lotchen/lotchen/common/components';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { map, Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
@@ -27,7 +28,14 @@ import {
   selector: 'leads-detail-overview',
   templateUrl: './lead-detail-overview.component.html',
   standalone: true,
-  imports: [TasSummaryField, TasCard, DatePipe, ButtonModule, TasIcon],
+  imports: [
+    TasSummaryField,
+    TasCard,
+    DatePipe,
+    ButtonModule,
+    TasIcon,
+    DynamicFieldsSummaryComponent,
+  ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -63,6 +71,10 @@ export class LeadDetailOverviewComponent {
     const info = lead?.['createdByInfo'];
     if (!info) return '';
     return `${info.firstName ?? ''} ${info.lastName ?? ''}`.trim();
+  });
+
+  public customFields = computed(() => {
+    return this.lead()?.['customFields'] ?? {};
   });
 
   public tagsDisplay = computed(() => {
@@ -146,6 +158,36 @@ export class LeadDetailOverviewComponent {
         this._refreshPage(leadId);
       }
     });
+  }
+
+  public onCustomFieldSaved(event: { field: string; value: string }): void {
+    const leadId = this.lead()?.['id'];
+    if (!leadId) return;
+
+    const updatedCustomFields = {
+      ...this.customFields(),
+      [event.field]: event.value,
+    };
+
+    this._leadsApiService
+      .leadsControllerUpdateLeadV1(leadId, {
+        customFields: updatedCustomFields,
+      } as any)
+      .subscribe({
+        next: () => {
+          this._snackbarService.success(
+            'Succès',
+            'Champ personnalisé mis à jour'
+          );
+          this._refreshPage(leadId);
+        },
+        error: () => {
+          this._snackbarService.error(
+            'Erreur',
+            'La mise à jour du champ personnalisé a échoué'
+          );
+        },
+      });
   }
 
   private _refreshPage(leadId: string): void {

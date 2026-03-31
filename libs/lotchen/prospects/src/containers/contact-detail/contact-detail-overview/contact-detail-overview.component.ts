@@ -15,6 +15,7 @@ import {
 } from '@talisoft/api/lotchen-client-api';
 import { TasCard } from '@talisoft/ui/card';
 import { TasSummaryField } from '@talisoft/ui/summary-field';
+import { DynamicFieldsSummaryComponent } from '@lotchen/lotchen/common/components';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -24,7 +25,7 @@ import { DatePipe } from '@angular/common';
   selector: 'prospects-contact-detail-overview',
   templateUrl: './contact-detail-overview.component.html',
   standalone: true,
-  imports: [TasSummaryField, TasCard, DatePipe],
+  imports: [TasSummaryField, TasCard, DatePipe, DynamicFieldsSummaryComponent],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -33,7 +34,6 @@ export class ContactDetailOverviewComponent {
   private readonly _contactApi = inject(ContactsApiService);
   private readonly _snackbarService = inject(SnackbarService);
   private readonly _router = inject(Router);
-  private readonly _http = inject(HttpClient);
 
   public contact = toSignal(
     (this._activatedRoute?.parent?.data as Observable<Data>).pipe(
@@ -69,6 +69,10 @@ export class ContactDetailOverviewComponent {
     const info = contact?.createdByInfo;
     if (!info) return '';
     return `${info.firstName ?? ''} ${info.lastName ?? ''}`.trim();
+  });
+
+  public customFields = computed(() => {
+    return (this.contact() as any)?.customFields ?? {};
   });
 
   public tagsDisplay = computed(() => {
@@ -129,6 +133,36 @@ export class ContactDetailOverviewComponent {
           this._snackbarService.error(
             'Erreur',
             'La mise à jour du contact a échoué'
+          );
+        },
+      });
+  }
+
+  public onCustomFieldSaved(event: { field: string; value: string }): void {
+    const contactId = this.contact()?.id;
+    if (!contactId) return;
+
+    const updatedCustomFields = {
+      ...this.customFields(),
+      [event.field]: event.value,
+    };
+
+    this._contactApi
+      .contactsControllerUpdateContactV1(contactId, {
+        customFields: updatedCustomFields,
+      } as any)
+      .subscribe({
+        next: () => {
+          this._snackbarService.success(
+            'Succès',
+            'Champ personnalisé mis à jour'
+          );
+          this._refreshPage(contactId);
+        },
+        error: () => {
+          this._snackbarService.error(
+            'Erreur',
+            'La mise à jour du champ personnalisé a échoué'
           );
         },
       });

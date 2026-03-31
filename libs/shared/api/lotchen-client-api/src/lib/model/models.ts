@@ -78,6 +78,8 @@ export * from './find-all-teams-query-response.interface';
 export * from './find-all-teams-query-user-dto.interface';
 export * from './find-all-territories-query-response.interface';
 export * from './find-all-user-query-response.interface';
+export * from './find-by-class-name-field-dto.interface';
+export * from './find-by-class-name-query-response.interface';
 export * from './find-contact-by-id-query-response.interface';
 export * from './find-event-type-by-id-query-response.interface';
 export * from './find-form-by-id-query-response.interface';

@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
@@ -15,6 +16,7 @@ import {
   CreateFormCommandResponse,
 } from './create/create-form.command';
 import {
+  FindAllFormsQuery,
   FindAllFormsQueryHandler,
   FindAllFormsQueryResponse,
 } from './find-all/find-all-forms.query';
@@ -34,6 +36,11 @@ import {
   ReorderFieldsCommand,
   ReorderFieldsCommandHandler,
 } from './reorder-fields/reorder-fields.command';
+import {
+  FindByClassNameQuery,
+  FindByClassNameQueryHandler,
+  FindByClassNameQueryResponse,
+} from './find-by-class-name/find-by-class-name.query';
 
 @Controller({ version: '1', path: 'dynamic-forms' })
 @ApiHeader({ name: 'x-tenant-fqdn', description: 'The Tenant Fqdn' })
@@ -47,7 +54,8 @@ export class FormController {
     private readonly _addFieldHandler: AddFieldCommandHandler,
     private readonly _updateFieldHandler: UpdateFieldCommandHandler,
     private readonly _removeFieldHandler: RemoveFieldCommandHandler,
-    private readonly _reorderFieldsHandler: ReorderFieldsCommandHandler
+    private readonly _reorderFieldsHandler: ReorderFieldsCommandHandler,
+    private readonly _findByClassNameHandler: FindByClassNameQueryHandler
   ) {}
 
   @Post()
@@ -63,8 +71,18 @@ export class FormController {
 
   @Get()
   @ApiResponse({ type: [FindAllFormsQueryResponse] })
-  async findAll(): Promise<FindAllFormsQueryResponse[]> {
-    return this._findAllHandler.handlerAsync();
+  async findAll(
+    @Query() query: FindAllFormsQuery
+  ): Promise<FindAllFormsQueryResponse[]> {
+    return this._findAllHandler.handlerAsync(query);
+  }
+
+  @Get('class-name')
+  @ApiResponse({ type: FindByClassNameQueryResponse })
+  async findByClassName(
+    @Query() query: FindByClassNameQuery
+  ): Promise<FindByClassNameQueryResponse> {
+    return this._findByClassNameHandler.handlerAsync(query);
   }
 
   @Get(':id')

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import {
   TasClosableDrawer,
   TasDrawerAction,
@@ -24,6 +24,7 @@ import { finalize } from 'rxjs';
 import { DialogRef } from '@angular/cdk/dialog';
 import { TasCard, TasCardHeader } from '@talisoft/ui/card';
 import { LeadsApiService } from '@talisoft/api/lotchen-client-api';
+import { DynamicFieldsComponent } from '@lotchen/lotchen/common/components';
 
 @Component({
   selector: 'leads-quick-add',
@@ -45,10 +46,14 @@ import { LeadsApiService } from '@talisoft/api/lotchen-client-api';
     ReactiveFormsModule,
     TasCard,
     TasCardHeader,
+    DynamicFieldsComponent,
   ],
   standalone: true,
 })
 export class QuickAddLeadComponent implements OnInit {
+  @ViewChild(DynamicFieldsComponent)
+  dynamicFields?: DynamicFieldsComponent;
+
   private readonly _snackbarService = inject(SnackbarService);
   private readonly _dialogRef = inject(DialogRef);
   private readonly _leadsApiService = inject(LeadsApiService);
@@ -114,6 +119,11 @@ export class QuickAddLeadComponent implements OnInit {
         .split(',')
         .map((t: string) => t.trim())
         .filter(Boolean);
+    }
+
+    const customFieldValues = this.dynamicFields?.getValues();
+    if (customFieldValues && Object.keys(customFieldValues).length > 0) {
+      payload.customFields = customFieldValues;
     }
 
     this._leadsApiService
