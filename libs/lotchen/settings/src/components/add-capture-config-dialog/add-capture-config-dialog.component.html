@@ -47,23 +47,21 @@
 
         @if (form.get('routingType')?.value === 'fixed') {
         <tas-form-field>
-          <tas-label>ID Utilisateur assigné</tas-label>
-          <input
-            tasInput
-            type="text"
+          <tas-label>Choisir un utilisateur</tas-label>
+          <tas-select
             formControlName="assignToUserId"
-            placeholder="UUID de l'utilisateur"
-          />
+            [options]="userOptions()"
+          >
+          </tas-select>
         </tas-form-field>
         } @if (form.get('routingType')?.value === 'round-robin') {
         <tas-form-field>
-          <tas-label>ID Équipe</tas-label>
-          <input
-            tasInput
-            type="text"
+          <tas-label>Choisir une équipe</tas-label>
+          <tas-select
             formControlName="assignToTeamId"
-            placeholder="UUID de l'équipe"
-          />
+            [options]="teamOptions()"
+          >
+          </tas-select>
         </tas-form-field>
         }
       </div>

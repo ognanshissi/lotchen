@@ -18,7 +18,6 @@ import {
   PoliciesApiService,
   ProductsApiService,
 } from '@talisoft/api/lotchen-client-api';
-import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogService } from '@talisoft/ui/confirm-dialog';
 
 @Component({

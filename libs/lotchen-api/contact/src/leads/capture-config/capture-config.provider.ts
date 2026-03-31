@@ -5,7 +5,7 @@ import {
   RequestExtendedWithUser,
 } from '@lotchen/api/core';
 import { REQUEST } from '@nestjs/core';
-import { CaptureConfig, CaptureConfigDocument } from './capture-config.schema';
+import { CaptureConfigDocument } from './capture-config.schema';
 import { CAPTURE_CONFIG_MODEL } from './capture-config.model-token';
 import { ContactDocument } from '../../contacts/contact.schema';
 import { CONTACT_MODEL, USER_MODEL } from '../../contacts/contact.provider';

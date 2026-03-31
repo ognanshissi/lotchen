@@ -20,8 +20,14 @@ import {
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { CaptureConfigItem } from '../../containers/lead-capture/lead-capture-settings.component';
-import { LeadCaptureConfigsApiService } from '@talisoft/api/lotchen-client-api';
+import {
+  LeadCaptureConfigsApiService,
+  TeamsApiService,
+  UsersApiService,
+} from '@talisoft/api/lotchen-client-api';
 import { TasSelect } from '@talisoft/ui/select';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, shareReplay } from 'rxjs';
 
 export interface AddCaptureConfigDialogData {
   mode: 'create' | 'edit';
@@ -54,6 +60,33 @@ export class AddCaptureConfigDialogComponent implements OnInit {
   public readonly data: AddCaptureConfigDialogData = inject(DIALOG_DATA);
   private readonly _leadCaptureConfigApiService = inject(
     LeadCaptureConfigsApiService
+  );
+
+  private readonly _usersApiService = inject(UsersApiService);
+  private readonly _teamsApiService = inject(TeamsApiService);
+
+  teamOptions = toSignal(
+    this._teamsApiService.teamsControllerFindAllTeamsV1().pipe(
+      shareReplay(1),
+      map((teams) =>
+        teams.map((t) => ({
+          label: t.name,
+          value: t.id,
+        }))
+      )
+    )
+  );
+
+  userOptions = toSignal(
+    this._usersApiService.usersControllerAllUsersV1().pipe(
+      shareReplay(1),
+      map((users) =>
+        users.map((u) => ({
+          label: u.firstName + ' ' + u.lastName,
+          value: u.userId,
+        }))
+      )
+    )
   );
 
   public platformOptions = signal([
