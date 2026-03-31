@@ -141,6 +141,7 @@ export class LeadCaptureSettingsComponent implements OnInit {
         label: 'Supprimer',
         theme: 'warn',
       },
+      showCancelButton: true,
       accept: () => {
         this._leadCaptureConfigApiService
           .captureConfigControllerDeleteV1(config.id)

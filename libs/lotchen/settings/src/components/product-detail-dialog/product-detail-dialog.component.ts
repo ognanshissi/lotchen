@@ -75,6 +75,7 @@ export class ProductDetailDialogComponent {
       title: 'Confirmer la promotion en production ?',
       message: '',
       closable: true,
+      showCancelButton: true,
       acceptButtonProps: {
         label: 'Oui, promouvoir',
         theme: 'primary',
@@ -104,6 +105,12 @@ export class ProductDetailDialogComponent {
       title: 'Confirmer la rétrogradation en sandbox ?',
       message: '',
       closable: true,
+      showCancelButton: true,
+      acceptButtonProps: {
+        label: 'Oui, rétrograder',
+        theme: 'warn',
+        icon: 'feather:arrow-down-circle',
+      },
       accept: () => {
         this._productsApiService
           .productControllerDemoteV1(this.data.product.id)

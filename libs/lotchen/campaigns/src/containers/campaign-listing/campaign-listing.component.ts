@@ -85,7 +85,7 @@ export class CampaignListingComponent implements OnInit {
       message: `Êtes-vous sûr de vouloir envoyer la campagne "${item.name}" ?`,
       closable: true,
       showCancelButton: true,
-      acceptButtonProps: { label: 'Envoyer', icon: 'send' },
+      acceptButtonProps: { label: 'Envoyer', icon: 'send', theme: 'primary' },
       accept: () => {
         this._campaignsApi.campaignsControllerSendV1(item._id).subscribe({
           next: (result) => {

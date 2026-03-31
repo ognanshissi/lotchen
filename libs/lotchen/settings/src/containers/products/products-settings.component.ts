@@ -166,6 +166,12 @@ export class ProductsSettingsComponent implements OnInit {
       title: `Rétrograder "${product.name}" en sandbox ?`,
       message: `Êtes-vous sûr de vouloir rétrograder "${product.name}" en sandbox ? Cette action est irréversible.`,
       closable: false,
+      acceptButtonProps: {
+        label: 'Oui, rétrograder',
+        theme: 'warn',
+        icon: 'feather:arrow-down-circle',
+      },
+      showCancelButton: true,
       accept: () => {
         this._productsApiService
           .productControllerDemoteV1(product.id)
@@ -190,6 +196,12 @@ export class ProductsSettingsComponent implements OnInit {
       title: `Supprimer le produit "${product.name}" ?`,
       message: `Êtes-vous sûr de vouloir supprimer "${product.name}" ? Cette action est irréversible.`,
       closable: false,
+      showCancelButton: true,
+      acceptButtonProps: {
+        label: 'Oui, supprimer',
+        theme: 'warn',
+        icon: 'feather:x-circle',
+      },
       accept: () => {
         this._productsApiService
           .productControllerDeleteV1(product.id)
