@@ -69,6 +69,10 @@ export class UpdateLeadCommandRequest {
   @IsArray()
   @IsString({ each: true })
   tags?: string[];
+
+  @ApiPropertyOptional({ type: Object })
+  @IsOptional()
+  customFields?: Record<string, any>;
 }
 
 export class UpdateLeadCommand extends UpdateLeadCommandRequest {
@@ -135,6 +139,12 @@ export class UpdateLeadCommandHandler
     if (command.priority !== undefined)
       $set['customFields.priority'] = command.priority;
     if (command.notes !== undefined) $set['customFields.notes'] = command.notes;
+
+    if (command.customFields !== undefined) {
+      for (const [key, value] of Object.entries(command['customFields'])) {
+        $set[`customFields.${key}`] = value;
+      }
+    }
 
     await this.leadProvider.ContactModel.findByIdAndUpdate(command.id, {
       $set,

@@ -49,6 +49,8 @@ export class PatchDataCommandHandler
       throw new NotFoundException('Contact not found');
     }
 
+    console.log({ command });
+
     for (const field of command.fields) {
       (contact as any)[field.fieldName] = field.fieldValue;
     }

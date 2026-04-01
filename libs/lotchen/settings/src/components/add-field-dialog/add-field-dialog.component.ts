@@ -27,6 +27,7 @@ import { DynamicFormsApiService } from 'libs/shared/api/lotchen-client-api/src/l
 import {
   AddFieldCommand,
   AddFieldCommandTypeEnum,
+  UpdateFieldCommandRequest,
 } from '@talisoft/api/lotchen-client-api';
 
 export interface AddFieldDialogData {
@@ -155,7 +156,9 @@ export class AddFieldDialogComponent implements OnInit {
 
     if (this.data.mode === 'edit' && this.data.field) {
       this._dynamicFormsApiService
-        .formControllerUpdateFieldV1(this.data.formId, this.data.field._id)
+        .formControllerUpdateFieldV1(this.data.formId, this.data.field._id, {
+          ...payload,
+        } as UpdateFieldCommandRequest)
         .subscribe({
           next: () => {
             this._dialogRef.close(true);

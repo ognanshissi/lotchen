@@ -9,7 +9,7 @@ import { TasDrawerTitle } from './drawer-title';
 import { TasDrawerContent } from './drawer-content';
 import { TasDrawerAction } from './drawer-action';
 
-const DEFAULT_SIDE_DRAWER_WIDTH = '500px';
+const DEFAULT_SIDE_DRAWER_WIDTH = '600px';
 
 @Component({
   selector: 'tas-side-drawer',

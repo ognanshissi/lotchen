@@ -44,5 +44,6 @@ export interface FindLeadByIdQueryResponse {
     bantTimeline?: string;
     disqualificationReason?: string;
     score?: number;
+    customFields?: object;
 }
 

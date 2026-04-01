@@ -4,10 +4,7 @@ import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
 import { CommandHandler } from '@lotchen/api/core';
 import { FormsProvider } from '../../forms.provider';
 
-export class UpdateFieldCommand {
-  formId!: string;
-  fieldId!: string;
-
+export class UpdateFieldCommandRequest {
   @ApiProperty({ required: false }) @IsOptional() @IsString() label?: string;
   @ApiProperty({ required: false })
   @IsOptional()
@@ -27,6 +24,15 @@ export class UpdateFieldCommand {
   @IsArray()
   @IsString({ each: true })
   options?: string[];
+}
+
+export class UpdateFieldCommand extends UpdateFieldCommandRequest {
+  @ApiProperty()
+  @IsString()
+  formId!: string;
+  @ApiProperty()
+  @IsString()
+  fieldId!: string;
 }
 
 @Injectable()

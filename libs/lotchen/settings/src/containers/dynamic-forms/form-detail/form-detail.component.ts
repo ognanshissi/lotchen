@@ -12,11 +12,7 @@ import { SnackbarService } from '@talisoft/ui/snackbar';
 import { ConfirmDialogService } from '@talisoft/ui/confirm-dialog';
 import { AddFieldDialogComponent } from '../../../components/add-field-dialog/add-field-dialog.component';
 import { DynamicFormsApiService } from 'libs/shared/api/lotchen-client-api/src/lib/api/api';
-import {
-  FindFormByIdQuery,
-  FindFormByIdQueryResponse,
-} from 'libs/lotchen-api/dynamic-form/src/forms/form/find-by-id/find-form-by-id.query';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 export interface FieldItem {
   _id: string;

@@ -192,6 +192,7 @@ model/update-contact-command-request.interface.ts
 model/update-contact-status-command-request.interface.ts
 model/update-deal-command-request.interface.ts
 model/update-event-type-command.interface.ts
+model/update-field-command-request.interface.ts
 model/update-lead-command-request.interface.ts
 model/update-meeting-command.interface.ts
 model/update-message-template-command-request.interface.ts

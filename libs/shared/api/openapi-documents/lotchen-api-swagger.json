@@ -5405,6 +5405,16 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFieldCommandRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": ""
@@ -8269,6 +8279,9 @@
           },
           "score": {
             "type": "number"
+          },
+          "customFields": {
+            "type": "object"
           }
         },
         "required": [
@@ -8325,6 +8338,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "customFields": {
+            "type": "object"
           }
         }
       },
@@ -11049,6 +11065,32 @@
         "required": [
           "fieldIds"
         ]
+      },
+      "UpdateFieldCommandRequest": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       }
     }
   }

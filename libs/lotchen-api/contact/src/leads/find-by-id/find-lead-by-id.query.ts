@@ -127,6 +127,9 @@ export class FindLeadByIdQueryResponse {
 
   @ApiPropertyOptional({ type: Number })
   score!: number;
+
+  @ApiPropertyOptional({ type: Object })
+  customFields?: Record<string, any>;
 }
 
 @Injectable()
@@ -190,6 +193,7 @@ export class FindLeadByIdQueryHandler
       bantTimeline: cf['bant_timeline'] ?? null,
       disqualificationReason: cf['disqualificationReason'] ?? null,
       score: (lead as any).score ?? 0,
+      customFields: cf,
     };
   }
 }

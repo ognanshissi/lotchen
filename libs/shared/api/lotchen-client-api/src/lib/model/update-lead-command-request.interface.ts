@@ -22,6 +22,7 @@ export interface UpdateLeadCommandRequest {
     priority?: UpdateLeadCommandRequestPriorityEnum;
     notes?: string;
     tags?: Array<string>;
+    customFields?: object;
 }
 export enum UpdateLeadCommandRequestPriorityEnum {
     Low = 'Low',

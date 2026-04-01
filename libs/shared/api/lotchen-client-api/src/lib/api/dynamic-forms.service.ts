@@ -34,6 +34,8 @@ import { FindByClassNameQueryResponse } from '../model/find-by-class-name-query-
 import { FindFormByIdQueryResponse } from '../model/find-form-by-id-query-response.interface';
 // @ts-ignore
 import { ReorderFieldsCommand } from '../model/reorder-fields-command.interface';
+// @ts-ignore
+import { UpdateFieldCommandRequest } from '../model/update-field-command-request.interface';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -629,19 +631,23 @@ export class DynamicFormsApiService {
     /**
      * @param id 
      * @param fieldId 
+     * @param updateFieldCommandRequest 
      * @param xTenantFqdn The Tenant Fqdn
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public formControllerUpdateFieldV1(id: string, fieldId: string, xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public formControllerUpdateFieldV1(id: string, fieldId: string, xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public formControllerUpdateFieldV1(id: string, fieldId: string, xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public formControllerUpdateFieldV1(id: string, fieldId: string, xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public formControllerUpdateFieldV1(id: string, fieldId: string, updateFieldCommandRequest: UpdateFieldCommandRequest, xTenantFqdn?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public formControllerUpdateFieldV1(id: string, fieldId: string, updateFieldCommandRequest: UpdateFieldCommandRequest, xTenantFqdn?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public formControllerUpdateFieldV1(id: string, fieldId: string, updateFieldCommandRequest: UpdateFieldCommandRequest, xTenantFqdn?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public formControllerUpdateFieldV1(id: string, fieldId: string, updateFieldCommandRequest: UpdateFieldCommandRequest, xTenantFqdn?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling formControllerUpdateFieldV1.');
         }
         if (fieldId === null || fieldId === undefined) {
             throw new Error('Required parameter fieldId was null or undefined when calling formControllerUpdateFieldV1.');
+        }
+        if (updateFieldCommandRequest === null || updateFieldCommandRequest === undefined) {
+            throw new Error('Required parameter updateFieldCommandRequest was null or undefined when calling formControllerUpdateFieldV1.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -671,6 +677,15 @@ export class DynamicFormsApiService {
         }
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -686,6 +701,7 @@ export class DynamicFormsApiService {
         return this.httpClient.request<any>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                body: updateFieldCommandRequest,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

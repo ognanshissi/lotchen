@@ -221,9 +221,13 @@ export class LeadListingComponent implements OnInit {
   }
 
   public openQuickAdd(): void {
-    this._sideDrawerService.open(QuickAddLeadComponent).closed.subscribe(() => {
-      this.loadLeads();
-    });
+    this._sideDrawerService
+      .open(QuickAddLeadComponent, {
+        width: '800px',
+      })
+      .closed.subscribe(() => {
+        this.loadLeads();
+      });
   }
 
   public qualifyLead(item: LeadDto): void {

@@ -30,7 +30,11 @@ import {
   AddFieldCommandHandler,
   AddFieldCommandResponse,
 } from './add-field/add-field.command';
-import { UpdateFieldCommandHandler } from './update-field/update-field.command';
+import {
+  UpdateFieldCommand,
+  UpdateFieldCommandHandler,
+  UpdateFieldCommandRequest,
+} from './update-field/update-field.command';
 import { RemoveFieldCommandHandler } from './remove-field/remove-field.command';
 import {
   ReorderFieldsCommand,
@@ -126,13 +130,13 @@ export class FormController {
   async updateField(
     @Param('id') id: string,
     @Param('fieldId') fieldId: string,
-    @Body() payload: Record<string, unknown>
+    @Body() payload: UpdateFieldCommandRequest
   ): Promise<void> {
     return this._updateFieldHandler.handlerAsync({
       ...payload,
       formId: id,
       fieldId,
-    } as never);
+    } as UpdateFieldCommand);
   }
 
   @Delete(':id/fields/:fieldId')

@@ -154,6 +154,7 @@ export * from './update-contact-command-request.interface';
 export * from './update-contact-status-command-request.interface';
 export * from './update-deal-command-request.interface';
 export * from './update-event-type-command.interface';
+export * from './update-field-command-request.interface';
 export * from './update-lead-command-request.interface';
 export * from './update-meeting-command.interface';
 export * from './update-message-template-command-request.interface';
