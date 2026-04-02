@@ -91,6 +91,13 @@ export class UpdateContactCommandRequest {
     type: () => AddressDto,
   })
   address!: AddressDto;
+
+  @ApiProperty({
+    required: false,
+    description: 'Contact custom fields',
+    type: Object,
+  })
+  customFields?: Record<string, any>;
 }
 
 export class UpdateContactCommand extends UpdateContactCommandRequest {
@@ -142,12 +149,20 @@ export class UpdateContactCommandHandler
       }
     }
 
+    const $set: Record<string, any> = {
+      updatedBy: this.contactProvider.user().userId,
+      updatedByInfo: this.contactProvider.user(),
+      ...command,
+    };
+
+    if (command.customFields !== undefined) {
+      for (const [key, value] of Object.entries(command['customFields'])) {
+        $set[`customFields.${key}`] = value;
+      }
+    }
+
     await this.contactProvider.ContactModel.findByIdAndUpdate(contact._id, {
-      $set: {
-        updatedBy: this.contactProvider.user().userId,
-        updatedByInfo: this.contactProvider.user(),
-        ...command,
-      },
+      $set,
     });
     // await contact.save();
   }

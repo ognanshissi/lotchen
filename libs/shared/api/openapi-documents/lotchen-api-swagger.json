@@ -7242,6 +7242,10 @@
                 "$ref": "#/components/schemas/AddressDto"
               }
             ]
+          },
+          "customFields": {
+            "type": "object",
+            "description": "Contact custom fields"
           }
         }
       },

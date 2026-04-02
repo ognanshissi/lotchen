@@ -6,7 +6,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { TasSummaryField } from '@talisoft/ui/summary-field';
 import { SnackbarService } from '@talisoft/ui/snackbar/src/public_api';
 import { DynamicFormsApiService } from 'libs/shared/api/lotchen-client-api/src/lib/api/api';
@@ -24,6 +23,7 @@ import { FindByClassNameFieldDto } from 'libs/shared/api/lotchen-client-api/src/
       [editable]="true"
       [type]="mapFieldType(field.type)"
       [value]="getFieldValue(field.name)"
+      [options]="optionsListFormatter(field)"
       (fieldSaved)="onFieldSaved($event, field.name)"
     />
     }
@@ -48,9 +48,16 @@ export class DynamicFieldsSummaryComponent implements OnInit {
     return this.customFields()?.[fieldName] ?? '—';
   }
 
-  public mapFieldType(
-    type: string
-  ): 'text' | 'number' | 'date' | 'select' | 'datetime' | 'date-range' {
+  public optionsListFormatter(
+    field: FindByClassNameFieldDto
+  ): { label: string; value: string }[] {
+    return (field.options ?? [])?.map((option) => ({
+      label: option,
+      value: option,
+    }));
+  }
+
+  public mapFieldType(type: string): any {
     switch (type) {
       case 'number':
       case 'currency':
@@ -59,6 +66,8 @@ export class DynamicFieldsSummaryComponent implements OnInit {
         return 'date';
       case 'datetime':
         return 'datetime';
+      case 'dropdown':
+        return 'dropdown';
       default:
         return 'text';
     }

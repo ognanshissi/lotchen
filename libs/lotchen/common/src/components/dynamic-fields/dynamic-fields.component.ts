@@ -35,14 +35,6 @@ export interface DynamicFieldDefinition {
   options?: string[];
 }
 
-interface FormDefinition {
-  id: string;
-  formClass: string;
-  name: string;
-  isActive: boolean;
-  fields: DynamicFieldDefinition[];
-}
-
 @Component({
   selector: 'lotchen-dynamic-fields',
   standalone: true,

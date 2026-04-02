@@ -15,6 +15,7 @@ import { FormField, TasLabel } from '../../form-field';
 import { ButtonModule } from '../../button';
 import { TasInput } from '../../input';
 import { TasDatePicker } from '../../date-picker';
+import { TasSelect } from '@talisoft/ui/select';
 @Component({
   selector: 'tas-summary-field',
   templateUrl: './summary-field.html',
@@ -33,6 +34,7 @@ import { TasDatePicker } from '../../date-picker';
     FormField,
     TasLabel,
     TasDatePicker,
+    TasSelect,
   ],
   styles: [
     `
@@ -48,11 +50,19 @@ export class TasSummaryField implements OnInit {
   public label = input();
   public rawField = input.required<string>();
   public type = input<
-    'text' | 'number' | 'date' | 'select' | 'datetime' | 'date-range'
+    | 'text'
+    | 'number'
+    | 'date'
+    | 'select'
+    | 'datetime'
+    | 'date-range'
+    | 'dropdown'
   >('text');
   public placeholder = input<string>('');
   public value = input<string | number | Date | any>(undefined);
   public editable = input<boolean>(false);
+
+  public options = input<{ label: string; value: string }[]>([]);
 
   public validators = input<
     'required' | 'nullable' | 'email' | 'number' | 'pattern'

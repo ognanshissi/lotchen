@@ -56,6 +56,16 @@
           >
             {{ label() }}
           </tas-date-picker>
+          } @case ('dropdown') {
+          <tas-form-field>
+            <tas-label>{{ label() }}</tas-label>
+            <tas-select
+              [formControl]="control"
+              [options]="options()"
+              [searchable]="false"
+              [placeholder]="placeholder() || 'Sélectionner...'"
+            ></tas-select>
+          </tas-form-field>
           } }
         </div>
         <div class="flex justify-between space-x-2">

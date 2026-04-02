@@ -29,29 +29,19 @@
   <div class="flex gap-3">
     <tas-form-field class="flex-1">
       <tas-label>De statut</tas-label>
-      <select
-        class="w-full h-[38px] border border-amber-300 rounded-[var(--tas-field-border-radius)] px-3 text-sm bg-white focus:border-primary focus:outline-none transition-colors"
-        [value]="getConfig('fromStatus')"
-        (change)="setConfig('fromStatus', $any($event.target).value)"
-      >
-        <option value="">Tous</option>
-        @for (s of contactStatuses; track s.value) {
-        <option [value]="s.value">{{ s.label }}</option>
-        }
-      </select>
+      <tas-select
+        [ngModel]="getConfig('fromStatus')"
+        (ngModelChange)="setConfig('fromStatus', $any($event.target).value)"
+        [options]="contactStatuses"
+      ></tas-select>
     </tas-form-field>
     <tas-form-field class="flex-1">
       <tas-label>Vers statut</tas-label>
-      <select
-        class="w-full h-[38px] border border-amber-300 rounded-[var(--tas-field-border-radius)] px-3 text-sm bg-white focus:border-primary focus:outline-none transition-colors"
-        [value]="getConfig('toStatus')"
-        (change)="setConfig('toStatus', $any($event.target).value)"
-      >
-        <option value="">Tous</option>
-        @for (s of contactStatuses; track s.value) {
-        <option [value]="s.value">{{ s.label }}</option>
-        }
-      </select>
+      <tas-select
+        [ngModel]="getConfig('toStatus')"
+        (ngModelChange)="setConfig('toStatus', $any($event.target).value)"
+        [options]="contactStatuses"
+      ></tas-select>
     </tas-form-field>
   </div>
   } @case ('date_based') {
