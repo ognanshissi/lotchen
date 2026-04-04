@@ -18,7 +18,6 @@ import { TasSummaryField } from '@talisoft/ui/summary-field';
 import { DynamicFieldsSummaryComponent } from '@lotchen/lotchen/common/components';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { map, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -66,8 +65,8 @@ export class ContactDetailOverviewComponent {
   public assignedAgent = computed(() => {
     const contact = this.contact() as any;
     // Use createdByInfo as fallback if no explicit assignment
-    const info = contact?.createdByInfo;
-    if (!info) return '';
+    const info = contact?.assignedToUserId;
+    if (!info) return 'Non assigné';
     return `${info.firstName ?? ''} ${info.lastName ?? ''}`.trim();
   });
 

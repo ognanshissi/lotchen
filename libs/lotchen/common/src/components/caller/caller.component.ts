@@ -193,6 +193,11 @@ export class CallerComponent implements OnInit {
     });
 
     device.on('error', (error) => {
+      if (error.code === 53000) {
+        console.log(
+          'Twilio Device registration failed. Check token and network.'
+        );
+      }
       this.twilioDeviceReady.set(false);
       this.isGettingDeviceReadyLoading.set(false);
       this.closeCaller();
@@ -205,6 +210,11 @@ export class CallerComponent implements OnInit {
 
     device.on('incoming', (incomingCall: Call) => {
       this.handleIncomingCall(incomingCall);
+    });
+
+    device.on('tokenExpired', () => {
+      console.log('Twilio token expired, fetching a new one...');
+      this.setup();
     });
 
     this.device?.audio?.on(

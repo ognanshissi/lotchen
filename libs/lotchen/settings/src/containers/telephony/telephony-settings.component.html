@@ -203,7 +203,12 @@
 
     <!-- Save button -->
     <div class="flex justify-end">
-      <button tas-raised-button type="submit" [disabled]="saving()">
+      <button
+        tas-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="saving()"
+      >
         @if (saving()) { Enregistrement... } @else { Enregistrer }
       </button>
     </div>

@@ -16,17 +16,19 @@ import { FindByClassNameFieldDto } from 'libs/shared/api/lotchen-client-api/src/
   standalone: true,
   imports: [TasSummaryField],
   template: `
-    @for (field of visibleFields(); track field.id) {
-    <tas-summary-field
-      [rawField]="field.name"
-      [label]="field.label"
-      [editable]="true"
-      [type]="mapFieldType(field.type)"
-      [value]="getFieldValue(field.name)"
-      [options]="optionsListFormatter(field)"
-      (fieldSaved)="onFieldSaved($event, field.name)"
-    />
-    }
+    <div class="grid grid-cols-3 gap-4">
+      @for (field of visibleFields(); track field.id) {
+      <tas-summary-field
+        [rawField]="field.name"
+        [label]="field.label"
+        [editable]="true"
+        [type]="mapFieldType(field.type)"
+        [value]="getFieldValue(field.name)"
+        [options]="optionsListFormatter(field)"
+        (fieldSaved)="onFieldSaved($event, field.name)"
+      />
+      }
+    </div>
   `,
 })
 export class DynamicFieldsSummaryComponent implements OnInit {

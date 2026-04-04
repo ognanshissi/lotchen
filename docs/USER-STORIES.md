@@ -228,9 +228,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Event type: name, icon, color, default duration, required fields
-- [ ] CRUD on event types (tenant-scoped)
-- [ ] System default types seeded on tenant creation
+- [x] Event type: name, icon, color, default duration, required fields
+- [x] CRUD on event types (tenant-scoped)
+- [x] System default types seeded on tenant creation
 
 **US-4.1.2** — Schedule an event
 
@@ -238,10 +238,10 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Calendar view (day, week, month)
-- [ ] Event form: type, title, date/time, duration, attendees, notes, linked entity
-- [ ] Conflict detection (agent double-booking warning)
-- [ ] Email/SMS reminder configurable per event
+- [x] Calendar view (day, week, month)
+- [x] Event form: type, title, date/time, duration, attendees, notes, linked entity
+- [x] Conflict detection (agent double-booking warning)
+- [x] Email/SMS reminder configurable per event
 
 **US-4.1.3** — Event outcomes and follow-ups
 
