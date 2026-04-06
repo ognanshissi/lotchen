@@ -1,0 +1,65 @@
+<tas-card>
+  <card-header>
+    <div class="flex">
+      <div class="w-2/3">
+        <tas-title>Clients</tas-title>
+        <tas-text>Gérez vos clients convertis</tas-text>
+      </div>
+    </div>
+  </card-header>
+</tas-card>
+
+<tas-card class="mt-4">
+  <tas-table
+    [title]="'Liste des clients'"
+    [data]="clients()"
+    [isLoading]="isLoading()"
+    [config]="tableConfig"
+    (pageEventChange)="onPageChange($event)"
+  >
+    <ng-template #header>
+      <tr>
+        <th>N° Client</th>
+        <th class="w-[350px]">Nom Complet</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+        <th>Statut KYC</th>
+        <th>Type de compte</th>
+        <th>Statut</th>
+        <th>Date de création</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item>
+      <tr class="row-hover">
+        <td>
+          <span class="text-xs font-mono text-gray-500">{{
+            item.clientNumber
+          }}</span>
+        </td>
+        <td>
+          <a
+            [routerLink]="[item.id]"
+            class="font-semibold text-primary hover:underline"
+          >
+            {{ item.firstName }} {{ item.lastName }}
+          </a>
+        </td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.mobileNumber }}</td>
+        <td>
+          <tas-tag [severity]="kycStatusColor(item.kycStatus)">{{
+            kycStatusLabel(item.kycStatus)
+          }}</tas-tag>
+        </td>
+        <td>{{ item.accountType }}</td>
+        <td>
+          <tas-tag
+            [severity]="item.status === 'Active' ? 'success' : 'secondary'"
+            >{{ statusLabel(item.status) }}</tas-tag
+          >
+        </td>
+        <td>{{ item.createdAt | dateTimeAgo }}</td>
+      </tr>
+    </ng-template>
+  </tas-table>
+</tas-card>

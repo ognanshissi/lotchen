@@ -79,5 +79,14 @@ export class ConvertLeadCommandHandler
       newStatus: $set.status,
       changedByUserId: this.leadProvider.user().userId,
     });
+
+    if (command.convertTo === 'client') {
+      this.eventEmitter.emit('CLIENT_CONVERSION_REQUESTED', {
+        contactId: command.id,
+        contact: lead,
+        userId: this.leadProvider.user().userId,
+        userInfo: this.leadProvider.user(),
+      });
+    }
   }
 }

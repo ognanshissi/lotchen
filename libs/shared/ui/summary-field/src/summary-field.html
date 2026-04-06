@@ -89,7 +89,8 @@
     }
   </div>
   <div class="font-semibold">
-    @if (value()) { {{ value() }} } @else {
+    @if (value()) { @switch (type()) { @case ('date') { {{ value() | date }} }
+    @default { {{ value() }} } } } @else {
     <span class="text-gray-400 italic">Non renseigné</span>
     }
   </div>

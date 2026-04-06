@@ -1,0 +1,157 @@
+<tas-card class="p-4">
+  <h2 class="text-2xl font-semibold mb-4">Vue d'ensemble</h2>
+
+  <!-- Personal Info -->
+  <div class="border-b border-gray-200 pb-4 mb-4">
+    <h3 class="text-lg font-semibold mb-3">Informations personnelles</h3>
+    <div class="grid grid-cols-3 gap-4">
+      <tas-summary-field
+        rawField="lastName"
+        label="Nom"
+        [editable]="true"
+        [value]="client()?.lastName"
+        (fieldSaved)="onFieldSaved($event)"
+      />
+      <tas-summary-field
+        rawField="firstName"
+        label="Prénom"
+        [editable]="true"
+        [value]="client()?.firstName"
+        (fieldSaved)="onFieldSaved($event)"
+      />
+      <tas-summary-field
+        rawField="gender"
+        label="Genre"
+        [editable]="true"
+        [value]="client()?.gender"
+        (fieldSaved)="onFieldSaved($event)"
+      />
+      <tas-summary-field
+        rawField="email"
+        label="Email"
+        [editable]="true"
+        [value]="client()?.email"
+        (fieldSaved)="onFieldSaved($event)"
+      />
+      <tas-summary-field
+        rawField="mobileNumber"
+        label="Téléphone mobile"
+        [editable]="true"
+        [value]="client()?.mobileNumber"
+        (fieldSaved)="onFieldSaved($event)"
+      />
+      <tas-summary-field
+        rawField="phone"
+        label="Téléphone fixe"
+        [editable]="true"
+        [value]="client()?.phone"
+        (fieldSaved)="onFieldSaved($event)"
+      />
+      <tas-summary-field
+        rawField="dateOfBirth"
+        label="Date de naissance"
+        type="date"
+        [editable]="true"
+        [value]="client()?.dateOfBirth"
+        (fieldSaved)="onFieldSaved($event)"
+      />
+      <tas-summary-field
+        rawField="jobTitle"
+        label="Profession"
+        [editable]="true"
+        [value]="client()?.jobTitle"
+        (fieldSaved)="onFieldSaved($event)"
+      />
+      <tas-summary-field
+        rawField="companyName"
+        label="Entreprise"
+        [editable]="true"
+        [value]="client()?.companyName"
+        (fieldSaved)="onFieldSaved($event)"
+      />
+    </div>
+  </div>
+
+  <!-- Account & KYC -->
+  <div class="border-b border-gray-200 pb-4 mb-4">
+    <h3 class="text-lg font-semibold mb-3">Compte & KYC</h3>
+    <div class="grid grid-cols-3 gap-4">
+      <tas-summary-field
+        rawField="clientNumber"
+        label="N° Client"
+        [value]="client()?.clientNumber"
+      />
+      <tas-summary-field
+        rawField="accountType"
+        label="Type de compte"
+        [value]="client()?.accountType"
+      />
+      <tas-summary-field
+        rawField="kycStatus"
+        label="Statut KYC"
+        [value]="client()?.kycStatus"
+      />
+      <tas-summary-field
+        rawField="onboardingDate"
+        label="Date d'intégration"
+        type="date"
+        [value]="client()?.onboardingDate"
+      />
+      <tas-summary-field
+        rawField="source"
+        label="Source"
+        [value]="client()?.source"
+      />
+    </div>
+  </div>
+
+  <!-- Financial Info -->
+  <div class="border-b border-gray-200 pb-4 mb-4">
+    <h3 class="text-lg font-semibold mb-3">Informations financières</h3>
+    <div class="grid grid-cols-3 gap-4">
+      <tas-summary-field
+        rawField="creditScore"
+        label="Score de crédit"
+        [value]="client()?.creditScore?.toString() ?? '—'"
+      />
+      <tas-summary-field
+        rawField="monthlyIncome"
+        label="Revenu mensuel"
+        [value]="client()?.monthlyIncome?.amount?.toString() ?? '—'"
+      />
+      <tas-summary-field
+        rawField="employmentStatus"
+        label="Statut d'emploi"
+        [value]="client()?.employmentStatus ?? '—'"
+      />
+    </div>
+  </div>
+
+  <!-- Assignment -->
+  <div>
+    <h3 class="text-lg font-semibold mb-3">Assignation</h3>
+    <div class="grid grid-cols-3 gap-4">
+      <tas-summary-field
+        rawField="assignedToUserId"
+        label="Agent responsable"
+        [value]="client()?.assignedToUserId ?? '—'"
+      />
+      <tas-summary-field
+        rawField="assignedToTeamId"
+        label="Équipe"
+        [value]="client()?.assignedToTeamId ?? '—'"
+      />
+      <tas-summary-field
+        rawField="territoryId"
+        label="Territoire"
+        [value]="client()?.territoryId ?? '—'"
+      />
+      <tas-summary-field
+        rawField="agencyId"
+        label="Agence"
+        [value]="client()?.agencyId ?? '—'"
+      />
+      <tas-summary-field rawField="tags" label="Tags" [value]="tagsDisplay()" />
+    </div>
+  </div>
+</tas-card>

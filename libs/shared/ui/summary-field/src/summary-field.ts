@@ -16,6 +16,7 @@ import { ButtonModule } from '../../button';
 import { TasInput } from '../../input';
 import { TasDatePicker } from '../../date-picker';
 import { TasSelect } from '@talisoft/ui/select';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'tas-summary-field',
   templateUrl: './summary-field.html',
@@ -35,6 +36,7 @@ import { TasSelect } from '@talisoft/ui/select';
     TasLabel,
     TasDatePicker,
     TasSelect,
+    DatePipe,
   ],
   styles: [
     `

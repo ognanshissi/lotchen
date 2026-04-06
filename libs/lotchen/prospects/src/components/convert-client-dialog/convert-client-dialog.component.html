@@ -1,0 +1,41 @@
+<tas-side-drawer width="500px">
+  <tas-drawer-title>
+    <tas-title>Convertir en client</tas-title>
+  </tas-drawer-title>
+
+  <tas-drawer-content>
+    <div class="p-4 space-y-4">
+      <p class="text-gray-600">
+        Vous êtes sur le point de convertir ce contact en client. Un nouveau
+        dossier client sera créé avec les informations du contact.
+      </p>
+      <div
+        class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-700"
+      >
+        <tas-icon iconName="feather:info" iconSize="sm"></tas-icon>
+        Cette action créera un client avec un numéro unique et copiera les
+        informations du contact.
+      </div>
+    </div>
+  </tas-drawer-content>
+
+  <tas-drawer-action>
+    <div class="flex space-x-2">
+      <button tas-outlined-button (click)="close()">
+        <tas-icon iconName="feather:x"></tas-icon> Annuler
+      </button>
+      <button
+        tas-raised-button
+        color="primary"
+        (click)="convert()"
+        [disabled]="isConverting()"
+      >
+        @if (isConverting()) {
+        <tas-spinner size="sm"></tas-spinner>
+        }
+        <tas-icon iconName="feather:user-check"></tas-icon> Confirmer la
+        conversion
+      </button>
+    </div>
+  </tas-drawer-action>
+</tas-side-drawer>

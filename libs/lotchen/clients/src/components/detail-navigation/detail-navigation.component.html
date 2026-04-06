@@ -1,0 +1,63 @@
+<div class="grid grid-cols-4 gap-4 mt-4">
+  <!-- Left sidebar -->
+  <div class="col-span-1">
+    <tas-card>
+      <div class="p-4">
+        <div class="flex items-center space-x-3 mb-2">
+          <div
+            class="flex items-center justify-center w-12 h-12 bg-primary/10 text-primary rounded-full text-lg font-bold"
+          >
+            {{ client()?.firstName?.charAt(0)
+            }}{{ client()?.lastName?.charAt(0) }}
+          </div>
+          <div>
+            <h3 class="font-semibold text-lg">
+              {{ client()?.firstName }} {{ client()?.lastName }}
+            </h3>
+            <span class="text-xs font-mono text-gray-500">{{
+              client()?.clientNumber
+            }}</span>
+          </div>
+        </div>
+        <div class="text-sm text-gray-600 space-y-1 mb-3">
+          @if (client()?.email) {
+          <div class="flex items-center space-x-2">
+            <tas-icon iconName="feather:mail" iconSize="sm"></tas-icon>
+            <span>{{ client()?.email }}</span>
+          </div>
+          } @if (client()?.mobileNumber) {
+          <div class="flex items-center space-x-2">
+            <tas-icon iconName="feather:phone" iconSize="sm"></tas-icon>
+            <span>{{ client()?.mobileNumber }}</span>
+          </div>
+          }
+        </div>
+        <div class="flex space-x-2 mb-4">
+          <tas-tag
+            [severity]="client()?.status === 'Active' ? 'success' : 'secondary'"
+          >
+            {{ statusLabel(client()?.status) }}
+          </tas-tag>
+          <tas-tag severity="info">
+            KYC: {{ kycStatusLabel(client()?.kycStatus) }}
+          </tas-tag>
+        </div>
+      </div>
+
+      @for (item of menuItems; track $index) {
+      <a
+        class="px-4 py-3 hover:bg-gray-200 flex space-x-2"
+        [routerLink]="item.route"
+        [routerLinkActive]="'is-link-active'"
+      >
+        <tas-icon [iconName]="item.icon"></tas-icon>
+        <span>{{ item.label }}</span>
+      </a>
+      }
+    </tas-card>
+  </div>
+  <!-- Right content -->
+  <div class="col-span-3 h-[calc(100vh_-_130px)] overflow-y-auto">
+    <router-outlet></router-outlet>
+  </div>
+</div>

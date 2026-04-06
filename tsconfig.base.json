@@ -55,7 +55,8 @@
         "libs/shared/api/lotchen-client-api/src/index.ts"
       ],
       "@talisoft/ui": ["libs/shared/ui/src/index.ts"],
-      "@talisoft/ui/*": ["libs/shared/ui/*"]
+      "@talisoft/ui/*": ["libs/shared/ui/*"],
+      "@lotchen/lotchen-api/clients": ["libs/lotchen-api/clients/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

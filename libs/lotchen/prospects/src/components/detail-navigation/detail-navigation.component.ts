@@ -29,6 +29,7 @@ import {
   MenuItem as TasMenuItem,
   TasMenuTrigger,
 } from '@talisoft/ui/menu';
+import { ConvertClientDialogComponent } from '../convert-client-dialog/convert-client-dialog.component';
 
 @Component({
   selector: 'prospects-detail-navigation',
@@ -131,6 +132,14 @@ export class DetailNavigationComponent {
     this._taskDialogService.open({
       relatedId: this.contact()?.id ?? '',
       relatedType: 'Contact',
+    });
+  }
+
+  public openConvertClientDialog(): void {
+    this._dialog.open(ConvertClientDialogComponent, {
+      data: {
+        contactId: this.contact()?.id ?? '',
+      },
     });
   }
 

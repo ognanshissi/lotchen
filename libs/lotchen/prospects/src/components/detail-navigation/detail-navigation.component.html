@@ -29,7 +29,11 @@
     <tas-icon iconName="feather:calendar"></tas-icon>
     Réunion
   </button>
-  <button tas-outlined-button color="primary">
+  <button
+    tas-outlined-button
+    color="primary"
+    (click)="openConvertClientDialog()"
+  >
     <tas-icon iconName="feather:user-plus"></tas-icon>
     Convertir en client
   </button>
