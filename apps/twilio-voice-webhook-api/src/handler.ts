@@ -13,14 +13,6 @@ export const voiceResponse = function voiceResponse(requestBody: any) {
   const enableRecording = requestBody.enableRecording === 'true';
   const webhookBaseUrl = process.env.WEBHOOK_BASE_URL || '';
 
-  console.log({
-    toNumberOrClientName,
-    callerId,
-    targetIdentity,
-    enableRecording,
-    webhookBaseUrl,
-    requestBody,
-  });
   // If the request to the /voice endpoint is TO your Twilio Number,
   // then it is an incoming call towards your Twilio.Device.
   if (toNumberOrClientName == callerId) {
