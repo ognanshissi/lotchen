@@ -9,7 +9,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { TimeagoPipe } from '@talisoft/ui/timeago';
 import { RouterLink } from '@angular/router';
 import { SnackbarService } from '@talisoft/ui/snackbar';
-import { TasTag } from '@talisoft/ui/tag';
+import { Severity, TasTag } from '@talisoft/ui/tag';
 import {
   ClientDto,
   ClientsApiService,
@@ -106,15 +106,15 @@ export class ClientListingComponent implements OnInit {
     return labels[status ?? ''] ?? status ?? '';
   }
 
-  public kycStatusColor(status?: string): string {
-    const colors: Record<string, string> = {
+  public kycStatusColor(status?: string): Severity {
+    const colors: Record<string, Severity> = {
       Verified: 'success',
-      Rejected: 'danger',
+      Rejected: 'error',
       Expired: 'warning',
       InProgress: 'info',
       NotStarted: 'secondary',
     };
-    return colors[status ?? ''] ?? 'secondary';
+    return colors[status ?? ''] ?? ('secondary' as Severity);
   }
 
   public statusLabel(status?: string): string {

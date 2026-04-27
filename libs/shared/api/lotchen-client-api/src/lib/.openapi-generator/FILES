@@ -7,6 +7,7 @@ api/auth.service.ts
 api/call-logs.service.ts
 api/caller.service.ts
 api/campaigns.service.ts
+api/clients.service.ts
 api/contacts.service.ts
 api/currencies.service.ts
 api/deals.service.ts
@@ -60,6 +61,8 @@ model/create-agency-command.interface.ts
 model/create-call-log-command.interface.ts
 model/create-campaign-command.interface.ts
 model/create-capture-config-command.interface.ts
+model/create-client-command-response.interface.ts
+model/create-client-command.interface.ts
 model/create-contact-command.interface.ts
 model/create-currency-command-response.interface.ts
 model/create-currency-command.interface.ts
@@ -92,6 +95,7 @@ model/estimate-audience-query.interface.ts
 model/execution-dashboard-response.interface.ts
 model/field-dto.interface.ts
 model/field-response.interface.ts
+model/filter-all-clients-command.interface.ts
 model/filter-all-contacts-command.interface.ts
 model/filter-all-leads-command.interface.ts
 model/filter-all-territories-command.interface.ts
@@ -117,6 +121,7 @@ model/find-all-territories-query-response.interface.ts
 model/find-all-user-query-response.interface.ts
 model/find-by-class-name-field-dto.interface.ts
 model/find-by-class-name-query-response.interface.ts
+model/find-client-by-id-query-response.interface.ts
 model/find-contact-by-id-query-response.interface.ts
 model/find-event-type-by-id-query-response.interface.ts
 model/find-form-by-id-query-response.interface.ts
@@ -147,6 +152,8 @@ model/login-command.interface.ts
 model/lose-deal-command-request.interface.ts
 model/models.ts
 model/move-deal-stage-command-request.interface.ts
+model/paginate-all-clients-request.interface.ts
+model/paginate-all-clients-response.interface.ts
 model/paginate-all-contacts-command-dto.interface.ts
 model/paginate-all-contacts-command-request.interface.ts
 model/paginate-all-leads-command-dto.interface.ts

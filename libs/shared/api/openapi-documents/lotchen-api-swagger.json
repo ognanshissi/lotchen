@@ -5101,6 +5101,182 @@
         ]
       }
     },
+    "/api/v1/clients": {
+      "post": {
+        "operationId": "ClientController_create_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateClientCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateClientCommandResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
+      }
+    },
+    "/api/v1/clients/paginate": {
+      "post": {
+        "operationId": "ClientController_paginate_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaginateAllClientsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginateAllClientsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
+      }
+    },
+    "/api/v1/clients/{id}": {
+      "get": {
+        "operationId": "ClientController_findById_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindClientByIdQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
+      },
+      "patch": {
+        "operationId": "ClientController_update_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
+      },
+      "delete": {
+        "operationId": "ClientController_delete_v1",
+        "parameters": [
+          {
+            "name": "x-tenant-fqn",
+            "in": "header",
+            "description": "The Tenant Fqn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Clients"
+        ]
+      }
+    },
     "/api/v1/dynamic-forms": {
       "post": {
         "operationId": "FormController_create_v1",
@@ -10707,6 +10883,331 @@
         },
         "required": [
           "claimNumber"
+        ]
+      },
+      "CreateClientCommand": {
+        "type": "object",
+        "properties": {
+          "contactId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source": {
+            "type": "string"
+          },
+          "accountType": {
+            "type": "string"
+          },
+          "creditScore": {
+            "type": "number"
+          },
+          "monthlyIncome": {
+            "type": "object"
+          },
+          "employmentStatus": {
+            "type": "string"
+          },
+          "assignedToUserId": {
+            "type": "string"
+          },
+          "assignedToTeamId": {
+            "type": "string"
+          },
+          "territoryId": {
+            "type": "string"
+          },
+          "agencyId": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "customFields": {
+            "type": "object"
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "contactId",
+          "firstName",
+          "lastName",
+          "mobileNumber"
+        ]
+      },
+      "CreateClientCommandResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "clientNumber": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "clientNumber"
+        ]
+      },
+      "FilterAllClientsCommand": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/FilterDto"
+          },
+          "kycStatus": {
+            "$ref": "#/components/schemas/FilterDto"
+          },
+          "accountType": {
+            "$ref": "#/components/schemas/FilterDto"
+          },
+          "assignedToUserId": {
+            "$ref": "#/components/schemas/FilterDto"
+          },
+          "territoryId": {
+            "$ref": "#/components/schemas/FilterDto"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/FilterDto"
+          }
+        }
+      },
+      "PaginateAllClientsRequest": {
+        "type": "object",
+        "properties": {
+          "sort": {
+            "type": "object"
+          },
+          "pageIndex": {
+            "type": "number",
+            "description": "Page Index",
+            "example": 0,
+            "minimum": 0
+          },
+          "pageSize": {
+            "type": "number",
+            "maximum": 30,
+            "minimum": 5,
+            "example": 5
+          },
+          "filters": {
+            "$ref": "#/components/schemas/FilterAllClientsCommand"
+          },
+          "fullTextSearch": {
+            "type": "string",
+            "description": "Full-Text search on firstName, lastName, email, mobileNumber, clientNumber"
+          }
+        },
+        "required": [
+          "pageIndex",
+          "pageSize",
+          "filters",
+          "fullTextSearch"
+        ]
+      },
+      "PaginateAllClientsResponse": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "number",
+            "description": ""
+          },
+          "pageIndex": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "totalElements",
+          "pageIndex",
+          "pageSize",
+          "totalPages",
+          "data"
+        ]
+      },
+      "FindClientByIdQueryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "clientNumber": {
+            "type": "string"
+          },
+          "contactId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "kycStatus": {
+            "type": "string"
+          },
+          "accountType": {
+            "type": "string"
+          },
+          "onboardingDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "creditScore": {
+            "type": "number"
+          },
+          "monthlyIncome": {
+            "type": "object"
+          },
+          "employmentStatus": {
+            "type": "string"
+          },
+          "assignedToUserId": {
+            "type": "string"
+          },
+          "assignedToTeamId": {
+            "type": "string"
+          },
+          "territoryId": {
+            "type": "string"
+          },
+          "agencyId": {
+            "type": "string"
+          },
+          "productIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "policyIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "customFields": {
+            "type": "object"
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "clientNumber",
+          "contactId",
+          "firstName",
+          "lastName",
+          "mobileNumber",
+          "status",
+          "kycStatus",
+          "accountType",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "CreateFormCommand": {

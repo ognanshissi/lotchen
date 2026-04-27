@@ -61,5 +61,9 @@ export interface UpdateContactCommandRequest {
      * Contact Address
      */
     address?: AddressDto;
+    /**
+     * Contact custom fields
+     */
+    customFields?: object;
 }
 
