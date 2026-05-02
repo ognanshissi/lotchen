@@ -54,10 +54,10 @@ export class ConvertLeadCommandHandler
     };
 
     if (command.convertTo === 'prospect') {
-      $set.status = ContactStatus.ConvertedToProspect;
+      $set['status'] = ContactStatus.ConvertedToProspect;
     } else {
-      $set.status = ContactStatus.ConvertedToClient;
-      $set.isConvertedToClientAt = new Date();
+      $set['status'] = ContactStatus.ConvertedToClient;
+      $set['isConvertedToClientAt'] = new Date();
     }
 
     await this.leadProvider.ContactModel.findByIdAndUpdate(command.id, {
@@ -65,7 +65,7 @@ export class ConvertLeadCommandHandler
       $push: {
         statusHistory: {
           previousStatus,
-          status: $set.status,
+          status: $set['status'],
           changedAt: new Date(),
           changedBy: this.leadProvider.user().userId,
         },
@@ -76,7 +76,7 @@ export class ConvertLeadCommandHandler
       tenantId: this.leadProvider.request.tenant_fqdn,
       contactId: command.id,
       previousStatus,
-      newStatus: $set.status,
+      newStatus: $set['status'],
       changedByUserId: this.leadProvider.user().userId,
     });
 

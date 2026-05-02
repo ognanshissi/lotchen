@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { TenantDatabaseService } from '@lotchen/api/core';
 import { WorkflowEngineService } from './workflow-engine.service';
@@ -11,6 +11,7 @@ import {
   WorkflowExecution,
   WorkflowExecutionSchema,
 } from '../executions/workflow-execution.schema';
+import { Connection } from 'mongoose';
 
 const CONTACT_CREATED = 'contact.created';
 const LEAD_STATUS_CHANGED = 'lead.status_changed';
@@ -21,25 +22,23 @@ export class WorkflowTriggerListener {
 
   constructor(
     private readonly workflowEngine: WorkflowEngineService,
-    private readonly tenantDatabaseService: TenantDatabaseService
+    @Inject('TENANT_CONNECTION') private readonly connection: Connection
   ) {}
 
-  private async getModels(tenantId: string) {
-    const connection = await this.tenantDatabaseService.getTenantDatabase(
-      tenantId
-    );
+  private async getModels() {
     const WorkflowTemplateModel =
-      connection.models[WorkflowTemplate.name] ||
-      connection.model(WorkflowTemplate.name, WorkflowTemplateSchema);
+      this.connection.models[WorkflowTemplate.name] ||
+      this.connection.model(WorkflowTemplate.name, WorkflowTemplateSchema);
     const WorkflowExecutionModel =
-      connection.models[WorkflowExecution.name] ||
-      connection.model(WorkflowExecution.name, WorkflowExecutionSchema);
+      this.connection.models[WorkflowExecution.name] ||
+      this.connection.model(WorkflowExecution.name, WorkflowExecutionSchema);
+
+    console.log(WorkflowExecutionModel, WorkflowExecutionModel);
     return { WorkflowTemplateModel, WorkflowExecutionModel };
   }
 
   @OnEvent(CONTACT_CREATED, { async: true })
   async handleContactCreated(payload: {
-    tenantId: string;
     contactId: string;
     contactType?: string;
   }): Promise<void> {
@@ -48,11 +47,10 @@ export class WorkflowTriggerListener {
     );
     try {
       const { WorkflowTemplateModel, WorkflowExecutionModel } =
-        await this.getModels(payload.tenantId);
+        await this.getModels();
       await this.workflowEngine.evaluateAndExecute(
         TriggerTypeEnum.NewLead,
         {
-          tenantId: payload.tenantId,
           targetEntityId: payload.contactId,
           targetEntityType: 'contact',
           triggerPayload: payload,
@@ -78,11 +76,10 @@ export class WorkflowTriggerListener {
     );
     try {
       const { WorkflowTemplateModel, WorkflowExecutionModel } =
-        await this.getModels(payload.tenantId);
+        await this.getModels();
       await this.workflowEngine.evaluateAndExecute(
         TriggerTypeEnum.StatusChange,
         {
-          tenantId: payload.tenantId,
           targetEntityId: payload.contactId,
           targetEntityType: 'contact',
           triggerPayload: {

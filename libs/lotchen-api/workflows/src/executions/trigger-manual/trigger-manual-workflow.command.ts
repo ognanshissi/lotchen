@@ -4,6 +4,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { WorkflowsProvider } from '../../workflows.provider';
 import { WorkflowEngineService } from '../../engine/workflow-engine.service';
+import { Model } from 'mongoose';
+import { WorkflowExecution } from '../workflow-execution.schema';
 
 export class TriggerManualWorkflowCommand {
   @ApiProperty({ required: true, type: String })
@@ -47,13 +49,13 @@ export class TriggerManualWorkflowCommandHandler
     return this.workflowEngine.startExecution(
       template,
       {
-        tenantId: this.workflowsProvider.request.tenant_fqdn,
         targetEntityId: command.targetEntityId,
         targetEntityType: command.targetEntityType,
         triggerPayload: command.triggerPayload || {},
         triggeredByUserId: this.workflowsProvider.user().userId,
       },
-      this.workflowsProvider.WorkflowExecutionModel
+      this.workflowsProvider
+        .WorkflowExecutionModel as unknown as Model<WorkflowExecution>
     );
   }
 }

@@ -7,11 +7,18 @@ import {
   AccountType,
 } from '../../common/client.enums';
 
-export interface ClientConversionEvent {
-  contactId: string;
+export class ClientConversionEvent {
+  contactId!: string;
   contact: any;
-  userId: string;
+  userId!: string;
   userInfo: any;
+
+  constructor(contactId: string, contact: any, userId: string, userInfo: any) {
+    this.contactId = contactId;
+    this.contact = contact;
+    this.userId = userId;
+    this.userInfo = userInfo;
+  }
 }
 
 export const CLIENT_CONVERSION_REQUESTED = 'CLIENT_CONVERSION_REQUESTED';

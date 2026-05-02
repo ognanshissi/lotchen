@@ -10,10 +10,7 @@ import { TimeagoPipe } from '@talisoft/ui/timeago';
 import { RouterLink } from '@angular/router';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { Severity, TasTag } from '@talisoft/ui/tag';
-import {
-  ClientDto,
-  ClientsApiService,
-} from '../../services/clients-api.service';
+import { ClientsApiService } from '@talisoft/api/lotchen-client-api';
 
 @Component({
   selector: 'clients-client-listing',
@@ -22,7 +19,6 @@ import {
   imports: [
     TasTitle,
     ButtonModule,
-    TasIcon,
     TasText,
     TasCard,
     TasCardHeader,
@@ -39,7 +35,7 @@ export class ClientListingComponent implements OnInit {
   public pageIndex = signal(0);
   public pageSize = signal(10);
   public totalElements = signal(0);
-  public clients = signal<ClientDto[]>([]);
+  public clients = signal<any[]>([]);
   public isLoading = signal(false);
   public searchTerm = '';
 
@@ -67,7 +63,7 @@ export class ClientListingComponent implements OnInit {
   public loadClients(): void {
     this.isLoading.set(true);
     this._clientsApi
-      .paginate({
+      .clientControllerPaginateV1({
         pageIndex: this.pageIndex(),
         pageSize: this.pageSize(),
         filters: {},

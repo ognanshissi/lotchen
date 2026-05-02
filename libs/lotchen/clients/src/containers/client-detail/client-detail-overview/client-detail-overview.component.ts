@@ -12,10 +12,7 @@ import { TasSummaryField } from '@talisoft/ui/summary-field';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { map, Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import {
-  ClientDetailDto,
-  ClientsApiService,
-} from '../../../services/clients-api.service';
+import { ClientsApiService } from '@talisoft/api/lotchen-client-api';
 
 @Component({
   selector: 'clients-detail-overview',
@@ -33,7 +30,7 @@ export class ClientDetailOverviewComponent {
 
   public client = toSignal(
     (this._activatedRoute?.parent?.data as Observable<Data>).pipe(
-      map((data) => data['client'] as ClientDetailDto)
+      map((data) => data['client'] as any)
     )
   );
 
@@ -47,7 +44,7 @@ export class ClientDetailOverviewComponent {
     if (!clientId) return;
 
     this._clientsApi
-      .update(clientId, { [event.field]: event.value } as any)
+      .clientControllerUpdateV1(clientId, { [event.field]: event.value } as any)
       .subscribe({
         next: () => {
           this._snackbar.success('Succès', 'Le client a été mis à jour');
