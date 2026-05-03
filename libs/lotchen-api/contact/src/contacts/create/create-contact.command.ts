@@ -15,8 +15,11 @@ import { ContactProvider } from '../contact.provider';
 import { Model } from 'mongoose';
 import { ContactDocument, contactSource } from '../contact.schema';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CONTACT_CREATED, ContactCreatedEvent } from './contact-created.event';
 import { ContactStatus } from '../contact-status.enum';
+import {
+  CONTACT_CREATED,
+  ContactCreatedEvent,
+} from '@lotchen/lotchen-api/events/contact-created.event';
 
 const VALID_SOURCES: contactSource[] = [
   'Website',

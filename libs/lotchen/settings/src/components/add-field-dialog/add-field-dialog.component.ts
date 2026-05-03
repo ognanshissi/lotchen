@@ -106,7 +106,10 @@ export class AddFieldDialogComponent implements OnInit {
     const f = this.data.field;
     this.form = new FormGroup({
       name: new FormControl(
-        { value: f?.name ?? '', disabled: this.data.mode === 'edit' },
+        {
+          value: f?.name ?? 'custom_field_',
+          disabled: this.data.mode === 'edit',
+        },
         [Validators.required]
       ),
       label: new FormControl(f?.label ?? '', [Validators.required]),

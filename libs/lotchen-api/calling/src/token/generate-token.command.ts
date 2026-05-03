@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CommandHandler } from '@lotchen/api/core';
 import { CallingProvider } from '../calling.provider';
+const AccessToken = require('twilio').jwt.AccessToken;
 
 export class GenerateCallerTokenCommand {}
 
@@ -37,6 +38,7 @@ export class GenerateCallerTokenCommandHandler
 
     if (config?.provider === 'twilio' && config.twilioConfig) {
       const twilio = config.twilioConfig;
+      this.logger.debug(`Twilio Config: ${JSON.stringify(twilio)}`);
       const token = this._generateTwilioToken(
         twilio.accountSid,
         twilio.apiKey,
@@ -92,7 +94,6 @@ export class GenerateCallerTokenCommandHandler
     identity: string
   ): string {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const AccessToken = require('twilio').jwt.AccessToken;
     const VoiceGrant = AccessToken.VoiceGrant;
 
     const accessToken = new AccessToken(accountSid, apiKey, apiSecret, {

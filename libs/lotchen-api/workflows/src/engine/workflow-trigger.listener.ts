@@ -1,6 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { TenantDatabaseService } from '@lotchen/api/core';
 import { WorkflowEngineService } from './workflow-engine.service';
 import { TriggerTypeEnum } from '../common/workflow.enums';
 import {
@@ -12,9 +11,11 @@ import {
   WorkflowExecutionSchema,
 } from '../executions/workflow-execution.schema';
 import { Connection } from 'mongoose';
-
-const CONTACT_CREATED = 'contact.created';
-const LEAD_STATUS_CHANGED = 'lead.status_changed';
+import { CONTACT_CREATED } from '@lotchen/lotchen-api/events/contact-created.event';
+import {
+  LEAD_STATUS_CHANGED,
+  LeadStatusChangedEvent,
+} from '@lotchen/lotchen-api/events/contact-status-changed.event';
 
 @Injectable()
 export class WorkflowTriggerListener {
@@ -64,13 +65,9 @@ export class WorkflowTriggerListener {
   }
 
   @OnEvent(LEAD_STATUS_CHANGED, { async: true })
-  async handleLeadStatusChanged(payload: {
-    tenantId: string;
-    contactId: string;
-    previousStatus: string;
-    newStatus: string;
-    changedByUserId: string;
-  }): Promise<void> {
+  async handleLeadStatusChanged(
+    payload: LeadStatusChangedEvent
+  ): Promise<void> {
     this.logger.debug(
       `Evaluating status_change workflows for lead ${payload.contactId}`
     );

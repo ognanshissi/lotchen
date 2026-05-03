@@ -16,9 +16,15 @@
     "baseUrl": ".",
     "paths": {
       "@lotchen/api/core": ["libs/api/core/src/index.ts"],
+      "@lotchen/lotchen-api/events/*": ["libs/lotchen-api/events/*"],
       "@lotchen/lotchen-api/activities": [
         "libs/lotchen-api/activities/src/index.ts"
       ],
+      "@lotchen/lotchen-api/calling": ["libs/lotchen-api/calling/src/index.ts"],
+      "@lotchen/lotchen-api/campaigns": [
+        "libs/lotchen-api/campaigns/src/index.ts"
+      ],
+      "@lotchen/lotchen-api/clients": ["libs/lotchen-api/clients/src/index.ts"],
       "@lotchen/lotchen-api/contact": ["libs/lotchen-api/contact/src/index.ts"],
       "@lotchen/lotchen-api/dynamic-form": [
         "libs/lotchen-api/dynamic-form/src/index.ts"
@@ -27,36 +33,31 @@
         "libs/lotchen-api/identity-provider/src/index.ts"
       ],
       "@lotchen/lotchen-api/leads": ["libs/lotchen-api/leads/src/index.ts"],
-      "@lotchen/lotchen-api/workflows": [
-        "libs/lotchen-api/workflows/src/index.ts"
-      ],
       "@lotchen/lotchen-api/pipelines": [
         "libs/lotchen-api/pipelines/src/index.ts"
       ],
-      "@lotchen/lotchen-api/campaigns": [
-        "libs/lotchen-api/campaigns/src/index.ts"
-      ],
-      "@lotchen/lotchen-api/calling": ["libs/lotchen-api/calling/src/index.ts"],
       "@lotchen/lotchen-api/products": [
         "libs/lotchen-api/products/src/index.ts"
       ],
+      "@lotchen/lotchen-api/workflows": [
+        "libs/lotchen-api/workflows/src/index.ts"
+      ],
       "@lotchen/lotchen/auth": ["libs/lotchen/auth/src/index.ts"],
+      "@lotchen/lotchen/campaigns": ["libs/lotchen/campaigns/src/index.ts"],
       "@lotchen/lotchen/clients": ["libs/lotchen/clients/src/index.ts"],
       "@lotchen/lotchen/common/*": ["libs/lotchen/common/src/*"],
       "@lotchen/lotchen/dashboard": ["libs/lotchen/dashboard/src/index.ts"],
-      "@lotchen/lotchen/leads": ["libs/lotchen/leads/src/index.ts"],
-      "@lotchen/lotchen/prospects": ["libs/lotchen/prospects/src/index.ts"],
       "@lotchen/lotchen/events": ["libs/lotchen/events/src/index.ts"],
+      "@lotchen/lotchen/leads": ["libs/lotchen/leads/src/index.ts"],
+      "@lotchen/lotchen/pipelines": ["libs/lotchen/pipelines/src/index.ts"],
+      "@lotchen/lotchen/prospects": ["libs/lotchen/prospects/src/index.ts"],
       "@lotchen/lotchen/settings": ["libs/lotchen/settings/src/index.ts"],
       "@lotchen/lotchen/workflows": ["libs/lotchen/workflows/src/index.ts"],
-      "@lotchen/lotchen/pipelines": ["libs/lotchen/pipelines/src/index.ts"],
-      "@lotchen/lotchen/campaigns": ["libs/lotchen/campaigns/src/index.ts"],
       "@talisoft/api/lotchen-client-api": [
         "libs/shared/api/lotchen-client-api/src/index.ts"
       ],
       "@talisoft/ui": ["libs/shared/ui/src/index.ts"],
-      "@talisoft/ui/*": ["libs/shared/ui/*"],
-      "@lotchen/lotchen-api/clients": ["libs/lotchen-api/clients/src/index.ts"]
+      "@talisoft/ui/*": ["libs/shared/ui/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,8 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CONTACT_CREATED, ContactCreatedEvent } from './contact-created.event';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ContactProvider } from '../contact.provider';
 import { ContactStatus } from '../contact-status.enum';
+import {
+  CONTACT_CREATED,
+  ContactCreatedEvent,
+} from '@lotchen/lotchen-api/events/contact-created.event';
 
 @Injectable()
 export class ContactCreatedListener {
@@ -13,7 +16,7 @@ export class ContactCreatedListener {
   @OnEvent(CONTACT_CREATED, { async: true })
   public async handleContactCreatedEvent(payload: ContactCreatedEvent) {
     try {
-      this._logger.log(`Event payload: ${JSON.stringify(payload)}`);
+      this._logger.debug(`Event: ${CONTACT_CREATED} is triggered`);
 
       const contact = await this.contactProvider.ContactModel.findOne({
         _id: payload.contactId.toString() as any,

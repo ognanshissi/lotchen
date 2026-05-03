@@ -5,7 +5,7 @@ import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { LeadProvider } from '../lead.provider';
 import { ContactTypeEnum } from '../../contacts/contact.schema';
 import { ContactStatus } from '../../contacts/contact-status.enum';
-import { CaptureConfigDocument } from '../capture-config/capture-config.schema';
+import { CaptureConfigDocument } from '../capture-config';
 
 export class CaptureLeadCommand {
   @ApiPropertyOptional({ type: String })
@@ -114,7 +114,7 @@ export class CaptureLeadCommandHandler
 
         const tags = this.extractTags(command.formData);
         if (tags.length > 0) {
-          $addToSet.tags = { $each: tags };
+          $addToSet['tags'] = { $each: tags };
         }
 
         const update: any = {};
