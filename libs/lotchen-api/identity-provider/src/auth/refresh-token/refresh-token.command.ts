@@ -87,14 +87,17 @@ export class RefreshTokenCommandHandler
     // new tokens
     const payload = { sub: userExist.id, username: userExist.email };
 
-    const refreshToken = await this._jwtService.signAsync(
+    const refreshToken = await this._jwtService.signAsync<any>(
       {
         ...payload,
         type: 'refreshToken',
       },
       {
         secret: process.env['SECRET'],
-        expiresIn: process.env['REFRESH_TOKEN_EXPIRES_IN'],
+        expiresIn: Number.parseInt(
+          process.env['REFRESH_TOKEN_EXPIRES_IN']!,
+          10
+        ),
       }
     );
 

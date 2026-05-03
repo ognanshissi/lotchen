@@ -43,7 +43,7 @@ export abstract class AggregateRoot extends AuditableSchema {
     required: true,
     type: mongoose.Schema.Types.UUID,
   })
-  declare _id: string;
+  declare _id: any;
 }
 
 export abstract class SchemaIdentifier extends Document {
@@ -52,5 +52,5 @@ export abstract class SchemaIdentifier extends Document {
     required: true,
     type: mongoose.Schema.Types.UUID,
   })
-  declare _id: string;
+  declare _id: any;
 }

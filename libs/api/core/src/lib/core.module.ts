@@ -16,7 +16,7 @@ import { CurrentUserProvider } from './providers/current-user.provider';
       global: true,
       secret: process.env['SECRET'],
       signOptions: {
-        expiresIn: process.env['TOKEN_EXPIRES_IN'], // for default token expiration
+        expiresIn: Number.parseInt(process.env['TOKEN_EXPIRES_IN']!, 10), // for default token expiration
       },
     }),
   ],
