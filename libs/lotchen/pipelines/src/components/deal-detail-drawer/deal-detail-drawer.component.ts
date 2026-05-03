@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { TasCurrencyPipe } from '@talisoft/ui/currency-pipe';
+import { TasCurrencyPipe } from '@lotchen/lotchen/common/pipes';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { DealsApiService } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';

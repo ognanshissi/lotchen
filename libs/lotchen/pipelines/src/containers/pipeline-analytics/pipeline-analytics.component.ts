@@ -8,7 +8,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TasCurrencyPipe } from '@talisoft/ui/currency-pipe';
+import { TasCurrencyPipe } from '@lotchen/lotchen/common/pipes';
 import { SalesPipelinesApiService } from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { TasCard, TasCardHeader } from '@talisoft/ui/card';
@@ -17,7 +17,6 @@ import { TasText } from '@talisoft/ui/text';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
 import { TasSpinner } from '@talisoft/ui/spinner';
-import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'pipeline-analytics',

@@ -2,7 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { RequestHandler } from '@lotchen/api/core';
 import { UserDocument, UserExtension } from '../../users';
 import { Model } from 'mongoose';
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 import { RoleDocument } from '../../roles';
@@ -36,6 +41,7 @@ export class AccessTokenResponse {
 export class LoginCommandHandler
   implements RequestHandler<LoginCommand, AccessTokenResponse>
 {
+  private readonly _logger = new Logger(LoginCommandHandler.name);
   constructor(
     @Inject('USER_MODEL') private readonly userModel: Model<UserDocument>,
     @Inject('ROLE_MODEL') private readonly roleModel: Model<RoleDocument>,
@@ -87,21 +93,32 @@ export class LoginCommandHandler
       permissions: [...userExist.roles.map((role) => role.permissions).flat()],
     };
 
-    const refreshToken = await this._jwtService.signAsync(
-      {
+    try {
+      const refreshTokenPayload = {
         ...payload,
         type: 'refreshToken',
-      },
-      {
-        secret: process.env['SECRET'],
-        expiresIn: process.env['REFRESH_TOKEN_EXPIRES_IN'],
-      }
-    );
-    return {
-      accessToken: await this._jwtService.signAsync(payload),
-      refreshToken: refreshToken,
-      expiresIn: 3600,
-      tokenType: 'Bearer',
-    } as AccessTokenResponse;
+      };
+      const refreshToken = await this._jwtService.signAsync<any>(
+        refreshTokenPayload,
+        {
+          secret: process.env['SECRET'],
+          expiresIn: Number.parseInt(
+            process.env['REFRESH_TOKEN_EXPIRES_IN']!,
+            10
+          ),
+        }
+      );
+      const accessToken = await this._jwtService.signAsync(payload);
+
+      return {
+        accessToken,
+        refreshToken,
+        expiresIn: 3600,
+        tokenType: 'Bearer',
+      } as AccessTokenResponse;
+    } catch (err) {
+      this._logger.error(err);
+      throw new UnauthorizedException();
+    }
   }
 }

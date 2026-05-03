@@ -6,7 +6,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { TasSummaryField } from '@talisoft/ui/summary-field';
+import { TasSummaryField } from '../summary-field';
 import { SnackbarService } from '@talisoft/ui/snackbar/src/public_api';
 import { DynamicFormsApiService } from 'libs/shared/api/lotchen-client-api/src/lib/api/api';
 import { FindByClassNameFieldDto } from 'libs/shared/api/lotchen-client-api/src/lib/model/models';

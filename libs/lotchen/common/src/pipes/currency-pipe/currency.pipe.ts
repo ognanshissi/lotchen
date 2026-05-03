@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
 import { inject, Pipe, PipeTransform } from '@angular/core';
-import { CurrencyService } from '@lotchen/lotchen/common/services';
+import { CurrencyService } from 'libs/lotchen/common/src/services';
 
 /**
  * Formats a numeric value as currency using the tenant's default currency.

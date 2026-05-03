@@ -6,16 +6,16 @@ import {
   output,
   computed,
 } from '@angular/core';
-import { TasCurrencyPipe } from '@talisoft/ui/currency-pipe';
 import { CdkDropList } from '@angular/cdk/drag-drop';
 import { DealCardComponent } from '../deal-card/deal-card.component';
+import { TasCurrencyPipe } from '@lotchen/lotchen/common/pipes';
 
 @Component({
   selector: 'pipeline-column',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [TasCurrencyPipe, CdkDropList, DealCardComponent],
+  imports: [TasCurrencyPipe, CdkDropList, DealCardComponent, TasCurrencyPipe],
   template: `
     <div class="flex flex-col h-full min-w-[280px] max-w-[320px]">
       <!-- Column header -->

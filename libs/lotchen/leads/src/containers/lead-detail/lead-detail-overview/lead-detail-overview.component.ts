@@ -9,7 +9,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { TasCard } from '@talisoft/ui/card';
-import { TasSummaryField } from '@talisoft/ui/summary-field';
+import { TasSummaryField } from '../../../../../common/src/components/summary-field';
 import { DynamicFieldsSummaryComponent } from '@lotchen/lotchen/common/components';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { map, Observable } from 'rxjs';

@@ -6,7 +6,7 @@ import {
   output,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { TasCurrencyPipe } from '@talisoft/ui/currency-pipe';
+import { TasCurrencyPipe } from '@lotchen/lotchen/common/pipes';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { TasIcon } from '@talisoft/ui/icon';
 
