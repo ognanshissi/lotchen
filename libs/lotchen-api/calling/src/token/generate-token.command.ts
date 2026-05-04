@@ -29,7 +29,7 @@ export class GenerateCallerTokenCommandHandler
 
   public async handlerAsync(): Promise<CallerTokenResponse> {
     const user = this._callingProvider.user();
-    const identity = `${user.firstName}${user.lastName}`.trim();
+    const identity = `${user.firstName}_${user.lastName}`.trim().toLowerCase();
 
     const config = await this._callingProvider.TelephonyConfigModel.findOne({
       isActive: true,

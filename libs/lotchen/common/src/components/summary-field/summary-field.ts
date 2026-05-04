@@ -10,13 +10,13 @@ import {
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { TasIcon } from '../../../../../shared/ui/icon';
-import { FormField, TasLabel } from '../../../../../shared/ui/form-field';
-import { ButtonModule } from '../../../../../shared/ui/button';
-import { TasInput } from '../../../../../shared/ui/input';
-import { TasDatePicker } from '../../../../../shared/ui/date-picker';
-import { TasSelect } from 'libs/shared/ui/select';
 import { DatePipe } from '@angular/common';
+import { FormField, TasLabel } from '@talisoft/ui/form-field';
+import { TasIcon } from '@talisoft/ui/icon';
+import { ButtonModule } from 'primeng/button';
+import { TasInput } from '@talisoft/ui/input';
+import { TasDatePicker } from '@talisoft/ui/date-picker';
+import { TasSelect } from '@talisoft/ui/select';
 @Component({
   selector: 'tas-summary-field',
   templateUrl: './summary-field.html',

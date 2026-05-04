@@ -1,7 +1,8 @@
 import { Component, input } from '@angular/core';
-import { TasSummaryField } from '@talisoft/ui/summary-field';
+import { TasSummaryField } from '../summary-field';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'tas-summary',
   template: `<ng-content></ng-content>`,
   standalone: true,

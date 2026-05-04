@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "npx nx run Lotchen:serve:development",
-    "api:start": "npx nx run lotchen-api:serve",
+    "api:start": "npx nx run lotchen-api:serve --verbose",
     "start:api": "node dist/apps/lotchen-api/main.js",
     "start:lotchen-front": "node dist/apps/Lotchen/server/main.js",
     "start:voice-api": "node dist/apps/twilio-voice-webhook-api/main.js",

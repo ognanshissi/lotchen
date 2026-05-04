@@ -1,6 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { DialogRef } from '@angular/cdk/dialog';
 import * as XLSX from 'xlsx';
 import { ButtonModule } from '@talisoft/ui/button';
@@ -39,7 +38,6 @@ type DialogStep = 'upload' | 'review' | 'summary';
   ],
 })
 export class ImportContactDialogComponent {
-  private readonly _http = inject(HttpClient);
   private readonly _dialogRef = inject(DialogRef);
   private readonly _snackbar = inject(SnackbarService);
   private readonly _contactsService = inject(ContactsService);
