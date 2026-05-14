@@ -8,7 +8,7 @@ import { CurrencyService } from 'libs/lotchen/common/src/services';
  * Usage:
  *   {{ amount | tasCurrency }}                    — uses default currency
  *   {{ amount | tasCurrency : 'USD' }}            — explicit currency code override
- *   {{ amount | tasCurrency : null : '1.0-2' }}   — custom digit format
+ *   {{ amount | tasCurrency : null : 3 }}         — custom digit format
  */
 @Pipe({
   name: 'tasCurrency',
@@ -26,7 +26,7 @@ export class TasCurrencyPipe implements PipeTransform {
 
     const code = currencyCode || this._currencyService.defaultCurrencyCode();
 
-    return new Intl.NumberFormat('fr-FR', {
+    return new Intl.NumberFormat(navigator.language ?? 'fr-FR', {
       style: 'currency',
       currency: code,
       maximumSignificantDigits,
