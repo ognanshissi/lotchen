@@ -8,6 +8,7 @@ import { PermissionsGuard } from './guards/permissions.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { TenantDatabaseService } from './tenant/tenant-database.service';
 import { CurrentUserProvider } from './providers/current-user.provider';
+import { StringValue } from 'ms';
 
 @Global()
 @Module({
@@ -16,7 +17,7 @@ import { CurrentUserProvider } from './providers/current-user.provider';
       global: true,
       secret: process.env['SECRET'],
       signOptions: {
-        expiresIn: Number.parseInt(process.env['TOKEN_EXPIRES_IN']!, 10), // for default token expiration
+        expiresIn: process.env['TOKEN_EXPIRES_IN'] as StringValue, // for default token expiration
       },
     }),
   ],

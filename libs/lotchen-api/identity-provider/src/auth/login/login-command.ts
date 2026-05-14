@@ -13,6 +13,7 @@ import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 import { RoleDocument } from '../../roles';
 import { AuthErrors } from '../auth-errors';
 import { ProfileDocument } from '../../profile';
+import { StringValue } from 'ms';
 
 export class LoginCommand {
   @ApiProperty()
@@ -102,13 +103,13 @@ export class LoginCommandHandler
         refreshTokenPayload,
         {
           secret: process.env['SECRET'],
-          expiresIn: Number.parseInt(
-            process.env['REFRESH_TOKEN_EXPIRES_IN']!,
-            10
-          ),
+          expiresIn: process.env['REFRESH_TOKEN_EXPIRES_IN'] as StringValue,
         }
       );
-      const accessToken = await this._jwtService.signAsync(payload);
+      const accessToken = await this._jwtService.signAsync<any>(payload, {
+        secret: process.env['SECRET'],
+        expiresIn: process.env['TOKEN_EXPIRES_IN'] as StringValue,
+      });
 
       return {
         accessToken,

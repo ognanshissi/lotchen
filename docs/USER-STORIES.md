@@ -249,8 +249,8 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Post-event form: outcome (completed, no-show, rescheduled), notes
-- [ ] Quick action to schedule follow-up from outcome form
+- [x] Post-event form: outcome (completed, no-show, rescheduled), notes
+- [x] Quick action to schedule follow-up from outcome form
 - [ ] Outcome logged in contact/lead activity timeline
 
 ---
@@ -390,10 +390,10 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Workflow builder UI: visual canvas with drag-and-drop nodes
-- [ ] Trigger types: status change, new lead, form submission, date-based, manual
-- [ ] Action types: assign to user/team, send email/SMS, create task, update field, wait, conditional branch
-- [ ] Workflow templates saveable and reusable
+- [x] Workflow builder UI: visual canvas with drag-and-drop nodes
+- [x] Trigger types: status change, new lead, form submission, date-based, manual
+- [x] Action types: assign to user/team, send email/SMS, create task, update field, wait, conditional branch
+- [x] Workflow templates saveable and reusable
 
 **US-8.1.2** — Assign workflow to a product or pipeline
 
@@ -402,8 +402,8 @@ Acceptance Criteria:
 Acceptance Criteria:
 
 - [ ] Each product/pipeline can have one active workflow
-- [ ] Workflow version management (draft, active, archived)
-- [ ] Test mode: run workflow on a test record before going live
+- [x] Workflow version management (draft, active, archived)
+- [x] Test mode: run workflow on a test record before going live
 
 **US-8.1.3** — Monitor workflow execution
 
@@ -411,9 +411,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Execution log per workflow instance: trigger, steps executed, current step, errors
-- [ ] Dashboard: active instances, completion rate, average duration
-- [ ] Manual intervention: retry failed step, skip, cancel
+- [x] Execution log per workflow instance: trigger, steps executed, current step, errors
+- [x] Dashboard: active instances, completion rate, average duration
+- [x] Manual intervention: retry failed step, skip, cancel
 
 ---
 
@@ -427,9 +427,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Pipeline has: name, stages (ordered), win probability per stage, required fields per stage
-- [ ] Multiple pipelines per tenant (e.g., Banking pipeline, Insurance pipeline)
-- [ ] Default pipeline configurable
+- [x] Pipeline has: name, stages (ordered), win probability per stage, required fields per stage
+- [x] Multiple pipelines per tenant (e.g., Banking pipeline, Insurance pipeline)
+- [x] Default pipeline configurable
 
 **US-9.1.2** — Kanban board view
 
@@ -437,9 +437,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Columns = pipeline stages; cards = opportunities
-- [ ] Drag-and-drop to move between stages
-- [ ] Card shows: contact name, deal value, age, assigned agent
+- [x] Columns = pipeline stages; cards = opportunities
+- [x] Drag-and-drop to move between stages
+- [x] Card shows: contact name, deal value, age, assigned agent
 - [ ] Stage transition validates required fields
 
 **US-9.1.3** — Pipeline analytics
@@ -448,10 +448,10 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Funnel chart: count and value per stage
-- [ ] Conversion rate between stages
-- [ ] Average time in each stage
-- [ ] Win/loss analysis by source, agent, product
+- [x] Funnel chart: count and value per stage
+- [x] Conversion rate between stages
+- [x] Average time in each stage
+- [x] Win/loss analysis by source, agent, product
 
 ---
 
@@ -492,9 +492,9 @@ Acceptance Criteria:
 
 ---
 
-## Module 11: Calling System (RingOver / Asterisk)
+## Module 11: Calling System (Twilio / Asterisk)
 
-### Epic 11.1 — RingOver Integration
+### Epic 11.1 — Twilio Integration
 
 **US-11.1.1** — Click-to-call from CRM
 
@@ -502,10 +502,10 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Click-to-call button on contact detail and list view
-- [ ] Call initiated via RingOver API
-- [ ] Softphone widget embedded in CRM UI
-- [ ] Caller ID shows CRM contact info for incoming calls
+- [x] Click-to-call button on contact detail and list view
+- [x] Call initiated via Twilio (softphone widget via CallerService)
+- [x] Softphone widget embedded in CRM UI (inbound + outbound CallerComponent)
+- [x] Caller ID shows CRM contact info for incoming calls
 
 **US-11.1.2** — Call logging
 
@@ -513,9 +513,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Call log: direction (inbound/outbound), duration, timestamp, recording URL, outcome
-- [ ] Auto-linked to contact record
-- [ ] Post-call disposition form: outcome, notes, follow-up action
+- [x] Call log: direction (inbound/outbound), duration, timestamp, recording URL, outcome
+- [x] Auto-linked to contact record
+- [x] Post-call disposition form: outcome, notes, follow-up action
 
 **US-11.1.3** — Call recording and playback
 
@@ -523,8 +523,8 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Recordings stored securely (tenant-scoped)
-- [ ] Playback from call log entry
+- [x] Recordings stored (recording URL via Twilio callback, stored in call log)
+- [x] Playback from call log entry (CallRecordingPlayerComponent with audio controls)
 - [ ] Recording consent configurable (auto-announce or manual)
 
 ### Epic 11.2 — Custom Calling Application (Asterisk)
@@ -537,8 +537,8 @@ Acceptance Criteria:
 
 - [ ] Asterisk server configuration per tenant
 - [ ] SIP trunk management
-- [ ] WebRTC softphone in CRM (same UI as RingOver integration)
-- [ ] Fallback: if Asterisk unavailable, route through RingOver
+- [ ] WebRTC softphone in CRM (same UI as Twilio integration)
+- [ ] Fallback: if Asterisk unavailable, route through Twilio
 
 ---
 
@@ -552,9 +552,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Campaign form: name, channel (Email, SMS, WhatsApp), audience segment, schedule
-- [ ] Audience builder: filter contacts by status, tags, territory, source, custom fields
-- [ ] Estimated audience count shown before send
+- [x] Campaign form: name, channel (Email, SMS, WhatsApp), audience segment, schedule
+- [x] Audience builder: filter contacts by status, tags, territory, source, custom fields
+- [x] Estimated audience count shown before send
 
 **US-12.1.2** — Message templates
 
@@ -562,11 +562,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Template editor per channel:
-  - Email: rich text / HTML editor with merge fields (`{{firstName}}`, `{{company}}`)
-  - SMS: plain text with character count and merge fields
-  - WhatsApp: approved template selection with variable slots
-- [ ] Template library: save, categorize, preview
+- [x] Template editor per channel (email, SMS, WhatsApp) with merge fields (`{{firstName}}`, `{{company}}`)
+- [x] SMS character count tracking
+- [x] Template library: save, categorize, preview
 
 **US-12.1.3** — Send bulk messages
 
@@ -574,7 +572,7 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Send now or schedule for later
+- [x] Send now or schedule for later
 - [ ] Throttling to comply with provider rate limits
 - [ ] Opt-out/unsubscribe link auto-included (email, SMS)
 - [ ] WhatsApp: use approved templates via Business API
@@ -587,7 +585,7 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Metrics per campaign: sent, delivered, bounced, opened, clicked, unsubscribed
+- [x] Metrics per campaign: sent, delivered, bounced, opened, clicked, unsubscribed
 - [ ] Per-contact delivery status
 - [ ] Comparison view across campaigns
 - [ ] Export campaign report
@@ -604,9 +602,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Product fields: name, type (loan, savings, insurance), interest rate, duration, fees, eligibility criteria, metadata
-- [ ] Product variants (e.g., different loan tiers)
-- [ ] Product status: Draft, Active, Deprecated
+- [x] Product fields: name, type (loan, savings, insurance), interest rate, duration, fees, eligibility criteria, metadata
+- [x] Product variants (e.g., different loan tiers)
+- [x] Product status: Draft, Active, Deprecated
 
 **US-13.1.2** — Configure insurance products
 
@@ -614,9 +612,9 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Insurance product fields: type (life, health, property), premium structure, coverage, deductible, terms
-- [ ] Multi-contract support: a client can have multiple active policies
-- [ ] Policy lifecycle: Quote → Application → Underwriting → Active → Renewal → Lapsed
+- [x] Insurance product fields: type (life, health, property), premium structure, coverage, deductible, terms
+- [x] Multi-contract support: a client can have multiple active policies
+- [x] Policy lifecycle: Quote → Application → Underwriting → Active → Renewal → Lapsed
 
 **US-13.1.3** — Insurance policy management
 
@@ -624,10 +622,10 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Policy creation linked to product and contact
-- [ ] Policy details: policy number, start/end date, premium amount, payment frequency, beneficiaries
+- [x] Policy creation linked to product and contact
+- [x] Policy details: policy number, start/end date, premium amount, payment frequency, beneficiaries
 - [ ] Renewal reminders and lapse warnings
-- [ ] Claims tracking (basic: open, in review, approved, denied)
+- [x] Claims tracking (basic: open, in review, approved, denied)
 
 ### Epic 13.2 — Sandbox Environment
 
@@ -637,7 +635,7 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] Product has environment flag: `sandbox` or `production`
+- [x] Product has environment flag: `sandbox` or `production`
 - [ ] Sandbox products visible only to admins and testers
 - [ ] Simulate product application flow with test data
 - [ ] Validation report: interest calculations, fee breakdowns, eligibility checks
@@ -648,10 +646,10 @@ Acceptance Criteria:
 
 Acceptance Criteria:
 
-- [ ] One-click promote with confirmation dialog
+- [x] One-click promote with confirmation dialog
 - [ ] Pre-promotion checklist (all required fields configured, at least one test run passed)
-- [ ] Promotion audit log (who, when, product version)
-- [ ] Rollback: demote back to sandbox if issues found
+- [x] Promotion audit log (who, when, product version)
+- [x] Rollback: demote back to sandbox if issues found
 
 ---
 

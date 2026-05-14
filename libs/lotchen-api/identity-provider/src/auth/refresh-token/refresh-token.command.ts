@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User, UserToken } from '../../users';
 import { Model } from 'mongoose';
 import { Request } from 'express';
+import { StringValue } from 'ms';
 
 export class RefreshTokenCommand {
   @IsNotEmpty({ message: 'refreshToken est obligatoire .' })
@@ -94,11 +95,7 @@ export class RefreshTokenCommandHandler
       },
       {
         secret: process.env['SECRET'],
-        expiresIn: Number.parseInt(
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          process.env['REFRESH_TOKEN_EXPIRES_IN']!,
-          10
-        ),
+        expiresIn: process.env['REFRESH_TOKEN_EXPIRES_IN'] as StringValue,
       }
     );
 
