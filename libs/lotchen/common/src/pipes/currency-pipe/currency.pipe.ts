@@ -16,18 +16,20 @@ import { CurrencyService } from 'libs/lotchen/common/src/services';
 })
 export class TasCurrencyPipe implements PipeTransform {
   private readonly _currencyService = inject(CurrencyService);
-  private readonly _currencyPipe = new CurrencyPipe('fr-FR');
 
   transform(
     value: number | string | null | undefined,
     currencyCode?: string | null,
-    digitsInfo: string = '1.0-0',
-    display: string = 'symbol-narrow'
+    maximumSignificantDigits: number = 3
   ): string | null {
     if (value == null) return null;
 
     const code = currencyCode || this._currencyService.defaultCurrencyCode();
 
-    return this._currencyPipe.transform(value, code, display, digitsInfo);
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: code,
+      maximumSignificantDigits,
+    }).format(value as number);
   }
 }

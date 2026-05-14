@@ -12,7 +12,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-import { DealsApiService } from '@talisoft/api/lotchen-client-api';
+import {
+  ClientsApiService,
+  DealsApiService,
+} from '@talisoft/api/lotchen-client-api';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { TasIcon } from '@talisoft/ui/icon';
 import { ButtonModule } from '@talisoft/ui/button';
@@ -92,18 +95,12 @@ import { FormField, TasLabel } from '@talisoft/ui/form-field';
       <div
         class="flex items-center justify-end gap-2 p-4 border-t border-gray-200"
       >
-        <button
-          tas-outlined-button
-          color="neutral"
-          size="small"
-          (click)="dialogRef.close()"
-        >
+        <button tas-outlined-button color="neutral" (click)="dialogRef.close()">
           Annuler
         </button>
         <button
           tas-raised-button
           color="primary"
-          size="small"
           [disabled]="form.invalid || isSaving()"
           (click)="save()"
         >
@@ -124,6 +121,8 @@ export class AddDealDialogComponent {
   private readonly _dealsApi = inject(DealsApiService);
   private readonly _snackbar = inject(SnackbarService);
   private readonly _fb = inject(FormBuilder);
+
+  private readonly _clientApiService = inject(ClientsApiService);
 
   isSaving = signal(false);
 
