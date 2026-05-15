@@ -14,11 +14,11 @@ import { ClientsProvider } from '../../clients.provider';
 import { Injectable } from '@nestjs/common';
 
 export class FilterAllClientsCommand {
-  @ApiPropertyOptional({ type: () => FilterDto<string> })
-  status?: FilterDto<string>;
+  @ApiPropertyOptional({ type: () => FilterDto<string[]> })
+  status?: FilterDto<string[]>;
 
-  @ApiPropertyOptional({ type: () => FilterDto<string> })
-  kycStatus?: FilterDto<string>;
+  @ApiPropertyOptional({ type: () => FilterDto<string[]> })
+  kycStatus?: FilterDto<string[]>;
 
   @ApiPropertyOptional({ type: () => FilterDto<string> })
   accountType?: FilterDto<string>;
@@ -27,10 +27,10 @@ export class FilterAllClientsCommand {
   assignedToUserId?: FilterDto<string>;
 
   @ApiPropertyOptional({ type: () => FilterDto<string> })
-  territoryId?: FilterDto<string>;
+  territoryId?: FilterDto<string[]>;
 
-  @ApiPropertyOptional({ type: () => FilterDto<string> })
-  createdAt?: FilterDto<string>;
+  @ApiPropertyOptional({ type: () => FilterDto<Date> })
+  createdAt?: FilterDto<Date>;
 }
 
 @ApiExtraModels(FilterAllClientsCommand)
@@ -74,41 +74,12 @@ export class FindAllClientsQueryHandler
   ): Promise<PaginateAllClientsResponse> {
     let queryFilter: Record<string, any> = { deletedAt: null };
 
-    if (command.filters?.status) {
-      const f = command.filters.status;
-      if (f.operator === 'in' && Array.isArray(f.value)) {
-        queryFilter['status'] = { $in: f.value };
-      } else {
-        queryFilter['status'] = f.value;
-      }
-    }
-
-    if (command.filters?.kycStatus) {
-      const f = command.filters.kycStatus;
-      if (f.operator === 'in' && Array.isArray(f.value)) {
-        queryFilter['kycStatus'] = { $in: f.value };
-      } else {
-        queryFilter['kycStatus'] = f.value;
-      }
-    }
-
-    if (command.filters?.accountType) {
-      queryFilter['accountType'] = command.filters.accountType.value;
-    }
-
-    if (command.filters?.assignedToUserId) {
-      queryFilter['assignedToUserId'] = command.filters.assignedToUserId.value;
-    }
-
-    if (command.filters?.territoryId) {
-      queryFilter['territoryId'] = command.filters.territoryId.value;
-    }
-
-    if (command.filters?.createdAt) {
-      queryFilter['createdAt'] = filterQueryGenerator(
-        command.filters.createdAt
-      );
-    }
+    Object.keys(command.filters).forEach((filter) => {
+      const filterDto = (command.filters as Record<string, FilterDto<any>>)[
+        filter
+      ];
+      queryFilter[filter] = filterQueryGenerator(filterDto);
+    });
 
     let addFields = {};
 
@@ -119,6 +90,8 @@ export class FindAllClientsQueryHandler
       };
       addFields = { score: { $meta: 'textScore' } };
     }
+
+    console.log('queryFilter', queryFilter);
 
     const projection: Record<string, number> = {
       _id: 1,
@@ -143,7 +116,7 @@ export class FindAllClientsQueryHandler
 
     const sortStage = command.fullTextSearch
       ? { $sort: { score: { $meta: 'textScore' } } as Record<string, any> }
-      : { $sort: { createdAt: -1 } as Record<string, any> };
+      : { $sort: { createdAt: -1 } as Record<string, number> };
 
     const results = await this.clientsProvider.ClientModel.aggregate([
       { $match: queryFilter },

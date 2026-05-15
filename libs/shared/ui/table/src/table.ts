@@ -162,8 +162,8 @@ export class TasTable<T extends TableEntity>
   }
 
   public ngOnChanges(changes: SimpleChanges) {
-    if (!changes['data'].firstChange) {
-      this._updateDatasource(changes['data'].currentValue);
+    if (!changes['data']?.firstChange) {
+      this._updateDatasource(changes['data']?.currentValue);
     }
   }
 

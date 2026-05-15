@@ -53,6 +53,13 @@ export const filterQueryGenerator = (filter: FilterDto<any>) => {
     case 'contain':
       query = new RegExp(filter.value, 'i');
       break;
+    case 'in':
+      if (Array.isArray(filter.value)) {
+        query = { $in: filter.value };
+      } else {
+        query = { $in: [filter.value] };
+      }
+      break;
     default:
       query = new RegExp(filter.value, 'i');
   }

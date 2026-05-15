@@ -9,6 +9,10 @@
   </card-header>
 </tas-card>
 
+<clients-client-search
+  (filterChange)="onFilterChange($event)"
+></clients-client-search>
+
 <tas-card class="mt-4">
   <tas-table
     [title]="'Liste des clients'"

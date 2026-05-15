@@ -11,6 +11,10 @@ import { RouterLink } from '@angular/router';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { Severity, TasTag } from '@talisoft/ui/tag';
 import { ClientsApiService } from '@talisoft/api/lotchen-client-api';
+import {
+  ClientFilterData,
+  ClientSearchComponent,
+} from '../../components/client-search/client-search.component';
 
 @Component({
   selector: 'clients-client-listing',
@@ -26,6 +30,7 @@ import { ClientsApiService } from '@talisoft/api/lotchen-client-api';
     TimeagoPipe,
     RouterLink,
     TasTag,
+    ClientSearchComponent,
   ],
 })
 export class ClientListingComponent implements OnInit {
@@ -37,7 +42,7 @@ export class ClientListingComponent implements OnInit {
   public totalElements = signal(0);
   public clients = signal<any[]>([]);
   public isLoading = signal(false);
-  public searchTerm = '';
+  private _filterData: ClientFilterData = {};
 
   public tableConfig: TableConfig = {
     property: 'id',
@@ -60,14 +65,43 @@ export class ClientListingComponent implements OnInit {
     this.loadClients();
   }
 
+  public onFilterChange(filterData: ClientFilterData): void {
+    this._filterData = filterData;
+    console.log({ filterData });
+    this.pageIndex.set(0);
+    this.loadClients();
+  }
+
   public loadClients(): void {
     this.isLoading.set(true);
+
+    const filters: Record<
+      string,
+      { operator: 'eq' | 'gte'; value: string | string[] }
+    > = {};
+
+    if (this._filterData.accountType) {
+      filters['accountType'] = {
+        operator: 'eq',
+        value: this._filterData.accountType,
+      };
+    }
+    if (this._filterData.status) {
+      filters['status'] = { operator: 'eq', value: this._filterData.status };
+    }
+    if (this._filterData.createdAtFrom) {
+      filters['createdAt'] = {
+        operator: 'gte',
+        value: this._filterData.createdAtFrom,
+      };
+    }
+
     this._clientsApi
       .clientControllerPaginateV1({
         pageIndex: this.pageIndex(),
         pageSize: this.pageSize(),
-        filters: {},
-        fullTextSearch: this.searchTerm,
+        filters,
+        fullTextSearch: this._filterData.searchTerm ?? '',
       })
       .subscribe({
         next: (response) => {
