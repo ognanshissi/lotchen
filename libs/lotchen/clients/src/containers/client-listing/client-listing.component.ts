@@ -67,7 +67,6 @@ export class ClientListingComponent implements OnInit {
 
   public onFilterChange(filterData: ClientFilterData): void {
     this._filterData = filterData;
-    console.log({ filterData });
     this.pageIndex.set(0);
     this.loadClients();
   }

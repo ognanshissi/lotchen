@@ -108,8 +108,10 @@ export class ContactListingComponent implements OnInit {
     this.loadContacts();
   }
 
-  public loadContacts(): void {
+  public loadContacts(refresh?: boolean): void {
     this.isLoading.set(true);
+
+    console.log(refresh);
 
     const filters: any = {};
 

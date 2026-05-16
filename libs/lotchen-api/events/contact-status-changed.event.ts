@@ -19,3 +19,10 @@ export class LeadStatusChangedEvent {
     public readonly changedByUserId: string
   ) {}
 }
+
+export const LEAD_CONVERT_TO_PROSPECT_CHANGED =
+  'lead.convert_to_prospect_changed';
+
+export class LeadConvertToProspectChangedEvent {
+  constructor(public readonly contactId: string) {}
+}

@@ -241,6 +241,8 @@ export class PaginateAllLeadsCommandHandler
       queryFilter.createdAt = filterQueryGenerator(command.filters.createdAt);
     }
 
+    queryFilter['type'] = 'Lead';
+
     let addFields = {};
 
     if (command.fullTextSearch) {

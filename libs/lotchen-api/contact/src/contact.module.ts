@@ -49,6 +49,7 @@ import {
   GenerateScriptQueryHandler,
 } from './leads/capture-config';
 import { ImportLinkedInPostCommandHandler } from './leads/capture/import-linkedin-post.command';
+import { LeadConvertToProspectListener } from './contacts/update-status/lead-convert-prospect.listener';
 
 @Module({
   imports: [],
@@ -69,6 +70,7 @@ import { ImportLinkedInPostCommandHandler } from './leads/capture/import-linkedi
     ImportContactsExcelCommandHandler,
     CreateCallLogCommandHandler,
     ContactCreatedListener,
+    LeadConvertToProspectListener,
     FindAllCallLogsQueryHandler,
     UpdateCallLogCommandHandler,
     RecordingCallbackCommandHandler,

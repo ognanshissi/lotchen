@@ -65,6 +65,7 @@
     [config]="tableConfig"
     (selectionItemsChange)="handleSelectionItems($event)"
     (pageEventChange)="onPageChange($event)"
+    (refresh)="loadContacts(true)"
   >
     <ng-template #header>
       <tr>

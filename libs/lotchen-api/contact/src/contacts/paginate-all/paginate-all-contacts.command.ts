@@ -63,6 +63,7 @@ export class FilterAllContactsCommand {
   })
   assignedToTeamId?: FilterDto<string>;
 
+  // As administrator this field help to find contact of specific agent
   @ApiPropertyOptional({
     type: () => FilterDto<string>,
     description: 'Filter by assignedToUserId',
@@ -164,61 +165,23 @@ export class PaginateAllContactsCommandHandler
     // Dynamic filter query builder
     let queryFilter: { [key: string]: any } = { deletedAt: null };
 
-    if (command.filters?.email) {
-      queryFilter = {
-        ...queryFilter,
-        email: filterQueryGenerator(command.filters.email),
-      };
-    }
+    // TODO: check user role first
 
-    if (command.filters?.mobileNumber) {
-      queryFilter = {
-        ...queryFilter,
-        mobileNumber: filterQueryGenerator(command.filters.mobileNumber),
-      };
-    }
+    // Apply filter to queryFilter
+    Object.keys(command.filters).forEach((filterKey: string) => {
+      const filter = (command.filters as Record<string, FilterDto<any>>)[
+        filterKey
+      ];
+      queryFilter[filterKey] = filterQueryGenerator(filter);
+    });
 
-    if (command.filters?.status) {
-      const f = command.filters.status;
-      if (f.operator === 'in' && Array.isArray(f.value)) {
-        queryFilter.status = { $in: f.value };
-      } else {
-        queryFilter.status = f.value;
-      }
-    }
+    queryFilter['type'] = {
+      $ne: 'Lead',
+    };
 
-    if (command.filters?.source) {
-      const f = command.filters.source;
-      if (f.operator === 'in' && Array.isArray(f.value)) {
-        queryFilter.source = { $in: f.value };
-      } else {
-        queryFilter.source = f.value;
-      }
-    }
+    queryFilter['isConvertedToClientAt'] = null;
 
-    if (command.filters?.territoryId) {
-      queryFilter.territoryId = command.filters.territoryId.value;
-    }
-
-    if (command.filters?.agencyId) {
-      queryFilter.agencyId = command.filters.agencyId.value;
-    }
-
-    if (command.filters?.assignedToTeamId) {
-      queryFilter.assignedToTeamId = command.filters.assignedToTeamId.value;
-    }
-
-    if (command.filters?.assignedToUserId) {
-      queryFilter.assignedToUserId = command.filters.assignedToUserId.value;
-    }
-
-    if (command.filters?.tags) {
-      queryFilter.tags = filterQueryGenerator(command.filters.tags);
-    }
-
-    if (command.filters?.createdAt) {
-      queryFilter.createdAt = filterQueryGenerator(command.filters.createdAt);
-    }
+    console.log('QueryFilter', queryFilter);
 
     let addFields = {};
 

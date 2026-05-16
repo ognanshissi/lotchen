@@ -38,7 +38,7 @@ export class ContactCreatedListener {
         status: payload.status,
       };
 
-      const updated = await this.contactProvider.ContactModel.updateOne(
+      await this.contactProvider.ContactModel.updateOne(
         { _id: payload.contactId.toString() as any },
         {
           $addToSet: {

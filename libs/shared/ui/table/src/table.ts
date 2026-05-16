@@ -79,7 +79,6 @@ export class TasTable<T extends TableEntity>
 
   public pageEventChange = output<PageEvent>();
   public searchInputChange = output<string>();
-  public refreshChange = output<void>();
 
   public selection: SelectionModel<T> = new SelectionModel<T>(
     true,

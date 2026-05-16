@@ -3,6 +3,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ContactProvider } from '../contact.provider';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ContactStatus } from '../contact-status.enum';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import {
+  LEAD_CONVERT_TO_PROSPECT_CHANGED,
+  LeadConvertToProspectChangedEvent,
+} from '@lotchen/lotchen-api/events/contact-status-changed.event';
 
 export class UpdateContactStatusCommandRequest {
   @ApiProperty({
@@ -23,7 +28,10 @@ export class UpdateContactStatusCommand extends UpdateContactStatusCommandReques
 export class UpdateContactStatusCommandHandler
   implements CommandHandler<UpdateContactStatusCommand, void>
 {
-  constructor(private readonly contactProvider: ContactProvider) {}
+  constructor(
+    private readonly contactProvider: ContactProvider,
+    private readonly eventEmitter: EventEmitter2
+  ) {}
 
   async handlerAsync(command: UpdateContactStatusCommand): Promise<void> {
     const contact = await this.contactProvider.ContactModel.findOne({
@@ -38,6 +46,8 @@ export class UpdateContactStatusCommandHandler
     }
 
     const previousStatus = contact.status;
+
+    // create an event to trigger and update the contact to Prospect type if the status is convertToProspect
 
     await this.contactProvider.ContactModel.findByIdAndUpdate(command.id, {
       $set: {
@@ -54,5 +64,12 @@ export class UpdateContactStatusCommandHandler
         },
       },
     });
+
+    if (command.status === ContactStatus.ConvertedToProspect) {
+      this.eventEmitter.emit(
+        LEAD_CONVERT_TO_PROSPECT_CHANGED,
+        new LeadConvertToProspectChangedEvent(command.id)
+      );
+    }
   }
 }
