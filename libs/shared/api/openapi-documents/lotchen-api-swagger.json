@@ -8874,7 +8874,7 @@
           },
           "dueDatetime": {
             "type": "string",
-            "description": "Due Date"
+            "description": "Due DateTime"
           },
           "markedAsCompleted": {
             "type": "boolean",
@@ -8882,6 +8882,13 @@
           },
           "collaboratorIds": {
             "description": "Associate collaborator",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "leadIds": {
+            "description": "Lead IDs for follow-up tasks",
             "type": "array",
             "items": {
               "type": "string"
@@ -8898,7 +8905,8 @@
           "dueDate",
           "dueDatetime",
           "markedAsCompleted",
-          "collaboratorIds"
+          "collaboratorIds",
+          "leadIds"
         ]
       },
       "FindAllTasksQueryResponse": {

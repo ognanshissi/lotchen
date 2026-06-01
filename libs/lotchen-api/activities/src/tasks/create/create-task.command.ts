@@ -11,6 +11,8 @@ export class CreateTaskCommand {
   @IsUUID()
   ownerId!: string;
 
+  // Task can be related to a set of leads
+  // For instance, an agent should work on 3 leads before 20/06/20226
   @ApiProperty({ description: 'Entry related to entity, contactId' })
   relatedToId!: string;
 
@@ -31,14 +33,17 @@ export class CreateTaskCommand {
   @ApiProperty({ type: Date, description: 'Due Date' })
   dueDate!: Date;
 
-  @ApiProperty({ type: String, description: 'Due Date' })
+  @ApiProperty({ type: String, description: 'Due DateTime' })
   dueDatetime!: Date;
 
   @ApiProperty({ description: 'Mark task as completed', type: Boolean })
   markedAsCompleted!: boolean;
 
   @ApiProperty({ description: 'Associate collaborator', type: [String] })
-  collaboratorIds!: string[];
+  collaboratorIds!: string[]; // Assignees
+
+  @ApiProperty({ description: 'Lead IDs for follow-up tasks', type: [String] })
+  leadIds!: string[];
 }
 
 @Injectable()
@@ -63,6 +68,7 @@ export class CreateTaskCommandHandler
         description: command.description,
         ownerId: command.ownerId,
         collaboratorIds: command.collaboratorIds,
+        leadIds: command.leadIds ?? [],
         markAsCompletedAt: command.markedAsCompleted ? new Date() : null,
         createdByInfo: this.activitiesProvider.user(),
         createdBy: this.activitiesProvider.user().userId,

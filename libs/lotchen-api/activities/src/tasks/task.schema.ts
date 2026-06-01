@@ -21,6 +21,9 @@ export class Task extends ActivityBase {
   @Prop({ required: false, type: Date, default: null })
   markAsCompletedAt!: Date;
 
+  @Prop({ type: [String], default: [] })
+  leadIds!: string[]; // Lead IDs for follow-up tasks
+
   @Prop({ type: [mongoose.Schema.Types.UUID], ref: 'User' })
   collaboratorIds!: string[]; // Associated users that can see the task
 
