@@ -4,15 +4,20 @@ import {
   ViewEncapsulation,
   inject,
   signal,
-  OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { WorkflowNodeDto } from '@talisoft/api/lotchen-client-api';
+import {
+  UsersApiService,
+  WorkflowNodeDto,
+} from '@talisoft/api/lotchen-client-api';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import { TasInput } from '@talisoft/ui/input';
 import { ButtonModule } from '@talisoft/ui/button';
 import { TasIcon } from '@talisoft/ui/icon';
+import { TasSelect } from '@talisoft/ui/select';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 export interface NodeConfigDialogData {
   node: WorkflowNodeDto;
@@ -24,18 +29,39 @@ export interface NodeConfigDialogData {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   templateUrl: './workflow-node-config-drawer.component.html',
-  imports: [FormsModule, FormField, TasLabel, TasInput, ButtonModule, TasIcon],
+  imports: [
+    FormsModule,
+    FormField,
+    TasLabel,
+    TasInput,
+    ButtonModule,
+    TasIcon,
+    TasSelect,
+  ],
 })
-export class WorkflowNodeConfigDrawerComponent implements OnInit {
+export class WorkflowNodeConfigDrawerComponent {
   private readonly _dialogRef = inject<DialogRef<WorkflowNodeDto>>(DialogRef);
+  private readonly _usersApiService = inject(UsersApiService);
   readonly data = inject<NodeConfigDialogData>(DIALOG_DATA);
+
+  public userList = toSignal(
+    this._usersApiService
+      .usersControllerAllUsersV1()
+      .pipe(
+        map((response) =>
+          response.map((user) => ({
+            id: user.userId,
+            fullName: `${user.firstName} ${user.lastName}`,
+          }))
+        )
+      ),
+    { initialValue: [] }
+  );
 
   node = signal<WorkflowNodeDto>({
     ...this.data.node,
     config: { ...(this.data.node.config || {}) },
   });
-
-  ngOnInit(): void {}
 
   getConfig(key: string): any {
     return (this.node().config as Record<string, any>)?.[key];

@@ -20,7 +20,7 @@ export class FindAllTasksQuery {
   })
   taskType!: string;
 
-  @ApiProperty({ type: Boolean, description: 'Completed tasks' })
+  @ApiProperty({ type: Boolean, description: 'Completed containers' })
   completed!: boolean;
 }
 
@@ -28,7 +28,7 @@ export class FindAllTasksQueryResponse {
   @ApiProperty({ description: 'Task ID' })
   id!: string;
 
-  @ApiProperty({ description: 'tasks onwer id' })
+  @ApiProperty({ description: 'containers onwer id' })
   ownerId!: string;
 
   @ApiProperty({ description: 'Task type' })

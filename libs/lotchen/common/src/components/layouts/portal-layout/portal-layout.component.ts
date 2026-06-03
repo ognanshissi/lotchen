@@ -45,6 +45,13 @@ export class PortalLayoutComponent implements OnInit {
         link: '/portal/dashboard',
       },
       {
+        id: 'tasks',
+        icon: 'feather:crosshair',
+        title: 'Tâches',
+        type: 'basic',
+        link: '/portal/tasks',
+      },
+      {
         id: 'contacts',
         icon: 'feather:users',
         title: 'Contacts',

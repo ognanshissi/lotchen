@@ -1,0 +1,22 @@
+<tas-card>
+  <card-header>
+    <div class="flex">
+      <div class="w-2/3">
+        <tas-title>Tâches</tas-title>
+        <tas-text>Vos taches, creer et asigner des taches aux agents</tas-text>
+      </div>
+      <div class="flex justify-end space-x-2 w-1/3">
+        <div>
+          <button
+            tas-raised-button
+            color="primary"
+            (click)="openQuickAddTask()"
+          >
+            <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
+            Ajouter une tâche
+          </button>
+        </div>
+      </div>
+    </div>
+  </card-header>
+</tas-card>

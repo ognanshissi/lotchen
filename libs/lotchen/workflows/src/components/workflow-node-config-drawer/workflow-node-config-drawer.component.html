@@ -46,14 +46,20 @@
     <!-- Dynamic config by actionType -->
     @switch (actionType) { @case ('assign_user') {
     <tas-form-field>
-      <tas-label>ID Utilisateur</tas-label>
-      <input
-        tasInput
-        type="text"
-        [value]="getConfig('userId') || ''"
-        (input)="setConfig('userId', $any($event.target).value)"
-        placeholder="UUID de l'utilisateur"
-      />
+      <tas-label>Utilisateur</tas-label>
+      <tas-select
+        [options]="userList()"
+        [optionLabel]="'fullName'"
+        [optionValue]="'id'"
+      ></tas-select>
+      <!--      <tas-label>ID Utilisateur</tas-label>-->
+      <!--      <input-->
+      <!--        tasInput-->
+      <!--        type="text"-->
+      <!--        [value]="getConfig('userId') || ''"-->
+      <!--        (input)="setConfig('userId', $any($event.target).value)"-->
+      <!--        placeholder="UUID de l'utilisateur"-->
+      <!--      />-->
     </tas-form-field>
     } @case ('assign_team') {
     <tas-form-field>

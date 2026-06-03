@@ -3,18 +3,18 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ActivitiesProvider } from '../../activities.provider';
 import { IsNotEmpty } from 'class-validator';
 
-export class DeleteNoteComamnd {
+export class DeleteNoteCommand {
   @IsNotEmpty()
   noteId!: string;
 }
 
 @Injectable()
 export class DeleteNoteCommandHandler
-  implements CommandHandler<DeleteNoteComamnd, void>
+  implements CommandHandler<DeleteNoteCommand, void>
 {
   private readonly _logger = new Logger(DeleteNoteCommandHandler.name);
   constructor(private readonly _activitiesProvider: ActivitiesProvider) {}
-  public async handlerAsync(command: DeleteNoteComamnd): Promise<void> {
+  public async handlerAsync(command: DeleteNoteCommand): Promise<void> {
     try {
       const note = await this._activitiesProvider.NoteModel.findById(
         command.noteId,

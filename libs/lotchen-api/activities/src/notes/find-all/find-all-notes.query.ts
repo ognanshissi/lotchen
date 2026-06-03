@@ -20,7 +20,7 @@ export class FindAllNotesQueryResponse {
   @ApiProperty({ description: 'Task ID' })
   id!: string;
 
-  @ApiProperty({ description: 'tasks onwer id' })
+  @ApiProperty({ description: 'containers onwer id' })
   ownerId!: string;
 
   @ApiProperty({ description: 'Related to entity ID' })

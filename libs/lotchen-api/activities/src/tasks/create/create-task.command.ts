@@ -42,7 +42,10 @@ export class CreateTaskCommand {
   @ApiProperty({ description: 'Associate collaborator', type: [String] })
   collaboratorIds!: string[]; // Assignees
 
-  @ApiProperty({ description: 'Lead IDs for follow-up tasks', type: [String] })
+  @ApiProperty({
+    description: 'Lead IDs for follow-up containers',
+    type: [String],
+  })
   leadIds!: string[];
 }
 

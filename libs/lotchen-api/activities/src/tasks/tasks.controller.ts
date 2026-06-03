@@ -24,7 +24,7 @@ import { DeleteTaskCommandHandler } from './delete/delete-task.command';
 import { CompleteTaskCommandHandler } from './complete-task/complete-task.command';
 
 @Controller({
-  path: 'tasks',
+  path: 'containers',
   version: '1',
 })
 @ApiTags('Tasks')

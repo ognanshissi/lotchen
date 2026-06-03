@@ -88,6 +88,13 @@ export class AdminLayoutComponent implements OnInit {
         link: '/portal/dashboard',
       },
       {
+        id: 'containers',
+        icon: 'feather:users',
+        title: 'Leads & Prospects',
+        type: 'basic',
+        link: '/portal/prospects',
+      },
+      {
         id: 'prospects',
         icon: 'feather:users',
         title: 'Leads & Prospects',

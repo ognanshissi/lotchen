@@ -2678,7 +2678,7 @@
         ]
       }
     },
-    "/api/v1/tasks": {
+    "/api/v1/containers": {
       "post": {
         "operationId": "TasksController_createTask_v1",
         "parameters": [],
@@ -2741,7 +2741,7 @@
             "name": "completed",
             "required": true,
             "in": "query",
-            "description": "Completed tasks",
+            "description": "Completed containers",
             "schema": {
               "type": "boolean"
             }
@@ -2767,7 +2767,7 @@
         ]
       }
     },
-    "/api/v1/tasks/{id}/complete-task": {
+    "/api/v1/containers/{id}/complete-task": {
       "patch": {
         "operationId": "TasksController_completeTask_v1",
         "parameters": [
@@ -2790,7 +2790,7 @@
         ]
       }
     },
-    "/api/v1/tasks/{id}": {
+    "/api/v1/containers/{id}": {
       "delete": {
         "operationId": "TasksController_deleteTask_v1",
         "parameters": [
@@ -8888,7 +8888,7 @@
             }
           },
           "leadIds": {
-            "description": "Lead IDs for follow-up tasks",
+            "description": "Lead IDs for follow-up containers",
             "type": "array",
             "items": {
               "type": "string"
@@ -8918,7 +8918,7 @@
           },
           "ownerId": {
             "type": "string",
-            "description": "tasks onwer id"
+            "description": "containers onwer id"
           },
           "taskType": {
             "type": "string",
@@ -8989,7 +8989,7 @@
           },
           "ownerId": {
             "type": "string",
-            "description": "tasks onwer id"
+            "description": "containers onwer id"
           },
           "relatedToId": {
             "type": "string",
