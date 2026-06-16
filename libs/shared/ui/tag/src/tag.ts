@@ -1,4 +1,4 @@
-import { Component, Host, HostBinding, input } from '@angular/core';
+import { Component, HostBinding, input } from '@angular/core';
 
 export type Severity =
   | 'info'

@@ -8,6 +8,7 @@ import TerritoriesComponent from './containers/territories/territories.component
 import { RoleEditComponent } from './containers/roles/role-edit/role-edit.component';
 import UserEditComponent from './containers/users/user-edit/user-edit.component';
 import { userDetailResolverService } from './services/user-detail.resolver.service';
+import AccountSettingsComponent from './containers/account-settings/account-settings.component';
 
 export const settingsRoutes: Routes = [
   {
@@ -79,5 +80,9 @@ export const settingsRoutes: Routes = [
     path: 'dynamic-forms/:id',
     loadComponent: () =>
       import('./containers/dynamic-forms/form-detail/form-detail.component'),
+  },
+  {
+    path: 'account-settings',
+    loadChildren: () => AccountSettingsComponent,
   },
 ];

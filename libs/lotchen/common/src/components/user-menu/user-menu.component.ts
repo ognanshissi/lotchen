@@ -56,7 +56,7 @@ import { GetMeQueryResponse } from '@talisoft/api/lotchen-client-api';
           </span>
         </tas-menu-item>
 
-        <tas-menu-item (click)="navigate('/settings')">
+        <tas-menu-item (click)="navigate('/settings/account-settings')">
           <span class="flex items-center gap-3 text-sm text-gray-700">
             <tas-icon iconName="feather:settings" iconSize="sm"></tas-icon>
             Paramètres
@@ -93,10 +93,11 @@ export class UserMenuComponent {
   });
 
   public navigate(path: string): void {
+    console.log(path);
     this._router.navigate([path]);
   }
 
-  logout(): void {
+  public logout(): void {
     this._auth.logout();
   }
 }

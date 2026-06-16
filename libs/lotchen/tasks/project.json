@@ -2,7 +2,7 @@
   "name": "tasks",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/lotchen/tasks/src",
-  "prefix": "lib",
+  "prefix": "tasks",
   "projectType": "library",
   "tags": [],
   "targets": {

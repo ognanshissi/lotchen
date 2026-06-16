@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { TasTitle } from '@talisoft/ui/title';
 import { TasText } from '@talisoft/ui/text';
 import { TasCard } from '@talisoft/ui/card';
@@ -11,8 +10,8 @@ import { Dialog } from '@angular/cdk/dialog';
 import { SnackbarService } from '@talisoft/ui/snackbar';
 import { ConfirmDialogService } from '@talisoft/ui/confirm-dialog';
 import { AddFieldDialogComponent } from '../../../components/add-field-dialog/add-field-dialog.component';
-import { DynamicFormsApiService } from 'libs/shared/api/lotchen-client-api/src/lib/api/api';
 import { of } from 'rxjs';
+import { DynamicFormsApiService } from '@talisoft/api/lotchen-client-api';
 
 export interface FieldItem {
   _id: string;
