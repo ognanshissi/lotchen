@@ -39,12 +39,32 @@ export class UserEditComponent {
   private readonly _usersApiService = inject(UsersApiService);
   private readonly _snackbarService = inject(SnackbarService);
 
+  public activeTab = 'information';
+
+  public tabs = [
+    {
+      label: 'Information',
+      id: 'information',
+    },
+    {
+      label: 'Roles et Permissions',
+      id: 'roles',
+    },
+    {
+      label: 'Paramétrage du compte',
+      id: 'settings',
+    },
+  ];
+
   public user = toSignal(
     this._activeRoute.data.pipe(
       map((data) => data['detail'] as UserDetailResolver)
     )
   );
 
+  public changeTab(tab: { id: string; label: string }) {
+    this.activeTab = tab.id;
+  }
   public assignPermission(): void {
     this._sideDrawerService
       .open(AssignPermissionDialogComponent, {})

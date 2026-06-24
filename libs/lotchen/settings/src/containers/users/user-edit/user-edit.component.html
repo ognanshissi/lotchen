@@ -4,114 +4,126 @@
 </button>
 
 <div class="mt-4">
-  <p-tabs value="info">
-    <p-tablist class="pb-4">
-      <p-tab value="info">Informations</p-tab>
-      <p-tab value="roles">Roles et permissions</p-tab>
-      <p-tab value="settings">Parametrage du compte</p-tab>
-    </p-tablist>
-    <p-tabpanels>
-      <p-tabpanel value="info">
-        <div class="grid grid-cols-4 gap-3">
-          <div class="col-span-3">
-            <tas-card class="w-full grid grid-cols-6 gap-2 p-4">
-              <div class="col-span-2 flex space-x-2">
-                <span
-                  class="h-[80px] w-[80px] border border-slate-400 bg-slate-300 rounded-full flex justify-center items-center font-bold text-2xl"
-                >
-                  J
-                </span>
-                <div class="">
-                  <tas-title class="font">
-                    {{ user()?.profile?.firstName }}
-                    {{ user()?.profile?.lastName }}
-                  </tas-title>
-                  <p>{{ user()?.profile?.contactInfo?.email }}</p>
-                </div>
-              </div>
-              <div class="col-span-1">
-                <p class="text-slate-400">Occupation</p>
-                <span></span>
-              </div>
-              <div class="col-span-1">
-                <p class="text-slate-400">Contact de travail</p>
-                <span>{{
-                  user()?.profile?.contactInfo?.phoneNumbers?.workNumber
-                    ?.contact
-                }}</span>
-              </div>
-              <div class="col-span-1">
-                <p class="text-slate-400">Numéro de téléphone</p>
-              </div>
-              <div class="col-span-1">
-                <p class="text-slate-400">Dernière connexion</p>
-              </div>
-            </tas-card>
+  <div class="rounded flex space-x-2 mb-4 bg-white shadow">
+    @for (tab of tabs; track tab.id) {
+    <button
+      (click)="changeTab(tab)"
+      [class.border-b-transparent]="activeTab !== tab.id"
+      class="p-4 border-b-2 text-lg"
+      [class.font-bold]="activeTab === tab.id"
+      [class.border-b-primary]="activeTab === tab.id"
+    >
+      {{ tab.label }}
+    </button>
+    }
+  </div>
+
+  <div>
+    @if (activeTab === 'information') {
+    <div class="grid grid-cols-4 gap-3">
+      <div class="col-span-3">
+        <tas-card class="w-full grid grid-cols-6 gap-2 p-4">
+          <div class="col-span-2 flex space-x-2">
+            <span
+              class="h-[80px] w-[80px] border border-slate-400 bg-slate-300 rounded-full flex justify-center items-center font-bold text-2xl"
+            >
+              J
+            </span>
+            <div class="">
+              <tas-title class="font">
+                {{ user()?.profile?.firstName }}
+                {{ user()?.profile?.lastName }}
+              </tas-title>
+              <p>{{ user()?.profile?.contactInfo?.email }}</p>
+            </div>
+          </div>
+          <div class="col-span-1">
+            <p class="text-slate-400">Occupation</p>
+            <span></span>
+          </div>
+          <div class="col-span-1">
+            <p class="text-slate-400">Contact de travail</p>
+            <span>{{
+              user()?.profile?.contactInfo?.phoneNumbers?.workNumber?.contact
+            }}</span>
+          </div>
+          <div class="col-span-1">
+            <p class="text-slate-400">Numéro de téléphone</p>
+          </div>
+          <div class="col-span-1">
+            <p class="text-slate-400">Dernière connexion</p>
+          </div>
+        </tas-card>
+      </div>
+    </div>
+    } @if (activeTab === 'roles') {
+    <div class="grid grid-cols-2 gap-4">
+      <tas-card>
+        <div class="flex justify-between items-center p-4">
+          <tas-title>Rôles</tas-title>
+        </div>
+        <div class="p-4">
+          <div
+            *ngIf="user()?.user?.roles as role"
+            class="border rounded-md p-3 flex items-center space-x-2 bg-gray-50"
+          >
+            <tas-icon iconName="shield" class="text-primary"></tas-icon>
+            <span class="font-medium">{{ role.name }}</span>
+          </div>
+          <div
+            *ngIf="!user()?.user?.roles"
+            class="text-gray-500 italic text-sm"
+          >
+            Aucun rôle assigné.
           </div>
         </div>
-      </p-tabpanel>
-      <p-tabpanel value="roles">
-        <div class="grid grid-cols-2 gap-4">
-          <tas-card>
-            <div class="flex justify-between items-center p-4">
-              <tas-title>Rôles</tas-title>
-            </div>
-            <div class="p-4">
-              <div
-                *ngIf="user()?.user?.roles as role"
-                class="border rounded-md p-3 flex items-center space-x-2 bg-gray-50"
-              >
-                <tas-icon iconName="shield" class="text-primary"></tas-icon>
-                <span class="font-medium">{{ role.name }}</span>
-              </div>
-              <div
-                *ngIf="!user()?.user?.roles"
-                class="text-gray-500 italic text-sm"
-              >
-                Aucun rôle assigné.
-              </div>
-            </div>
-          </tas-card>
+      </tas-card>
 
-          <tas-card>
-            <div class="flex justify-between items-center p-4">
-              <tas-title>Permissions</tas-title>
-              <button
-                tas-raised-button
-                color="primary"
-                (click)="assignPermission()"
-              >
-                <tas-icon iconName="plus"></tas-icon>
-                Assigner une permission
-              </button>
-            </div>
-            <div class="p-4 grid grid-cols-2 gap-2">
-              <div
-                *ngFor="let permission of user()?.user?.permissions ?? []"
-                class="border rounded-md p-2 flex items-center space-x-2 bg-gray-50 text-sm"
-              >
-                <tas-icon iconName="key" class="text-gray-500"></tas-icon>
-                <span class="truncate" [title]="permission">{{
-                  permission
-                }}</span>
-              </div>
-              <div
-                *ngIf="!(user()?.user?.permissions ?? []).length"
-                class="col-span-2 text-gray-500 italic text-sm"
-              >
-                Aucune permission assignée.
-              </div>
-            </div>
-          </tas-card>
+      <tas-card>
+        <div class="flex justify-between items-center p-4">
+          <tas-title>Permissions</tas-title>
+          <button
+            tas-raised-button
+            color="primary"
+            (click)="assignPermission()"
+          >
+            <tas-icon iconName="plus"></tas-icon>
+            Assigner une permission
+          </button>
         </div>
-      </p-tabpanel>
-      <p-tabpanel value="settings">
+        <div class="p-4 grid grid-cols-2 gap-2">
+          <div
+            *ngFor="let permission of user()?.user?.permissions ?? []"
+            class="border rounded-md p-2 flex items-center space-x-2 bg-gray-50 text-sm"
+          >
+            <tas-icon iconName="key" class="text-gray-500"></tas-icon>
+            <span class="truncate" [title]="permission">{{ permission }}</span>
+          </div>
+          <div
+            *ngIf="!(user()?.user?.permissions ?? []).length"
+            class="col-span-2 text-gray-500 italic text-sm"
+          >
+            Aucune permission assignée.
+          </div>
+        </div>
+      </tas-card>
+    </div>
+    } @if (activeTab === 'settings') {
+    <tas-title class="text-xl">Parametrage du compte</tas-title>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="">
+        <a
+          href="#"
+          class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left min-h-[80px]"
+          >test</a
+        >
         <!--        Nombre maxi de leads par semaine -->
         <!--        Domaine de competence de l'agent -->
         <!--        Performance de l'agent -->
-
-        <p>Parametrage du compte content placeholder</p>
-      </p-tabpanel>
-    </p-tabpanels>
-  </p-tabs>
+      </div>
+      <div class="border border-gray-100 p-4">right side</div>
+    </div>
+    }
+  </div>
 </div>
