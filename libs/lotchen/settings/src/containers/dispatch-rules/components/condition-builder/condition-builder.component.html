@@ -1,0 +1,93 @@
+<div
+  class="border rounded-lg p-3"
+  [class.ml-4]="depth() > 0"
+  [class.border-blue-200]="depth() === 0"
+  [class.border-purple-200]="depth() > 0"
+>
+  <!-- Group operator toggle -->
+  <div class="flex items-center gap-2 mb-3">
+    <span class="text-sm text-gray-500">Opérateur :</span>
+    <button
+      tas-raised-button
+      [color]="group().operator === 'AND' ? 'primary' : 'neutral'"
+      (click)="setLogicalOperator('AND')"
+    >
+      ET
+    </button>
+    <button
+      tas-raised-button
+      [color]="group().operator === 'OR' ? 'primary' : 'neutral'"
+      (click)="setLogicalOperator('OR')"
+    >
+      OU
+    </button>
+  </div>
+
+  <!-- Conditions list -->
+  <div class="space-y-2">
+    @for (item of group().conditions; track $index) { @if (isGroup(item)) {
+    <div class="flex items-start gap-2">
+      <condition-builder
+        class="flex-1"
+        [group]="asGroup(item)"
+        [depth]="depth() + 1"
+        (groupChange)="updateSubGroup($index, $event)"
+      ></condition-builder>
+      <button tas-outlined-button color="warn" (click)="removeItem($index)">
+        <tas-icon iconName="feather:trash-2"></tas-icon>
+      </button>
+    </div>
+    } @else {
+    <div class="flex items-center gap-2">
+      <select
+        class="border rounded px-2 py-1.5 text-sm flex-1"
+        [value]="asCondition(item).field"
+        (change)="updateCondition($index, 'field', $any($event.target).value)"
+      >
+        <option value="" disabled>Champ</option>
+        @for (f of availableFields; track f.value) {
+        <option [value]="f.value">{{ f.label }}</option>
+        }
+      </select>
+
+      <select
+        class="border rounded px-2 py-1.5 text-sm w-36"
+        [value]="asCondition(item).operator"
+        (change)="
+          updateCondition($index, 'operator', $any($event.target).value)
+        "
+      >
+        @for (op of operators; track op.value) {
+        <option [value]="op.value">{{ op.label }}</option>
+        }
+      </select>
+
+      <input
+        class="border rounded px-2 py-1.5 text-sm flex-1"
+        type="text"
+        placeholder="Valeur"
+        [value]="asCondition(item).value"
+        (input)="updateCondition($index, 'value', $any($event.target).value)"
+      />
+
+      <button tas-outlined-button color="warn" (click)="removeItem($index)">
+        <tas-icon iconName="feather:trash-2"></tas-icon>
+      </button>
+    </div>
+    } }
+  </div>
+
+  <!-- Add actions -->
+  <div class="flex gap-2 mt-3">
+    <button tas-outlined-button color="primary" (click)="addCondition()">
+      <tas-icon iconName="feather:plus"></tas-icon>
+      Ajouter une condition
+    </button>
+    @if (depth() < 2) {
+    <button tas-outlined-button color="accent" (click)="addGroup()">
+      <tas-icon iconName="feather:layers"></tas-icon>
+      Ajouter un groupe
+    </button>
+    }
+  </div>
+</div>

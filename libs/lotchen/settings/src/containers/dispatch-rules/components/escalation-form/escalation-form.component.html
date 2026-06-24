@@ -1,0 +1,137 @@
+<!-- Header -->
+<div class="flex items-center justify-between mb-4">
+  <p class="text-sm text-gray-600">
+    Configurez des règles d'escalade automatique déclenchées lorsque les
+    conditions ne sont pas remplies dans les délais.
+  </p>
+  <button tas-raised-button color="primary" (click)="addRule()">
+    <tas-icon iconName="feather:plus"></tas-icon>
+    Ajouter une règle
+  </button>
+</div>
+
+<!-- Escalation rules list -->
+@if (escalationRules().length === 0) {
+<div
+  class="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed rounded-lg"
+>
+  <tas-icon
+    iconName="feather:alert-triangle"
+    class="text-gray-300 mb-2"
+  ></tas-icon>
+  <p class="text-sm text-gray-500">Aucune règle d'escalade configurée</p>
+  <p class="text-xs text-gray-400 mt-1">
+    Ajoutez une règle pour déclencher automatiquement une escalade.
+  </p>
+</div>
+} @else {
+<div class="space-y-3">
+  @for (rule of escalationRules(); track $index; let i = $index) {
+  <div class="border rounded-lg p-4 bg-gray-50">
+    <!-- Rule header -->
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        <div
+          class="w-6 h-6 rounded-full bg-warn-100 text-warn-700 flex items-center justify-center text-xs font-bold flex-shrink-0"
+        >
+          {{ i + 1 }}
+        </div>
+        <p class="text-sm font-medium">
+          {{ getTriggerLabel(rule.trigger) }} → après
+          {{ rule.delayMinutes }} min
+        </p>
+      </div>
+      <button tas-outlined-button color="warn" (click)="removeRule(i)">
+        <tas-icon iconName="feather:trash-2"></tas-icon>
+      </button>
+    </div>
+
+    <!-- Rule fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <!-- Trigger -->
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1"
+          >Déclencheur</label
+        >
+        <select
+          class="border rounded px-3 py-1.5 text-sm w-full bg-white"
+          [value]="rule.trigger"
+          (change)="updateRule(i, 'trigger', $any($event.target).value)"
+        >
+          @for (opt of triggerOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Delay -->
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1"
+          >Délai avant escalade (minutes)</label
+        >
+        <input
+          class="border rounded px-3 py-1.5 text-sm w-full"
+          type="number"
+          min="1"
+          placeholder="60"
+          [value]="rule.delayMinutes"
+          (input)="updateRule(i, 'delayMinutes', +$any($event.target).value)"
+        />
+      </div>
+
+      <!-- Target -->
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1"
+          >Cible d'escalade</label
+        >
+        <select
+          class="border rounded px-3 py-1.5 text-sm w-full bg-white"
+          [value]="rule.targetId"
+          (change)="updateRule(i, 'targetId', $any($event.target).value)"
+        >
+          <option value="" disabled>Sélectionner une cible...</option>
+          @for (target of eligibleTargets(); track target.id) {
+          <option [value]="target.id">
+            {{ target.label
+            }}{{ target.subLabel ? ' – ' + target.subLabel : '' }}
+          </option>
+          }
+        </select>
+      </div>
+
+      <!-- Notify -->
+      <div class="flex items-center gap-3 pt-5">
+        <button
+          class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none flex-shrink-0"
+          [class.bg-primary-500]="rule.notifyOnEscalation"
+          [class.bg-gray-200]="!rule.notifyOnEscalation"
+          (click)="
+            updateRule(i, 'notifyOnEscalation', !rule.notifyOnEscalation)
+          "
+          role="switch"
+          [attr.aria-checked]="rule.notifyOnEscalation"
+        >
+          <span
+            class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform"
+            [class.translate-x-6]="rule.notifyOnEscalation"
+            [class.translate-x-1]="!rule.notifyOnEscalation"
+          ></span>
+        </button>
+        <span class="text-sm text-gray-700">Notifier à l'escalade</span>
+      </div>
+    </div>
+
+    <!-- Rule summary tags -->
+    <div class="flex flex-wrap gap-2 mt-3 pt-3 border-t">
+      <tas-tag color="warn">{{ getTriggerLabel(rule.trigger) }}</tas-tag>
+      <tas-tag color="default">{{ rule.delayMinutes }} min</tas-tag>
+      @if (rule.targetId) {
+      <tas-tag color="primary">→ {{ getTargetLabel(rule.targetId) }}</tas-tag>
+      } @if (rule.notifyOnEscalation) {
+      <tas-tag color="accent">Notification activée</tas-tag>
+      }
+    </div>
+  </div>
+  }
+</div>
+}

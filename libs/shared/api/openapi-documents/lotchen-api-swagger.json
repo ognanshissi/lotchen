@@ -5637,6 +5637,385 @@
           "Dynamic Forms"
         ]
       }
+    },
+    "/api/v1/dispatch-rules": {
+      "post": {
+        "operationId": "DispatchRulesController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDispatchRuleCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      },
+      "get": {
+        "operationId": "DispatchRulesController_findAll_v1",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "objectType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/eligible-targets": {
+      "get": {
+        "operationId": "DispatchRulesController_eligibleTargets_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/simulate": {
+      "post": {
+        "operationId": "DispatchRulesController_simulate_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimulateDispatchRuleCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/reorder": {
+      "patch": {
+        "operationId": "DispatchRulesController_reorder_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderDispatchRulesCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/{id}": {
+      "get": {
+        "operationId": "DispatchRulesController_findById_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find Dispatch Rule By Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindDispatchRuleByIdQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      },
+      "patch": {
+        "operationId": "DispatchRulesController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDispatchRuleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      },
+      "delete": {
+        "operationId": "DispatchRulesController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/{id}/activate": {
+      "patch": {
+        "operationId": "DispatchRulesController_activate_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/{id}/deactivate": {
+      "patch": {
+        "operationId": "DispatchRulesController_deactivate_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/{id}/audit": {
+      "get": {
+        "operationId": "DispatchRulesController_audit_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 20,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/{id}/metrics": {
+      "get": {
+        "operationId": "DispatchRulesController_metrics_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "ISO date string",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "ISO date string",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/{id}/versions": {
+      "get": {
+        "operationId": "DispatchRulesController_versions_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
+    },
+    "/api/v1/dispatch-rules/{id}/versions/{version}/restore": {
+      "post": {
+        "operationId": "DispatchRulesController_restoreVersion_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dispatch Rules"
+        ]
+      }
     }
   },
   "info": {
@@ -11601,6 +11980,250 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "AssignmentTargetDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "agent",
+              "team",
+              "queue",
+              "department"
+            ]
+          },
+          "targetId": {
+            "type": "string"
+          },
+          "isFallback": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "targetId"
+        ]
+      },
+      "RoutingStrategyDto": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "round_robin",
+              "least_loaded",
+              "skill_based",
+              "territory_based",
+              "first_available",
+              "custom_score"
+            ]
+          },
+          "params": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "method"
+        ]
+      },
+      "CapacityRulesDto": {
+        "type": "object",
+        "properties": {
+          "maxOpenTickets": {
+            "type": "number"
+          },
+          "maxDailyAssignments": {
+            "type": "number"
+          },
+          "concurrentThreshold": {
+            "type": "number"
+          }
+        }
+      },
+      "AvailabilityConfigDto": {
+        "type": "object",
+        "properties": {
+          "respectBusinessHours": {
+            "type": "boolean"
+          },
+          "timeZone": {
+            "type": "string"
+          },
+          "excludeOnLeave": {
+            "type": "boolean"
+          }
+        }
+      },
+      "EscalationRuleDto": {
+        "type": "object",
+        "properties": {
+          "trigger": {
+            "type": "string"
+          },
+          "delayMinutes": {
+            "type": "number"
+          },
+          "targetId": {
+            "type": "string"
+          },
+          "notifyOnEscalation": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateDispatchRuleCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "lead",
+              "case",
+              "ticket",
+              "service_request"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "inactive"
+            ]
+          },
+          "priority": {
+            "type": "number"
+          },
+          "conditions": {
+            "type": "object"
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignmentTargetDto"
+            }
+          },
+          "routingStrategy": {
+            "$ref": "#/components/schemas/RoutingStrategyDto"
+          },
+          "capacityRules": {
+            "$ref": "#/components/schemas/CapacityRulesDto"
+          },
+          "availabilityConfig": {
+            "$ref": "#/components/schemas/AvailabilityConfigDto"
+          },
+          "escalationRules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EscalationRuleDto"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "objectType"
+        ]
+      },
+      "SimulateDispatchRuleCommand": {
+        "type": "object",
+        "properties": {
+          "objectType": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "objectType"
+        ]
+      },
+      "RulePriorityItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "priority"
+        ]
+      },
+      "ReorderDispatchRulesCommand": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RulePriorityItem"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "FindDispatchRuleByIdQueryResponse": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateDispatchRuleRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "lead",
+              "case",
+              "ticket",
+              "service_request"
+            ]
+          },
+          "priority": {
+            "type": "number"
+          },
+          "conditions": {
+            "type": "object"
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignmentTargetDto"
+            }
+          },
+          "routingStrategy": {
+            "$ref": "#/components/schemas/RoutingStrategyDto"
+          },
+          "capacityRules": {
+            "$ref": "#/components/schemas/CapacityRulesDto"
+          },
+          "availabilityConfig": {
+            "$ref": "#/components/schemas/AvailabilityConfigDto"
+          },
+          "escalationRules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EscalationRuleDto"
             }
           }
         }

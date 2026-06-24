@@ -39,6 +39,9 @@
       "@lotchen/lotchen-api/products": [
         "libs/lotchen-api/products/src/index.ts"
       ],
+      "@lotchen/lotchen-api/dispatching": [
+        "libs/lotchen-api/dispatching/src/index.ts"
+      ],
       "@lotchen/lotchen-api/workflows": [
         "libs/lotchen-api/workflows/src/index.ts"
       ],

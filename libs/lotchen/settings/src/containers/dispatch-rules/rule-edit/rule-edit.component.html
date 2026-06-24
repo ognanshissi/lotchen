@@ -1,0 +1,333 @@
+<button tas-button [routerLink]="['/settings/dispatch-rules']">
+  <tas-icon iconName="arrow_back"></tas-icon>
+  Retour
+</button>
+
+@if (isLoading()) {
+<div class="flex justify-center mt-16">
+  <tas-spinner></tas-spinner>
+</div>
+} @else {
+<div class="flex justify-between items-center mt-4 mb-6">
+  <tas-title>{{ pageTitle() }}</tas-title>
+  <button
+    tas-raised-button
+    color="primary"
+    [disabled]="isSaving()"
+    (click)="save()"
+  >
+    @if (isSaving()) {
+    <tas-spinner></tas-spinner>
+    } @else {
+    <tas-icon iconName="feather:save"></tas-icon>
+    Sauvegarder }
+  </button>
+</div>
+
+<!-- Tabs -->
+<div class="flex border-b mb-6 overflow-x-auto">
+  @for (tab of tabs; track tab.key) {
+  <button
+    class="px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors whitespace-nowrap"
+    [class.border-primary-500]="activeTab() === tab.key"
+    [class.text-primary-600]="activeTab() === tab.key"
+    [class.border-transparent]="activeTab() !== tab.key"
+    [class.text-gray-500]="activeTab() !== tab.key"
+    (click)="setTab(tab.key)"
+  >
+    {{ tab.label }}
+    @if (getBadge(tab.key); as badge) {
+    <span
+      class="ml-1.5 bg-primary-100 text-primary-700 text-xs rounded-full px-1.5 py-0.5"
+    >
+      {{ badge }}
+    </span>
+    }
+  </button>
+  }
+</div>
+
+<!-- General Tab -->
+@if (activeTab() === 'general') {
+<tas-card>
+  <div class="space-y-4 p-4">
+    <tas-form-field>
+      <tas-label>Nom de la règle *</tas-label>
+      <input
+        tasInput
+        type="text"
+        placeholder="Ex: Leads entrants - Ile-de-France"
+        [value]="name()"
+        (input)="name.set($any($event.target).value)"
+      />
+    </tas-form-field>
+
+    <tas-form-field>
+      <tas-label>Description</tas-label>
+      <input
+        tasInput
+        type="text"
+        placeholder="Décrivez l'objectif de cette règle"
+        [value]="description()"
+        (input)="description.set($any($event.target).value)"
+      />
+    </tas-form-field>
+
+    <div class="grid grid-cols-2 gap-4">
+      <tas-form-field>
+        <tas-label>Type d'objet *</tas-label>
+        <tas-select
+          [ngModel]="objectType()"
+          (ngModelChange)="objectType.set($event)"
+          placeholder="Sélectionner..."
+        >
+          @for (opt of objectTypeOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </tas-select>
+      </tas-form-field>
+
+      <tas-form-field>
+        <tas-label>Statut</tas-label>
+        <tas-select [ngModel]="status()" (ngModelChange)="status.set($event)">
+          @for (opt of statusOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </tas-select>
+      </tas-form-field>
+    </div>
+
+    <tas-form-field>
+      <tas-label>Priorité</tas-label>
+      <input
+        tasInput
+        type="number"
+        placeholder="0"
+        [value]="priority()"
+        (input)="priority.set(+$any($event.target).value)"
+      />
+    </tas-form-field>
+  </div>
+</tas-card>
+}
+
+<!-- Conditions Tab -->
+@if (activeTab() === 'conditions') {
+<tas-card>
+  <div class="p-4">
+    <p class="text-sm text-gray-500 mb-4">
+      Définissez les conditions qui doivent être remplies pour déclencher cette
+      règle. Utilisez ET / OU pour combiner plusieurs critères.
+    </p>
+    <condition-builder
+      [group]="conditions()"
+      (groupChange)="onConditionsChange($event)"
+    ></condition-builder>
+  </div>
+</tas-card>
+}
+
+<!-- Targets Tab -->
+@if (activeTab() === 'targets') {
+<tas-card>
+  <div class="p-4">
+    <p class="text-sm text-gray-500 mb-4">
+      Sélectionnez les agents ou équipes auxquels les enregistrements seront
+      assignés. Marquez une cible comme "Fallback" pour la recevoir en cas
+      d'échec des autres.
+    </p>
+    <dispatch-target-selector
+      [targets]="targets()"
+      (targetsChange)="onTargetsChange($event)"
+    ></dispatch-target-selector>
+  </div>
+</tas-card>
+}
+
+<!-- Routing Strategy Tab -->
+@if (activeTab() === 'routing') {
+<tas-card>
+  <div class="p-4">
+    <p class="text-sm text-gray-500 mb-4">
+      Choisissez la méthode utilisée pour distribuer les enregistrements entre
+      les cibles sélectionnées.
+    </p>
+    <dispatch-routing-strategy-form
+      [strategy]="routingStrategy()"
+      (strategyChange)="onRoutingStrategyChange($event)"
+    ></dispatch-routing-strategy-form>
+  </div>
+</tas-card>
+}
+
+<!-- Capacity Tab -->
+@if (activeTab() === 'capacity') {
+<tas-card>
+  <div class="p-4">
+    <p class="text-sm text-gray-500 mb-6">
+      Configurez les seuils de charge qui empêchent d'assigner trop de travail à
+      un même agent. Laissez vide pour ne pas appliquer de limite.
+    </p>
+    <dispatch-capacity-form
+      [capacity]="capacityRules()"
+      (capacityChange)="onCapacityChange($event)"
+    ></dispatch-capacity-form>
+  </div>
+</tas-card>
+}
+
+<!-- Availability Tab -->
+@if (activeTab() === 'availability') {
+<tas-card>
+  <div class="p-4">
+    <p class="text-sm text-gray-500 mb-4">
+      Contrôlez si le dispatch respecte les plages horaires et le statut de
+      présence des agents.
+    </p>
+    <dispatch-availability-form
+      [availability]="availabilityConfig()"
+      (availabilityChange)="onAvailabilityChange($event)"
+    ></dispatch-availability-form>
+  </div>
+</tas-card>
+}
+
+<!-- Escalation Tab -->
+@if (activeTab() === 'escalation') {
+<tas-card>
+  <div class="p-4">
+    <dispatch-escalation-form
+      [escalationRules]="escalationRules()"
+      (escalationRulesChange)="onEscalationRulesChange($event)"
+    ></dispatch-escalation-form>
+  </div>
+</tas-card>
+}
+
+<!-- Audit Tab -->
+@if (activeTab() === 'audit') {
+<tas-card>
+  <div class="p-4">
+    <div class="flex items-center justify-between mb-4">
+      <p class="font-medium text-sm">Journal des assignations</p>
+      <p class="text-xs text-gray-500">{{ auditTotal() }} entrée(s)</p>
+    </div>
+
+    @if (auditLoading()) {
+    <div class="flex justify-center py-8"><tas-spinner></tas-spinner></div>
+    } @else if (auditLogs().length === 0) {
+    <div class="text-center py-10 text-gray-400">
+      <tas-icon iconName="feather:file-text" class="mb-2"></tas-icon>
+      <p class="text-sm">Aucune assignation enregistrée pour cette règle.</p>
+      <p class="text-xs mt-1">
+        Les logs apparaîtront ici une fois le moteur de dispatch actif.
+      </p>
+    </div>
+    } @else {
+    <div class="divide-y">
+      @for (log of auditLogs(); track log._id) {
+      <div class="py-3 flex items-start justify-between gap-4">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <tas-tag severity="neutral">{{ log.objectType }}</tas-tag>
+            @if (log.objectId) {
+            <span class="text-xs font-mono text-gray-500">{{
+              log.objectId
+            }}</span>
+            } @if (log.triggeredBy === 'escalation') {
+            <tas-tag severity="warning">Escalade</tas-tag>
+            }
+          </div>
+          @if (log.assignedTarget) {
+          <p class="text-xs text-gray-600 mt-1">
+            Assigné à :
+            <span class="font-medium">{{ log.assignedTarget.type }}</span>
+            / <span class="font-mono">{{ log.assignedTarget.targetId }}</span>
+          </p>
+          }
+        </div>
+        <span class="text-xs text-gray-400 flex-shrink-0">
+          {{ log.createdAt | date : 'dd/MM/yy HH:mm' }}
+        </span>
+      </div>
+      }
+    </div>
+
+    <!-- Pagination -->
+    @if (auditTotal() > 20) {
+    <div class="flex justify-center gap-2 mt-4">
+      <button
+        tas-outlined-button
+        color="primary"
+        [disabled]="auditPage() === 1"
+        (click)="loadAuditLogs(ruleId()!, auditPage() - 1)"
+      >
+        Précédent
+      </button>
+      <span class="flex items-center text-sm text-gray-500">
+        Page {{ auditPage() }}
+      </span>
+      <button
+        tas-outlined-button
+        color="primary"
+        [disabled]="auditPage() * 20 >= auditTotal()"
+        (click)="loadAuditLogs(ruleId()!, auditPage() + 1)"
+      >
+        Suivant
+      </button>
+    </div>
+    } }
+  </div>
+</tas-card>
+}
+
+<!-- Versions Tab -->
+@if (activeTab() === 'versions') {
+<tas-card>
+  <div class="p-4">
+    <p class="font-medium text-sm mb-4">Historique des versions</p>
+
+    @if (versionsLoading()) {
+    <div class="flex justify-center py-8"><tas-spinner></tas-spinner></div>
+    } @else if (versions().length === 0) {
+    <div class="text-center py-10 text-gray-400">
+      <tas-icon iconName="feather:git-branch" class="mb-2"></tas-icon>
+      <p class="text-sm">Aucune version antérieure disponible.</p>
+      <p class="text-xs mt-1">
+        Les versions sont créées automatiquement à chaque sauvegarde.
+      </p>
+    </div>
+    } @else {
+    <div class="divide-y">
+      @for (v of versions(); track v.version) {
+      <div class="py-3 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600 flex-shrink-0"
+          >
+            v{{ v.version }}
+          </div>
+          <div>
+            <p class="text-sm font-medium">{{ v.name }}</p>
+            <div class="flex items-center gap-2 mt-0.5">
+              <tas-tag severity="neutral">{{ v.objectType }}</tas-tag>
+              <span class="text-xs text-gray-400">
+                {{ v.snapshotAt | date : 'dd/MM/yy HH:mm' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <button
+          tas-outlined-button
+          color="primary"
+          (click)="restoreVersion(v.version)"
+        >
+          Restaurer
+        </button>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</tas-card>
+} }

@@ -1,0 +1,134 @@
+<button tas-button [routerLink]="['/settings']">
+  <tas-icon iconName="arrow_back"></tas-icon>
+  Retour
+</button>
+
+<div class="flex justify-between items-start mt-4">
+  <div>
+    <tas-title>Règles de dispatch</tas-title>
+    <tas-text class="text-gray-500">
+      Définissez des règles pour assigner automatiquement les leads, tickets et
+      demandes aux agents ou équipes. Glissez-déposez les lignes pour modifier
+      l'ordre de priorité.
+    </tas-text>
+  </div>
+
+  <div class="flex items-center gap-3">
+    @if (isReordering()) {
+    <span class="text-sm text-gray-400">Sauvegarde...</span>
+    }
+    <button tas-raised-button color="primary" [routerLink]="['create']">
+      <tas-icon iconSize="md" iconName="feather:plus"></tas-icon>
+      Créer une règle
+    </button>
+  </div>
+</div>
+
+<tas-card class="mt-4">
+  @if (isLoading()) {
+  <div class="flex justify-center py-12">
+    <span class="text-gray-400">Chargement...</span>
+  </div>
+  } @else if (rules().length === 0) {
+  <div class="flex flex-col items-center justify-center py-16 text-center">
+    <tas-icon iconName="feather:sliders" class="text-gray-300 mb-3"></tas-icon>
+    <p class="text-gray-500 font-medium">Aucune règle de dispatch</p>
+    <p class="text-sm text-gray-400 mt-1">
+      Créez votre première règle pour automatiser l'assignation.
+    </p>
+    <button
+      tas-raised-button
+      color="primary"
+      [routerLink]="['create']"
+      class="mt-4"
+    >
+      Créer une règle
+    </button>
+  </div>
+  } @else {
+  <div
+    cdkDropList
+    [cdkDropListData]="rules()"
+    (cdkDropListDropped)="onDrop($event)"
+    class="divide-y"
+  >
+    @for (rule of rules(); track rule._id) {
+    <div
+      cdkDrag
+      class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors group"
+    >
+      <!-- Drag handle -->
+      <div
+        cdkDragHandle
+        class="flex-shrink-0 mr-3 text-gray-300 cursor-grab active:cursor-grabbing"
+      >
+        <tas-icon iconName="feather:menu"></tas-icon>
+      </div>
+
+      <!-- Priority badge -->
+      <span class="w-8 text-center text-xs font-mono text-gray-400 mr-3">
+        {{ rule.priority }}
+      </span>
+
+      <!-- Rule info -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2">
+          <a
+            [routerLink]="[rule._id, 'edit']"
+            class="font-semibold text-sm underline truncate"
+            >{{ rule.name }}</a
+          >
+          <tas-tag [severity]="getStatusColor(rule.status)">
+            {{ getStatusLabel(rule.status) }}
+          </tas-tag>
+        </div>
+        @if (rule.description) {
+        <p class="text-xs text-gray-400 mt-0.5 truncate">
+          {{ rule.description }}
+        </p>
+        }
+      </div>
+
+      <!-- Object type -->
+      <span class="text-xs text-gray-500 mx-4 hidden md:block flex-shrink-0">
+        {{ getObjectTypeLabel(rule.objectType) }}
+      </span>
+
+      <!-- Last updated -->
+      <span class="text-xs text-gray-400 mr-4 hidden lg:block flex-shrink-0">
+        {{ rule.updatedAt | date : 'dd/MM/yy' }}
+      </span>
+
+      <!-- Actions -->
+      <div
+        class="flex gap-2 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+      >
+        <button
+          tas-outlined-button
+          [color]="rule.status === 'active' ? 'warn' : 'primary'"
+          (click)="toggleStatus(rule)"
+        >
+          {{ rule.status === 'active' ? 'Désactiver' : 'Activer' }}
+        </button>
+        <button
+          tas-outlined-button
+          color="primary"
+          [routerLink]="[rule._id, 'edit']"
+        >
+          Modifier
+        </button>
+        <button tas-outlined-button color="warn" (click)="deleteRule(rule)">
+          <tas-icon iconName="feather:trash-2"></tas-icon>
+        </button>
+      </div>
+
+      <!-- Drag preview placeholder -->
+      <div
+        *cdkDragPlaceholder
+        class="h-14 bg-blue-50 border-2 border-dashed border-blue-200 rounded"
+      ></div>
+    </div>
+    }
+  </div>
+  }
+</tas-card>

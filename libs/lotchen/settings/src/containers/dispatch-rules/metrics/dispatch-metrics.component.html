@@ -1,0 +1,146 @@
+<button tas-button [routerLink]="['/settings/dispatch-rules', ruleId, 'edit']">
+  <tas-icon iconName="arrow_back"></tas-icon>
+  Retour à la règle
+</button>
+
+<div class="flex justify-between items-start mt-4 mb-6">
+  <tas-title>Performances de la règle</tas-title>
+
+  <!-- Date filters -->
+  <div class="flex items-center gap-2">
+    <input
+      class="border rounded px-3 py-1.5 text-sm"
+      type="date"
+      [value]="fromDate()"
+      (change)="fromDate.set($any($event.target).value)"
+    />
+    <span class="text-gray-400 text-sm">→</span>
+    <input
+      class="border rounded px-3 py-1.5 text-sm"
+      type="date"
+      [value]="toDate()"
+      (change)="toDate.set($any($event.target).value)"
+    />
+    <button tas-raised-button color="primary" (click)="loadMetrics()">
+      Filtrer
+    </button>
+  </div>
+</div>
+
+@if (isLoading()) {
+<div class="flex justify-center mt-16">
+  <tas-spinner></tas-spinner>
+</div>
+} @else if (metrics()) {
+
+<!-- KPI cards -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+  <tas-card>
+    <div class="p-4 text-center">
+      <p class="text-3xl font-bold text-primary-600">
+        {{ metrics()!.totalAssignments }}
+      </p>
+      <p class="text-xs text-gray-500 mt-1">Assignations totales</p>
+    </div>
+  </tas-card>
+
+  <tas-card>
+    <div class="p-4 text-center">
+      <p class="text-3xl font-bold text-accent-600">
+        {{ metrics()!.escalationCount }}
+      </p>
+      <p class="text-xs text-gray-500 mt-1">Escalades</p>
+    </div>
+  </tas-card>
+
+  <tas-card>
+    <div class="p-4 text-center">
+      <p class="text-3xl font-bold text-functional-success">
+        {{ metrics()!.assignmentsByDay.length }}
+      </p>
+      <p class="text-xs text-gray-500 mt-1">Jours actifs</p>
+    </div>
+  </tas-card>
+
+  <tas-card>
+    <div class="p-4 text-center">
+      <p class="text-3xl font-bold text-warn-600">
+        @if (metrics()!.totalAssignments > 0) {
+        {{
+          (
+            (metrics()!.escalationCount / metrics()!.totalAssignments) *
+            100
+          ).toFixed(1)
+        }}% } @else { — }
+      </p>
+      <p class="text-xs text-gray-500 mt-1">Taux d'escalade</p>
+    </div>
+  </tas-card>
+</div>
+
+<!-- Charts row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- Assignments by day (bar chart using CSS) -->
+  <tas-card>
+    <div class="p-4">
+      <p class="font-medium text-sm mb-4">Assignations par jour</p>
+      @if (metrics()!.assignmentsByDay.length === 0) {
+      <p class="text-sm text-gray-400 text-center py-8">
+        Aucune donnée disponible
+      </p>
+      } @else {
+      <div class="flex items-end gap-1 h-32 overflow-x-auto pb-2">
+        @for (day of metrics()!.assignmentsByDay; track day.date) {
+        <div
+          class="flex flex-col items-center gap-1 flex-shrink-0"
+          style="min-width: 28px"
+        >
+          <span class="text-xs text-gray-500">{{ day.count }}</span>
+          <div
+            class="w-5 bg-primary-400 rounded-t"
+            [style.height.px]="(day.count / maxDayCount()) * 96"
+            [title]="day.date + ': ' + day.count"
+          ></div>
+          <span
+            class="text-xs text-gray-400 rotate-45 origin-left"
+            style="font-size: 9px"
+          >
+            {{ day.date.slice(5) }}
+          </span>
+        </div>
+        }
+      </div>
+      }
+    </div>
+  </tas-card>
+
+  <!-- Assignments by target type -->
+  <tas-card>
+    <div class="p-4">
+      <p class="font-medium text-sm mb-4">Distribution par type de cible</p>
+      @if (metrics()!.assignmentsByTargetType.length === 0) {
+      <p class="text-sm text-gray-400 text-center py-8">
+        Aucune donnée disponible
+      </p>
+      } @else {
+      <div class="space-y-3">
+        @for (item of metrics()!.assignmentsByTargetType; track item.type) {
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="font-medium">{{ getTargetTypeLabel(item.type) }}</span>
+            <span class="text-gray-500">{{ item.count }}</span>
+          </div>
+          <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div
+              class="h-full bg-primary-400 rounded-full transition-all"
+              [style.width.%]="(item.count / metrics()!.totalAssignments) * 100"
+            ></div>
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+  </tas-card>
+</div>
+}

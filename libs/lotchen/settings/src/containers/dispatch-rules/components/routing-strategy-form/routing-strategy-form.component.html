@@ -1,0 +1,53 @@
+<!-- Method selector cards -->
+<div class="grid grid-cols-2 gap-3 mb-6">
+  @for (method of methodOptions; track method.value) {
+  <button
+    class="text-left p-3 rounded-lg border-2 transition-colors"
+    [class.border-primary-500]="strategy()?.method === method.value"
+    [class.bg-primary-50]="strategy()?.method === method.value"
+    [class.border-gray-200]="strategy()?.method !== method.value"
+    [class.hover:border-gray-300]="strategy()?.method !== method.value"
+    (click)="setMethod(method.value)"
+  >
+    <p class="font-medium text-sm">{{ method.label }}</p>
+    <p class="text-xs text-gray-500 mt-0.5">{{ method.description }}</p>
+  </button>
+  }
+</div>
+
+<!-- Method-specific parameters -->
+@if (selectedMethod() && selectedMethod()!.params.length > 0) {
+<div class="border-t pt-4">
+  <p class="text-sm font-medium text-gray-700 mb-3">
+    Paramètres — {{ selectedMethod()!.label }}
+  </p>
+  <div class="space-y-3">
+    @for (param of selectedMethod()!.params; track param.key) {
+    <div>
+      <label class="block text-sm text-gray-600 mb-1">{{ param.label }}</label>
+      @if (param.type === 'number') {
+      <input
+        class="border rounded px-3 py-1.5 text-sm w-full"
+        type="number"
+        [placeholder]="param.placeholder ?? ''"
+        [value]="getParam(param.key)"
+        (input)="setParam(param.key, +$any($event.target).value)"
+      />
+      } @else {
+      <input
+        class="border rounded px-3 py-1.5 text-sm w-full"
+        type="text"
+        [placeholder]="param.placeholder ?? ''"
+        [value]="getParam(param.key)"
+        (input)="setParam(param.key, $any($event.target).value)"
+      />
+      }
+    </div>
+    }
+  </div>
+</div>
+} @if (!strategy()?.method) {
+<p class="text-sm text-gray-400 text-center py-4">
+  Sélectionnez une méthode de routage ci-dessus.
+</p>
+}

@@ -1,0 +1,96 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <!-- Max open tickets -->
+  <div class="bg-gray-50 rounded-lg p-4 border">
+    <div class="flex items-center gap-2 mb-3">
+      <tas-icon iconName="feather:inbox" class="text-primary-500"></tas-icon>
+      <p class="font-medium text-sm">Tickets ouverts max</p>
+    </div>
+    <p class="text-xs text-gray-500 mb-3">
+      Nombre maximum de tickets simultanément assignés à un agent.
+    </p>
+    <tas-form-field>
+      <tas-label>Limite</tas-label>
+      <input
+        tasInput
+        type="number"
+        min="1"
+        placeholder="Illimité"
+        [value]="getValue('maxOpenTickets') ?? ''"
+        (input)="setValue('maxOpenTickets', $any($event.target).value)"
+      />
+    </tas-form-field>
+    @if (getValue('maxOpenTickets') !== null) {
+    <p class="text-xs text-primary-600 mt-1">
+      Max {{ getValue('maxOpenTickets') }} ticket(s) par agent
+    </p>
+    } @else {
+    <p class="text-xs text-gray-400 mt-1">Aucune limite appliquée</p>
+    }
+  </div>
+
+  <!-- Max daily assignments -->
+  <div class="bg-gray-50 rounded-lg p-4 border">
+    <div class="flex items-center gap-2 mb-3">
+      <tas-icon iconName="feather:calendar" class="text-accent-500"></tas-icon>
+      <p class="font-medium text-sm">Assignations journalières max</p>
+    </div>
+    <p class="text-xs text-gray-500 mb-3">
+      Nombre maximum d'assignations par jour et par agent.
+    </p>
+    <tas-form-field>
+      <tas-label>Limite</tas-label>
+      <input
+        tasInput
+        type="number"
+        min="1"
+        placeholder="Illimité"
+        [value]="getValue('maxDailyAssignments') ?? ''"
+        (input)="setValue('maxDailyAssignments', $any($event.target).value)"
+      />
+    </tas-form-field>
+    @if (getValue('maxDailyAssignments') !== null) {
+    <p class="text-xs text-accent-600 mt-1">
+      Max {{ getValue('maxDailyAssignments') }} assignation(s) par jour
+    </p>
+    } @else {
+    <p class="text-xs text-gray-400 mt-1">Aucune limite appliquée</p>
+    }
+  </div>
+
+  <!-- Concurrent workload -->
+  <div class="bg-gray-50 rounded-lg p-4 border">
+    <div class="flex items-center gap-2 mb-3">
+      <tas-icon iconName="feather:activity" class="text-warn-500"></tas-icon>
+      <p class="font-medium text-sm">Seuil de charge simultanée</p>
+    </div>
+    <p class="text-xs text-gray-500 mb-3">
+      Score de charge au-delà duquel un agent est considéré indisponible.
+    </p>
+    <tas-form-field>
+      <tas-label>Seuil</tas-label>
+      <input
+        tasInput
+        type="number"
+        min="1"
+        placeholder="Illimité"
+        [value]="getValue('concurrentThreshold') ?? ''"
+        (input)="setValue('concurrentThreshold', $any($event.target).value)"
+      />
+    </tas-form-field>
+    @if (getValue('concurrentThreshold') !== null) {
+    <p class="text-xs text-warn-600 mt-1">
+      Seuil à {{ getValue('concurrentThreshold') }}
+    </p>
+    } @else {
+    <p class="text-xs text-gray-400 mt-1">Aucun seuil appliqué</p>
+    }
+  </div>
+</div>
+
+<div class="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+  <p class="text-xs text-blue-700">
+    <strong>Note :</strong> Ces limites sont vérifiées au moment de chaque
+    dispatch. Laissez un champ vide pour ne pas appliquer de limite sur ce
+    critère.
+  </p>
+</div>

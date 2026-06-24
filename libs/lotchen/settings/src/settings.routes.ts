@@ -85,4 +85,31 @@ export const settingsRoutes: Routes = [
     path: 'account-settings',
     loadChildren: () => AccountSettingsComponent,
   },
+  {
+    path: 'dispatch-rules',
+    loadComponent: () =>
+      import('./containers/dispatch-rules/dispatch-rules.component'),
+  },
+  {
+    path: 'dispatch-rules/create',
+    loadComponent: () =>
+      import('./containers/dispatch-rules/rule-edit/rule-edit.component'),
+  },
+  {
+    path: 'dispatch-rules/:id/edit',
+    loadComponent: () =>
+      import('./containers/dispatch-rules/rule-edit/rule-edit.component'),
+  },
+  {
+    path: 'dispatch-rules/simulate',
+    loadComponent: () =>
+      import(
+        './containers/dispatch-rules/simulate/simulate-dispatch-rule.component'
+      ),
+  },
+  {
+    path: 'dispatch-rules/:id/metrics',
+    loadComponent: () =>
+      import('./containers/dispatch-rules/metrics/dispatch-metrics.component'),
+  },
 ];

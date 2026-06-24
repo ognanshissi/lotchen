@@ -1,0 +1,104 @@
+<div class="space-y-6">
+  <!-- Business hours toggle -->
+  <div
+    class="flex items-start justify-between p-4 bg-gray-50 rounded-lg border"
+  >
+    <div class="flex items-start gap-3">
+      <tas-icon
+        iconName="feather:clock"
+        class="text-primary-500 mt-0.5 flex-shrink-0"
+      ></tas-icon>
+      <div>
+        <p class="font-medium text-sm">Respecter les horaires d'ouverture</p>
+        <p class="text-xs text-gray-500 mt-0.5">
+          Les agents hors plage horaire ne reçoivent pas d'assignations.
+        </p>
+      </div>
+    </div>
+    <button
+      class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none flex-shrink-0"
+      [class.bg-primary-500]="respectBusinessHours"
+      [class.bg-gray-200]="!respectBusinessHours"
+      (click)="setField('respectBusinessHours', !respectBusinessHours)"
+      role="switch"
+      [attr.aria-checked]="respectBusinessHours"
+    >
+      <span
+        class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform"
+        [class.translate-x-6]="respectBusinessHours"
+        [class.translate-x-1]="!respectBusinessHours"
+      ></span>
+    </button>
+  </div>
+
+  <!-- Timezone selector -->
+  <div class="p-4 bg-gray-50 rounded-lg border">
+    <div class="flex items-center gap-2 mb-3">
+      <tas-icon iconName="feather:globe" class="text-accent-500"></tas-icon>
+      <p class="font-medium text-sm">Fuseau horaire de référence</p>
+    </div>
+    <p class="text-xs text-gray-500 mb-3">
+      Utilisé pour interpréter les horaires d'ouverture.
+    </p>
+    <tas-form-field>
+      <tas-label>Fuseau horaire</tas-label>
+      <tas-select
+        [ngModel]="timeZone"
+        (ngModelChange)="setField('timeZone', $event)"
+      >
+        @for (tz of timezones; track tz.value) {
+        <option [value]="tz.value">{{ tz.label }}</option>
+        }
+      </tas-select>
+    </tas-form-field>
+  </div>
+
+  <!-- Exclude on leave toggle -->
+  <div
+    class="flex items-start justify-between p-4 bg-gray-50 rounded-lg border"
+  >
+    <div class="flex items-start gap-3">
+      <tas-icon
+        iconName="feather:user-x"
+        class="text-warn-500 mt-0.5 flex-shrink-0"
+      ></tas-icon>
+      <div>
+        <p class="font-medium text-sm">Exclure les agents en congé</p>
+        <p class="text-xs text-gray-500 mt-0.5">
+          Les agents dont le statut indique un congé ou une absence ne reçoivent
+          pas d'assignations.
+        </p>
+      </div>
+    </div>
+    <button
+      class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none flex-shrink-0"
+      [class.bg-primary-500]="excludeOnLeave"
+      [class.bg-gray-200]="!excludeOnLeave"
+      (click)="setField('excludeOnLeave', !excludeOnLeave)"
+      role="switch"
+      [attr.aria-checked]="excludeOnLeave"
+    >
+      <span
+        class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform"
+        [class.translate-x-6]="excludeOnLeave"
+        [class.translate-x-1]="!excludeOnLeave"
+      ></span>
+    </button>
+  </div>
+
+  <!-- Summary -->
+  @if (respectBusinessHours || excludeOnLeave) {
+  <div class="p-3 bg-green-50 rounded-lg border border-green-100">
+    <p class="text-xs text-green-700 font-medium">
+      Filtres de disponibilité actifs :
+    </p>
+    <ul class="text-xs text-green-700 mt-1 space-y-0.5 list-disc list-inside">
+      @if (respectBusinessHours) {
+      <li>Horaires d'ouverture respectés ({{ timeZone }})</li>
+      } @if (excludeOnLeave) {
+      <li>Agents en congé exclus</li>
+      }
+    </ul>
+  </div>
+  }
+</div>

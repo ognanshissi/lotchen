@@ -38,7 +38,7 @@ export interface CreateTaskCommand {
      */
     dueDate: string;
     /**
-     * Due Date
+     * Due DateTime
      */
     dueDatetime: string;
     /**
@@ -49,6 +49,10 @@ export interface CreateTaskCommand {
      * Associate collaborator
      */
     collaboratorIds: Array<string>;
+    /**
+     * Lead IDs for follow-up containers
+     */
+    leadIds: Array<string>;
 }
 export enum CreateTaskCommandTaskTypeEnum {
     FollowUp = 'follow up',

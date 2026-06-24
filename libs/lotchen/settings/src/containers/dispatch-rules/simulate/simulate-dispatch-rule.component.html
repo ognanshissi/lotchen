@@ -1,0 +1,186 @@
+<button tas-button [routerLink]="['/settings/dispatch-rules']">
+  <tas-icon iconName="arrow_back"></tas-icon>
+  Retour
+</button>
+
+<div class="mt-4 mb-6">
+  <tas-title>Simuler un dispatch</tas-title>
+  <p class="text-sm text-gray-500 mt-1">
+    Saisissez des données d'exemple pour voir quelle règle serait déclenchée et
+    à qui l'enregistrement serait assigné. Aucune assignation réelle n'est
+    créée.
+  </p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- Input panel -->
+  <tas-card>
+    <div class="p-4 space-y-4">
+      <p class="font-medium text-sm">Données d'entrée</p>
+
+      <!-- Object type -->
+      <tas-form-field>
+        <tas-label>Type d'objet</tas-label>
+        <tas-select
+          [ngModel]="objectType()"
+          (ngModelChange)="objectType.set($event)"
+        >
+          @for (opt of objectTypes; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </tas-select>
+      </tas-form-field>
+
+      <!-- Dynamic fields -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <p class="text-sm font-medium text-gray-700">Champs</p>
+          <button tas-outlined-button color="primary" (click)="addField()">
+            <tas-icon iconName="feather:plus"></tas-icon>
+            Ajouter
+          </button>
+        </div>
+
+        <div class="space-y-2">
+          @for (field of fields(); track $index; let i = $index) {
+          <div class="flex gap-2 items-center">
+            <input
+              class="border rounded px-3 py-1.5 text-sm flex-1"
+              type="text"
+              placeholder="Champ (ex: source)"
+              [value]="field.key"
+              (input)="setFieldKey(i, $any($event.target).value)"
+            />
+            <input
+              class="border rounded px-3 py-1.5 text-sm flex-1"
+              type="text"
+              placeholder="Valeur"
+              [value]="field.value"
+              (input)="setFieldValue(i, $any($event.target).value)"
+            />
+            <button
+              tas-outlined-button
+              color="warn"
+              [disabled]="fields().length === 1"
+              (click)="removeField(i)"
+            >
+              <tas-icon iconName="feather:trash-2"></tas-icon>
+            </button>
+          </div>
+          }
+        </div>
+      </div>
+
+      <button
+        tas-raised-button
+        color="primary"
+        class="w-full"
+        [disabled]="isRunning()"
+        (click)="run()"
+      >
+        @if (isRunning()) {
+        <tas-spinner></tas-spinner>
+        Simulation en cours... } @else {
+        <tas-icon iconName="feather:play"></tas-icon>
+        Lancer la simulation }
+      </button>
+    </div>
+  </tas-card>
+
+  <!-- Result panel -->
+  <tas-card>
+    <div class="p-4">
+      <p class="font-medium text-sm mb-4">Résultat</p>
+
+      @if (!result()) {
+      <div
+        class="flex flex-col items-center justify-center py-12 text-center text-gray-400"
+      >
+        <tas-icon iconName="feather:zap" class="mb-2"></tas-icon>
+        <p class="text-sm">Le résultat apparaîtra ici après la simulation.</p>
+      </div>
+      } @else if (result()!.matched) {
+      <!-- Match found -->
+      <div class="space-y-4">
+        <div
+          class="flex items-center gap-2 p-3 bg-green-50 rounded-lg border border-green-200"
+        >
+          <tas-icon
+            iconName="feather:check-circle"
+            class="text-green-600 flex-shrink-0"
+          ></tas-icon>
+          <div>
+            <p class="text-sm font-semibold text-green-800">Règle déclenchée</p>
+            <p class="text-sm text-green-700">
+              {{ result()!.matchedRuleName }}
+            </p>
+          </div>
+        </div>
+
+        @if (result()!.assignedTarget) {
+        <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+          <p class="text-xs font-medium text-blue-700 mb-1">Cible assignée</p>
+          <div class="flex items-center gap-2">
+            <tas-tag color="primary">
+              {{ getTargetTypeLabel(result()!.assignedTarget!.type) }}
+            </tas-tag>
+            <span class="text-sm font-mono text-blue-900">
+              {{ result()!.assignedTarget!.targetId }}
+            </span>
+            @if (result()!.assignedTarget!.isFallback) {
+            <tas-tag color="warn">Fallback</tas-tag>
+            }
+          </div>
+        </div>
+        } @else {
+        <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+          <p class="text-xs text-yellow-700">
+            La règle correspond mais aucune cible n'est configurée.
+          </p>
+        </div>
+        }
+
+        <!-- Condition path -->
+        <div>
+          <p class="text-xs font-medium text-gray-600 mb-2">
+            Chemin d'évaluation
+          </p>
+          <div
+            class="bg-gray-50 rounded-lg border p-3 space-y-1 max-h-48 overflow-y-auto"
+          >
+            @for (step of result()!.conditionPath; track $index) {
+            <p class="text-xs font-mono text-gray-700">{{ step }}</p>
+            }
+          </div>
+        </div>
+      </div>
+      } @else {
+      <!-- No match -->
+      <div class="space-y-4">
+        <div
+          class="flex items-center gap-2 p-3 bg-red-50 rounded-lg border border-red-200"
+        >
+          <tas-icon
+            iconName="feather:x-circle"
+            class="text-red-600 flex-shrink-0"
+          ></tas-icon>
+          <div>
+            <p class="text-sm font-semibold text-red-800">
+              Aucune règle ne correspond
+            </p>
+            <p class="text-xs text-red-600 mt-0.5">
+              Aucune règle active ne correspond aux données fournies.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg border p-3">
+          @for (step of result()!.conditionPath; track $index) {
+          <p class="text-xs font-mono text-gray-700">{{ step }}</p>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </tas-card>
+</div>
