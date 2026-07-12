@@ -22,6 +22,7 @@ import {
 import {
   FindAllDispatchRulesQuery,
   FindAllDispatchRulesQueryHandler,
+  FindAllDispatchRulesQueryResponse,
 } from './find-all/find-all-dispatch-rules.query';
 import {
   FindDispatchRuleByIdQueryHandler,
@@ -31,7 +32,7 @@ import { DeleteDispatchRuleCommandHandler } from './delete/delete-dispatch-rule.
 import { ActivateDispatchRuleCommandHandler } from './activate/activate-dispatch-rule.command';
 import { DeactivateDispatchRuleCommandHandler } from './deactivate/deactivate-dispatch-rule.command';
 import {
-  EligibleTarget,
+  EligibleTargetResponse,
   EligibleTargetsQueryHandler,
 } from './eligible-targets/eligible-targets.query';
 import {
@@ -88,13 +89,22 @@ export class DispatchRulesController {
   }
 
   // Static routes must come before parameterised :id routes
+  @ApiResponse({
+    type: EligibleTargetResponse,
+    status: HttpStatus.OK,
+    isArray: true,
+    description: 'List of eligible targets',
+  })
   @Get('eligible-targets')
-  public async eligibleTargets(): Promise<EligibleTarget[]> {
+  public async eligibleTargets(): Promise<EligibleTargetResponse[]> {
     return this._eligibleTargetsHandler.handlerAsync({});
   }
 
   @Post('simulate')
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    type: SimulateDispatchRuleResult,
+  })
   public async simulate(
     @Body() command: SimulateDispatchRuleCommand
   ): Promise<SimulateDispatchRuleResult> {
@@ -110,9 +120,15 @@ export class DispatchRulesController {
   }
 
   @Get()
+  @ApiResponse({
+    type: FindAllDispatchRulesQueryResponse,
+    status: HttpStatus.OK,
+    isArray: true,
+    description: 'List of all dispatch rules',
+  })
   public async findAll(
     @Query() query: FindAllDispatchRulesQuery
-  ): Promise<any[]> {
+  ): Promise<FindAllDispatchRulesQueryResponse[]> {
     return this._findAllHandler.handlerAsync(query);
   }
 

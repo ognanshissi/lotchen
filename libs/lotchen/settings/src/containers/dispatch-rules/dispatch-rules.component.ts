@@ -22,6 +22,11 @@ import {
   DragDropModule,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
+import {
+  DispatchRulesApiService,
+  FindAllDispatchRulesQueryResponse,
+} from '@talisoft/api/lotchen-client-api';
+import { finalize } from 'rxjs';
 
 export interface DispatchRuleListItem {
   _id: string;
@@ -55,10 +60,11 @@ export interface DispatchRuleListItem {
 })
 export class DispatchRulesComponent implements OnInit {
   private readonly _http = inject(HttpClient);
+  private readonly _dispatchRulesApiService = inject(DispatchRulesApiService);
   private readonly _snackbar = inject(SnackbarService);
   private readonly _confirmDialog = inject(ConfirmDialogService);
 
-  public rules = signal<DispatchRuleListItem[]>([]);
+  public rules = signal<FindAllDispatchRulesQueryResponse[]>([]);
   public isLoading = signal(false);
   public isReordering = signal(false);
 
@@ -68,19 +74,20 @@ export class DispatchRulesComponent implements OnInit {
 
   public loadRules(): void {
     this.isLoading.set(true);
-    this._http.get<DispatchRuleListItem[]>('/api/v1/dispatch-rules').subscribe({
-      next: (data) => {
-        this.rules.set(data);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this._snackbar.error(
-          'Erreur',
-          'Impossible de charger les règles de dispatch'
-        );
-        this.isLoading.set(false);
-      },
-    });
+    this._dispatchRulesApiService
+      .dispatchRulesControllerFindAllV1()
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (response) => {
+          this.rules.set(response);
+        },
+        error: (_) => {
+          this._snackbar.error(
+            'Erreur',
+            'Impossible de charger les règles de dispatch'
+          );
+        },
+      });
   }
 
   public getStatusColor(status: string): Severity {
@@ -113,8 +120,9 @@ export class DispatchRulesComponent implements OnInit {
     return labels[type] ?? type;
   }
 
-  public toggleStatus(rule: DispatchRuleListItem): void {
+  public toggleStatus(rule: FindAllDispatchRulesQueryResponse): void {
     const action = rule.status === 'active' ? 'deactivate' : 'activate';
+    // this._dispatchRulesApiService.dispatchRulesControllerActivateV1()
     this._http
       .patch(`/api/v1/dispatch-rules/${rule._id}/${action}`, {})
       .subscribe({
@@ -130,7 +138,7 @@ export class DispatchRulesComponent implements OnInit {
       });
   }
 
-  public deleteRule(rule: DispatchRuleListItem): void {
+  public deleteRule(rule: FindAllDispatchRulesQueryResponse): void {
     // this._confirmDialog
     //   .confirm({
     //     title: 'Supprimer la règle',

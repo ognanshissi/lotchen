@@ -45,6 +45,7 @@ model/address-dto.interface.ts
 model/assign-contact-command-request.interface.ts
 model/assign-permissions-command-request.interface.ts
 model/assign-roles-command-request.interface.ts
+model/assigned-target.interface.ts
 model/assignment-target-dto.interface.ts
 model/asterisk-config-dto.interface.ts
 model/audience-filter-dto.interface.ts
@@ -95,6 +96,7 @@ model/create-user-command.interface.ts
 model/create-workflow-template-command.interface.ts
 model/created-by-info-dto.interface.ts
 model/disqualify-lead-command-request.interface.ts
+model/eligible-target-response.interface.ts
 model/enrich-lead-command-request.interface.ts
 model/escalation-rule-dto.interface.ts
 model/estimate-audience-query.interface.ts
@@ -112,6 +114,7 @@ model/find-all-call-logs-query-response.interface.ts
 model/find-all-capture-configs-query-response.interface.ts
 model/find-all-contacts-query-response.interface.ts
 model/find-all-currencies-query-response.interface.ts
+model/find-all-dispatch-rules-query-response.interface.ts
 model/find-all-event-types-query-response.interface.ts
 model/find-all-forms-query-response.interface.ts
 model/find-all-meetings-query-response.interface.ts
@@ -129,6 +132,7 @@ model/find-by-class-name-field-dto.interface.ts
 model/find-by-class-name-query-response.interface.ts
 model/find-client-by-id-query-response.interface.ts
 model/find-contact-by-id-query-response.interface.ts
+model/find-dispatch-rule-by-id-query-response.interface.ts
 model/find-event-type-by-id-query-response.interface.ts
 model/find-form-by-id-query-response.interface.ts
 model/find-lead-by-id-query-response.interface.ts
@@ -194,6 +198,7 @@ model/routing-strategy-dto.interface.ts
 model/rule-priority-item.interface.ts
 model/set-meeting-outcome-command.interface.ts
 model/simulate-dispatch-rule-command.interface.ts
+model/simulate-dispatch-rule-result.interface.ts
 model/skip-execution-step-command-request.interface.ts
 model/status-history-dto.interface.ts
 model/territories-controller-paginate-all-territories-v1200-response.interface.ts

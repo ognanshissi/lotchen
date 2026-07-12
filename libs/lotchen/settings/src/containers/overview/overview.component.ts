@@ -70,6 +70,13 @@ export class OverviewComponent {
             'Gerer les automatismes dans le cycle de vie des contacts et clients',
         },
         {
+          title: 'Rêgles de dispatching',
+          type: 'basic',
+          id: 'groups_dispatching',
+          link: '/settings/dispatch-rules',
+          description: 'Gérer les règles de dispatching des leads',
+        },
+        {
           title: 'Utilisateurs',
           type: 'basic',
           id: 'teams_territories_users',

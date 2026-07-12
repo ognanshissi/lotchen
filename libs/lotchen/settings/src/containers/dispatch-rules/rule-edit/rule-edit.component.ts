@@ -23,18 +23,9 @@ import {
   ConditionBuilderComponent,
   DispatchConditionGroup,
 } from '../components/condition-builder/condition-builder.component';
-import {
-  TargetSelectorComponent,
-  AssignmentTargetValue,
-} from '../components/target-selector/target-selector.component';
-import {
-  RoutingStrategyFormComponent,
-  RoutingStrategyValue,
-} from '../components/routing-strategy-form/routing-strategy-form.component';
-import {
-  CapacityFormComponent,
-  CapacityRulesValue,
-} from '../components/capacity-form/capacity-form.component';
+import { TargetSelectorComponent } from '../components/target-selector/target-selector.component';
+import { RoutingStrategyFormComponent } from '../components/routing-strategy-form/routing-strategy-form.component';
+import { CapacityFormComponent } from '../components/capacity-form/capacity-form.component';
 import {
   AvailabilityFormComponent,
   AvailabilityConfigValue,
@@ -45,6 +36,19 @@ import {
 } from '../components/escalation-form/escalation-form.component';
 import { TasTag } from '@talisoft/ui/tag';
 import { ConfirmDialogService } from '@talisoft/ui/confirm-dialog';
+import {
+  AssignmentTargetDto,
+  CapacityRulesDto,
+  CreateDispatchRuleCommand,
+  CreateDispatchRuleCommandStatusEnum,
+  DispatchRulesApiService,
+  FindDispatchRuleByIdQueryResponseObjectTypeEnum,
+  FindDispatchRuleByIdQueryResponseStatusEnum,
+  RoutingStrategyDto,
+  UpdateDispatchRuleRequest,
+  UpdateDispatchRuleRequestObjectTypeEnum,
+} from '@talisoft/api/lotchen-client-api';
+import { UpdateDispatchRuleCommand } from '../../../../../../lotchen-api/dispatching/src/rules';
 
 type Tab =
   | 'general'
@@ -104,6 +108,7 @@ interface RuleVersion {
 })
 export class RuleEditComponent implements OnInit {
   private readonly _http = inject(HttpClient);
+  private readonly _dispatchRulesApiService = inject(DispatchRulesApiService);
   private readonly _route = inject(ActivatedRoute);
   private readonly _router = inject(Router);
   private readonly _snackbar = inject(SnackbarService);
@@ -122,16 +127,22 @@ export class RuleEditComponent implements OnInit {
   // Form state
   public name = signal('');
   public description = signal('');
-  public objectType = signal('');
-  public status = signal('draft');
+  public objectType = signal<
+    | UpdateDispatchRuleRequestObjectTypeEnum
+    | FindDispatchRuleByIdQueryResponseObjectTypeEnum
+  >(UpdateDispatchRuleRequestObjectTypeEnum.Case);
+  public status = signal<
+    | CreateDispatchRuleCommandStatusEnum
+    | FindDispatchRuleByIdQueryResponseStatusEnum
+  >(CreateDispatchRuleCommandStatusEnum.Draft);
   public priority = signal(0);
   public conditions = signal<DispatchConditionGroup>({
     operator: 'AND',
     conditions: [],
   });
-  public targets = signal<AssignmentTargetValue[]>([]);
-  public routingStrategy = signal<RoutingStrategyValue | null>(null);
-  public capacityRules = signal<CapacityRulesValue | null>(null);
+  public targets = signal<AssignmentTargetDto[]>([]);
+  public routingStrategy = signal<RoutingStrategyDto | undefined>(undefined);
+  public capacityRules = signal<CapacityRulesDto | undefined>(undefined);
   public availabilityConfig = signal<AvailabilityConfigValue | null>(null);
   public escalationRules = signal<EscalationRuleValue[]>([]);
 
@@ -178,47 +189,53 @@ export class RuleEditComponent implements OnInit {
 
   public loadRule(id: string): void {
     this.isLoading.set(true);
-    this._http.get<any>(`/api/v1/dispatch-rules/${id}`).subscribe({
-      next: (rule) => {
-        this.name.set(rule.name ?? '');
-        this.description.set(rule.description ?? '');
-        this.objectType.set(rule.objectType ?? '');
-        this.status.set(rule.status ?? 'draft');
-        this.priority.set(rule.priority ?? 0);
-        if (rule.conditions) this.conditions.set(rule.conditions);
-        if (rule.targets?.length) {
-          this.targets.set(
-            rule.targets.map((t: any) => ({
-              targetId: t.targetId,
-              type: t.type,
-              label: t.targetId,
-              isFallback: t.isFallback ?? false,
-            }))
+
+    this._dispatchRulesApiService
+      .dispatchRulesControllerFindByIdV1(id)
+      .subscribe({
+        next: (rule) => {
+          this.name.set(rule.name ?? '');
+          this.description.set(rule.description ?? '');
+          this.objectType.set(rule.objectType);
+          this.status.set(
+            rule.status ?? CreateDispatchRuleCommandStatusEnum.Draft
           );
-        }
-        if (rule.routingStrategy)
-          this.routingStrategy.set(rule.routingStrategy);
-        if (rule.capacityRules) this.capacityRules.set(rule.capacityRules);
-        if (rule.availabilityConfig)
-          this.availabilityConfig.set(rule.availabilityConfig);
-        if (rule.escalationRules?.length) {
-          this.escalationRules.set(
-            rule.escalationRules.map((e: any) => ({
-              trigger: e.trigger ?? 'sla_breach',
-              delayMinutes: e.delayMinutes ?? 60,
-              targetId: e.targetId ?? '',
-              targetLabel: e.targetId ?? '',
-              notifyOnEscalation: e.notifyOnEscalation ?? false,
-            }))
-          );
-        }
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this._snackbar.error('Erreur', 'Impossible de charger la règle');
-        this.isLoading.set(false);
-      },
-    });
+          this.priority.set(rule.priority ?? 0);
+          if (rule.conditions) this.conditions.set(rule.conditions as any);
+          if (rule.targets?.length) {
+            this.targets.set(
+              rule.targets.map((t: any) => ({
+                targetId: t.targetId,
+                type: t.type,
+                label: t.targetId,
+                isFallback: t.isFallback ?? false,
+              }))
+            );
+          }
+          if (rule.routingStrategy)
+            this.routingStrategy.set(rule.routingStrategy as any);
+          if (rule.capacityRules)
+            this.capacityRules.set(rule.capacityRules as any);
+          if (rule.availabilityConfig)
+            this.availabilityConfig.set(rule.availabilityConfig as any);
+          if (rule.escalationRules?.length) {
+            this.escalationRules.set(
+              rule.escalationRules.map((e: any) => ({
+                trigger: e.trigger ?? 'sla_breach',
+                delayMinutes: e.delayMinutes ?? 60,
+                targetId: e.targetId ?? '',
+                targetLabel: e.targetId ?? '',
+                notifyOnEscalation: e.notifyOnEscalation ?? false,
+              }))
+            );
+          }
+          this.isLoading.set(false);
+        },
+        error: () => {
+          this._snackbar.error('Erreur', 'Impossible de charger la règle');
+          this.isLoading.set(false);
+        },
+      });
   }
 
   public setTab(tab: Tab): void {
@@ -252,8 +269,8 @@ export class RuleEditComponent implements OnInit {
 
   public loadVersions(id: string): void {
     this.versionsLoading.set(true);
-    this._http
-      .get<RuleVersion[]>(`/api/v1/dispatch-rules/${id}/versions`)
+    this._dispatchRulesApiService
+      .dispatchRulesControllerVersionsV1(id)
       .subscribe({
         next: (data) => {
           this.versions.set(data);
@@ -301,15 +318,15 @@ export class RuleEditComponent implements OnInit {
     this.conditions.set(group);
   }
 
-  public onTargetsChange(targets: AssignmentTargetValue[]): void {
+  public onTargetsChange(targets: AssignmentTargetDto[]): void {
     this.targets.set(targets);
   }
 
-  public onRoutingStrategyChange(strategy: RoutingStrategyValue): void {
+  public onRoutingStrategyChange(strategy: RoutingStrategyDto): void {
     this.routingStrategy.set(strategy);
   }
 
-  public onCapacityChange(capacity: CapacityRulesValue): void {
+  public onCapacityChange(capacity: CapacityRulesDto): void {
     this.capacityRules.set(capacity);
   }
 
@@ -331,21 +348,22 @@ export class RuleEditComponent implements OnInit {
       return;
     }
 
-    const payload = {
+    const payload: UpdateDispatchRuleRequest | CreateDispatchRuleCommand = {
       name: this.name(),
       description: this.description(),
-      objectType: this.objectType(),
-      status: this.status(),
+      objectType: this.objectType() as any,
+      status: this.status() as any,
       priority: this.priority(),
       conditions: this.conditions(),
-      targets: this.targets().map((t) => ({
-        targetId: t.targetId,
-        type: t.type,
-        isFallback: t.isFallback,
-      })),
+      targets:
+        this.targets().map((t) => ({
+          targetId: t.targetId,
+          type: t.type,
+          isFallback: t.isFallback,
+        })) || [],
       routingStrategy: this.routingStrategy(),
       capacityRules: this.capacityRules(),
-      availabilityConfig: this.availabilityConfig(),
+      availabilityConfig: this.availabilityConfig() || undefined,
       escalationRules: this.escalationRules().map((e) => ({
         trigger: e.trigger,
         delayMinutes: e.delayMinutes,
@@ -358,8 +376,13 @@ export class RuleEditComponent implements OnInit {
 
     const id = this.ruleId();
     const request$ = id
-      ? this._http.patch(`/api/v1/dispatch-rules/${id}`, payload)
-      : this._http.post('/api/v1/dispatch-rules', payload);
+      ? this._dispatchRulesApiService.dispatchRulesControllerUpdateV1(
+          id,
+          payload as any
+        )
+      : this._dispatchRulesApiService.dispatchRulesControllerCreateV1(
+          payload as CreateDispatchRuleCommand
+        );
 
     request$.subscribe({
       next: (result: any) => {

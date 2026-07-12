@@ -15,20 +15,10 @@ import { TasIcon } from '@talisoft/ui/icon';
 import { ButtonModule } from '@talisoft/ui/button';
 import { Severity, TasTag } from '@talisoft/ui/tag';
 import { TasSpinner } from '@talisoft/ui/spinner';
-
-export interface EligibleTarget {
-  id: string;
-  type: 'agent' | 'team' | 'queue' | 'department';
-  label: string;
-  subLabel?: string;
-}
-
-export interface AssignmentTargetValue {
-  targetId: string;
-  type: string;
-  label: string;
-  isFallback: boolean;
-}
+import {
+  AssignmentTargetDto,
+  EligibleTargetResponse,
+} from '@talisoft/api/lotchen-client-api';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -48,10 +38,10 @@ export interface AssignmentTargetValue {
 export class TargetSelectorComponent implements OnInit {
   private readonly _http = inject(HttpClient);
 
-  public targets = input<AssignmentTargetValue[]>([]);
-  public targetsChange = output<AssignmentTargetValue[]>();
+  public targets = input<AssignmentTargetDto[]>([]);
+  public targetsChange = output<AssignmentTargetDto[]>();
 
-  public eligibleTargets = signal<EligibleTarget[]>([]);
+  public eligibleTargets = signal<EligibleTargetResponse[]>([]);
   public isLoading = signal(false);
   public searchQuery = signal('');
   public activeTypeFilter = signal<string>('all');
@@ -86,7 +76,7 @@ export class TargetSelectorComponent implements OnInit {
   private loadTargets(): void {
     this.isLoading.set(true);
     this._http
-      .get<EligibleTarget[]>('/api/v1/dispatch-rules/eligible-targets')
+      .get<EligibleTargetResponse[]>('/api/v1/dispatch-rules/eligible-targets')
       .subscribe({
         next: (data) => {
           this.eligibleTargets.set(data);
@@ -96,15 +86,15 @@ export class TargetSelectorComponent implements OnInit {
       });
   }
 
-  public isSelected(target: EligibleTarget): boolean {
+  public isSelected(target: EligibleTargetResponse): boolean {
     return this.selectedIds().has(target.id);
   }
 
-  public isFallback(target: EligibleTarget): boolean {
+  public isFallback(target: EligibleTargetResponse): boolean {
     return this.targets().some((t) => t.targetId === target.id && t.isFallback);
   }
 
-  public toggleTarget(target: EligibleTarget): void {
+  public toggleTarget(target: EligibleTargetResponse): void {
     const current = this.targets();
     if (this.isSelected(target)) {
       this.targetsChange.emit(current.filter((t) => t.targetId !== target.id));
@@ -113,15 +103,15 @@ export class TargetSelectorComponent implements OnInit {
         ...current,
         {
           targetId: target.id,
-          type: target.type,
+          type: target.type as any,
           label: target.label,
           isFallback: false,
-        },
+        } as AssignmentTargetDto,
       ]);
     }
   }
 
-  public toggleFallback(target: EligibleTarget): void {
+  public toggleFallback(target: EligibleTargetResponse): void {
     const current = this.targets().map((t) =>
       t.targetId === target.id ? { ...t, isFallback: !t.isFallback } : t
     );

@@ -34,6 +34,10 @@ export class AssignmentTargetDto {
   @IsOptional()
   @IsBoolean()
   isFallback?: boolean;
+  // @ApiProperty({ type: String })
+  // label!: string;
+  // @ApiProperty({ type: String })
+  // sublabel!: string;
 }
 
 export class RoutingStrategyDto {

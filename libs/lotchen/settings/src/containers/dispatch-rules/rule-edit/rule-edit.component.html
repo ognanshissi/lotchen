@@ -138,7 +138,7 @@
     </p>
     <dispatch-target-selector
       [targets]="targets()"
-      (targetsChange)="onTargetsChange($event)"
+      (targetsChange)="onTargetsChange($any($event))"
     ></dispatch-target-selector>
   </div>
 </tas-card>

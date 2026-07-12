@@ -1,8 +1,21 @@
 import { QueryHandler } from '@lotchen/api/core';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Injectable } from '@nestjs/common';
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 import { DispatchingProvider } from '../../dispatching.provider';
+import {
+  DispatchObjectType,
+  DispatchRuleStatus,
+} from '../../common/dispatch-rule.enums';
+import {
+  AssignmentTargetDto,
+  AvailabilityConfigDto,
+  CapacityRulesDto,
+  EscalationRuleDto,
+  RoutingStrategyDto,
+} from '../create/create-dispatch-rule.command';
+import { ConditionDto } from '../dtos/condition.dto';
+import { Type } from 'class-transformer';
 
 export class FindAllDispatchRulesQuery {
   @ApiPropertyOptional({ type: String })
@@ -16,13 +29,78 @@ export class FindAllDispatchRulesQuery {
   objectType?: string;
 }
 
+export class FindAllDispatchRulesQueryResponse {
+  @ApiProperty({ description: 'Dispatch Id' })
+  _id!: string;
+
+  @ApiProperty({ description: 'Name' })
+  name!: string;
+
+  @ApiProperty({ description: 'Description' })
+  description!: string;
+
+  @ApiProperty({
+    type: String,
+    enum: DispatchRuleStatus,
+    description: DispatchRuleStatus.Draft,
+  })
+  status!: string;
+
+  @ApiProperty({ enum: DispatchObjectType })
+  objectType!: string;
+
+  @ApiProperty({ type: Number })
+  priority!: number;
+
+  @ApiPropertyOptional({ type: ConditionDto })
+  @Type(() => ConditionDto)
+  conditions?: ConditionDto;
+
+  @ApiProperty({ type: [AssignmentTargetDto] })
+  @IsArray()
+  @Type(() => AssignmentTargetDto)
+  targets!: AssignmentTargetDto[];
+
+  @ApiPropertyOptional({ type: RoutingStrategyDto })
+  @Type(() => RoutingStrategyDto)
+  routingStrategy?: RoutingStrategyDto;
+
+  @ApiPropertyOptional({ type: CapacityRulesDto })
+  @Type(() => CapacityRulesDto)
+  capacityRules?: CapacityRulesDto;
+
+  @ApiPropertyOptional({ type: AvailabilityConfigDto })
+  @Type(() => AvailabilityConfigDto)
+  availabilityConfig?: AvailabilityConfigDto;
+
+  @ApiProperty({ type: [EscalationRuleDto] })
+  @Type(() => EscalationRuleDto)
+  @IsArray()
+  escalationRules!: EscalationRuleDto[];
+
+  @ApiProperty({ type: Number })
+  version!: number;
+
+  @ApiPropertyOptional({ type: [Object] })
+  versionHistory!: any[];
+
+  @ApiProperty({ type: Date })
+  updatedAt!: Date;
+}
+
 @Injectable()
 export class FindAllDispatchRulesQueryHandler
-  implements QueryHandler<FindAllDispatchRulesQuery, any[]>
+  implements
+    QueryHandler<
+      FindAllDispatchRulesQuery,
+      FindAllDispatchRulesQueryResponse[]
+    >
 {
   constructor(private readonly dispatchingProvider: DispatchingProvider) {}
 
-  async handlerAsync(query: FindAllDispatchRulesQuery): Promise<any[]> {
+  async handlerAsync(
+    query: FindAllDispatchRulesQuery
+  ): Promise<FindAllDispatchRulesQueryResponse[]> {
     const filter: Record<string, any> = { deletedAt: null };
 
     if (query.status) filter['status'] = query.status;

@@ -5683,7 +5683,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "List of all dispatch rules",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindAllDispatchRulesQueryResponse"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -5697,7 +5707,17 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "List of eligible targets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EligibleTargetResponse"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -5720,8 +5740,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulateDispatchRuleResult"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -12134,6 +12161,36 @@
           "objectType"
         ]
       },
+      "EligibleTargetResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "agent",
+              "team",
+              "queue",
+              "department"
+            ],
+            "description": "AssignmentTargetType"
+          },
+          "label": {
+            "type": "string"
+          },
+          "subLabel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "label",
+          "subLabel"
+        ]
+      },
       "SimulateDispatchRuleCommand": {
         "type": "object",
         "properties": {
@@ -12146,6 +12203,59 @@
         },
         "required": [
           "objectType"
+        ]
+      },
+      "AssignedTarget": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "targetId": {
+            "type": "string"
+          },
+          "isFallback": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "targetId",
+          "isFallback"
+        ]
+      },
+      "SimulateDispatchRuleResult": {
+        "type": "object",
+        "properties": {
+          "matched": {
+            "type": "boolean",
+            "description": "Matched"
+          },
+          "matchedRuleId": {
+            "type": "string"
+          },
+          "matchedRuleName": {
+            "type": "string",
+            "description": "Matched rule name"
+          },
+          "conditionPath": {
+            "type": "string",
+            "description": "Condition path"
+          },
+          "assignedTarget": {
+            "description": "",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssignedTarget"
+              }
+            ]
+          }
+        },
+        "required": [
+          "matched",
+          "matchedRuleId",
+          "matchedRuleName",
+          "conditionPath"
         ]
       },
       "RulePriorityItem": {
@@ -12177,9 +12287,178 @@
           "items"
         ]
       },
-      "FindDispatchRuleByIdQueryResponse": {
+      "ConditionDto": {
         "type": "object",
         "properties": {}
+      },
+      "FindAllDispatchRulesQueryResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Dispatch Id"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "inactive"
+            ],
+            "description": "draft"
+          },
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "lead",
+              "case",
+              "ticket",
+              "service_request"
+            ]
+          },
+          "priority": {
+            "type": "number"
+          },
+          "conditions": {
+            "$ref": "#/components/schemas/ConditionDto"
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignmentTargetDto"
+            }
+          },
+          "routingStrategy": {
+            "$ref": "#/components/schemas/RoutingStrategyDto"
+          },
+          "capacityRules": {
+            "$ref": "#/components/schemas/CapacityRulesDto"
+          },
+          "availabilityConfig": {
+            "$ref": "#/components/schemas/AvailabilityConfigDto"
+          },
+          "escalationRules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EscalationRuleDto"
+            }
+          },
+          "version": {
+            "type": "number"
+          },
+          "versionHistory": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "description",
+          "status",
+          "objectType",
+          "priority",
+          "targets",
+          "escalationRules",
+          "version",
+          "updatedAt"
+        ]
+      },
+      "FindDispatchRuleByIdQueryResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Dispatch Id"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "inactive"
+            ],
+            "description": "draft"
+          },
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "lead",
+              "case",
+              "ticket",
+              "service_request"
+            ]
+          },
+          "priority": {
+            "type": "number"
+          },
+          "conditions": {
+            "$ref": "#/components/schemas/ConditionDto"
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignmentTargetDto"
+            }
+          },
+          "routingStrategy": {
+            "$ref": "#/components/schemas/RoutingStrategyDto"
+          },
+          "capacityRules": {
+            "$ref": "#/components/schemas/CapacityRulesDto"
+          },
+          "availabilityConfig": {
+            "$ref": "#/components/schemas/AvailabilityConfigDto"
+          },
+          "escalationRules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EscalationRuleDto"
+            }
+          },
+          "version": {
+            "type": "number"
+          },
+          "versionHistory": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "description",
+          "status",
+          "objectType",
+          "priority",
+          "targets",
+          "escalationRules",
+          "version"
+        ]
       },
       "UpdateDispatchRuleRequest": {
         "type": "object",

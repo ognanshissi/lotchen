@@ -28,7 +28,7 @@ export class DispatchConditionGroup {
   operator!: string;
 
   @Prop({ type: [mongoose.Schema.Types.Mixed], default: [] })
-  conditions!: any[];
+  conditions!: { field: string; value: string | string[]; operator?: string }[];
 }
 
 @Schema({ id: false, _id: false, versionKey: false, timestamps: false })
@@ -116,7 +116,7 @@ export class DispatchRule extends AggregateRoot {
   priority!: number;
 
   @Prop({ type: mongoose.Schema.Types.Mixed })
-  conditions?: any;
+  conditions?: { operator: LogicalOperator; conditions: any[] };
 
   @Prop({ type: [AssignmentTarget], default: [] })
   targets!: AssignmentTarget[];

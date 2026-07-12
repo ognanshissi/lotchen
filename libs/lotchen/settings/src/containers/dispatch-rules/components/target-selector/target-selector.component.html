@@ -14,9 +14,7 @@
       }
       <button
         class="ml-1 text-gray-400 hover:text-red-500"
-        (click)="
-          toggleTarget({ id: t.targetId, type: $any(t.type), label: t.label })
-        "
+        (click)="toggleTarget($any(t))"
       >
         <tas-icon iconName="feather:x"></tas-icon>
       </button>

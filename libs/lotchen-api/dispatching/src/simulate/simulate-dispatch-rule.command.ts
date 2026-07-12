@@ -1,9 +1,10 @@
 import { CommandHandler } from '@lotchen/api/core';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsArray } from 'class-validator';
 import { DispatchingProvider } from '../dispatching.provider';
 import { DispatchRuleStatus } from '../common/dispatch-rule.enums';
+import { Type } from 'class-transformer';
 
 export class SimulateDispatchRuleCommand {
   @ApiProperty({ type: String })
@@ -16,12 +17,28 @@ export class SimulateDispatchRuleCommand {
   fields?: Record<string, any>;
 }
 
-export interface SimulateDispatchRuleResult {
-  matched: boolean;
+export class AssignedTarget {
+  @ApiProperty()
+  type!: string;
+  @ApiProperty()
+  targetId!: string;
+  @ApiProperty()
+  isFallback!: boolean;
+}
+
+export class SimulateDispatchRuleResult {
+  @ApiProperty({ description: 'Matched' })
+  matched!: boolean;
+  @ApiProperty()
   matchedRuleId?: string;
+  @ApiProperty({ description: 'Matched rule name', type: String })
   matchedRuleName?: string;
-  conditionPath: string[];
-  assignedTarget?: { type: string; targetId: string; isFallback: boolean };
+  @ApiProperty({ description: 'Condition path', type: String })
+  @IsArray()
+  conditionPath!: string[];
+  @ApiPropertyOptional({ description: '' })
+  @Type(() => AssignedTarget)
+  assignedTarget?: AssignedTarget;
 }
 
 function evaluateCondition(

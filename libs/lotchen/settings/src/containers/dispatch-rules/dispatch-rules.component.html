@@ -49,7 +49,7 @@
   <div
     cdkDropList
     [cdkDropListData]="rules()"
-    (cdkDropListDropped)="onDrop($event)"
+    (cdkDropListDropped)="onDrop($any($event))"
     class="divide-y"
   >
     @for (rule of rules(); track rule._id) {

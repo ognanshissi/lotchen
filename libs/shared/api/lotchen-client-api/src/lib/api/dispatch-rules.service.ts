@@ -21,9 +21,17 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { CreateDispatchRuleCommand } from '../model/create-dispatch-rule-command.interface';
 // @ts-ignore
+import { EligibleTargetResponse } from '../model/eligible-target-response.interface';
+// @ts-ignore
+import { FindAllDispatchRulesQueryResponse } from '../model/find-all-dispatch-rules-query-response.interface';
+// @ts-ignore
+import { FindDispatchRuleByIdQueryResponse } from '../model/find-dispatch-rule-by-id-query-response.interface';
+// @ts-ignore
 import { ReorderDispatchRulesCommand } from '../model/reorder-dispatch-rules-command.interface';
 // @ts-ignore
 import { SimulateDispatchRuleCommand } from '../model/simulate-dispatch-rule-command.interface';
+// @ts-ignore
+import { SimulateDispatchRuleResult } from '../model/simulate-dispatch-rule-result.interface';
 // @ts-ignore
 import { UpdateDispatchRuleRequest } from '../model/update-dispatch-rule-request.interface';
 
@@ -435,10 +443,10 @@ export class DispatchRulesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public dispatchRulesControllerEligibleTargetsV1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public dispatchRulesControllerEligibleTargetsV1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public dispatchRulesControllerEligibleTargetsV1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public dispatchRulesControllerEligibleTargetsV1(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public dispatchRulesControllerEligibleTargetsV1(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<EligibleTargetResponse>>;
+    public dispatchRulesControllerEligibleTargetsV1(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<EligibleTargetResponse>>>;
+    public dispatchRulesControllerEligibleTargetsV1(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<EligibleTargetResponse>>>;
+    public dispatchRulesControllerEligibleTargetsV1(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -446,6 +454,7 @@ export class DispatchRulesApiService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -476,7 +485,7 @@ export class DispatchRulesApiService {
         }
 
         let localVarPath = `/api/v1/dispatch-rules/eligible-targets`;
-        return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<EligibleTargetResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -495,10 +504,10 @@ export class DispatchRulesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public dispatchRulesControllerFindAllV1(status?: string, objectType?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public dispatchRulesControllerFindAllV1(status?: string, objectType?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public dispatchRulesControllerFindAllV1(status?: string, objectType?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public dispatchRulesControllerFindAllV1(status?: string, objectType?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public dispatchRulesControllerFindAllV1(status?: string, objectType?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<FindAllDispatchRulesQueryResponse>>;
+    public dispatchRulesControllerFindAllV1(status?: string, objectType?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<FindAllDispatchRulesQueryResponse>>>;
+    public dispatchRulesControllerFindAllV1(status?: string, objectType?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<FindAllDispatchRulesQueryResponse>>>;
+    public dispatchRulesControllerFindAllV1(status?: string, objectType?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (status !== undefined && status !== null) {
@@ -516,6 +525,7 @@ export class DispatchRulesApiService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -546,7 +556,7 @@ export class DispatchRulesApiService {
         }
 
         let localVarPath = `/api/v1/dispatch-rules`;
-        return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<FindAllDispatchRulesQueryResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -565,9 +575,9 @@ export class DispatchRulesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public dispatchRulesControllerFindByIdV1(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<object>;
-    public dispatchRulesControllerFindByIdV1(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<object>>;
-    public dispatchRulesControllerFindByIdV1(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<object>>;
+    public dispatchRulesControllerFindByIdV1(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<FindDispatchRuleByIdQueryResponse>;
+    public dispatchRulesControllerFindByIdV1(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<FindDispatchRuleByIdQueryResponse>>;
+    public dispatchRulesControllerFindByIdV1(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<FindDispatchRuleByIdQueryResponse>>;
     public dispatchRulesControllerFindByIdV1(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling dispatchRulesControllerFindByIdV1.');
@@ -610,7 +620,7 @@ export class DispatchRulesApiService {
         }
 
         let localVarPath = `/api/v1/dispatch-rules/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<object>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<FindDispatchRuleByIdQueryResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -841,10 +851,10 @@ export class DispatchRulesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public dispatchRulesControllerSimulateV1(simulateDispatchRuleCommand: SimulateDispatchRuleCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public dispatchRulesControllerSimulateV1(simulateDispatchRuleCommand: SimulateDispatchRuleCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public dispatchRulesControllerSimulateV1(simulateDispatchRuleCommand: SimulateDispatchRuleCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public dispatchRulesControllerSimulateV1(simulateDispatchRuleCommand: SimulateDispatchRuleCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public dispatchRulesControllerSimulateV1(simulateDispatchRuleCommand: SimulateDispatchRuleCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SimulateDispatchRuleResult>;
+    public dispatchRulesControllerSimulateV1(simulateDispatchRuleCommand: SimulateDispatchRuleCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SimulateDispatchRuleResult>>;
+    public dispatchRulesControllerSimulateV1(simulateDispatchRuleCommand: SimulateDispatchRuleCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SimulateDispatchRuleResult>>;
+    public dispatchRulesControllerSimulateV1(simulateDispatchRuleCommand: SimulateDispatchRuleCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (simulateDispatchRuleCommand === null || simulateDispatchRuleCommand === undefined) {
             throw new Error('Required parameter simulateDispatchRuleCommand was null or undefined when calling dispatchRulesControllerSimulateV1.');
         }
@@ -855,6 +865,7 @@ export class DispatchRulesApiService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -894,7 +905,7 @@ export class DispatchRulesApiService {
         }
 
         let localVarPath = `/api/v1/dispatch-rules/simulate`;
-        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<SimulateDispatchRuleResult>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: simulateDispatchRuleCommand,

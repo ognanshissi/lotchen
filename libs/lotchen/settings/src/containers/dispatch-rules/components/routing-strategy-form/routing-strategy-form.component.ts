@@ -11,6 +11,10 @@ import { FormsModule } from '@angular/forms';
 import { FormField, TasLabel } from '@talisoft/ui/form-field';
 import { TasSelect } from '@talisoft/ui/select';
 import { ButtonModule } from '@talisoft/ui/button';
+import {
+  RoutingStrategyDto,
+  RoutingStrategyDtoMethodEnum,
+} from '@talisoft/api/lotchen-client-api';
 
 export interface RoutingStrategyValue {
   method: string;
@@ -113,8 +117,8 @@ const METHOD_OPTIONS: MethodOption[] = [
   ],
 })
 export class RoutingStrategyFormComponent {
-  public strategy = input<RoutingStrategyValue | null>(null);
-  public strategyChange = output<RoutingStrategyValue>();
+  public strategy = input<RoutingStrategyDto | undefined>(undefined);
+  public strategyChange = output<RoutingStrategyDto>();
 
   public readonly methodOptions = METHOD_OPTIONS;
 
@@ -123,7 +127,7 @@ export class RoutingStrategyFormComponent {
       METHOD_OPTIONS.find((m) => m.value === this.strategy()?.method) ?? null
   );
 
-  public setMethod(method: string): void {
+  public setMethod(method: RoutingStrategyDtoMethodEnum): void {
     this.strategyChange.emit({ method, params: {} });
   }
 
